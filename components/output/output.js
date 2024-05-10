@@ -9,7 +9,7 @@ function Output({ excelFile }) {
   const persons = excelFile.slice(1);
 
   const filteredPersons = persons.filter((arr) => {
-    if (arr[0].includes(inputValue)) {
+    if (arr[0].toLowerCase().includes(inputValue)) {
       return arr
     }
   } );
@@ -25,7 +25,7 @@ function Output({ excelFile }) {
       <>
         <input type="text"
                value={inputValue} onChange={(e) => setInputValue(e.target.value.toString().trim())}
-               placeholder="Please type to filter"
+               placeholder="Please type to filter a person"
         />
         <div className={classes.container1}>
 
