@@ -1,0 +1,11 @@
+.container1 {
+  display: flex;
+  gap: 10%;
+}
+
+.container2 {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-evenly;
+  gap: 10%;
+}
