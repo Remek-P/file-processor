@@ -1,5 +1,6 @@
 import classes from "./output.module.scss";
 import {useState} from "react";
+import Search from "@/components/search/search";
 
 function Output({ excelFile }) {
 
@@ -23,10 +24,9 @@ function Output({ excelFile }) {
 
   return (
       <>
-        <input type="text"
-               value={inputValue} onChange={(e) => setInputValue(e.target.value.toString())}
-               placeholder="Please type to filter a person"
-        />
+        <Search setInputValue={setInputValue}
+                inputValue={inputValue} />
+
         <div className={classes.container1}>
 
           <div>
