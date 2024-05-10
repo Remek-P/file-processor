@@ -17,8 +17,9 @@ function Output({ excelFile }) {
 
   const colData = filteredPersons.map(el => <div id={el[0]} key={el}>{el.map(datum => <div key={datum}>{datum}</div>)}</div>);
 
+  const noData = <div>No such data available</div>
 
-  console.log("Output")
+  console.log("colData", colData.length)
 
 
 
@@ -34,7 +35,7 @@ function Output({ excelFile }) {
           </div>
 
           <div className={classes.container2}>
-            {colData}
+            {colData.length !== 0 ? colData : noData}
           </div>
 
         </div>
