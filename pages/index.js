@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 
 import Head from "next/head";
 import Input from "@/components/input/input";
@@ -14,6 +14,8 @@ export default function Home() {
   const clickRef = useRef(null);
 
   const handleFile = async (e) => {
+
+    setExcelFile(null);
     setExcelFileName(e.target.files[0].name);
     const excelFile = e.target.files[0];
     const data = await excelFile.arrayBuffer();

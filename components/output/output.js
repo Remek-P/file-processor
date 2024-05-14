@@ -4,13 +4,13 @@ import Search from "@/components/search/search";
 
 function Output({ excelFile }) {
 
-  const [inputValue, setInputValue] = useState("")
+  const [inputValue, setInputValue] = useState("");
 
   const rowNames = excelFile[0]?.map((el) => <div key={el}>{el}</div>);
   const persons = excelFile.slice(1);
 
   const filteredPersons = persons.filter((arr) => {
-    if (arr[0].toLowerCase().includes(inputValue)) {
+    if (arr[0].toString().toLowerCase().includes(inputValue)) {
       return arr
     }
   } );
@@ -18,10 +18,6 @@ function Output({ excelFile }) {
   const colData = filteredPersons.map(el => <div id={el[0]} key={el}>{el.map(datum => <div key={datum}>{datum}</div>)}</div>);
 
   const noData = <div>No such data available</div>
-
-  console.log("colData", colData.length)
-
-
 
   return (
       <>
