@@ -10,12 +10,17 @@ function Output({ excelFile }) {
   const persons = excelFile.slice(1);
 
   const filteredPersons = persons.filter((arr) => {
+    if (!inputValue) return persons
     if (arr[0].toString().toLowerCase().includes(inputValue)) {
+      console.log("arr", arr)
       return arr
     }
   } );
 
-  const colData = filteredPersons.map(el => <div id={el[0]} key={el}>{el.map(datum => <div key={datum}>{datum}</div>)}</div>);
+  const colData = filteredPersons.map(el =>
+      <div id={el[0]} key={el}>{el.map(datum =>
+          <div key={datum}>{datum}</div>)}
+      </div>);
 
   const noData = <div>No such data available</div>
 

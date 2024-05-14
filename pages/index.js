@@ -20,7 +20,7 @@ export default function Home() {
     const excelFile = e.target.files[0];
     const data = await excelFile.arrayBuffer();
 
-    const workbook = XLSX.readFile(data, { sheetRows: 10 + 1 })
+    const workbook = XLSX.readFile(data, { sheetRows: 6 + 1 })
 
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
