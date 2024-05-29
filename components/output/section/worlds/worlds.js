@@ -24,7 +24,7 @@ function Worlds({ value,
   const options = {
     "title": null,
     "resizable": true,
-    "legend": {"alignment": "center"},
+    "legend": {"alignment": "left"},
     "donut": {
       "center": {
         "label": null
