@@ -1,0 +1,22 @@
+.searchContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+}
+
+.search {
+  border: 0;
+  outline: 0;
+
+  &:focus {
+    border-bottom: 1px solid black;
+  }
+}
+
+.searchIcon {
+  --_size: 20px;
+
+    width: var(--_size);
+    height: var(--_size)
+}

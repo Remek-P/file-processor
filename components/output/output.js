@@ -1,47 +1,44 @@
-import classes from "./output.module.scss";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import Search from "@/components/search/search";
+import Sections from "@/components/output/section/sections";
+import {Tile} from "@carbon/react";
+import classes from "./output.module.scss";
 
 function Output({ excelFile }) {
 
   const [inputValue, setInputValue] = useState("");
+  const searchRef = useRef(null);
 
-  const rowNames = excelFile[0]?.map((el) => <div key={el}>{el}</div>);
-  const persons = excelFile.slice(1);
+  const handleClick = () => {
+    searchRef.current.focus();
+  }
 
-  const filteredPersons = persons.filter((arr) => {
-    if (!inputValue) return persons
-    if (arr[0].toString().toLowerCase().includes(inputValue)) {
-      console.log("arr", arr)
-      return arr
-    }
-  } );
+  const searchID = "search";
 
-  const colData = filteredPersons.map(el =>
-      <div id={el[0]} key={el}>{el.map(datum =>
-          <div key={datum}>{datum}</div>)}
-      </div>);
-
-  const noData = <div>No such data available</div>
+  const searchSuggestionsArray = excelFile.slice(2).map(person =>
+      <option key={person[0]} value={person[0].toString()}></option>
+  );
 
   return (
       <>
-        <Search setInputValue={setInputValue}
-                inputValue={inputValue} />
+        <datalist id={searchID}>
+          { searchSuggestionsArray }
+        </datalist>
 
-        <div className={classes.container1}>
-
-          <div>
-            {rowNames}
-          </div>
-
-          <div className={classes.container2}>
-            {colData.length !== 0 ? colData : noData}
-          </div>
-
+        <div className={`${classes.outputSearch} shadow`}>
+          <Search setInputValue={setInputValue}
+                  inputValue={inputValue}
+                  id={searchID}
+                  searchRef={searchRef}
+          />
         </div>
-      </>
 
+        <Sections excelFile={excelFile}
+                  inputValue={inputValue}
+                  searchRef={searchRef}
+                  handleClick={handleClick}
+        />
+      </>
   );
 }
 

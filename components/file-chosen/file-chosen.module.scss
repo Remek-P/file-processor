@@ -1,0 +1,31 @@
+@import "../../styles/variables/variables";
+
+.container {
+position: relative;
+}
+
+.menuContainer {
+  --_position: 0;
+
+  position: absolute;
+  top: var(--_position);
+  right: var(--_position);
+
+  z-index: 10;
+}
+
+.menu {
+
+  & button {
+    border-radius: $border-radius-main;
+  }
+}
+
+.menuItem {
+  border-radius:$border-radius-main;
+}
+
+.outputContainer {
+  display: flex;
+  flex-direction: column;
+}

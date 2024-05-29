@@ -1,0 +1,27 @@
+@use '@carbon/react';
+
+@import "variables/variables";
+@import "../components/output/section/section";
+
+body {
+  padding: 10px;
+
+  background-color: $colour-body;
+}
+
+ul {
+  list-style: none;
+}
+
+.shadow {
+  background-color: $colour-tile;
+  border-radius: $border-radius-main;
+
+  box-shadow: $box-shadow;
+
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: $box-shadow-hover;
+  }
+}

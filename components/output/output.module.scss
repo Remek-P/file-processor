@@ -1,11 +1,7 @@
-.container1 {
-  display: flex;
-  gap: 10%;
-}
+@import "../../styles/variables/variables";
 
-.container2 {
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-evenly;
-  gap: 10%;
+.outputSearch {
+  width: fit-content;
+  min-width: 120px;
+  padding: 0 10px;
 }

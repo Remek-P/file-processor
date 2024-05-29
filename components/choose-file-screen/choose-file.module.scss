@@ -1,0 +1,24 @@
+@import "../../styles/variables/variables";
+
+.container{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  max-width: fit-content;
+  border-radius: $border-radius-main;
+
+  & button {
+    border-radius: $border-radius-main;
+  }
+}
+
+.tile {
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: $border-radius-main;
+}
+
+.tuu {
+  border-radius: 20px;
+}
