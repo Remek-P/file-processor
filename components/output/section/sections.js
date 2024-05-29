@@ -1,7 +1,6 @@
 import ID from "@/components/output/section/ID/ID";
 import Rest from "@/components/output/section/rest/rest";
 import TexTile from "@/components/output/section/text-tile/texTile";
-import Birthday from "@/components/output/section/birthday/birthday";
 
 import classes from "./section-module.module.scss";
 import NormalPercentages from "@/components/output/section/normal-percentages/normal-percentages";
@@ -18,7 +17,7 @@ function Sections({ excelFile, inputValue, handleClick }) {
     if (arr[1].toString().toLowerCase().includes(inputValue)) return arr
   });
   const colDataArray = searchedPerson[0]?.map(datum => datum);
-  
+
   const normalPercentageFactorsArr = ["memorizing", "stage", "temperament"];
 
   const extractFirstWord = (item) => {
@@ -31,14 +30,15 @@ function Sections({ excelFile, inputValue, handleClick }) {
 
   const showDataWhenUserIsChosen = () => {
     return excelFileUniqueValues.map((value, index) => {
-      if (value.toLowerCase().includes("birthday"))
+      if (value.toLowerCase().includes("birth"))
         return null
 
-      else if (value.toLowerCase().includes("birth day"))
-        return <Birthday key={value}
-                         value={value}
-                         colDataArray={colDataArray}
-                         index={index} />
+
+      // else if (value.toLowerCase().includes("birth day"))
+      //   return <Birthday key={value}
+      //                    value={value}
+      //                    colDataArray={colDataArray}
+      //                    index={index} />
 
       else if (value.toLowerCase() === "human")
         return <ID key={value}
