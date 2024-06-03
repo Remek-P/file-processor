@@ -4,11 +4,17 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
   gap: 1%;
-  width: 100%;
+
   margin: 5% auto;
+  width: 100%;
+
+  & h4 {
+    padding-bottom: 2%;
+  }
 
   @media (min-width: 903px) {
     --_min: 350px;
+
     width: 80%;
   }
 }

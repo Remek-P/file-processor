@@ -1,4 +1,4 @@
-import ID from "@/components/output/section/ID/ID";
+import ID from "@/components/output/section/person/person";
 import Rest from "@/components/output/section/rest/rest";
 import TexTile from "@/components/output/section/text-tile/texTile";
 
@@ -30,7 +30,7 @@ function Sections({ excelFile, inputValue, handleClick }) {
 
   const showDataWhenUserIsChosen = () => {
     return excelFileUniqueValues.map((value, index) => {
-      console.log(value, index)
+      console.log(colDataArray)
       if (value.toLowerCase().includes("birth"))
         return null
 
@@ -43,7 +43,8 @@ function Sections({ excelFile, inputValue, handleClick }) {
       else if (isContainingItemFromArray(value, normalPercentageFactorsArr))
         return <NormalPercentages key={value}
                                   colDataArray={colDataArray}
-                                  labelDataArray={labelDataArray} index={index}
+                                  labelDataArray={labelDataArray}
+                                  index={index}
                                   value={value}
                                   headerDataArray={headerDataArray} />
 
