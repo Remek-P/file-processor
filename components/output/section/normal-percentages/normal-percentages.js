@@ -31,7 +31,9 @@ function NormalPercentages({ value,
   }
 
   return (
-      <Tile className={`container${index} shadow`} onDoubleClick={handleShowChart}>
+      <Tile className={`container${index} shadow`}
+            onDoubleClick={handleShowChart}
+            style={{cursor: "pointer"}}>
 
           <h4>{value}</h4>
 
@@ -43,7 +45,6 @@ function NormalPercentages({ value,
                       group: labelDataArray[index],
                       value: +(colDataArray[index] * 100).toFixed(decimal)
                     });
-
                     return (
                           <div key={index}
                                className={`subContainer subContainer${index}`}>

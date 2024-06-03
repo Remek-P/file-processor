@@ -30,7 +30,7 @@ function Sections({ excelFile, inputValue, handleClick }) {
 
   const showDataWhenUserIsChosen = () => {
     return excelFileUniqueValues.map((value, index) => {
-      console.log(colDataArray)
+
       if (value.toLowerCase().includes("birth"))
         return null
 
@@ -40,6 +40,14 @@ function Sections({ excelFile, inputValue, handleClick }) {
                    labelDataArray={labelDataArray}
                    index={index} />
 
+      else if (value.toLowerCase() === "worlds")
+        return <Worlds key={value}
+                       colDataArray={colDataArray}
+                       labelDataArray={labelDataArray}
+                       index={index}
+                       value={value}
+                       headerDataArray={headerDataArray} />
+
       else if (isContainingItemFromArray(value, normalPercentageFactorsArr))
         return <NormalPercentages key={value}
                                   colDataArray={colDataArray}
@@ -48,13 +56,6 @@ function Sections({ excelFile, inputValue, handleClick }) {
                                   value={value}
                                   headerDataArray={headerDataArray} />
 
-      else if (value.toLowerCase() === "worlds")
-        return <Worlds key={value}
-                       colDataArray={colDataArray}
-                       labelDataArray={labelDataArray}
-                       index={index}
-                       value={value}
-                       headerDataArray={headerDataArray} />
       else
         // in case new data appears
         return <Rest key={value}

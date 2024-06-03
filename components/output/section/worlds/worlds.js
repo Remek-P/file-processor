@@ -1,6 +1,6 @@
 import { Tile, Toggle } from "@carbon/react";
-import {DonutChart} from "@carbon/charts-react";
-import {useState} from "react";
+import { DonutChart } from "@carbon/charts-react";
+import { useState } from "react";
 import ShowMetrics from "@/components/output/section/worlds/show-metrics/show-metrics";
 
 function Worlds({ value,
@@ -35,7 +35,9 @@ function Worlds({ value,
   }
 
   return (
-      <Tile className={`container${index} shadow`} onDoubleClick={handleShowChart}>
+      <Tile className={`container${index} shadow`}
+            onDoubleClick={handleShowChart}
+            style={{cursor: "pointer"}}>
 
         <h4>{value}</h4>
 

@@ -1,4 +1,4 @@
-import { Tile } from "@carbon/react";
+import { Tile} from "@carbon/react";
 
 function Person({ index, colDataArray, labelDataArray}) {
   return (
