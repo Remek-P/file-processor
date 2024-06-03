@@ -1,6 +1,7 @@
 import { Tile, Toggle } from "@carbon/react";
 import {DonutChart} from "@carbon/charts-react";
 import {useState} from "react";
+import ShowMetrics from "@/components/output/section/worlds/show-metrics/show-metrics";
 
 function Worlds({ value,
                   index,
@@ -20,7 +21,7 @@ function Worlds({ value,
     setShowAllMetrics(prevState => !prevState)
   }
 
-  let chartData = []
+  let chartData = [];
   const options = {
     "title": null,
     "resizable": true,
@@ -34,9 +35,8 @@ function Worlds({ value,
   }
 
   return (
-      <Tile className={`container${index} shadow`}>
+      <Tile className={`container${index} shadow`} onDoubleClick={handleShowChart}>
 
-        <div onDoubleClick={handleShowChart}>
         <h4>{value}</h4>
 
         {
@@ -50,11 +50,9 @@ function Worlds({ value,
                       });
 
                       return (
-                          <div key={index}
-                               className={`subContainer subContainer${index}`}>
-                            <h6>{labelDataArray[index].split(" ")[2]}</h6>
-                            <span>{`${(colDataArray[index] * 100).toFixed(decimal)}%`}</span>
-                          </div>
+                          <ShowMetrics key={index} labelDataArray={labelDataArray}
+                                       colDataArray={colDataArray}
+                                       index={index} />
                       )
                     }
                   } else if (showAllMetrics) {
@@ -64,18 +62,16 @@ function Worlds({ value,
                     });
 
                     return (
-                        <div key={index}
-                             className={`subContainer subContainer${index}`}>
-                          <h6>{labelDataArray[index].split(" ")[2]}</h6>
-                          <span>{`${(colDataArray[index] * 100).toFixed(decimal)}%`}</span>
-                        </div>
+                        <ShowMetrics key={index} labelDataArray={labelDataArray}
+                                     colDataArray={colDataArray}
+                                     index={index} />
                     )
                   }
                 }
               }
           )
         }
-      </div>
+
         {
             showChart && <DonutChart data={chartData} options={options}/>
         }

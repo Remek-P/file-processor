@@ -30,22 +30,15 @@ function Sections({ excelFile, inputValue, handleClick }) {
 
   const showDataWhenUserIsChosen = () => {
     return excelFileUniqueValues.map((value, index) => {
+      console.log(value, index)
       if (value.toLowerCase().includes("birth"))
         return null
-
-
-      // else if (value.toLowerCase().includes("birth day"))
-      //   return <Birthday key={value}
-      //                    value={value}
-      //                    colDataArray={colDataArray}
-      //                    index={index} />
 
       else if (value.toLowerCase() === "human")
         return <ID key={value}
                    colDataArray={colDataArray}
                    labelDataArray={labelDataArray}
-                   index={index}
-                   value={value} />
+                   index={index} />
 
       else if (isContainingItemFromArray(value, normalPercentageFactorsArr))
         return <NormalPercentages key={value}

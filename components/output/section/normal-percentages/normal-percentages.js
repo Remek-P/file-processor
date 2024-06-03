@@ -31,8 +31,7 @@ function NormalPercentages({ value,
   }
 
   return (
-      <Tile className={`container${index} shadow`}>
-        <div onDoubleClick={handleShowChart}>
+      <Tile className={`container${index} shadow`} onDoubleClick={handleShowChart}>
 
           <h4>{value}</h4>
 
@@ -56,8 +55,6 @@ function NormalPercentages({ value,
                 }
             )
           }
-
-        </div>
 
         {
           showChart && <DonutChart data={chartData} options={options} />

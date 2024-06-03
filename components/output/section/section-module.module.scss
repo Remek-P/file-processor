@@ -1,11 +1,16 @@
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  //display: flex;
-  //flex-grow: 1;
-  //flex-wrap: wrap;
-  gap: 1%;
+  --_min: 290px;
 
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
+  gap: 1%;
+  width: 100%;
+  margin: 5% auto;
+
+  @media (min-width: 903px) {
+    --_min: 350px;
+    width: 80%;
+  }
 }
 
 .findUser {
