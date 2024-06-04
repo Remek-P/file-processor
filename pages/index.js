@@ -15,9 +15,7 @@ export default function Home() {
 
   const readExcel = (data) => {
 
-    const workbook = XLSX.readFile(data, {
-      sheetRows: 5,
-    })
+    const workbook = XLSX.readFile(data)
 
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
@@ -59,7 +57,11 @@ export default function Home() {
         }
 
         {
-          !excelFile && excelFileName && <Loading active={true} />
+          !excelFile && excelFileName && <Loading id="indexLoading"
+                                                  small={false}
+                                                  withOverlay={true}
+                                                  className={null}
+                                                  description="Active loading indicator" active={true} />
         }
 
         {
