@@ -1,8 +1,5 @@
-.subContainer {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  align-items: center;
+.container {
+  min-height: fit-content;
 }
 
 .container0 {
@@ -10,8 +7,21 @@
   flex-direction: column;
   gap: 15%;
 
-  & * h4 {
+  & h4 {
     padding-bottom: 0 !important;
   }
+}
+
+.worlds--container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
 }
 

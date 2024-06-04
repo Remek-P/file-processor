@@ -1,10 +1,11 @@
-import ID from "@/components/output/section/person/person";
 import Rest from "@/components/output/section/rest/rest";
 import TexTile from "@/components/output/section/text-tile/texTile";
 
 import classes from "./section-module.module.scss";
 import NormalPercentages from "@/components/output/section/normal-percentages/normal-percentages";
 import Worlds from "@/components/output/section/worlds/worlds";
+import Person from "@/components/output/section/person/person";
+import BarChart from "@/components/output/section/bar-chart/bar-chart";
 
 function Sections({ excelFile, inputValue, handleClick }) {
 
@@ -19,6 +20,7 @@ function Sections({ excelFile, inputValue, handleClick }) {
   const colDataArray = searchedPerson[0]?.map(datum => datum);
 
   const normalPercentageFactorsArr = ["memorizing", "stage", "temperament"];
+  const simpleBarChartArr = ["drivers"];
 
   const extractFirstWord = (item) => {
     return item.toLowerCase().split(" ")[0];
@@ -35,26 +37,34 @@ function Sections({ excelFile, inputValue, handleClick }) {
         return null
 
       else if (value.toLowerCase() === "human")
-        return <ID key={value}
+        return <Person key={value}
                    colDataArray={colDataArray}
                    labelDataArray={labelDataArray}
                    index={index} />
 
       else if (value.toLowerCase() === "worlds")
         return <Worlds key={value}
-                       colDataArray={colDataArray}
-                       labelDataArray={labelDataArray}
                        index={index}
                        value={value}
+                       colDataArray={colDataArray}
+                       labelDataArray={labelDataArray}
                        headerDataArray={headerDataArray} />
 
       else if (isContainingItemFromArray(value, normalPercentageFactorsArr))
         return <NormalPercentages key={value}
+                                  value={value}
+                                  index={index}
                                   colDataArray={colDataArray}
                                   labelDataArray={labelDataArray}
-                                  index={index}
-                                  value={value}
                                   headerDataArray={headerDataArray} />
+
+      else if (isContainingItemFromArray(value, simpleBarChartArr))
+        return <BarChart key={value}
+                               index={index}
+                               value={value}
+                               colDataArray={colDataArray}
+                               labelDataArray={labelDataArray}
+                               headerDataArray={headerDataArray} />
 
       else
         // in case new data appears

@@ -13,7 +13,7 @@ function NormalPercentages({ value,
 
   const [showChart, setShowChart] = useState(false);
 
-  let chartData = []
+  let chartData = [];
   const options = {
     "title": null,
     "resizable": true,
@@ -31,7 +31,7 @@ function NormalPercentages({ value,
   }
 
   return (
-      <Tile className={`container${index} shadow`}
+      <Tile className={`container container${index} shadow`}
             onDoubleClick={handleShowChart}
             style={{cursor: "pointer"}}>
 

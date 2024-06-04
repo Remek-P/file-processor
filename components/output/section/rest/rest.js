@@ -7,7 +7,7 @@ function Rest({ value,
                 colDataArray
 }) {
   return (
-      <Tile className={`container${index} shadow`}>
+      <Tile className={`container container${index} shadow`}>
         <h4>{value}</h4>
         {
           headerDataArray.map((header, index) => {

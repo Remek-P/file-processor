@@ -32,14 +32,21 @@ function Worlds({ value,
       }
     },
     "height": "400px"
-  }
+  };
 
   return (
-      <Tile className={`container${index} shadow`}
+      <Tile className={`container container${index} shadow`}
             onDoubleClick={handleShowChart}
             style={{cursor: "pointer"}}>
 
-        <h4>{value}</h4>
+        <div className="worlds--container">
+          <h4>{value}</h4>
+          <Toggle id={value}
+                  size="sm"
+                  labelA="show all"
+                  labelB="hide 0%"
+                  onClick={handleShowAllMetrics} />
+        </div>
 
         {
           headerDataArray.map((header, index) => {
@@ -75,10 +82,8 @@ function Worlds({ value,
         }
 
         {
-            showChart && <DonutChart data={chartData} options={options}/>
+            showChart && <DonutChart data={chartData} options={options} />
         }
-
-        <Toggle id={value} onClick={handleShowAllMetrics} size="sm" labelA="show all metrics" labelB="hide marginal metrics"/>
 
       </Tile>
   );
