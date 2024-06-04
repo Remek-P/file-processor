@@ -6,15 +6,15 @@ function ChooseFile({ onChange }) {
       <div className={`${classes.container} shadow`}>
         <Tile className={classes.tile}>
           <FileUploader filenameStatus="complete"
-                        accept={[
-                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                          ".xlsx",
-                          ".xls"]}
                         labelTitle="Please choose a file to upload"
                         labelDescription="Only Excel files will be accepted"
                         buttonLabel="Upload"
                         buttonKind="primary"
                         onChange={onChange}
+                        accept={[
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                          ".xlsx",
+                          ".xls"]}
           />
         </Tile>
       </div>
