@@ -21,6 +21,9 @@ function Sections({ excelFile, inputValue, handleClick }) {
 
   const normalPercentageFactorsArr = ["memorizing", "stage", "temperament"];
   const simpleBarChartArr = ["drivers"];
+  const personArray = ["human"];
+  const worldsLikeArray = ["worlds"];
+  const excludedArray = ["birth", "birthday_day", "birthday_daymonth", "birthday_month", "birthday_year"];
 
   const extractFirstWord = (item) => {
     return item.toLowerCase().split(" ")[0];
@@ -33,16 +36,16 @@ function Sections({ excelFile, inputValue, handleClick }) {
   const showDataWhenUserIsChosen = () => {
     return excelFileUniqueValues.map((value, index) => {
 
-      if (value.toLowerCase().includes("birth"))
+      if (isContainingItemFromArray(value, excludedArray))
         return null
 
-      else if (value.toLowerCase() === "human")
+      else if (isContainingItemFromArray(value, personArray))
         return <Person key={value}
                    colDataArray={colDataArray}
                    labelDataArray={labelDataArray}
                    index={index} />
 
-      else if (value.toLowerCase() === "worlds")
+      else if (isContainingItemFromArray(value, worldsLikeArray))
         return <Worlds key={value}
                        index={index}
                        value={value}
