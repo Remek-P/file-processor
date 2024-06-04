@@ -56,13 +56,13 @@ export default function Home() {
           !excelFileName && <ChooseFile onChange={handleFile} />
         }
 
-        {
-          !excelFile && excelFileName && <Loading id="indexLoading"
-                                                  small={false}
-                                                  withOverlay={true}
-                                                  className={null}
-                                                  description="Active loading indicator" active={true} />
-        }
+        <Loading id="indexLoading"
+                 small={false}
+                 withOverlay={true}
+                 className={null}
+                 description="Active loading indicator"
+                 active={!excelFile && excelFileName}
+        />
 
         {
           excelFile && <FileChosen excelFile={excelFile} handleFileChange={handleFileChange} />
