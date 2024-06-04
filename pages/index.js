@@ -12,6 +12,7 @@ export default function Home() {
 
   const [excelFileName, setExcelFileName] = useState(null);
   const [excelFile, setExcelFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
 
   const readExcel = (data) => {
 
@@ -27,6 +28,7 @@ export default function Home() {
 
   const handleFile = async (e) => {
 
+    setIsLoading(true)
     setExcelFile(null);
 
     setExcelFileName(e.target.files[0].name);
@@ -34,6 +36,7 @@ export default function Home() {
     const data = await excelFile.arrayBuffer();
 
     readExcel(data);
+    setIsLoading(false)
   }
 
   const handleFileChange = () => {
@@ -61,7 +64,7 @@ export default function Home() {
                  withOverlay={true}
                  className={null}
                  description="Active loading indicator"
-                 active={!excelFile && excelFileName}
+                 active={isLoading}
         />
 
         {
