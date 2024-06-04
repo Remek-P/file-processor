@@ -1,7 +1,12 @@
-import { Tile, Toggle } from "@carbon/react";
-import { DonutChart } from "@carbon/charts-react";
 import { useState } from "react";
+
+import { Toggle } from "@carbon/react";
+
 import ShowMetrics from "@/components/output/section/worlds/show-metrics/show-metrics";
+import SectionLayout from "@/components/output/section/section-layout/section-layout";
+
+import classes from "../section-module.module.scss";
+import {DonutChart} from "@carbon/charts-react";
 
 function Worlds({ value,
                   index,
@@ -11,15 +16,7 @@ function Worlds({ value,
                   decimal = 1
                 }) {
 
-  const [showChart, setShowChart] = useState(false);
   const [showAllMetrics, setShowAllMetrics] = useState(false);
-
-  const handleShowChart = () => {
-    setShowChart(prevState => !prevState)
-  }
-  const handleShowAllMetrics = () => {
-    setShowAllMetrics(prevState => !prevState)
-  }
 
   let chartData = [];
   const options = {
@@ -33,59 +30,65 @@ function Worlds({ value,
     },
     "height": "400px"
   };
+  const handleShowAllMetrics = () => {
+    setShowAllMetrics(prevState => !prevState)
+  }
 
   return (
-      <Tile className={`container container${index} shadow`}
-            onDoubleClick={handleShowChart}
-            style={{cursor: "pointer"}}>
+      <SectionLayout index={index}
+                     value={value}
+                     chartType={<DonutChart data={chartData} options={options}/>}
+      >
 
-        <div className="worlds--container">
-          <h4>{value}</h4>
-          <Toggle id={value}
-                  size="sm"
-                  labelA="show all"
-                  labelB="hide 0%"
-                  onClick={handleShowAllMetrics} />
-        </div>
+        <div className={classes.worldsContainer}>
+            {
+              headerDataArray.map((header, index) => {
+                    if (header === value) {
+                      if (!showAllMetrics) {
+                        if (colDataArray[index]) {
+                          chartData.push({
+                            group: labelDataArray[index].split(" ")[2],
+                            value: +(colDataArray[index] * 100).toFixed(decimal)
+                          });
 
-        {
-          headerDataArray.map((header, index) => {
-                if (header === value) {
-                  if (!showAllMetrics) {
-                    if (colDataArray[index]) {
-                      chartData.push({
-                        group: labelDataArray[index].split(" ")[2],
-                        value: +(colDataArray[index] * 100).toFixed(decimal)
-                      });
+                          return (
+                              <ShowMetrics key={index} labelDataArray={labelDataArray}
+                                           colDataArray={colDataArray}
+                                           index={index}/>
+                          )
+                        }
+                      } else if (showAllMetrics) {
+                        chartData.push({
+                          group: labelDataArray[index].split(" ")[2],
+                          value: +(colDataArray[index] * 100).toFixed(decimal)
+                        });
 
-                      return (
-                          <ShowMetrics key={index} labelDataArray={labelDataArray}
-                                       colDataArray={colDataArray}
-                                       index={index} />
-                      )
+                        return (
+                            <ShowMetrics key={index} labelDataArray={labelDataArray}
+                                         colDataArray={colDataArray}
+                                         index={index}/>
+                        )
+                      }
                     }
-                  } else if (showAllMetrics) {
-                    chartData.push({
-                      group: labelDataArray[index].split(" ")[2],
-                      value: +(colDataArray[index] * 100).toFixed(decimal)
-                    });
-
-                    return (
-                        <ShowMetrics key={index} labelDataArray={labelDataArray}
-                                     colDataArray={colDataArray}
-                                     index={index} />
-                    )
                   }
-                }
-              }
-          )
-        }
+              )
+            }
 
-        {
-            showChart && <DonutChart data={chartData} options={options} />
-        }
+            <Toggle id={value}
+                    size="sm"
+                    labelA="show all"
+                    labelB="hide 0%"
+                    defaultToggled={false}
+                    onToggle={handleShowAllMetrics}
+                    labelText=""
+                    readOnly={false}
+                    aria-labelledby="show/hide all metrics"
+                    disabled={false}
+                    hideLabel={false}
+            />
+          </div>
 
-      </Tile>
+      </SectionLayout>
   );
 }
 

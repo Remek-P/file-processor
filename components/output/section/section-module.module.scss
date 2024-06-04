@@ -3,7 +3,7 @@
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
-  gap: 12px;
+  gap: 16px;
 
   margin: 5% auto;
   width: 100%;
@@ -12,7 +12,7 @@
     padding-bottom: 2%;
   }
 
-  @media (min-width: 903px) {
+  @media (min-width: 911px) {
     --_min: 350px;
 
     width: 80%;
@@ -23,5 +23,17 @@
   margin: 0 auto;
 
   cursor: pointer;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.worldsContainer {
+  & > :last-child {
+    padding-top: 2%;
+  }
 }
 

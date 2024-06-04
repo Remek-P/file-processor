@@ -1,6 +1,7 @@
-import { Tile } from "@carbon/react";
 import { DonutChart } from "@carbon/charts-react";
-import { useState } from "react";
+
+import SectionLayout from "@/components/output/section/section-layout/section-layout";
+
 import "@carbon/charts/styles.css";
 
 function NormalPercentages({ value,
@@ -10,8 +11,6 @@ function NormalPercentages({ value,
                              colDataArray,
                              decimal = 1
                            }) {
-
-  const [showChart, setShowChart] = useState(false);
 
   let chartData = [];
   const options = {
@@ -26,16 +25,12 @@ function NormalPercentages({ value,
     "height": "400px"
   }
 
-  const handleShowChart = () => {
-    setShowChart(prevState => !prevState);
-  }
 
   return (
-      <Tile className={`container container${index} shadow`}
-            onDoubleClick={handleShowChart}
-            style={{cursor: "pointer"}}>
-
-          <h4>{value}</h4>
+      <SectionLayout index={index}
+                     value={value}
+                     chartType={<DonutChart data={chartData} options={options}/>}
+      >
 
           {
             headerDataArray.map((header, index) => {
@@ -57,11 +52,7 @@ function NormalPercentages({ value,
             )
           }
 
-        {
-          showChart && <DonutChart data={chartData} options={options} />
-        }
-
-      </Tile>
+      </SectionLayout>
   );
 }
 
