@@ -1,5 +1,5 @@
 .grid {
-  --_min: 150px;
+  --_min: 160px;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
@@ -12,14 +12,18 @@
     padding-bottom: 2%;
   }
 
-  @media (min-width: 600px) {
-    --_min: 280px;
+  @media (min-width: 515px) {
+    --_min: 200px;
+  }
 
+  @media (min-width: 600px) {
+    --_min: 255px;
+    width: 90%;
     gap: 16px;
   }
 
-  @media (min-width: 911px) {
-    //--_min: 300px;
+  @media (min-width: 900px) {
+    --_min: 300px;
 
     width: 80%;
   }
@@ -44,6 +48,7 @@
 }
 
 .worldsContainer {
+
   & > :last-child {
     padding-top: 2%;
   }

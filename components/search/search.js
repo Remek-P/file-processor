@@ -33,7 +33,7 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
                className={classes.search}
                onChange={(e) => handleTyping(e)}
                ref={searchRef}
-               autoComplete="off"
+               autoComplete="on"
         />
 
         <Tooltip align="bottom" description="clear">

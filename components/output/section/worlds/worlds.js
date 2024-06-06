@@ -53,9 +53,11 @@ function Worlds({ value,
                           });
 
                           return (
-                              <ShowMetrics key={index} labelDataArray={labelDataArray}
+                              <ShowMetrics key={index}
+                                           index={index}
+                                           type="world percentage"
                                            colDataArray={colDataArray}
-                                           index={index}/>
+                                           labelDataArray={labelDataArray} />
                           )
                         }
                       } else if (showAllMetrics) {
@@ -65,9 +67,11 @@ function Worlds({ value,
                         });
 
                         return (
-                            <ShowMetrics key={index} labelDataArray={labelDataArray}
+                            <ShowMetrics key={index}
+                                         index={index}
+                                         type="world percentage"
                                          colDataArray={colDataArray}
-                                         index={index}/>
+                                         labelDataArray={labelDataArray} />
                         )
                       }
                     }
