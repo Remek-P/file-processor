@@ -21,7 +21,7 @@ function BarChart({ value,
         "scaleType": "labels"
       }
     },
-    "height": "400px"
+    "height": "auto"
   }
 
   return (

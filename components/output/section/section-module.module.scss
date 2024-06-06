@@ -1,9 +1,9 @@
 .grid {
-  --_min: 290px;
+  --_min: 150px;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
-  gap: 16px;
+  gap: 8px;
 
   margin: 5% auto;
   width: 100%;
@@ -12,8 +12,14 @@
     padding-bottom: 2%;
   }
 
+  @media (min-width: 600px) {
+    --_min: 280px;
+
+    gap: 16px;
+  }
+
   @media (min-width: 911px) {
-    --_min: 350px;
+    //--_min: 300px;
 
     width: 80%;
   }
@@ -29,6 +35,12 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+
+    margin-bottom: 8px;
+  }
 }
 
 .worldsContainer {

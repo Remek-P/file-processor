@@ -22,7 +22,7 @@ function NormalPercentages({ value,
         "label": null
       }
     },
-    "height": "400px"
+    "height": "auto"
   }
 
 

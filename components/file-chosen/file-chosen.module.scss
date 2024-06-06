@@ -25,7 +25,17 @@ position: relative;
   border-radius:$border-radius-main;
 }
 
+.outputsContainer {
+  display: flex;
+  gap: 16px;
+
+  @media (min-width: 600px) {
+    gap: 24px;
+  }
+}
+
 .outputContainer {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }

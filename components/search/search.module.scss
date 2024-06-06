@@ -3,6 +3,7 @@
   align-items: center;
   gap: 10px;
   height: 48px;
+
 }
 
 .search {
@@ -11,6 +12,15 @@
 
   &:focus {
     border-bottom: 1px solid black;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    width: 40%;
+
+    &:focus {
+      font-size: 1rem;
+    }
   }
 }
 

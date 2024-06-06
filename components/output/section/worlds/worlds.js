@@ -28,7 +28,7 @@ function Worlds({ value,
         "label": null
       }
     },
-    "height": "400px"
+    "height": "auto"
   };
   const handleShowAllMetrics = () => {
     setShowAllMetrics(prevState => !prevState)
@@ -44,6 +44,7 @@ function Worlds({ value,
             {
               headerDataArray.map((header, index) => {
                     if (header === value) {
+
                       if (!showAllMetrics) {
                         if (colDataArray[index]) {
                           chartData.push({

@@ -20,7 +20,7 @@ function Sections({ excelFile, inputValue, handleClick }) {
   const colDataArray = searchedPerson[0]?.map(datum => datum);
 
   const normalPercentageFactorsArr = ["memorizing", "stage", "temperament"];
-  const simpleBarChartArr = ["drivers"];
+  const simpleBarChartArr = [];
   const personArray = ["human"];
   const worldsLikeArray = ["worlds"];
   const excludedArray = ["birth", "birthday_day", "birthday_daymonth", "birthday_month", "birthday_year"];

@@ -12,11 +12,12 @@ export default function Home() {
 
   const [excelFileName, setExcelFileName] = useState(null);
   const [excelFile, setExcelFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [numberOfPersons, setNumberOfPersons] = useState(1)
 
   const readExcel = (data) => {
 
-    const workbook = XLSX.readFile(data)
+    const workbook = XLSX.readFile(data, {sheetRows: 200})
 
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
@@ -68,7 +69,12 @@ export default function Home() {
         />
 
         {
-          excelFile && <FileChosen excelFile={excelFile} handleFileChange={handleFileChange} />
+          excelFile &&
+            <FileChosen excelFile={excelFile}
+                        handleFileChange={handleFileChange}
+                        numberOfPersons={numberOfPersons}
+                        setNumberOfPersons={setNumberOfPersons}
+            />
         }
 
       </main>

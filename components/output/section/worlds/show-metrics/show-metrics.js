@@ -3,7 +3,6 @@ function ShowMetrics({ index,
                        colDataArray,
                        decimal = 1,
                      }) {
-
   return (
       <div key={index}
            className={`subContainer subContainer${index}`}>
