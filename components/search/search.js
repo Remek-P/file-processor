@@ -29,7 +29,7 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
                type="text"
                title="Numbers only"
                value={inputValue}
-               placeholder="Please type to filter a person"
+               placeholder="Type ID"
                className={classes.search}
                onChange={(e) => handleTyping(e)}
                ref={searchRef}
