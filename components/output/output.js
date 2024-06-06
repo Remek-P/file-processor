@@ -1,7 +1,6 @@
 import {useRef, useState} from "react";
 import Search from "@/components/search/search";
 import Sections from "@/components/output/section/sections";
-import {Tile} from "@carbon/react";
 import classes from "./output.module.scss";
 
 function Output({ excelFile }) {
@@ -19,6 +18,8 @@ function Output({ excelFile }) {
       <option key={person[0]} value={person[0].toString()}></option>
   );
 
+  const autocomplete = excelFile.slice(2).map(person => person[0].toString())
+
   return (
       <>
         <datalist id={searchID}>
@@ -30,6 +31,7 @@ function Output({ excelFile }) {
                   inputValue={inputValue}
                   id={searchID}
                   searchRef={searchRef}
+                  autocomplete={autocomplete}
           />
         </div>
 
