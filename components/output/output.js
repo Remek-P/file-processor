@@ -18,8 +18,6 @@ function Output({ excelFile }) {
       <option key={person[0]} value={person[0].toString()}></option>
   );
 
-  const autocomplete = excelFile.slice(2).map(person => person[0].toString())
-
   return (
       <>
         <datalist id={searchID}>
@@ -31,7 +29,6 @@ function Output({ excelFile }) {
                   inputValue={inputValue}
                   id={searchID}
                   searchRef={searchRef}
-                  autocomplete={autocomplete}
           />
         </div>
 

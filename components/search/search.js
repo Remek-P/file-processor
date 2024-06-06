@@ -2,7 +2,7 @@ import { Button, Tooltip } from "@carbon/react";
 
 import classes from "./search.module.scss";
 
-function Search({ autocomplete, inputValue, setInputValue, searchRef, id="search" }) {
+function Search({ inputValue, setInputValue, searchRef, id="search" }) {
 
   const handleTyping = (e) => {
     setInputValue(e.target.value.toString());
@@ -32,7 +32,7 @@ function Search({ autocomplete, inputValue, setInputValue, searchRef, id="search
                className={classes.search}
                onChange={(e) => handleTyping(e)}
                ref={searchRef}
-               autoComplete={autocomplete}
+               autoComplete="tel"
         />
 
         <Tooltip align="bottom" description="clear">
