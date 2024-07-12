@@ -5,7 +5,7 @@ import classes from "./search.module.scss";
 function Search({ inputValue, setInputValue, searchRef, id="search" }) {
 
   const handleTyping = (e) => {
-    setInputValue(e.target.value.toString());
+    setInputValue(e.target.value);
   }
 
   const handleDeleteButton = () => {
@@ -26,7 +26,7 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
         <input id={id}
                name={id}
                list={id}
-               type="text"
+               type="search"
                title="Numbers only"
                value={inputValue}
                placeholder="Type ID"

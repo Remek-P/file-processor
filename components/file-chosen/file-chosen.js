@@ -1,21 +1,22 @@
-import {MenuButton, MenuItem, MenuItemDivider} from "@carbon/react";
-import Output from "@/components/output/output";
+import { useState } from "react";
+
+import { MenuButton, MenuItem, MenuItemDivider } from "@carbon/react";
+
+import DisplayOutput from "@/components/choose-file-screen/displayOutput/displayOutput";
+
 import classes from "./file-chosen.module.scss";
 
 function FileChosen({
                       handleFileChange,
                       excelFile,
-                      numberOfPersons,
-                      setNumberOfPersons
 }) {
 
+  const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}])
+
   const addPerson = () => {
-    setNumberOfPersons(prevState => prevState + 1)
+    setNumberOfOutputs(prevState => [...prevState, {delete: false}])
   }
 
-  const removeLastPerson = () => {
-    if (numberOfPersons > 0) setNumberOfPersons(prevState => prevState - 1)
-  }
 
   return (
       <div className={classes.container}>
@@ -31,12 +32,6 @@ function FileChosen({
                       onClick={addPerson}
                       className={classes.menuItem}
             />
-            <MenuItem label="Remove last person"
-                      onClick={removeLastPerson}
-                      className={classes.menuItem}
-                      kind="danger"
-            />
-
             <MenuItemDivider />
             <MenuItem label="Change File"
                       onClick={handleFileChange}
@@ -48,15 +43,7 @@ function FileChosen({
 
         <div className={classes.outputsContainer}>
 
-          {
-            [...Array(numberOfPersons)].map((_, index) => {
-              return (
-                  <div key={index} className={classes.outputContainer}>
-                    <Output key={index} excelFile={excelFile}/>
-                  </div>
-              )
-            })
-          }
+          <DisplayOutput excelFile={excelFile} numberOfOutputs={numberOfOutputs} setNumberOfOutputs={setNumberOfOutputs} />
 
         </div>
 

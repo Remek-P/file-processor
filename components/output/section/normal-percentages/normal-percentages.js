@@ -10,7 +10,7 @@ function NormalPercentages({ value,
                              headerDataArray,
                              labelDataArray,
                              colDataArray,
-                             decimal = 1
+                             decimal = 2
                            }) {
 
   let chartData = [];

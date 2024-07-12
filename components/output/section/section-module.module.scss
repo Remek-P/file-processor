@@ -47,6 +47,15 @@
   }
 }
 
+.searchContainer {
+  display: flex;
+
+  & > * > * {
+    height: 100%;
+  }
+}
+
+
 .worldsContainer {
 
   & > :last-child {
