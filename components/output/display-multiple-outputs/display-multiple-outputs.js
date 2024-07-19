@@ -8,7 +8,7 @@ function DisplayMultipleOutputs({ labelDataArray, searchUsers, inputValue, setIn
 
   const valueRef = useRef();
 
-  const pickSearchedPerson = (e) => {
+  const pickSearchedPerson = () => {
     setInputValue(valueRef.current.value);
   }
 

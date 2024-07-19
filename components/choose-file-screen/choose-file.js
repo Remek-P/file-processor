@@ -1,5 +1,3 @@
-import {useEffect, useState} from "react";
-
 import {FileUploader, Tile} from "@carbon/react";
 
 import classes from "./choose-file.module.scss";
