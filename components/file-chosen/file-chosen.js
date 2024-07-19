@@ -17,6 +17,10 @@ function FileChosen({
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
   }
 
+  const deleteAll = () => {
+    setNumberOfOutputs([])
+  }
+
 
   return (
       <div className={classes.container}>
@@ -28,11 +32,16 @@ function FileChosen({
                       menuAlignment="bottom-start"
           >
             <MenuItemDivider />
-            <MenuItem label="Add person"
+            <MenuItem label="Add"
                       onClick={addPerson}
                       className={classes.menuItem}
             />
             <MenuItemDivider />
+            <MenuItem label="Delete All"
+                      onClick={deleteAll}
+                      kind="danger"
+                      className={classes.menuItem}
+            />
             <MenuItem label="Change File"
                       onClick={handleFileChange}
                       kind="danger"
@@ -43,7 +52,10 @@ function FileChosen({
 
         <div className={classes.outputsContainer}>
 
-          <DisplayOutput excelFile={excelFile} numberOfOutputs={numberOfOutputs} setNumberOfOutputs={setNumberOfOutputs} />
+          <DisplayOutput excelFile={excelFile}
+                         numberOfOutputs={numberOfOutputs}
+                         setNumberOfOutputs={setNumberOfOutputs}
+          />
 
         </div>
 

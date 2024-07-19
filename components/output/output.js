@@ -4,12 +4,13 @@ import Search from "@/components/search/search";
 import Sections from "@/components/output/section/sections";
 
 import classes from "./output.module.scss";
+import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
 
-function Output({ excelFile }) {
+function Output({ excelFile, index, handleDeleteChecked }) {
 
   const [inputValue, setInputValue] = useState("");
   const searchRef = useRef(null);
-  const deferredInputValue = useDeferredValue(inputValue)
+  const deferredInputValue = useDeferredValue(inputValue);
 
   const handleClick = () => {
     searchRef.current.focus();
@@ -26,14 +27,17 @@ function Output({ excelFile }) {
         <datalist id={searchID}>
           { searchSuggestionsArray }
         </datalist>
-
-        <div className={`${classes.outputSearch} shadow`}>
-          <Search setInputValue={setInputValue}
-                  inputValue={inputValue}
-                  id={searchID}
-                  searchRef={searchRef}
-          />
+        <div className={classes.outputDelete}>
+          <div className={`${classes.outputSearch} shadow`}>
+            <Search setInputValue={setInputValue}
+                    inputValue={inputValue}
+                    id={searchID}
+                    searchRef={searchRef}
+            />
+          </div>
+          <DeleteOutput index={index} handleDeleteChecked={handleDeleteChecked}/>
         </div>
+
 
         <Sections excelFile={excelFile}
                   inputValue={deferredInputValue}

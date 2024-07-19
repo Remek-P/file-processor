@@ -29,12 +29,6 @@
   }
 }
 
-.findUser {
-  margin: 0 auto;
-
-  cursor: pointer;
-}
-
 .buttonContainer {
   display: flex;
   justify-content: space-between;
@@ -61,5 +55,9 @@
   & > :last-child {
     padding-top: 2%;
   }
+}
+
+.outputLoader {
+  margin: 0 auto;
 }
 

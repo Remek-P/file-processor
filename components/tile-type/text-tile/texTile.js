@@ -1,5 +1,6 @@
-import classes from "@/components/output/section/section-module.module.scss";
-import {Tile} from "@carbon/react";
+import { Tile } from "@carbon/react";
+
+import classes from "../tile.module.scss";
 
 function TexTile({ text, handleClick }) {
   return (

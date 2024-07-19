@@ -1,9 +1,14 @@
-function SearchSuggestionsDetails({ details, value }) {
+import {Tile} from "@carbon/react";
+
+function SearchSuggestionsDetails({ details }) {
+
   return (
-      <ul style={{display: "flex", gap: "10px"}}>
-        {details.map((detail, index) =>
-            <li key={index} value={value}>{detail}</li>)}
-      </ul>
+      <Tile>
+        <ul style={{display: "flex", gap: "10px"}}>
+          {details.map((detail, index) =>
+              <li key={index}>{detail}</li>)}
+        </ul>
+      </Tile>
   );
 }
 

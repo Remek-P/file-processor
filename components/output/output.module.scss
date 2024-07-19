@@ -1,7 +1,16 @@
 @import "../../styles/variables/variables";
+@import "../../styles/variables/breakpoints";
 
 .outputSearch {
   width: fit-content;
   min-width: 120px;
   padding: 0 10px;
+}
+
+.outputDelete {
+  display: flex;
+
+  @media (max-width: $breakpointM) {
+    flex-direction: column;
+  }
 }

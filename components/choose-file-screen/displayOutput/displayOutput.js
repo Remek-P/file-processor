@@ -5,14 +5,17 @@ function DisplayOutput({ numberOfOutputs, setNumberOfOutputs, excelFile }) {
 
   const handleDeleteChecked = (e) => {
     if (e.target.checked) {
-      setNumberOfOutputs(prevState => prevState.map((output, index) => {
-        if (index === +e.target.value) {
-          return {delete: true};
-        }
-        return output;
-      }))
+      setNumberOfOutputs(numberOfOutputs.map((output, index) => {
+            if (index === +e.target.value) {
+              return {delete: true};
+            } else {
+              return output;
+            }
+          })
+      )
     }
   }
+
 
   return (
       <>
@@ -21,13 +24,7 @@ function DisplayOutput({ numberOfOutputs, setNumberOfOutputs, excelFile }) {
             if (!output.delete) {
               return (
                   <div key={index} className={classes.outputContainer}>
-                    <input type="checkbox"
-                           name="output"
-                           id={`output${index}`}
-                           value={index}
-                           onChange={handleDeleteChecked}
-                    />
-                    <Output key={index} excelFile={excelFile}/>
+                    <Output key={index} excelFile={excelFile} index={index} handleDeleteChecked={handleDeleteChecked} />
                   </div>
               )
             }

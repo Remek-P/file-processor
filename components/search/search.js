@@ -29,7 +29,7 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
                type="search"
                title="Numbers only"
                value={inputValue}
-               placeholder="Type ID"
+               placeholder="Type at least 3 characters"
                className={classes.search}
                onChange={(e) => handleTyping(e)}
                ref={searchRef}
