@@ -20,7 +20,7 @@ function SectionLayout({ index,
   }
 
   return (
-      <Tile className={`container container${index} shadow`}
+      <Tile className={`optionContainer optionContainer${index} shadow`}
             onDoubleClick={handleShowChart}
             style={{cursor: "pointer"}}>
 

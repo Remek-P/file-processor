@@ -1,6 +1,10 @@
 @import "../../styles/variables/variables";
 
-.container {
+.sectionContainer {
+  padding: 10px;
+}
+
+.optionContainer {
 position: relative;
 }
 
@@ -12,6 +16,10 @@ position: relative;
   right: var(--_position);
 
   z-index: 10;
+
+  & > * > button {
+    font-size: 0;
+  }
 }
 
 .menu {

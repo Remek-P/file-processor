@@ -1,15 +1,50 @@
 @import "../../styles/variables/variables";
+@import "../../styles/variables/breakpoints";
 
-.container{
+.chooseFileContainer {
   position: absolute;
   top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  max-width: fit-content;
+  width: 100%;
+  translate: -1% -50%;
+  display: flex;
+  justify-content: center;
+  gap: 2%;
+
+  @media (max-width: $breakpointM) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: stretch;
+    gap: 20px;
+  }
+}
+
+.optionContainer {
+  width: fit-content;
   border-radius: $border-radius-main;
 
   & button {
     border-radius: $border-radius-main;
+  }
+
+
+  &:first-child {
+    padding-bottom: 16px;
+
+    & > * > h6 {
+      margin-bottom: 6px;
+    }
+  }
+
+
+  &:first-child > * > p {
+    margin-bottom: 14px;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #525252;
+  }
+
+  @media (max-width: $breakpointM) {
+    width: 90%;
   }
 }
 

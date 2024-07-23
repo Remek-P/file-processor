@@ -9,7 +9,9 @@ import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
 function Output({ excelFile, index, handleDeleteChecked }) {
 
   const [inputValue, setInputValue] = useState("");
+
   const searchRef = useRef(null);
+
   const deferredInputValue = useDeferredValue(inputValue);
 
   const handleClick = () => {
@@ -27,7 +29,9 @@ function Output({ excelFile, index, handleDeleteChecked }) {
         <datalist id={searchID}>
           { searchSuggestionsArray }
         </datalist>
-        <div className={classes.outputDelete}>
+
+        <div className={classes.outputSearchContainer}>
+
           <div className={`${classes.outputSearch} shadow`}>
             <Search setInputValue={setInputValue}
                     inputValue={inputValue}
@@ -35,9 +39,10 @@ function Output({ excelFile, index, handleDeleteChecked }) {
                     searchRef={searchRef}
             />
           </div>
-          <DeleteOutput index={index} handleDeleteChecked={handleDeleteChecked}/>
-        </div>
 
+          <DeleteOutput index={index} handleDeleteChecked={handleDeleteChecked}/>
+
+        </div>
 
         <Sections excelFile={excelFile}
                   inputValue={deferredInputValue}

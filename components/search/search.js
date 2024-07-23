@@ -27,7 +27,6 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
                name={id}
                list={id}
                type="search"
-               title="Numbers only"
                value={inputValue}
                placeholder="Type at least 3 characters"
                className={classes.search}

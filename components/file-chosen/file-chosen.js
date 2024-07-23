@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { MenuButton, MenuItem, MenuItemDivider } from "@carbon/react";
+import { OverflowMenu, MenuItem, MenuItemDivider } from "@carbon/react";
 
 import DisplayOutput from "@/components/choose-file-screen/displayOutput/displayOutput";
 
@@ -23,13 +23,12 @@ function FileChosen({
 
 
   return (
-      <div className={classes.container}>
+      <section className={classes.sectionContainer}>
 
         <div className={`${classes.menuContainer} shadow`}>
-          <MenuButton label="actions"
-                      kind="ghost"
-                      className={classes.menu}
-                      menuAlignment="bottom-start"
+          <OverflowMenu className={classes.menu}
+                        aria-label="actions menu"
+                        flipped={true}
           >
             <MenuItemDivider />
             <MenuItem label="Add"
@@ -47,7 +46,7 @@ function FileChosen({
                       kind="danger"
                       className={classes.menuItem}
             />
-          </MenuButton>
+          </OverflowMenu>
         </div>
 
         <div className={classes.outputsContainer}>
@@ -59,7 +58,7 @@ function FileChosen({
 
         </div>
 
-      </div>
+      </section>
   );
 }
 

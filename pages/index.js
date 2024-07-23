@@ -1,12 +1,13 @@
 import { useState } from "react";
 
 import Head from "next/head";
+
 import ChooseFile from "@/components/choose-file-screen/choose-file";
+import FileChosen from "@/components/file-chosen/file-chosen";
 
 import { Loading } from '@carbon/react';
 
 import XLSX from "xlsx";
-import FileChosen from "@/components/file-chosen/file-chosen";
 
 export default function Home() {
 
@@ -15,18 +16,15 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
 
-
   const readExcel = (data) => {
 
     const workbook = XLSX.readFile(data,
         {sheetRows: 10}
-    )
-
+    );
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
       header: 1,
     })
-
     setExcelFile(jsonData);
   }
 
@@ -42,6 +40,21 @@ export default function Home() {
     readExcel(data);
     setIsLoading(false)
   }
+
+  const fetchDataFromDB = async () => {
+    setIsLoading(true);
+    const res = await fetch("/api/mongoDB");
+    const data = await res.json();
+    const sheet = XLSX.utils.json_to_sheet(data);
+    const jsonData = XLSX.utils.sheet_to_json(sheet, {
+      header: 1,
+    });
+    jsonData.shift()
+    setExcelFile(jsonData);
+    setExcelFileName("DB_file")
+    setIsLoading(false);
+  }
+
 
   const handleFileChange = () => {
     setIsLoading(true);
@@ -62,7 +75,7 @@ export default function Home() {
       <main>
 
         {
-          !excelFileName && <ChooseFile onChange={handleFile} />
+          !excelFileName && <ChooseFile handleFile={handleFile} fetchDataFromDB={fetchDataFromDB} />
         }
 
         <Loading id="indexLoading"

@@ -25,8 +25,7 @@ function NormalPercentages({ value,
     },
     "height": "auto"
   }
-
-
+  
   return (
       <SectionLayout index={index}
                      value={value}
@@ -37,9 +36,12 @@ function NormalPercentages({ value,
             headerDataArray.map((header, index) => {
                   if (header === value) {
 
+                    const checkForString = typeof colDataArray[index] === "string"
+                    const cleanValue = checkForString && colDataArray[index].includes("%") ? colDataArray[index].replace("%", "") : colDataArray[index];
+
                     chartData.push({
                       group: labelDataArray[index],
-                      value: +(colDataArray[index] * 100).toFixed(decimal)
+                      value: +cleanValue
                     });
                     return (
                         <ShowMetrics key={index}

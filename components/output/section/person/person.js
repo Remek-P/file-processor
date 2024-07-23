@@ -2,7 +2,7 @@ import { Tile} from "@carbon/react";
 
 function Person({ index, colDataArray, labelDataArray}) {
   return (
-      <Tile className={`container container${index} shadow`}>
+      <Tile className={`optionContainer optionContainer${index} shadow`}>
 
         <div>
           <h4>{labelDataArray[index]}</h4>

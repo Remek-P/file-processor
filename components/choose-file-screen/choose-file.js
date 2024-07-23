@@ -1,38 +1,40 @@
-import {FileUploader, Tile} from "@carbon/react";
+import {Button, FileUploader, Tile} from "@carbon/react";
 
 import classes from "./choose-file.module.scss";
 
-function ChooseFile({ onChange }) {
+function ChooseFile({ handleFile, fetchDataFromDB }) {
 
-  // const [fetchedData, setFetchedData] = useState([])
-  //
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await fetch("/api/hello");
-  //     const data = await res.json();
-  //     setFetchedData(data);
-  //   }
-  //   fetchData();
-  // }, []);
-  //
-  // console.log("fetchedData", fetchedData)
+  const fileTypes = [
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ".xlsx",
+    ".xls",
+  ];
 
   return (
-      <div className={`${classes.container} shadow`}>
-        <Tile className={classes.tile}>
-          <FileUploader filenameStatus="complete"
-                        labelTitle="Please choose a file to upload"
-                        labelDescription="Only Excel files will be accepted"
-                        buttonLabel="Upload"
-                        buttonKind="primary"
-                        onChange={onChange}
-                        accept={[
-                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                          ".xlsx",
-                          ".xls"]}
-          />
-        </Tile>
-      </div>
+      <section className={classes.chooseFileContainer}>
+
+        <div className={`${classes.optionContainer} shadow`}>
+          <Tile className={classes.tile}>
+            <h6>Download the file from database</h6>
+            <p>Downloaded preconfigured file</p>
+            <Button size="md" onClick={fetchDataFromDB}>Download</Button>
+          </Tile>
+        </div>
+
+        <div className={`${classes.optionContainer} shadow`}>
+          <Tile className={classes.tile}>
+            <FileUploader filenameStatus="complete"
+                          labelTitle="Please choose a file to upload"
+                          labelDescription="Only Excel files will be accepted"
+                          buttonLabel="Upload"
+                          buttonKind="primary"
+                          onChange={handleFile}
+                          accept={fileTypes}
+            />
+          </Tile>
+        </div>
+
+      </section>
   );
 }
 

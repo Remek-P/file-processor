@@ -34,6 +34,15 @@ function Worlds({ value,
     setShowAllMetrics(prevState => !prevState)
   }
 
+
+
+  // console.log("value", value);
+  // console.log("index", index);
+  // console.log("headerDataArray", headerDataArray);
+  // console.log("labelDataArray", labelDataArray);
+  // console.log("colDataArray", colDataArray);
+  // console.log("decimal", decimal);
+
   return (
       <SectionLayout index={index}
                      value={value}
@@ -45,11 +54,14 @@ function Worlds({ value,
               headerDataArray.map((header, index) => {
                     if (header === value) {
 
+                      const checkForString = typeof colDataArray[index] === "string"
+                      const cleanValue = checkForString && colDataArray[index].includes("%") ? colDataArray[index].replace("%", "") : colDataArray[index];
+
                       if (!showAllMetrics) {
-                        if (colDataArray[index]) {
+                        if (+cleanValue !== 0) {
                           chartData.push({
                             group: labelDataArray[index].split(" ")[2],
-                            value: +(colDataArray[index] * 100).toFixed(decimal)
+                            value: +cleanValue
                           });
 
                           return (
@@ -63,7 +75,7 @@ function Worlds({ value,
                       } else if (showAllMetrics) {
                         chartData.push({
                           group: labelDataArray[index].split(" ")[2],
-                          value: +(colDataArray[index] * 100).toFixed(decimal)
+                          value: +cleanValue
                         });
 
                         return (
