@@ -18,8 +18,9 @@ function ShowMetrics({ index,
     return (
         <div key={index}
              className={`subContainer subContainer${index}`}>
-          <h6>{labelDataArray[index].split(" ")[2]}</h6>
+          {/*<h6>{labelDataArray[index].split(" ")[2]}</h6>*/}
           {/*<span>{`${(+colDataArray[index] * 100).toFixed(decimal)}%`}</span>*/}
+          <h6>{labelDataArray[index]}</h6>
           <span>{colDataArray[index]}</span>
         </div>
     )
@@ -41,8 +42,6 @@ function ShowMetrics({ index,
         </div>
     )
   }
-
-
 }
 
 export default ShowMetrics;

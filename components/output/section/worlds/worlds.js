@@ -42,7 +42,7 @@ function Worlds({ value,
                       if (!showAllMetrics) {
                         if (+cleanValue !== 0) {
                           chartData.push({
-                            group: labelDataArray[index].split(" ")[2],
+                            group: labelDataArray[index],
                             value: +cleanValue
                           });
 
@@ -56,7 +56,7 @@ function Worlds({ value,
                         }
                       } else if (showAllMetrics) {
                         chartData.push({
-                          group: labelDataArray[index].split(" ")[2],
+                          group: labelDataArray[index],
                           value: +cleanValue
                         });
 

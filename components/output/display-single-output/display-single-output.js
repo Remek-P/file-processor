@@ -14,15 +14,15 @@ function DisplaySingleOutput({ excelFile, colDataArray, labelDataArray }) {
   // const simpleBarChartArr = [];
   // const personArray = ["human"];
   // const worldsLikeArray = ["worlds"];
-  const excludedArray = ["birth", "birthday_day", "birthday_daymonth", "birthday_month", "birthday_year"];
+  // const excludedArray = ["birth", "birthday_day", "birthday_daymonth", "birthday_month", "birthday_year"];
 
-  const extractFirstWord = (item) => {
-    return item.toLowerCase().split(" ")[0];
-  }
-
-  const isContainingItemFromArray = (item, arr) => {
-    return arr.includes(extractFirstWord(item))
-  }
+  // const extractFirstWord = (item) => {
+  //   return item.toLowerCase().split(" ")[0];
+  // }
+  //
+  // const isContainingItemFromArray = (item, arr) => {
+  //   return arr.includes(extractFirstWord(item))
+  // }
 
   return (
       <>
@@ -39,12 +39,12 @@ function DisplaySingleOutput({ excelFile, colDataArray, labelDataArray }) {
             //                  index={index}/>
             //
             // else if (isContainingItemFromArray(value, worldsLikeArray))
-            //   return <Worlds key={value}
-            //                  index={index}
-            //                  value={value}
-            //                  colDataArray={colDataArray}
-            //                  labelDataArray={labelDataArray}
-            //                  headerDataArray={headerDataArray} />
+              return <Worlds key={value}
+                             index={index}
+                             value={value}
+                             colDataArray={colDataArray}
+                             labelDataArray={labelDataArray}
+                             headerDataArray={headerDataArray} />
             //
             // else if (isContainingItemFromArray(value, normalPercentageFactorsArr))
             //   return <NormalPercentages key={value}
@@ -64,11 +64,11 @@ function DisplaySingleOutput({ excelFile, colDataArray, labelDataArray }) {
             //
             // else
                 // in case new data appears
-              return <Rest key={value}
-                           colDataArray={colDataArray}
-                           labelDataArray={labelDataArray} index={index}
-                           value={value}
-                           headerDataArray={headerDataArray} />
+              // return <Rest key={value}
+              //              value={value}
+              //              colDataArray={colDataArray}
+              //              labelDataArray={labelDataArray} index={index}
+              //              headerDataArray={headerDataArray} />
           })
         }
       </>
