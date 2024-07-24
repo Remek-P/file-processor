@@ -1,11 +1,9 @@
-import { useState } from "react";
+import {useRef, useState} from "react";
 
 import ShowMetrics from "@/components/output/section/worlds/show-metrics/show-metrics";
 import SectionLayout from "@/components/output/section/section-layout/section-layout";
 
 import { Toggle } from "@carbon/react";
-
-import classes from "../section-module.module.scss";
 
 function Worlds({ value,
                   index,
@@ -16,7 +14,7 @@ function Worlds({ value,
                 }) {
 
   const [showAllMetrics, setShowAllMetrics] = useState(false);
-
+  const isNumber = useRef(null);
 
   let chartData = [];
 
@@ -30,12 +28,13 @@ function Worlds({ value,
                      chartData={chartData}
       >
 
-        <div className={classes.worldsContainer}>
+        <div>
             {
               headerDataArray.map((header, index) => {
                     if (header === value) {
-
-                      const checkForString = typeof colDataArray[index] === "string"
+                      
+                      const checkForString = typeof colDataArray[index] === "string";
+                      if (typeof colDataArray[index] === "number") isNumber.current = true;
                       const cleanValue = checkForString && colDataArray[index].includes("%") ? colDataArray[index].replace("%", "") : colDataArray[index];
 
                       // Show data not equal to zero
@@ -73,19 +72,19 @@ function Worlds({ value,
               )
             }
 
-            <Toggle id={value}
-                    size="sm"
-                    labelA="show all"
-                    labelB="hide 0%"
-                    defaultToggled={false}
-                    onToggle={handleShowAllMetrics}
-                    labelText=""
-                    readOnly={false}
-                    aria-labelledby="show/hide all metrics"
-                    disabled={false}
-                    hideLabel={false}
-            />
-          </div>
+          {isNumber.current && <Toggle id={value}
+                                       size="sm"
+                                       labelA="show all"
+                                       labelB="hide 0%"
+                                       defaultToggled={false}
+                                       onToggle={handleShowAllMetrics}
+                                       labelText=""
+                                       readOnly={false}
+                                       aria-labelledby="show/hide all metrics"
+                                       disabled={false}
+                                       hideLabel={false}/>
+          }
+            </div>
 
       </SectionLayout>
   );
