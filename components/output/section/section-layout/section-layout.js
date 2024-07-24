@@ -10,6 +10,7 @@ import classes from "../section-module.module.scss";
 function SectionLayout({ index,
                          value,
                          chartData,
+                         isNumber,
                          children,
 }) {
 
@@ -79,17 +80,20 @@ function SectionLayout({ index,
         <div className={classes.buttonContainer}>
           <h4>{value}</h4>
 
-          <ActionToggle onClick={handleTogglePercentages} description={`${percentagesDescription} percentages`}>
-            { percentagesIcon }
-          </ActionToggle>
+          {isNumber &&
+              <ActionToggle onClick={handleTogglePercentages} description={`${percentagesDescription} percentages`}>
+                {percentagesIcon}
+              </ActionToggle>}
 
-          <ActionToggle onClick={displayBarChart} description={barChartDescription}>
-            { barChartIcon }
-          </ActionToggle>
+          {isNumber &&
+              <ActionToggle onClick={displayBarChart} description={barChartDescription}>
+                {barChartIcon}
+              </ActionToggle>}
 
-          <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
-            { donutChartIcon }
-          </ActionToggle>
+          {isNumber &&
+              <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
+                {donutChartIcon}
+              </ActionToggle>}
         </div>
 
         { children }

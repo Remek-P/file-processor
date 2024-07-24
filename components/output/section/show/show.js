@@ -38,6 +38,7 @@ function Show({
       <SectionLayout index={index}
                      value={value}
                      chartData={chartData}
+                     isNumber={isNumber.current}
       >
 
         <div>
@@ -47,6 +48,7 @@ function Show({
 
                     const checkForString = typeof colDataArray[index] === "string";
                     if (typeof colDataArray[index] === "number") isNumber.current = true;
+                    if (typeof colDataArray[index] !== "number") isNumber.current = false;
                     const cleanValue = checkForString && colDataArray[index].includes("%") ? colDataArray[index].replace("%", "") : colDataArray[index];
 
                     // Show data not equal to zero
@@ -88,7 +90,6 @@ function Show({
             
             <ActionToggle onClick={excludeFromDisplaying}
                           description="hide"
-                          kind="danger"
                           value={value}
                           valueRef={valueRef}
                           children="X"
