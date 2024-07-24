@@ -7,6 +7,8 @@ function ActionToggle({
                         closeOnActivation = true,
                         size = "sm",
                         kind = "ghost",
+                        value = null,
+                        valueRef,
                         children
 }) {
   return (
@@ -14,6 +16,8 @@ function ActionToggle({
       <Button size={size}
               kind={kind}
               onClick={onClick}
+              value={value}
+              ref={valueRef}
       >
         { children }
       </Button>

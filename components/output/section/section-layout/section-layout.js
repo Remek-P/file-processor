@@ -74,9 +74,7 @@ function SectionLayout({ index,
   }
 
   return (
-      <Tile className={`optionContainer optionContainer${index} shadow`}
-            // onDoubleClick={handleShowChart}
-            style={{cursor: "pointer"}}>
+      <Tile className={`optionContainer optionContainer${index} shadow`}>
 
         <div className={classes.buttonContainer}>
           <h4>{value}</h4>
