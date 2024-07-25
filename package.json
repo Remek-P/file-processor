@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@carbon/charts-react": "^1.16.1",
+    "@carbon/charts-react": "^1.19.2",
     "@carbon/react": "^1.58.0",
     "d3": "^7.9.0",
     "d3-cloud": "^1.2.7",
