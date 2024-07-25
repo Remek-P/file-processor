@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
 
@@ -9,70 +9,82 @@ import classes from "../section-module.module.scss";
 
 function SectionLayout({ index,
                          value,
-                         chartData,
+                         // chartData,
                          isNumber,
+                         barChartIcon,
+                         displayBarChart,
+                         displayDonutChart,
+                         barChartDescription,
+                         donutChartDescription,
+                         donutChartIcon,
                          children,
 }) {
+  // TODO: what if colData is mixed - number and string
 
-  const [showChart, setShowChart] = useState(false);
+  // const [showChart, setShowChart] = useState(false);
   const [showPercentages, setShowPercentages] = useState(false);
-  const [chartType, setChartType] = useState(null);
 
-  const count = useRef(0);
+
+  // const count = useRef(0);
 
   const percentagesIcon = "%";
-  const barChartIcon = "bar"
-  const donutChartIcon = "donut";
+  // const barChartIcon = "bar"
+  // const donutChartIcon = "donut";
 
   const percentagesDescription = !showPercentages ? "show" : "hide";
-  const barChartDescription = count.current === 2 ? "show bar chart" : "hide bar chart";
-  const donutChartDescription = count.current === 1 ? "show donut chart" : "hide donut chart";
+  // const barChartDescription = count.current === 2 ? "show bar chart" : "hide bar chart";
+  // const donutChartDescription = count.current === 1 ? "show donut chart" : "hide donut chart";
 
-  const barChartOptions = {
-    "title": null,
-    "axes": {
-      "left": {
-        "mapsTo": "value"
-      },
-      "bottom": {
-        "mapsTo": "group",
-        "scaleType": "labels"
-      }
-    },
-    "height": "auto"
-  }
+  // const barChartOptions = {
+  //   "title": null,
+  //   "axes": {
+  //     "left": {
+  //       "mapsTo": "value"
+  //     },
+  //     "bottom": {
+  //       "mapsTo": "group",
+  //       "scaleType": "labels"
+  //     }
+  //   },
+  //   "height": "auto"
+  // }
+  //
+  // const donutChartOptions = {
+  //   "title": null,
+  //   "resizable": true,
+  //   "legend": {"alignment": "left"},
+  //   "donut": {
+  //     "center": {
+  //       "label": null
+  //     }
+  //   },
+  //   "height": "auto"
+  // };
 
-  const donutChartOptions = {
-    "title": null,
-    "resizable": true,
-    "legend": {"alignment": "left"},
-    "donut": {
-      "center": {
-        "label": null
-      }
-    },
-    "height": "auto"
-  };
+  // const simpleBarChart = <SimpleBarChart data={chartData} options={barChartOptions}/>;
+  // const donutChart = <DonutChart data={chartData} options={donutChartOptions}/>;
+  //
+  // const [chartType, setChartType] = useState(donutChart);
 
   const handleTogglePercentages = () => {
     setShowPercentages(prevState => !prevState)
   };
 
-  const displayBarChart = () => {
-    setChartType(<SimpleBarChart data={chartData} options={barChartOptions}/>);
-    if (count.current !== 2) {
-      setShowChart(prevState => !prevState);
-    }
-    count.current = 1;
-  };
-
-  const displayDonutChart = () => {
-    setChartType(<DonutChart data={chartData} options={donutChartOptions}/>);
-    if (count.current !== 1) {
-      setShowChart(prevState => !prevState);
-    }
-    count.current = 2;
-  }
+  // const displayBarChart = () => {
+  //   setChartType(simpleBarChart);
+  //   if (count.current !== 2) {
+  //     setShowChart(prevState => !prevState);
+  //   }
+  //   count.current = 1;
+  // };
+  //
+  // const displayDonutChart = () => {
+  //   setChartType(donutChart);
+  //   if (count.current !== 1) {
+  //     setShowChart(prevState => !prevState);
+  //   }
+  //   count.current = 2;
+  // }
 
   return (
       <Tile className={`optionContainer optionContainer${index} shadow`}>
@@ -98,9 +110,9 @@ function SectionLayout({ index,
 
         { children }
 
-        {
-            showChart && chartType
-        }
+        {/*{*/}
+        {/*    showChart && chartType*/}
+        {/*}*/}
       </Tile>
         );
 }
