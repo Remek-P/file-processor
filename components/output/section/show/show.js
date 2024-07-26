@@ -86,7 +86,7 @@ function Show({
                                          colDataArray={colDataArray}
                                          labelDataArray={labelDataArray}
                                          showPercentages={showPercentages}
-                                         decimal={undefined}
+                                         decimal={decimal}
                             />
                         )
                       }

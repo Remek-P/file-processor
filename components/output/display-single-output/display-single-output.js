@@ -2,7 +2,7 @@ import Show from "@/components/output/section/show/show";
 import {useState} from "react";
 
 
-function DisplaySingleOutput({ excelFile, colDataArray, labelDataArray }) {
+function DisplaySingleOutput({ excelFile, colDataArray, labelDataArray, decimal }) {
 
   const [excludedArray, setExcludedArray] = useState([]);
 
@@ -29,6 +29,7 @@ function DisplaySingleOutput({ excelFile, colDataArray, labelDataArray }) {
                            headerDataArray={headerDataArray}
                            excludedArray={excludedArray}
                            setExcludedArray={setExcludedArray}
+                           decimal={decimal}
               />
             }
           })

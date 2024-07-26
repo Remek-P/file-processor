@@ -1,7 +1,7 @@
 import classes from "@/components/file-chosen/file-chosen.module.scss";
 import Output from "@/components/output/output";
 
-function DisplayOutput({ numberOfOutputs, setNumberOfOutputs, excelFile }) {
+function DisplayOutput({ numberOfOutputs, setNumberOfOutputs, excelFile, decimal }) {
 
   const handleDeleteChecked = (e) => {
     if (e.target.checked) {
@@ -24,7 +24,11 @@ function DisplayOutput({ numberOfOutputs, setNumberOfOutputs, excelFile }) {
             if (!output.delete) {
               return (
                   <div key={index} className={classes.outputContainer}>
-                    <Output key={index} excelFile={excelFile} index={index} handleDeleteChecked={handleDeleteChecked} />
+                    <Output key={index}
+                            excelFile={excelFile}
+                            index={index}
+                            handleDeleteChecked={handleDeleteChecked}
+                            decimal={decimal} />
                   </div>
               )
             }

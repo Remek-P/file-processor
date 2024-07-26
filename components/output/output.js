@@ -6,9 +6,10 @@ import Sections from "@/components/output/section/sections";
 import classes from "./output.module.scss";
 import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
 
-function Output({ excelFile, index, handleDeleteChecked }) {
+function Output({ excelFile, index, handleDeleteChecked, decimal }) {
 
   const [inputValue, setInputValue] = useState("");
+
 
   const searchRef = useRef(null);
 
@@ -49,6 +50,7 @@ function Output({ excelFile, index, handleDeleteChecked }) {
                   setInputValue={setInputValue}
                   searchRef={searchRef}
                   handleClick={handleClick}
+                  decimal={decimal}
         />
       </>
   );

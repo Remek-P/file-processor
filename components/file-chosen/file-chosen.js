@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { OverflowMenu, MenuItem, MenuItemDivider } from "@carbon/react";
+import {OverflowMenu, MenuItem, MenuItemDivider, NumberInput} from "@carbon/react";
 
 import DisplayOutput from "@/components/choose-file-screen/displayOutput/displayOutput";
 
@@ -11,7 +11,8 @@ function FileChosen({
                       excelFile,
 }) {
 
-  const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}])
+  const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
+  const [decimal, setDecimal] = useState(2);
 
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
@@ -20,7 +21,18 @@ function FileChosen({
   const deleteAll = () => {
     setNumberOfOutputs([])
   }
-
+  // TODO: decimal manipulation is not working
+  // const handleDecimalInputChange = (event, { value, direction }) => {
+  //   if (direction === "down") {
+  //     setDecimal(prevState => prevState--)
+  //   }
+  //   if (direction === "up") {
+  //     setDecimal(prevState => prevState++)
+  //   }
+  //   if (!direction) {
+  //     setDecimal(value)
+  //   }
+  // }
 
   return (
       <section className={classes.sectionContainer}>
@@ -30,6 +42,16 @@ function FileChosen({
                         aria-label="actions menu"
                         flipped={true}
           >
+            {/*<MenuItemDivider />*/}
+            {/*<NumberInput value={decimal}*/}
+            {/*             min={0}*/}
+            {/*             onChange={handleDecimalInputChange}*/}
+            {/*             iconDescription="increase decrease"*/}
+            {/*             label="Increrase or decrease decimal place"*/}
+            {/*             invalidText="Number is not valid"*/}
+            {/*             size="sm"*/}
+            {/*             id="decimal input"*/}
+            {/*/>*/}
             <MenuItemDivider />
             <MenuItem label="Add"
                       onClick={addPerson}
@@ -54,6 +76,7 @@ function FileChosen({
           <DisplayOutput excelFile={excelFile}
                          numberOfOutputs={numberOfOutputs}
                          setNumberOfOutputs={setNumberOfOutputs}
+                         decimal={decimal}
           />
 
         </div>
