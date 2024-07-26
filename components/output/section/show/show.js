@@ -22,8 +22,8 @@ function Show({
 
 
   const isNumber = useRef(undefined);
-
   const valueRef = useRef(null);
+  const numbersEqualToZero = useRef(false);
 
   let chartData = [];
 
@@ -36,6 +36,8 @@ function Show({
   }
 
   const valueArray = [];
+
+  const signsArray = ['%', '$', "US$", "USD", "AUD", "A$", "CAD", "C$", '€', "EUR", '¥', "JPY", '£', "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
 
   return (
       <SectionLayout index={index}
@@ -51,25 +53,26 @@ function Show({
                   if (header === value) {
 
                     const checkForString = typeof colDataArray[index] === "string";
-                    const cleanValue = checkForString && colDataArray[index].includes("%") ? colDataArray[index].replace("%", "") : colDataArray[index];
+                    const checkIfStringContainsArray = checkForString && signsArray.filter(sign => colDataArray[index].includes(sign));
 
-                    if (typeof colDataArray[index] === "number") {
-                      isNumber.current = true
-                    } else if (checkForString) {
-                      if (colDataArray[index].includes("%")) {
-                        const replaced = +colDataArray[index].replace("%", "");
-                        if (!isNaN(replaced)) {
-                          isNumber.current = true
-                        } else isNumber.current = false;
-                      } else isNumber.current = false;
-                    } else isNumber.current = false;
+                    let cleanValue;
+                    if (checkIfStringContainsArray.length > 0) {
+                      for (const sign in checkIfStringContainsArray) {
+                        cleanValue = checkForString && colDataArray[index].includes(checkIfStringContainsArray[sign]) ? colDataArray[index].replace(checkIfStringContainsArray[sign], "") : colDataArray[index];
+                      }
+                    } else cleanValue = colDataArray[index];
+
+                    if (typeof colDataArray[index] === "number") isNumber.current = true
+                    else if (checkForString) isNumber.current = !isNaN(+cleanValue);
+                    else isNumber.current = false;
+
+                    // Condition to display hide/show 0s toggle
+                    if (typeof cleanValue && +cleanValue === 0) numbersEqualToZero.current = true;
 
                     // Show data not equal to zero
                     if (!showAllMetrics) {
                       if (+cleanValue !== 0) {
-                        valueArray.push(isNumber.current)
-                        // console.log("Show valueArray", valueArray)
-                        // console.log("Show isNumber.current", header, isNumber.current)
+                        valueArray.push(isNumber.current) //valueArray is sent as props and used to check if data is number
                         chartData.push({
                           group: labelDataArray[index],
                           value: +cleanValue
@@ -83,9 +86,7 @@ function Show({
                         )
                       }
                     } else if (showAllMetrics) {
-                      valueArray.push(isNumber.current)
-                      // console.log("Show valueArray", valueArray)
-                      // console.log("Show isNumber.current", header, isNumber.current)
+                      valueArray.push(isNumber.current) //valueArray is sent as props and used to check if data is number
                       chartData.push({
                         group: labelDataArray[index],
                         value: +cleanValue
@@ -113,10 +114,10 @@ function Show({
                           children="X"
             />
 
-            {isNumber.current && <Toggle id={value}
+            {isNumber.current && numbersEqualToZero.current && <Toggle id={value}
                                          size="sm"
                                          labelA="show all"
-                                         labelB="hide 0%"
+                                         labelB="hide 0s"
                                          defaultToggled={false}
                                          onToggle={handleShowAllMetrics}
                                          labelText=""
