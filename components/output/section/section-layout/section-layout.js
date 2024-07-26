@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
 
@@ -12,13 +12,14 @@ function SectionLayout({ index,
                          value,
                          chartData,
                          valueArray,
+                         showPercentages,
+                         setShowPercentages,
                          children,
 }) {
   // TODO: what if colData is mixed - number and string
 
   const [showBarChart, setShowBarChart] = useState(false);
   const [showDonutChart, setShowDonutChart] = useState(false);
-  const [showPercentages, setShowPercentages] = useState(false);
 
   const percentagesIcon = "%";
   const barChartIcon = "bar"
@@ -54,8 +55,7 @@ function SectionLayout({ index,
     height: "auto"
   };
 
-  const isNumber = valueArray.every(item => item === true);
-
+  const isNumber = valueArray.some(item => item === true);
 
   const handleTogglePercentages = () => {
     setShowPercentages(prevState => !prevState)

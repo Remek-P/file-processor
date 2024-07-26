@@ -15,11 +15,11 @@ function Show({
                 colDataArray,
                 excludedArray,
                 setExcludedArray,
-                decimal = 1
+                decimal
               }) {
 
   const [showAllMetrics, setShowAllMetrics] = useState(false);
-
+  const [showPercentages, setShowPercentages] = useState(false);
 
   const isNumber = useRef(undefined);
   const valueRef = useRef(null);
@@ -45,6 +45,8 @@ function Show({
                      chartData={chartData}
                      isNumber={isNumber.current}
                      valueArray={valueArray}
+                     showPercentages={showPercentages}
+                     setShowPercentages={setShowPercentages}
       >
 
         <div>
@@ -82,7 +84,10 @@ function Show({
                             <ShowMetrics key={index}
                                          index={index}
                                          colDataArray={colDataArray}
-                                         labelDataArray={labelDataArray} />
+                                         labelDataArray={labelDataArray}
+                                         showPercentages={showPercentages}
+                                         decimal={undefined}
+                            />
                         )
                       }
                     } else if (showAllMetrics) {
@@ -95,9 +100,11 @@ function Show({
                       return (
                           <ShowMetrics key={index}
                                        index={index}
-                                       type="world percentage"
                                        colDataArray={colDataArray}
-                                       labelDataArray={labelDataArray} />
+                                       labelDataArray={labelDataArray}
+                                       showPercentages={showPercentages}
+                                       decimal={undefined}
+                          />
                       )
                     }
                   }
