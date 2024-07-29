@@ -47,6 +47,7 @@ function FileChosen({
                          min={0}
                          max={20}
                          onChange={handleOnChange}
+                         step={1}
                          iconDescription="increase decrease"
                          label="Increase or decrease decimal place"
                          invalidText="Invalid value (0-20)"

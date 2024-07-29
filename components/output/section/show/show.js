@@ -68,7 +68,7 @@ function Show({
                     else if (checkForString) isNumber.current = !isNaN(+cleanValue);
                     else isNumber.current = false;
 
-                    // Condition to display hide/show 0s toggle
+                    // Needed for displaying hide/show 0s toggle
                     if (+cleanValue === 0) numbersEqualToZero.current = true;
 
                     // Show data not equal to zero

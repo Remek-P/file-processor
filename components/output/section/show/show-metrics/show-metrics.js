@@ -6,20 +6,24 @@ function ShowMetrics({ index,
                      }) {
 
   const convertToPercentages = (+colDataArray[index] * 100).toFixed(decimal);
-  const round = (+colDataArray[index]).toFixed(decimal);
+  const roundToGivenDecimal = (+colDataArray[index]).toFixed(decimal);
 
-  const displayData = showPercentages
-      ? !isNaN(+convertToPercentages)
-          ? <span>{`${convertToPercentages}%`}</span>
-          : <span>{colDataArray[index]}</span>
-      : !isNaN(+convertToPercentages)
-          ? <span>{round}</span>
-          : <span>{colDataArray[index]}</span>
+  const displayData =
+      showPercentages
+          ? !isNaN(+convertToPercentages)
+              ? `${convertToPercentages}%`
+              : colDataArray[index]
+          : !isNaN(+convertToPercentages)
+              ? roundToGivenDecimal
+              : typeof colDataArray[index] === "string" && colDataArray[index].includes("%")
+                  ? colDataArray[index].replace(/(?<=\d)%/g, "")
+                  : colDataArray[index]
 
+  if (labelDataArray[index] === "month") console.log(labelDataArray[index], colDataArray[index])
   return (
       <div key={index} className={`subContainer subContainer${index}`}>
         <h6>{labelDataArray[index]}</h6>
-        {displayData}
+        <p>{displayData}</p>
       </div>
   )
 
