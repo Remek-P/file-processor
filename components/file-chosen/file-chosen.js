@@ -23,7 +23,7 @@ function FileChosen({
   }
 
   const handleOnChange = (event, { value, direction }) => {
-    if (direction === "down" && value > 0) {
+    if (direction === "down" && value >= 0) {
       setDecimal(value)
     }
     if (direction === "up") {

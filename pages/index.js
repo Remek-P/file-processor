@@ -19,7 +19,7 @@ export default function Home() {
   const readExcel = (data) => {
 
     const workbook = XLSX.readFile(data,
-        {sheetRows: 10}
+        // {sheetRows: 10}
     );
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
