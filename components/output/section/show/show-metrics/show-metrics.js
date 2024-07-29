@@ -15,7 +15,7 @@ function ShowMetrics({ index,
       : !isNaN(+convertToPercentages)
           ? <span>{round}</span>
           : <span>{colDataArray[index]}</span>
-      // : <span>{colDataArray[index]}</span>
+
   return (
       <div key={index} className={`subContainer subContainer${index}`}>
         <h6>{labelDataArray[index]}</h6>

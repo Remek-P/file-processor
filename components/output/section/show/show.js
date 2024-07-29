@@ -69,7 +69,7 @@ function Show({
                     else isNumber.current = false;
 
                     // Condition to display hide/show 0s toggle
-                    if (typeof cleanValue && +cleanValue === 0) numbersEqualToZero.current = true;
+                    if (+cleanValue === 0) numbersEqualToZero.current = true;
 
                     // Show data not equal to zero
                     if (!showAllMetrics) {
@@ -103,7 +103,7 @@ function Show({
                                        colDataArray={colDataArray}
                                        labelDataArray={labelDataArray}
                                        showPercentages={showPercentages}
-                                       decimal={undefined}
+                                       decimal={decimal}
                           />
                       )
                     }

@@ -21,18 +21,18 @@ function FileChosen({
   const deleteAll = () => {
     setNumberOfOutputs([])
   }
-  // TODO: decimal manipulation is not working
-  // const handleDecimalInputChange = (event, { value, direction }) => {
-  //   if (direction === "down") {
-  //     setDecimal(prevState => prevState--)
-  //   }
-  //   if (direction === "up") {
-  //     setDecimal(prevState => prevState++)
-  //   }
-  //   if (!direction) {
-  //     setDecimal(value)
-  //   }
-  // }
+
+  const handleOnChange = (event, { value, direction }) => {
+    if (direction === "down" && value > 0) {
+      setDecimal(value)
+    }
+    if (direction === "up") {
+      setDecimal(value)
+    }
+    if (!direction && value > 0) {
+      setDecimal(value)
+    }
+  }
 
   return (
       <section className={classes.sectionContainer}>
@@ -42,16 +42,17 @@ function FileChosen({
                         aria-label="actions menu"
                         flipped={true}
           >
-            {/*<MenuItemDivider />*/}
-            {/*<NumberInput value={decimal}*/}
-            {/*             min={0}*/}
-            {/*             onChange={handleDecimalInputChange}*/}
-            {/*             iconDescription="increase decrease"*/}
-            {/*             label="Increrase or decrease decimal place"*/}
-            {/*             invalidText="Number is not valid"*/}
-            {/*             size="sm"*/}
-            {/*             id="decimal input"*/}
-            {/*/>*/}
+            <MenuItemDivider />
+            <NumberInput value={decimal}
+                         min={0}
+                         max={20}
+                         onChange={handleOnChange}
+                         iconDescription="increase decrease"
+                         label="Increase or decrease decimal place"
+                         invalidText="Invalid value (0-20)"
+                         size="sm"
+                         id="decimal input"
+            />
             <MenuItemDivider />
             <MenuItem label="Add"
                       onClick={addPerson}
