@@ -28,7 +28,8 @@ function DisplayOutput({ numberOfOutputs, setNumberOfOutputs, excelFile, decimal
                             excelFile={excelFile}
                             index={index}
                             handleDeleteChecked={handleDeleteChecked}
-                            decimal={decimal} />
+                            decimal={decimal}
+                    />
                   </div>
               )
             }

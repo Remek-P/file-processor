@@ -15,11 +15,11 @@ function Show({
                 colDataArray,
                 excludedArray,
                 setExcludedArray,
-                decimal
+                decimal,
               }) {
 
   const [showAllMetrics, setShowAllMetrics] = useState(false);
-  const [showPercentages, setShowPercentages] = useState(false);
+  const [showPercentages, setShowPercentages] = useState(undefined);
 
   const isNumber = useRef(undefined);
   const valueRef = useRef(null);

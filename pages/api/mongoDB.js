@@ -20,7 +20,8 @@ export default async function helpers(req, res) {
     try {
       const db = client.db(`data-to-JS`);
       data = await db
-          .collection("data-to-JS")
+          // .collection("data-to-JS")
+          .collection("test")
           .find({}, {projection:{ _id: 0 }})
           .toArray();
     } catch (error) {

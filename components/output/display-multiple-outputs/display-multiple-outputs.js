@@ -4,7 +4,11 @@ import classes from "@/components/output/section/section-module.module.scss";
 import TexTile from "@/components/tile-type/text-tile/texTile";
 import {useRef} from "react";
 
-function DisplayMultipleOutputs({ labelDataArray, searchUsers, inputValue, setInputValue}) {
+function DisplayMultipleOutputs({ labelDataArray,
+                                  searchUsers,
+                                  inputValue,
+                                  setInputValue,
+}) {
 
   const valueRef = useRef();
 

@@ -2,7 +2,11 @@ import Show from "@/components/output/section/show/show";
 import {useState} from "react";
 
 
-function DisplaySingleOutput({ excelFile, colDataArray, labelDataArray, decimal }) {
+function DisplaySingleOutput({ excelFile,
+                               colDataArray,
+                               labelDataArray,
+                               decimal
+}) {
 
   const [excludedArray, setExcludedArray] = useState([]);
 

@@ -19,7 +19,7 @@ export default function Home() {
   const readExcel = (data) => {
 
     const workbook = XLSX.readFile(data,
-        // {sheetRows: 10}
+        {sheetRows: 10}
     );
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
@@ -43,13 +43,16 @@ export default function Home() {
 
   const fetchDataFromDB = async () => {
     setIsLoading(true);
+
     const res = await fetch("/api/mongoDB");
     const data = await res.json();
     const sheet = XLSX.utils.json_to_sheet(data);
     const jsonData = XLSX.utils.sheet_to_json(sheet, {
       header: 1,
     });
+
     jsonData.shift()
+
     setExcelFile(jsonData);
     setExcelFileName("DB_file")
     setIsLoading(false);
