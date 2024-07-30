@@ -57,7 +57,9 @@ function SectionLayout({ index,
 
   const isNumber = valueArray.some(item => item === true);
 
+  // TODO: first click might require double click if raw data contains percentages
   const handleTogglePercentages = () => {
+    if (showPercentages === undefined) setShowPercentages(false);
     setShowPercentages(prevState => !prevState)
   };
 

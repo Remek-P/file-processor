@@ -4,8 +4,9 @@ import ShowMetrics from "@/components/output/section/show/show-metrics/show-metr
 import SectionLayout from "@/components/output/section/section-layout/section-layout";
 import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
 
-import {Toggle} from "@carbon/react";
+import { Toggle } from "@carbon/react";
 
+import classes from "../section-module.module.scss"
 
 function Show({
                 value,
@@ -35,6 +36,7 @@ function Show({
     setExcludedArray([...excludedArray, valueRef.current.value])
   }
 
+  // Sent as props to
   const valueArray = [];
 
   const signsArray = ['%', '$', "US$", "USD", "AUD", "A$", "CAD", "C$", '€', "EUR", '¥', "JPY", '£', "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
@@ -81,10 +83,10 @@ function Show({
                         });
 
                         return (
-                            <ShowMetrics key={index}
+                            <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
                                          index={index}
-                                         colDataArray={colDataArray}
-                                         labelDataArray={labelDataArray}
+                                         colData={colDataArray[index]}
+                                         labelData={labelDataArray[index]}
                                          showPercentages={showPercentages}
                                          decimal={decimal}
                             />
@@ -98,10 +100,10 @@ function Show({
                       });
 
                       return (
-                          <ShowMetrics key={index}
+                          <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
                                        index={index}
-                                       colDataArray={colDataArray}
-                                       labelDataArray={labelDataArray}
+                                       colData={colDataArray[index]}
+                                       labelData={labelDataArray[index]}
                                        showPercentages={showPercentages}
                                        decimal={decimal}
                           />
@@ -112,7 +114,7 @@ function Show({
             )
           }
 
-          <div>
+          <div className={classes.toggleContainer}>
             
             <ActionToggle onClick={excludeFromDisplaying}
                           description="hide"

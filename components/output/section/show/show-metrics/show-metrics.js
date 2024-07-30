@@ -1,32 +1,32 @@
 function ShowMetrics({ index,
-                       labelDataArray,
-                       colDataArray,
+                       labelData,
+                       colData,
                        showPercentages,
                        decimal,
                      }) {
 
-  const convertToPercentages = (+colDataArray[index] * 100).toFixed(decimal);
-  const roundToGivenDecimal = (+colDataArray[index]).toFixed(decimal);
+  const convertToPercentages = (+colData * 100).toFixed(decimal);
+  const roundToGivenDecimal = (+colData).toFixed(decimal);
 
   const data =
       showPercentages
           ? !isNaN(+convertToPercentages)
               ? `${convertToPercentages}%`
-              : colDataArray[index]
+              : colData
           : !isNaN(+convertToPercentages)
               ? roundToGivenDecimal
-              : typeof colDataArray[index] === "string" && colDataArray[index].includes("%")
-                  ? colDataArray[index].replace(/(?<=\d)%/g, "")
-                  : colDataArray[index]
+              : typeof colData === "string" && colData.includes("%")
+                  ? colData.replace(/(?<=\d)%/g, "")
+                  : colData
 
   const display = () => {
-    if (showPercentages === undefined) return colDataArray[index];
+    if (showPercentages === undefined) return colData;
     return data
   }
-  console.log("display", display())
+
   return (
-      <div key={index} className={`subContainer subContainer${index}`}>
-        <h6>{labelDataArray[index]}</h6>
+      <div key={`${colData}+${labelData}`} className={`subContainer subContainer${index}`}>
+        <h6>{labelData}</h6>
         <p>{display()}</p>
       </div>
   )
