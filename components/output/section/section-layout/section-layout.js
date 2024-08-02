@@ -25,9 +25,9 @@ function SectionLayout({ index,
   const barChartIcon = "bar"
   const donutChartIcon = "donut";
 
-  const percentagesDescription = !showPercentages ? "show" : "hide";
-  const barChartDescription = !showBarChart ? "show bar chart" : "hide bar chart";
-  const donutChartDescription = !showDonutChart ? "show donut chart" : "hide donut chart";
+  const percentagesDescription = "toggle percentages"
+  const barChartDescription = showBarChart ? "hide bar chart" : "show bar chart";
+  const donutChartDescription = showDonutChart ? "hide donut chart" : "show donut chart";
 
   const barChartOptions = {
     title: null,
@@ -57,9 +57,8 @@ function SectionLayout({ index,
 
   const isNumber = valueArray.some(item => item === true);
 
-  // TODO: first click might require double click if raw data contains percentages
   const handleTogglePercentages = () => {
-    if (showPercentages === undefined) setShowPercentages(false);
+    if (showPercentages === undefined) setShowPercentages(true);
     setShowPercentages(prevState => !prevState)
   };
 
@@ -81,7 +80,7 @@ function SectionLayout({ index,
           <h4>{value}</h4>
 
           {isNumber &&
-              <ActionToggle onClick={handleTogglePercentages} description={`${percentagesDescription} percentages`}>
+              <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
                 {percentagesIcon}
               </ActionToggle>}
 
