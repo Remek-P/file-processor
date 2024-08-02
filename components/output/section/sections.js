@@ -18,7 +18,6 @@ function Sections({ excelFile,
 
   const searchRecords = useMemo(() => userData.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue]);
   const colDataArray = searchRecords[0];
-  console.log("colDataArray", colDataArray)
 
   const displayData = () => {
 
