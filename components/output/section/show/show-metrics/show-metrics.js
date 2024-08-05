@@ -9,7 +9,7 @@ function ShowMetrics({ index,
   const roundToGivenDecimal = (+colData).toFixed(decimal);
 
   // Double escape required for the regex test (regexCheckForNumberWithSymbol)
-  const regexSymbolArray = ["%", "p\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
+  const regexSymbolArray = ["%", "p\\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
   const stringSymbolArray = regexSymbolArray.map((item) => item.replaceAll("\\", ""))
 
   const regexCheckForNumberWithSymbol = new RegExp(`^\\d+(.\\d+)?(${regexSymbolArray.join("|")})$`);
@@ -45,6 +45,7 @@ function ShowMetrics({ index,
               if (showPercentages === undefined) return convertToNumber.toFixed(decimal) + symbol
               return showPercentages ? `${convertToNumber.toFixed(decimal)}${symbol}` : convertToNumber.toFixed(decimal)
 
+          // traditionally the zł (currency indicator) is displayed after the value
           } else if (symbol === "zł") return `${convertToNumber.toFixed(decimal)}${symbol}`
 
             else return `${convertToNumber.toFixed(decimal)}${symbol}`
