@@ -8,6 +8,7 @@ function ShowMetrics({ index,
   const convertToPercentages = (+colData * 100).toFixed(decimal);
   const roundToGivenDecimal = (+colData).toFixed(decimal);
 
+  // Double escape required for the regex test (regexCheckForNumberWithSymbol)
   const regexSymbolArray = ["%", "p\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
   const stringSymbolArray = regexSymbolArray.map((item) => item.replaceAll("\\", ""))
 
@@ -25,13 +26,17 @@ function ShowMetrics({ index,
   const symbol = containsSymbol(colData, stringSymbolArray);
 
   const display = () => {
+    // Check if number
     if (!isNaN(+convertToPercentages)) {
 
+      // returns original data
       if (showPercentages === undefined) return colData;
+      // enables toggling between percentage views
       return showPercentages ? `${convertToPercentages}%` : roundToGivenDecimal
 
     } else {
 
+        // if not a number test if this is a number stored as a string
         if (typeof colData === "string" && regexCheckForNumberWithSymbol.test(colData)) {
         const convertToNumber = (+(colData.replace(containsSymbol(colData, stringSymbolArray), "")));
 
@@ -50,8 +55,8 @@ function ShowMetrics({ index,
 
   return (
       <div key={`${colData}+${labelData}`} className={`subContainer subContainer${index}`}>
-        <h6>{labelData}</h6>
-        <p>{display()}</p>
+        <h6>{ labelData }</h6>
+        <p>{ display() }</p>
       </div>
   )
 

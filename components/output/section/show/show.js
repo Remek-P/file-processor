@@ -54,19 +54,25 @@ function Show({
         <div>
           {
             headerDataArray.map((header, index) => {
+                  // filter for the same value, to create a card view
                   if (header === value) {
 
                     const checkForString = typeof colDataArray[index] === "string";
-                    const checkIfStringContainsArray = checkForString && signsArray.filter(sign => colDataArray[index].includes(sign));
+                    // check if contains a symbol from the array
+                    const checkIfStringContainsArray = checkForString && signsArray.filter(symbol => colDataArray[index].includes(symbol));
 
-                    let cleanValue;
+                    let cleanValue = colDataArray[index];
+
+                    // if number is a string with a symbol, filter out the symbol sign to create a clean string
                     if (checkIfStringContainsArray.length > 0) {
                       for (const sign in checkIfStringContainsArray) {
-                        cleanValue = checkForString && colDataArray[index].includes(checkIfStringContainsArray[sign]) ? colDataArray[index].replace(checkIfStringContainsArray[sign], "") : colDataArray[index];
+                        cleanValue = checkForString && cleanValue.includes(checkIfStringContainsArray[sign]) ? cleanValue.replace(checkIfStringContainsArray[sign], "") : cleanValue;
                       }
                     } else cleanValue = colDataArray[index];
-
+                    
+                    // if displayed value is a number, assign true to isNumber.current to help display the actions for numerical values
                     if (typeof colDataArray[index] === "number") isNumber.current = true
+                    // if displayed value is a number in a string, assign true to isNumber.current to help display the actions for numerical values
                     else if (checkForString) isNumber.current = !isNaN(+cleanValue);
                     else isNumber.current = false;
 
@@ -81,6 +87,8 @@ function Show({
                           group: labelDataArray[index],
                           value: +cleanValue
                         });
+
+                        if (labelDataArray[index] === "Visual | See it | Intuition") console.log("cleanValue", isNumber.current)
 
                         return (
                             <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
