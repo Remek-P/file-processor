@@ -22,7 +22,7 @@
 }
 
 .grid {
-  --_min: 160px;
+  --_min: 180px;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
@@ -36,17 +36,17 @@
   }
 
   @media (min-width: 515px) {
-    --_min: 200px;
+    //--_min: 200px;
   }
 
-  @media (min-width: 600px) {
-    --_min: 255px;
+  @media (min-width: $breakpointXM) {
+    //--_min: 255px;
     width: 90%;
     gap: 16px;
   }
 
   @media (min-width: 900px) {
-    --_min: 300px;
+    //--_min: 300px;
 
     width: 80%;
   }
@@ -74,24 +74,39 @@
   margin: 0 auto;
 }
 
-.sectionLayout {
+.topSection {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 
-  @media (max-width: 600px) {
+  @media (max-width: $breakpointXM) {
     flex-direction: column;
-
     margin-bottom: 8px;
+
+    & > * {
+      overflow: hidden;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+  }
+}
+
+.numberButtons {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+
+  @media (max-width: $breakpointXM) {
+    align-self: flex-end;
+    margin-right: -15px; //offsetting padding from the button
   }
 }
 
 .toggleContainer {
-  margin-top: auto;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: -15px; //offsetting padding from the button
 }
 
 .outputDeleteOutput {

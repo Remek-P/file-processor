@@ -1,7 +1,10 @@
 @import "../../styles/variables/variables";
+@import "../../styles/variables/breakpoints";
 
 .sectionContainer {
-  padding: 10px;
+  @media (min-width: $breakpointXM) {
+    padding: 10px;
+  }
 }
 
 .optionContainer {
@@ -12,13 +15,17 @@ position: relative;
   --_position: 0;
 
   position: absolute;
-  top: var(--_position);
+  top: 54px;
   right: var(--_position);
 
   z-index: 10;
 
   & > * > button {
     font-size: 0;
+  }
+
+  @media (min-width: $breakpointXM) {
+    top: var(--_position);
   }
 }
 
@@ -35,9 +42,9 @@ position: relative;
 
 .outputsContainer {
   display: flex;
-  gap: 16px;
+  gap: 4px;
 
-  @media (min-width: 600px) {
+  @media (min-width: $breakpointXM) {
     gap: 24px;
   }
 }

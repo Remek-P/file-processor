@@ -1,5 +1,10 @@
 .optionContainer {
-  min-height: fit-content;
+  display: flex;
+  flex-direction: column;
+
+  & > :last-child {
+    margin-top: auto;
+  }
 }
 
 .subContainer {

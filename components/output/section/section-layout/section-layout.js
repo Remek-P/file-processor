@@ -92,23 +92,24 @@ function SectionLayout({
   return (
       <Tile className={`optionContainer optionContainer${index} shadow`}>
 
-        <div className={classes.sectionLayout}>
+        <div className={classes.topSection}>
           <h4>{value}</h4>
+          <div className={classes.numberButtons}>
+            {isNumber &&
+                <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
+                  {percentagesIcon}
+                </ActionToggle>}
 
-          {isNumber &&
-              <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
-                {percentagesIcon}
-              </ActionToggle>}
+            {isNumber &&
+                <ActionToggle onClick={displayBarChart} description={barChartDescription}>
+                  {barChartIcon}
+                </ActionToggle>}
 
-          {isNumber &&
-              <ActionToggle onClick={displayBarChart} description={barChartDescription}>
-                {barChartIcon}
-              </ActionToggle>}
-
-          {isNumber &&
-              <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
-                {donutChartIcon}
-              </ActionToggle>}
+            {isNumber &&
+                <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
+                  {donutChartIcon}
+                </ActionToggle>}
+          </div>
         </div>
 
         {children}

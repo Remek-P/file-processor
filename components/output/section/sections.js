@@ -23,7 +23,7 @@ function Sections({
   const displayData = () => {
 
     if (!inputValue)
-      return <TexTile text="Please find the user by ID" handleClick={handleClick} />
+      return <TexTile text="Search any user" handleClick={handleClick} />
 
     else if (searchRecords.length === 1)
       return <DisplaySingleOutput excelFile={excelFile}
