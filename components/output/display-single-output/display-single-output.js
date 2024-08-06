@@ -1,14 +1,20 @@
+import {useRef, useState} from "react";
+
 import Show from "@/components/output/section/show/show";
-import {useState} from "react";
+
+import {Tile} from "@carbon/react";
 
 
-function DisplaySingleOutput({ excelFile,
+function DisplaySingleOutput({
+                               excelFile,
                                colDataArray,
                                labelDataArray,
                                decimal
-}) {
+                             }) {
 
   const [excludedArray, setExcludedArray] = useState([]);
+
+  const excludedValueRef = useRef(null);
 
   const excelFileUniqueValues = [... new Set(excelFile[0])];
 
@@ -17,14 +23,16 @@ function DisplaySingleOutput({ excelFile,
   const isContainingItemFromArray = (item, arr) => {
     return arr.includes(item)
   }
+  
+  const removeFromExcludedArray = (excludedValueRef) => {
+    setExcludedArray(prevState => prevState.filter(value => value !== excludedValueRef.target.textContent))
+  }
 
   return (
       <>
         {
           excelFileUniqueValues.map((value, index) => {
-            if (isContainingItemFromArray(value, excludedArray)) {
-              return null
-            } else {
+            if (!isContainingItemFromArray(value, excludedArray)) {
               return <Show key={value}
                            index={index}
                            value={value}
@@ -38,6 +46,18 @@ function DisplaySingleOutput({ excelFile,
             }
           })
         }
+        <div>
+          {
+            excludedArray.map((value, i) => {
+              return (
+                  <Tile key={i} onClick={removeFromExcludedArray.bind(excludedValueRef)}>
+                    <span ref={excludedValueRef}>{value}</span>
+                  </Tile>
+              )
+            })
+          }
+
+        </div>
       </>
   );
 }

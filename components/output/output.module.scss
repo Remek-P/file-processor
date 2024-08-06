@@ -14,15 +14,88 @@
   padding: 0 10px;
 }
 
-.outputDeleteOutput {
-  align-self: stretch;
-  padding: 5px;
-  cursor: pointer;
-}
-
 .label {
   display: flex;
   align-items: center;
   height: 100%;
+  cursor: pointer;
+}
+
+.grid {
+  --_min: 160px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
+  gap: 8px;
+
+  margin: 5% auto;
+  width: 100%;
+
+  & h4 {
+    padding-bottom: 2%;
+  }
+
+  @media (min-width: 515px) {
+    --_min: 200px;
+  }
+
+  @media (min-width: 600px) {
+    --_min: 255px;
+    width: 90%;
+    gap: 16px;
+  }
+
+  @media (min-width: 900px) {
+    --_min: 300px;
+
+    width: 80%;
+  }
+
+  & > :last-child {
+    grid-column: span 2;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
+    gap: 4px;
+  }
+}
+
+
+
+.searchContainer {
+  display: flex;
+
+  & > * > * {
+    height: 100%;
+  }
+}
+
+.outputLoader {
+  margin: 0 auto;
+}
+
+.sectionLayout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+
+    margin-bottom: 8px;
+  }
+}
+
+.toggleContainer {
+  margin-top: auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.outputDeleteOutput {
+  align-self: stretch;
+  padding: 5px;
   cursor: pointer;
 }

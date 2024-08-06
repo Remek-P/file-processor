@@ -1,4 +1,5 @@
-function ShowMetrics({ index,
+function ShowMetrics({
+                       index,
                        labelData,
                        colData,
                        showPercentages,

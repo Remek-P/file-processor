@@ -11,7 +11,7 @@ export default async function helpers(req, res) {
     try {
       client = await MongoClient.connect(uri);
     } catch (error) {
-      res.status(500).json({message: "Could not connect to database"})
+      res.status(500).json({message: "Could not connect to the database"})
     }
 
 
@@ -33,9 +33,9 @@ export default async function helpers(req, res) {
 
     res.status(200).json(data);
   }
-
-  if (req.method === 'POST') {
-
-  }
+  //
+  // if (req.method === 'POST') {
+  //
+  // }
 
 }

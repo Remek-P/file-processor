@@ -2,11 +2,6 @@ import {useRef, useState} from "react";
 
 import ShowMetrics from "@/components/output/section/show/show-metrics/show-metrics";
 import SectionLayout from "@/components/output/section/section-layout/section-layout";
-import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
-
-import { Toggle } from "@carbon/react";
-
-import classes from "../section-module.module.scss"
 
 function Show({
                 value,
@@ -23,32 +18,28 @@ function Show({
   const [showPercentages, setShowPercentages] = useState(undefined);
 
   const isNumber = useRef(undefined);
-  const valueRef = useRef(null);
   const numbersEqualToZero = useRef(false);
 
-  let chartData = [];
+  const chartData = [];
 
-  const handleShowAllMetrics = () => {
-    setShowAllMetrics(prevState => !prevState)
-  };
 
-  const excludeFromDisplaying = () => {
-    setExcludedArray([...excludedArray, valueRef.current.value])
-  }
-
-  // Sent as props to
+  // Sent as props to SectionLayout in case the data is of mixed type
   const valueArray = [];
 
   const signsArray = ['%', '$', "US$", "USD", "AUD", "A$", "CAD", "C$", '€', "EUR", '¥', "JPY", '£', "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
 
   return (
+
       <SectionLayout index={index}
                      value={value}
                      chartData={chartData}
-                     isNumber={isNumber.current}
                      valueArray={valueArray}
                      showPercentages={showPercentages}
                      setShowPercentages={setShowPercentages}
+                     setExcludedArray={setExcludedArray}
+                     excludedArray={excludedArray}
+                     numbersEqualToZero={numbersEqualToZero}
+                     setShowAllMetrics={setShowAllMetrics}
       >
 
         <div>
@@ -88,8 +79,6 @@ function Show({
                           value: +cleanValue
                         });
 
-                        if (labelDataArray[index] === "Visual | See it | Intuition") console.log("cleanValue", isNumber.current)
-
                         return (
                             <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
                                          index={index}
@@ -107,44 +96,19 @@ function Show({
                         value: +cleanValue
                       });
 
-                      return (
-                          <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
-                                       index={index}
-                                       colData={colDataArray[index]}
-                                       labelData={labelDataArray[index]}
-                                       showPercentages={showPercentages}
-                                       decimal={decimal}
-                          />
-                      )
+                      return <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
+                                          index={index}
+                                          colData={colDataArray[index]}
+                                          labelData={labelDataArray[index]}
+                                          showPercentages={showPercentages}
+                                          decimal={decimal}
+                      />
+
                     }
                   }
                 }
             )
           }
-
-          <div className={classes.toggleContainer}>
-            
-            <ActionToggle onClick={excludeFromDisplaying}
-                          description="hide"
-                          value={value}
-                          valueRef={valueRef}
-                          children="X"
-            />
-
-            {isNumber.current && numbersEqualToZero.current && <Toggle id={value}
-                                         size="sm"
-                                         labelA="show all"
-                                         labelB="hide 0s"
-                                         defaultToggled={false}
-                                         onToggle={handleShowAllMetrics}
-                                         labelText=""
-                                         readOnly={false}
-                                         aria-labelledby="show/hide all metrics"
-                                         disabled={false}
-                                         hideLabel={false}/>
-            }
-          </div>
-
         </div>
 
       </SectionLayout>

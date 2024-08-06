@@ -1,25 +1,33 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
 
 import {DonutChart, SimpleBarChart} from "@carbon/charts-react";
-import { Tile } from "@carbon/react";
+import {Tile, Toggle} from "@carbon/react";
 
-import classes from "../section-module.module.scss";
+import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
 
-function SectionLayout({ index,
+function SectionLayout({
+                         index,
                          value,
                          chartData,
                          valueArray,
                          showPercentages,
                          setShowPercentages,
+                         excludedArray,
+                         setExcludedArray,
+                         numbersEqualToZero,
+                         setShowAllMetrics,
                          children,
-}) {
+                       }) {
   // TODO: what if colData is mixed - number and string
+
 
   const [showBarChart, setShowBarChart] = useState(false);
   const [showDonutChart, setShowDonutChart] = useState(false);
+
+  const valueRef = useRef(null);
 
   const percentagesIcon = "%";
   const barChartIcon = "bar"
@@ -73,10 +81,18 @@ function SectionLayout({ index,
     setShowBarChart(false);
   }
 
+  const handleShowAllMetrics = () => {
+      setShowAllMetrics(prevState => !prevState)
+    };
+
+  const excludeFromDisplaying = () => {
+    setExcludedArray([...excludedArray, valueRef.current.value])
+  }
+
   return (
       <Tile className={`optionContainer optionContainer${index} shadow`}>
 
-        <div className={classes.buttonContainer}>
+        <div className={classes.sectionLayout}>
           <h4>{value}</h4>
 
           {isNumber &&
@@ -95,7 +111,30 @@ function SectionLayout({ index,
               </ActionToggle>}
         </div>
 
-        { children }
+        {children}
+
+        <div className={classes.toggleContainer}>
+
+          <ActionToggle onClick={excludeFromDisplaying}
+                        description="hide"
+                        value={value}
+                        valueRef={valueRef}
+                        children="X"
+          />
+
+          {isNumber && numbersEqualToZero.current && <Toggle id={value}
+                                                                     size="sm"
+                                                                     labelA="show all"
+                                                                     labelB="hide 0s"
+                                                                     defaultToggled={false}
+                                                                     onToggle={handleShowAllMetrics}
+                                                                     labelText=""
+                                                                     readOnly={false}
+                                                                     aria-labelledby="show/hide all metrics"
+                                                                     disabled={false}
+                                                                     hideLabel={false}/>
+          }
+        </div>
 
         {
             showBarChart && <SimpleBarChart data={chartData} options={barChartOptions}/>
@@ -104,7 +143,7 @@ function SectionLayout({ index,
             showDonutChart && <DonutChart data={chartData} options={donutChartOptions}/>
         }
       </Tile>
-        );
+  );
 }
 
 export default SectionLayout;

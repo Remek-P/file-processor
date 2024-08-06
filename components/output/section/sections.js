@@ -4,14 +4,15 @@ import TexTile from "@/components/tile-type/text-tile/texTile";
 import DisplayMultipleOutputs from "@/components/output/display-multiple-outputs/display-multiple-outputs";
 import DisplaySingleOutput from "@/components/output/display-single-output/display-single-output";
 
-import classes from "./section-module.module.scss";
+import classes from "../output.module.scss";
 
-function Sections({ excelFile,
+function Sections({
+                    excelFile,
                     inputValue,
                     setInputValue,
                     handleClick,
                     decimal,
-}) {
+                  }) {
 
   const labelDataArray = excelFile[1];
   const userData = useMemo(() =>  excelFile.slice(2), [excelFile]);

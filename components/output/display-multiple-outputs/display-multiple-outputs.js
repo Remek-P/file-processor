@@ -1,6 +1,6 @@
 import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
 import SearchSuggestionsDetails from "@/components/search/sugestions-details/search-suggestions-details";
-import classes from "@/components/output/section/section-module.module.scss";
+import classes from "@/components/output/output.module.scss";
 import TexTile from "@/components/tile-type/text-tile/texTile";
 import {useRef} from "react";
 
