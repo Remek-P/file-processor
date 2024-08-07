@@ -25,3 +25,14 @@ position: relative; //for the actions menu
   flex-direction: column;
   flex-grow: 1;
 }
+
+.hiddenContainer {
+  --_min: 160px;
+  //TODO: set width, gap and min values according to output values
+
+  margin: 0 auto;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
+  gap: 4px;
+}

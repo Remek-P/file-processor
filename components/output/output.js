@@ -11,7 +11,9 @@ function Output({
                   index,
                   handleDeleteChecked,
                   decimal,
-                  setDecimal
+                  setDecimal,
+                  excludedArray,
+                  setExcludedArray
                 }) {
 
   const [inputValue, setInputValue] = useState("");
@@ -60,6 +62,8 @@ function Output({
                   handleClick={handleClick}
                   decimal={decimal}
                   setDecimal={setDecimal}
+                  excludedArray={excludedArray}
+                  setExcludedArray={setExcludedArray}
         />
       </>
   );

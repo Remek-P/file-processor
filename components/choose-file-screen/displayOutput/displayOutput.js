@@ -6,7 +6,9 @@ function DisplayOutput({
                          setNumberOfOutputs,
                          excelFile,
                          decimal,
-                         setDecimal
+                         setDecimal,
+                         excludedArray,
+                         setExcludedArray
 }) {
 
   const handleDeleteChecked = (e) => {
@@ -36,6 +38,8 @@ function DisplayOutput({
                             handleDeleteChecked={handleDeleteChecked}
                             decimal={decimal}
                             setDecimal={setDecimal}
+                            excludedArray={excludedArray}
+                            setExcludedArray={setExcludedArray}
                     />
                   </div>
               )

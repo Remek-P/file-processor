@@ -1,21 +1,14 @@
-import {useRef, useState} from "react";
-
 import Show from "@/components/output/section/show/show";
-
-import {Tile} from "@carbon/react";
-
 
 function DisplaySingleOutput({
                                excelFile,
                                colDataArray,
                                labelDataArray,
                                decimal,
-                               setDecimal
+                               setDecimal,
+                               excludedArray,
+                               setExcludedArray
                              }) {
-
-  const [excludedArray, setExcludedArray] = useState([]);
-
-  const excludedValueRef = useRef(null);
 
   const excelFileUniqueValues = [... new Set(excelFile[0])];
 
@@ -23,10 +16,6 @@ function DisplaySingleOutput({
 
   const isContainingItemFromArray = (item, arr) => {
     return arr.includes(item)
-  }
-  
-  const removeFromExcludedArray = (excludedValueRef) => {
-    setExcludedArray(prevState => prevState.filter(value => value !== excludedValueRef.target.textContent))
   }
 
   return (
@@ -48,18 +37,6 @@ function DisplaySingleOutput({
             }
           })
         }
-        <div>
-          {
-            excludedArray.map((value, i) => {
-              return (
-                  <Tile key={i} onClick={removeFromExcludedArray.bind(excludedValueRef)}>
-                    <span ref={excludedValueRef}>{value}</span>
-                  </Tile>
-              )
-            })
-          }
-
-        </div>
       </>
   );
 }

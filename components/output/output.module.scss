@@ -54,14 +54,6 @@
 
     width: 80%;
   }
-
-  & > :last-child {
-    grid-column: 1/-1;
-
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
-    gap: 4px;
-  }
 }
 
 

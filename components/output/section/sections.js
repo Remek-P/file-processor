@@ -12,7 +12,9 @@ function Sections({
                     setInputValue,
                     handleClick,
                     decimal,
-                    setDecimal
+                    setDecimal,
+                    excludedArray,
+                    setExcludedArray
                   }) {
 
   const labelDataArray = excelFile[1];
@@ -37,6 +39,8 @@ function Sections({
                                      labelDataArray={labelDataArray}
                                      decimal={decimal}
                                      setDecimal={setDecimal}
+                                     excludedArray={excludedArray}
+                                     setExcludedArray={setExcludedArray}
                 />
               </div>
           )
