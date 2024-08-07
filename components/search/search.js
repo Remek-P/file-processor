@@ -35,14 +35,16 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
                autoComplete="on"
         />
 
-        <Tooltip align="bottom" description="clear">
-          <Button kind="ghost"
-                  onClick={handleDeleteButton}
-                  size="sm"
-                  children="x"
-          />
+        {
+            inputValue.length !== 0 && (<Tooltip align="bottom" description="clear">
+                                          <Button kind="ghost"
+                                                  onClick={handleDeleteButton}
+                                                  size="sm"
+                                                  children="x"
+                                          />
+                                        </Tooltip>)
+        }
 
-        </Tooltip>
       </div>
 
   );

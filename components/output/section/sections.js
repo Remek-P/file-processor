@@ -23,32 +23,47 @@ function Sections({
   const displayData = () => {
 
     if (!inputValue)
-      return <TexTile text="Search any user" handleClick={handleClick} />
-
+      return (
+          <div className={classes.select}>
+            <TexTile text="Search any user" handleClick={handleClick} />
+          </div>
+      )
     else if (searchRecords.length === 1)
-      return <DisplaySingleOutput excelFile={excelFile}
-                                  colDataArray={colDataArray}
-                                  labelDataArray={labelDataArray}
-                                  decimal={decimal}
-      />
+      return (
+              <div className={classes.grid}>
+                <DisplaySingleOutput excelFile={excelFile}
+                                     colDataArray={colDataArray}
+                                     labelDataArray={labelDataArray}
+                                     decimal={decimal}
+                />
+              </div>
+          )
 
     else if (searchRecords.length > 1)
-      return <DisplayMultipleOutputs inputValue={inputValue}
-                                     labelDataArray={labelDataArray}
-                                     setInputValue={setInputValue}
-                                     searchUsers={searchRecords}
-      />
+      return (
+              <div className={classes.grid}>
+                <DisplayMultipleOutputs inputValue={inputValue}
+                                        labelDataArray={labelDataArray}
+                                        setInputValue={setInputValue}
+                                        searchUsers={searchRecords}
+                />
+              </div>
+          )
+
 
     else
-      return <TexTile text="No such user data" handleClick={handleClick} />
+      return (
+          <div className={classes.select}>
+            <TexTile text="No such user data" handleClick={handleClick} />
+          </div>
+      )
   }
 
   return (
-      <div className={classes.grid}>
-        {
-          displayData()
-        }
-      </div>
+      <>
+        { displayData() }
+      </>
+
   );
 }
 
