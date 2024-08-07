@@ -8,36 +8,7 @@
 }
 
 .optionContainer {
-position: relative;
-}
-
-.menuContainer {
-  --_position: 0;
-
-  position: absolute;
-  top: 54px;
-  right: var(--_position);
-
-  z-index: 10;
-
-  & > * > button {
-    font-size: 0;
-  }
-
-  @media (min-width: $breakpointXM) {
-    top: var(--_position);
-  }
-}
-
-.menu {
-
-  & button {
-    border-radius: $border-radius-main;
-  }
-}
-
-.menuItem {
-  border-radius:$border-radius-main;
+position: relative; //for the actions menu
 }
 
 .outputsContainer {

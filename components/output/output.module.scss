@@ -5,7 +5,7 @@
   display: flex;
 
   @media (max-width: $breakpointM) {
-    flex-direction: column;
+    //flex-direction: column;
   }
 }
 
@@ -22,11 +22,11 @@
 }
 
 .select {
-
+  display: flex;
 }
 
 .grid {
-  --_min: 180px;
+  --_min: 170px;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
@@ -69,6 +69,38 @@
 .searchContainer {
   display: flex;
 
+  overflow: auto;
+
+  &Header {
+    margin-bottom: 16px;
+    margin-right: 12px;
+    width: max-content;
+  }
+
+  &DataContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &Data {
+    cursor: pointer;
+
+    position: relative;
+
+    $height: 6px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -$height -32px -$height 0;
+      min-height: $height;
+
+      background-color: transparent;
+      z-index: 1;
+    }
+  }
+
   & > * > * {
     height: 100%;
   }
@@ -82,17 +114,19 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-wrap: wrap;
 
-  @media (max-width: $breakpointXM) {
-    flex-direction: column;
-    margin-bottom: 8px;
 
-    & > * {
-      overflow: hidden;
-      overflow-wrap: break-word;
-      hyphens: auto;
-    }
-  }
+  //@media (max-width: $breakpointXM) {
+  //  flex-direction: column;
+  //  margin-bottom: 8px;
+  //
+  //  & > * {
+  //    overflow: hidden;
+  //    overflow-wrap: break-word;
+  //    hyphens: auto;
+  //  }
+  //}
 }
 
 .numberButtons {

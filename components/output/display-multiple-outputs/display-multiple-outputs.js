@@ -1,42 +1,39 @@
-import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
-import SearchSuggestionsDetails from "@/components/search/sugestions-details/search-suggestions-details";
-import classes from "@/components/output/output.module.scss";
 import TexTile from "@/components/tile-type/text-tile/texTile";
-import {useRef} from "react";
 
-function DisplayMultipleOutputs({ labelDataArray,
+import classes from "@/components/output/output.module.scss";
+
+import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
+
+function DisplayMultipleOutputs({
+                                  labelDataArray,
                                   searchUsers,
                                   inputValue,
                                   setInputValue,
-}) {
-
-  const valueRef = useRef();
-
-  const pickSearchedPerson = () => {
-    setInputValue(valueRef.current.value);
-  }
+                                }) {
 
   const reducePerformanceStrain = inputValue.length < 3;
+
+  const indexOfID = labelDataArray.findIndex(element => element.toLowerCase() === "_id" || element.toLowerCase() === "id");
+
+  const pickSearchedPerson = (e) => {
+    setInputValue(e.target.value);
+  }
 
   return (
       <section>
         {
-          reducePerformanceStrain && <TexTile text={"Please type at least 3 characters to display search results"} />
+            reducePerformanceStrain && <TexTile text={"Please type at least 3 characters to display search results"}/>
         }
 
         <ul className={classes.searchContainer}>
           {!reducePerformanceStrain && labelDataArray.map((label, index) =>
-              <SearchSuggestions key={index} element={label}>
-                {label}
-              </SearchSuggestions>
-          )}
-        </ul>
-
-        <ul>
-          {!reducePerformanceStrain && searchUsers.map((user, index) =>
-              <li key={index} value={user[0]} onClickCapture={pickSearchedPerson} ref={valueRef}>
-                  <SearchSuggestionsDetails details={user}/>
-              </li>
+              <SearchSuggestions key={index}
+                                 label={label}
+                                 index={index}
+                                 indexOfID={indexOfID}
+                                 searchUsers={searchUsers}
+                                 pickSearchedPerson={pickSearchedPerson}
+              />
           )}
         </ul>
       </section>

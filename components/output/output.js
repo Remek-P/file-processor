@@ -21,8 +21,10 @@ function Output({ excelFile, index, handleDeleteChecked, decimal }) {
 
   const searchID = "search";
 
+  const indexOfID = excelFile[1].findIndex(element => element.toLowerCase() === "_id" || element.toLowerCase() === "id");
+
   const searchSuggestionsArray = excelFile.slice(2).map(person =>
-      <option key={person[0]} value={person[0].toString()}>{person.id}</option>
+      <option key={person[indexOfID]} value={person[indexOfID].toString()}>{person.id}</option>
   );
 
   return (
