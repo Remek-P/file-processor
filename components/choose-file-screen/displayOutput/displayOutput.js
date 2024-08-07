@@ -1,7 +1,13 @@
 import classes from "@/components/file-chosen/file-chosen.module.scss";
 import Output from "@/components/output/output";
 
-function DisplayOutput({ numberOfOutputs, setNumberOfOutputs, excelFile, decimal }) {
+function DisplayOutput({
+                         numberOfOutputs,
+                         setNumberOfOutputs,
+                         excelFile,
+                         decimal,
+                         setDecimal
+}) {
 
   const handleDeleteChecked = (e) => {
     if (e.target.checked) {
@@ -29,6 +35,7 @@ function DisplayOutput({ numberOfOutputs, setNumberOfOutputs, excelFile, decimal
                             index={index}
                             handleDeleteChecked={handleDeleteChecked}
                             decimal={decimal}
+                            setDecimal={setDecimal}
                     />
                   </div>
               )

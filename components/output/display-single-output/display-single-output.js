@@ -9,7 +9,8 @@ function DisplaySingleOutput({
                                excelFile,
                                colDataArray,
                                labelDataArray,
-                               decimal
+                               decimal,
+                               setDecimal
                              }) {
 
   const [excludedArray, setExcludedArray] = useState([]);
@@ -42,6 +43,7 @@ function DisplaySingleOutput({
                            excludedArray={excludedArray}
                            setExcludedArray={setExcludedArray}
                            decimal={decimal}
+                           setDecimal={setDecimal}
               />
             }
           })

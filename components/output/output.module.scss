@@ -117,16 +117,16 @@
   flex-wrap: wrap;
 
 
-  //@media (max-width: $breakpointXM) {
+  @media (max-width: $breakpointXM) {
   //  flex-direction: column;
   //  margin-bottom: 8px;
   //
-  //  & > * {
-  //    overflow: hidden;
-  //    overflow-wrap: break-word;
-  //    hyphens: auto;
-  //  }
-  //}
+    & > h4 {
+      overflow: hidden;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+  }
 }
 
 .numberButtons {

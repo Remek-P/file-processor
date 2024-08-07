@@ -31,7 +31,7 @@ function ShowMetrics({
     if (!isNaN(+convertToPercentages)) {
 
       // returns original data
-      if (showPercentages === undefined) return colData;
+      if (showPercentages === undefined && decimal === undefined) return colData;
       // enables toggling between percentage views
       return showPercentages ? `${convertToPercentages}%` : roundToGivenDecimal
 

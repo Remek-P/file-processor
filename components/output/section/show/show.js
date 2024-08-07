@@ -11,6 +11,7 @@ function Show({
                 colDataArray,
                 excludedArray,
                 setExcludedArray,
+                setDecimal,
                 decimal,
               }) {
 
@@ -32,6 +33,8 @@ function Show({
 
       <SectionLayout index={index}
                      value={value}
+                     decimal={decimal}
+                     setDecimal={setDecimal}
                      chartData={chartData}
                      valueArray={valueArray}
                      showPercentages={showPercentages}

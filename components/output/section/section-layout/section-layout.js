@@ -19,6 +19,8 @@ function SectionLayout({
                          setExcludedArray,
                          numbersEqualToZero,
                          setShowAllMetrics,
+                         decimal,
+                         setDecimal,
                          children,
                        }) {
   // TODO: what if colData is mixed - number and string
@@ -66,8 +68,9 @@ function SectionLayout({
   const isNumber = valueArray.some(item => item === true);
 
   const handleTogglePercentages = () => {
+    if (decimal === undefined) setDecimal(2);
     if (showPercentages === undefined) setShowPercentages(true);
-    setShowPercentages(prevState => !prevState)
+    else setShowPercentages(prevState => !prevState)
   };
 
 

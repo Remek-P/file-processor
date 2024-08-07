@@ -12,6 +12,7 @@ function Sections({
                     setInputValue,
                     handleClick,
                     decimal,
+                    setDecimal
                   }) {
 
   const labelDataArray = excelFile[1];
@@ -35,6 +36,7 @@ function Sections({
                                      colDataArray={colDataArray}
                                      labelDataArray={labelDataArray}
                                      decimal={decimal}
+                                     setDecimal={setDecimal}
                 />
               </div>
           )

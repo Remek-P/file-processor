@@ -11,7 +11,7 @@ function FileChosen({
                     }) {
 
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
-  const [decimal, setDecimal] = useState(2);
+  const [decimal, setDecimal] = useState(undefined);
 
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
@@ -49,6 +49,7 @@ function FileChosen({
                          numberOfOutputs={numberOfOutputs}
                          setNumberOfOutputs={setNumberOfOutputs}
                          decimal={decimal}
+                         setDecimal={setDecimal}
           />
 
         </div>
