@@ -49,7 +49,6 @@ function FileChosen({
         />
 
         <div className={classes.outputsContainer}>
-
           <DisplayOutput excelFile={excelFile}
                          numberOfOutputs={numberOfOutputs}
                          setNumberOfOutputs={setNumberOfOutputs}
@@ -58,7 +57,6 @@ function FileChosen({
                          excludedArray={excludedArray}
                          setExcludedArray={setExcludedArray}
           />
-
         </div>
 
         <div className={classes.hiddenContainer}>

@@ -26,10 +26,8 @@
 }
 
 .grid {
-  --_min: 170px;
-
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax($grid170, 1fr));
   gap: 6px;
 
   margin: 5% auto;
@@ -39,20 +37,18 @@
     padding-bottom: 2%;
   }
 
-  @media (min-width: 515px) {
-    --_min: 200px;
+  @media (min-width: $breakpoint515) {
+    grid-template-columns: repeat(auto-fit, minmax($grid200, 1fr));
   }
 
   @media (min-width: $breakpoint600) {
-    --_min: 255px;
-    gap: 16px;
-    width: 90%;
+    grid-template-columns: repeat(auto-fit, minmax($grid255, 1fr));
+    gap: 8px;
   }
 
   @media (min-width: $breakpoint900) {
-    --_min: 300px;
-
-    width: 80%;
+    grid-template-columns: repeat(auto-fit, minmax($grid280, 1fr));
+    width: 95%;
   }
 }
 
