@@ -1,6 +1,9 @@
 @import "../../styles/variables/variables";
 @import "../../styles/variables/breakpoints";
 
+//--------------------------
+//Outputs containers styling
+
 .sectionContainer {
 
   @media (min-width: $breakpoint600) {
@@ -27,6 +30,7 @@
   flex-grow: 1;
 }
 //--------------------------
+//Styling the action button in case the output container have a sibling
 
 .sectionContainer:has( > .outputsContainer > .outputContainer:only-child) > .menuContainer {
   @media (min-width: $breakpoint380) {
@@ -34,8 +38,8 @@
   }
 }
 
-
-
+//--------------------------
+//Action menu styling
 
 .menuContainer {
   position: absolute;
@@ -64,7 +68,9 @@
   border-radius:$border-radius-main;
 }
 
-//-----------------------------
+//--------------------------
+//Excluded arrays styling
+
 .hiddenContainer {
   --_min: 160px;
   //TODO: set width, gap and min values according to output values
