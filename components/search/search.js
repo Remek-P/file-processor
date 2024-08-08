@@ -41,6 +41,7 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
                                                   onClick={handleDeleteButton}
                                                   size="sm"
                                                   children="x"
+                                                  className={classes.deleteIcon}
                                           />
                                         </Tooltip>)
         }

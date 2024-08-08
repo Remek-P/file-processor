@@ -1,6 +1,6 @@
 import { OverflowMenu, MenuItem, MenuItemDivider, NumberInput } from "@carbon/react";
 
-import classes from "./actions-menu.module.scss";
+import classes from "../file-chosen.module.scss";
 
 function ActionsMenu({
                        decimal,

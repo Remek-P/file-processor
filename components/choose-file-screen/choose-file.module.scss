@@ -10,7 +10,7 @@
   justify-content: center;
   gap: 2%;
 
-  @media (max-width: $breakpointM) {
+  @media (max-width: $breakpoint500) {
     flex-direction: column;
     align-items: center;
     justify-content: stretch;
@@ -43,7 +43,7 @@
     color: #525252;
   }
 
-  @media (max-width: $breakpointM) {
+  @media (max-width: $breakpoint500) {
     width: 90%;
   }
 }

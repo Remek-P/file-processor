@@ -1,0 +1,29 @@
+@import "../../../styles/variables/variables";
+@import "../../../styles/variables/breakpoints";
+
+//.menuContainer {
+//  position: absolute;
+//  top: $actionsMenuLow;
+//  right: 0;
+//
+//  z-index: 10;
+//
+//  & > * > button {
+//    font-size: 0;
+//  }
+//
+//  @media (min-width: $breakpoint700) {
+//    top: $actionsMenuHigh;
+//  }
+//}
+//
+//.menu {
+//
+//  & button {
+//    border-radius: $border-radius-main;
+//  }
+//}
+//
+//.menuItem {
+//  border-radius:$border-radius-main;
+//}

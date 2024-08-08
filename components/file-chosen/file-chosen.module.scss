@@ -2,20 +2,21 @@
 @import "../../styles/variables/breakpoints";
 
 .sectionContainer {
-  @media (min-width: $breakpointXM) {
+
+  @media (min-width: $breakpoint600) {
     padding: 10px;
   }
 }
 
 .optionContainer {
-position: relative; //for the actions menu
+  position: relative; //for the actions menu
 }
 
 .outputsContainer {
   display: flex;
   gap: 4px;
 
-  @media (min-width: $breakpointXM) {
+  @media (min-width: $breakpoint600) {
     gap: 24px;
   }
 }
@@ -25,7 +26,47 @@ position: relative; //for the actions menu
   flex-direction: column;
   flex-grow: 1;
 }
+//--------------------------
 
+//:is(.menuContainer .outputContainer:only-child) {
+//
+//  background-color: red;
+//
+//  @media (min-width: $breakpoint380) {
+//    top: $actionsMenuHigh;
+//  }
+//}
+
+
+
+.menuContainer {
+  position: absolute;
+  top: $actionsMenuLow;
+  right: 0;
+
+  z-index: 10;
+
+  & > * > button {
+    font-size: 0;
+  }
+
+  @media (min-width: $breakpoint800) {
+    top: $actionsMenuHigh;
+  }
+}
+
+.menu {
+
+  & button {
+    border-radius: $border-radius-main;
+  }
+}
+
+.menuItem {
+  border-radius:$border-radius-main;
+}
+
+//-----------------------------
 .hiddenContainer {
   --_min: 160px;
   //TODO: set width, gap and min values according to output values

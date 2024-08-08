@@ -28,7 +28,7 @@ function Sections({
     if (!inputValue)
       return (
           <div className={classes.select}>
-            <TexTile text="Search any user" handleClick={handleClick} />
+            <TexTile text="Type to search" handleClick={handleClick} />
           </div>
       )
     else if (searchRecords.length === 1)

@@ -1,10 +1,11 @@
-import {useRef, useState} from "react";
+import { useState } from "react";
 
-import DisplayOutput from "@/components/choose-file-screen/displayOutput/displayOutput";
-import ActionsMenu from "@/components/actions-menu/actions-menu";
+import DisplayOutput from "@/components/output/displayOutput/displayOutput";
+import ActionsMenu from "@/components/file-chosen/actions-menu/actions-menu";
 
 import classes from "./file-chosen.module.scss";
-import {Tile} from "@carbon/react";
+
+import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
 function FileChosen({
                       handleFileChange,
@@ -15,7 +16,6 @@ function FileChosen({
   const [decimal, setDecimal] = useState(undefined);
   const [excludedArray, setExcludedArray] = useState([]);
 
-  const excludedValueRef = useRef(null);
 
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
@@ -23,6 +23,7 @@ function FileChosen({
 
   const deleteAll = () => {
     setNumberOfOutputs([])
+    setExcludedArray([])
   }
 
   const handleOnChange = (event, { value, direction }) => {
@@ -35,10 +36,6 @@ function FileChosen({
     if (!direction && value > 0) {
       setDecimal(value)
     }
-  }
-
-  const removeFromExcludedArray = (excludedValueRef) => {
-    setExcludedArray(prevState => prevState.filter(value => value !== excludedValueRef.target.textContent))
   }
 
   return (
@@ -65,16 +62,7 @@ function FileChosen({
         </div>
 
         <div className={classes.hiddenContainer}>
-          {
-            excludedArray.map((value, index) => {
-              return (
-                  <Tile key={index} onClick={removeFromExcludedArray.bind(excludedValueRef)} ref={excludedValueRef}>
-                    <span>{value}</span>
-                  </Tile>
-              )
-            })
-          }
-
+          <ExcludedData excludedArray={excludedArray} setExcludedArray={setExcludedArray} />
         </div>
 
       </section>

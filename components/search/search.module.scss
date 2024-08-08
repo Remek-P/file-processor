@@ -1,7 +1,9 @@
+@import "../../styles/variables/breakpoints";
+
 .searchContainer {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   height: 48px;
 }
 
@@ -9,24 +11,26 @@
   border: 0;
   outline: 0;
   background-color: transparent;
+  border-bottom: transparent;
+  font-size: 1rem;
 
   &:focus {
     border-bottom: 1px solid black;
-    font-size: 1rem;
   }
 
-  @media (max-width: 600px) {
-    width: 100%;
-
-    &:focus {
-      font-size: 1rem;
-    }
+  @media (max-width: $breakpoint600) {
+    width: 95%;
   }
 }
 
 .searchIcon {
   --_size: 20px;
 
-    width: var(--_size);
-    height: var(--_size)
+  width: var(--_size);
+  height: var(--_size)
 }
+
+.deleteIcon {
+  padding-left: 5px;
+}
+

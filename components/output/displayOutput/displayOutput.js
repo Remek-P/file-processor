@@ -1,5 +1,6 @@
-import classes from "@/components/file-chosen/file-chosen.module.scss";
 import Output from "@/components/output/output";
+
+import classes from "@/components/file-chosen/file-chosen.module.scss";
 
 function DisplayOutput({
                          numberOfOutputs,

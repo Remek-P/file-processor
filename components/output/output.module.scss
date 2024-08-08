@@ -3,10 +3,7 @@
 
 .outputSearchContainer {
   display: flex;
-
-  @media (max-width: $breakpointM) {
-    //flex-direction: column;
-  }
+  flex-wrap: wrap;
 }
 
 .outputSearch {
@@ -23,6 +20,9 @@
 
 .select {
   display: flex;
+  align-items: center;
+  text-align: center;
+  padding-block: max(20%, 80px);
 }
 
 .grid {
@@ -30,7 +30,7 @@
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
-  gap: 8px;
+  gap: 6px;
 
   margin: 5% auto;
   width: 100%;
@@ -40,23 +40,21 @@
   }
 
   @media (min-width: 515px) {
-    //--_min: 200px;
+    --_min: 200px;
   }
 
-  @media (min-width: $breakpointXM) {
-    //--_min: 255px;
-    width: 90%;
+  @media (min-width: $breakpoint600) {
+    --_min: 255px;
     gap: 16px;
+    width: 90%;
   }
 
-  @media (min-width: 900px) {
-    //--_min: 300px;
+  @media (min-width: $breakpoint900) {
+    --_min: 300px;
 
     width: 80%;
   }
 }
-
-
 
 .searchContainer {
   display: flex;
@@ -108,16 +106,16 @@
   align-items: flex-start;
   flex-wrap: wrap;
 
+  & > h4 {
+    overflow: hidden;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
 
-  @media (max-width: $breakpointXM) {
-  //  flex-direction: column;
-  //  margin-bottom: 8px;
-  //
-    & > h4 {
-      overflow: hidden;
-      overflow-wrap: break-word;
-      hyphens: auto;
-    }
+
+  @media (max-width: $breakpoint600) {
+    flex-direction: column;
+    margin-bottom: 8px;
   }
 }
 
@@ -126,7 +124,7 @@
   justify-content: flex-end;
   flex-grow: 1;
 
-  @media (max-width: $breakpointXM) {
+  @media (max-width: $breakpoint600) {
     align-self: flex-end;
     margin-right: -15px; //offsetting padding from the button
   }
