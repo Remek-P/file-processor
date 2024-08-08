@@ -28,14 +28,12 @@
 }
 //--------------------------
 
-//:is(.menuContainer .outputContainer:only-child) {
-//
-//  background-color: red;
-//
-//  @media (min-width: $breakpoint380) {
-//    top: $actionsMenuHigh;
-//  }
-//}
+.sectionContainer:has( > .outputsContainer > .outputContainer:only-child) > .menuContainer {
+  @media (min-width: $breakpoint380) {
+    top: $actionsMenuHigh;
+  }
+}
+
 
 
 
