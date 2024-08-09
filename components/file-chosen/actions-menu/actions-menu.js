@@ -39,7 +39,6 @@ function ActionsMenu({
                 <MenuItemDivider/>
                 <MenuItem label="Refresh Data"
                           onClick={refreshData}
-                          kind="primary"
                           className={classes.menuItem}/>
               </>
 

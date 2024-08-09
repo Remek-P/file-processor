@@ -20,6 +20,10 @@
     text-overflow: ellipsis;
   }
 
+  & > p {
+    text-align: end;
+  }
+
   @media (max-width: 550px) {
     flex-direction: column;
     justify-content: center;
