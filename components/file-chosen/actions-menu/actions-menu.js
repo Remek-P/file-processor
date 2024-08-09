@@ -8,6 +8,8 @@ function ActionsMenu({
                        addPerson,
                        deleteAll,
                        handleFileChange,
+                       refreshData,
+                       isFetched,
                      }) {
   return (
       <div className={`${classes.menuContainer} shadow`}>
@@ -32,6 +34,16 @@ function ActionsMenu({
                     onClick={addPerson}
                     className={classes.menuItem}
           />
+          {
+              isFetched && <>
+                <MenuItemDivider/>
+                <MenuItem label="Refresh Data"
+                          onClick={refreshData}
+                          kind="primary"
+                          className={classes.menuItem}/>
+              </>
+
+          }
           <MenuItemDivider/>
           <MenuItem label="Delete All"
                     onClick={deleteAll}

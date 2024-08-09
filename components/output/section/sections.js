@@ -20,7 +20,7 @@ function Sections({
   const labelDataArray = excelFile[1];
   const userData = useMemo(() =>  excelFile.slice(2), [excelFile]);
 
-  const searchRecords = useMemo(() => userData.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue]);
+  const searchRecords = useMemo(() => userData.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, excelFile]);
   const colDataArray = searchRecords[0];
 
   const displayData = () => {

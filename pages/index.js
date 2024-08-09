@@ -14,6 +14,7 @@ export default function Home() {
   const [excelFileName, setExcelFileName] = useState(null);
   const [excelFile, setExcelFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetched, setIsFetched] = useState(null)
 
 
   const readExcel = (data) => {
@@ -30,7 +31,7 @@ export default function Home() {
 
   const handleFile = async (e) => {
 
-    setIsLoading(true)
+    setIsLoading(true);
     setExcelFile(null);
 
     setExcelFileName(e.target.files[0].name);
@@ -38,7 +39,8 @@ export default function Home() {
     const data = await excelFile.arrayBuffer();
 
     readExcel(data);
-    setIsLoading(false)
+    setIsFetched(false);
+    setIsLoading(false);
   }
 
   const fetchDataFromDB = async () => {
@@ -55,6 +57,7 @@ export default function Home() {
 
     setExcelFile(jsonData);
     setExcelFileName("DB_file")
+    setIsFetched(true);
     setIsLoading(false);
   }
 
@@ -64,6 +67,10 @@ export default function Home() {
     setExcelFile(null);
     setExcelFileName(null);
     setIsLoading(false);
+  }
+
+  const refreshData = async () => {
+    await fetchDataFromDB();
   }
 
   return (
@@ -93,6 +100,8 @@ export default function Home() {
           excelFile &&
             <FileChosen excelFile={excelFile}
                         handleFileChange={handleFileChange}
+                        refreshData={refreshData}
+                        isFetched={isFetched}
             />
         }
 

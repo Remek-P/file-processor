@@ -2,14 +2,16 @@ import { useState } from "react";
 
 import DisplayOutput from "@/components/output/displayOutput/displayOutput";
 import ActionsMenu from "@/components/file-chosen/actions-menu/actions-menu";
+import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
 import classes from "./file-chosen.module.scss";
 
-import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
 function FileChosen({
                       handleFileChange,
                       excelFile,
+                      refreshData,
+                      isFetched,
                     }) {
 
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
@@ -46,6 +48,8 @@ function FileChosen({
                      deleteAll={deleteAll}
                      handleFileChange={handleFileChange}
                      decimal={decimal}
+                     refreshData={refreshData}
+                     isFetched={isFetched}
         />
 
         <div className={classes.outputsContainer}>
