@@ -16,10 +16,8 @@
 }
 
 .outputsContainer {
-  top: $grid170;
-
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax($grid200, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax($grid170, 1fr));
   gap: 4px;
 
   @media (min-width: $breakpoint515) {

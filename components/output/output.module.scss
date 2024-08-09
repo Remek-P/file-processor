@@ -1,56 +1,7 @@
 @import "../../styles/variables/variables";
 @import "../../styles/variables/breakpoints";
 
-.outputSearchContainer {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.outputSearch {
-  width: fit-content;
-  padding: 0 10px;
-}
-
-.label {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  cursor: pointer;
-}
-
-.select {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  padding-block: max(20%, 80px);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax($grid170, 1fr));
-  gap: 6px;
-
-  margin: 5% auto;
-  width: 100%;
-
-  & h4 {
-    padding-bottom: 2%;
-  }
-
-  @media (min-width: $breakpoint515) {
-    grid-template-columns: repeat(auto-fit, minmax($grid200, 1fr));
-  }
-
-  @media (min-width: $breakpoint600) {
-    grid-template-columns: repeat(auto-fit, minmax($grid255, 1fr));
-    gap: 8px;
-  }
-
-  @media (min-width: $breakpoint900) {
-    grid-template-columns: repeat(auto-fit, minmax($grid280, 1fr));
-    width: 95%;
-  }
-}
+//Output has NOT been chosen yet
 
 .searchContainer {
   display: flex;
@@ -96,6 +47,67 @@
   margin: 0 auto;
 }
 
+//Output has been chosen by the user
+
+//-------------------------
+//Search input
+.outputSearchContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.outputSearch {
+  width: fit-content;
+  padding: 0 5px;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding-block: max(20%, 80px);
+}
+
+//-------------------------
+//Displaying chosen output
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($grid170, 1fr));
+  gap: 6px;
+
+  margin: 5% auto;
+  width: 100%;
+
+  & h4 {
+    padding-bottom: 2%;
+  }
+
+  @media (min-width: $breakpoint515) {
+    grid-template-columns: repeat(auto-fit, minmax($grid200, 1fr));
+  }
+
+  @media (min-width: $breakpoint600) {
+    grid-template-columns: repeat(auto-fit, minmax($grid255, 1fr));
+    gap: 8px;
+  }
+
+  @media (min-width: $breakpoint900) {
+    grid-template-columns: repeat(auto-fit, minmax($grid280, 1fr));
+    width: 95%;
+  }
+}
+
+//-------------------------
+//Displaying tiles layout
+
 .topSection {
   display: flex;
   justify-content: space-between;
@@ -119,10 +131,10 @@
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
+  overflow: hidden;
 
   @media (max-width: $breakpoint600) {
     align-self: flex-end;
-    margin-right: -15px; //offsetting padding from the button
   }
 }
 

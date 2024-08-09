@@ -6,38 +6,25 @@
     margin-top: auto;
   }
 }
-
+//TODO: text-overflow: ellipsis; is not working
 .subContainer {
   display: flex;
   gap: 10px;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  overflow: hidden;
+
 
   & > * {
-    overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  & > span {
-    align-self: center;
-    text-align: right;
-    overflow: hidden;
-    overflow-wrap: break-word;
-    hyphens: auto;
   }
 
   @media (max-width: 550px) {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    //justify-content: space-between;
     gap: 2px;
-
-
-    //& > :last-child {
-    //  align-self: flex-start;
-    //}
   }
 }
 
