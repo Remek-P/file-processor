@@ -23,7 +23,8 @@ function SectionLayout({
                          children,
                        }) {
   // TODO: what if colData is mixed - number and string
-  
+  // TODO: Delete decimal and setDecimal if needed
+
 
   const [showBarChart, setShowBarChart] = useState(false);
   const [showDonutChart, setShowDonutChart] = useState(false);
@@ -67,9 +68,10 @@ function SectionLayout({
   const isNumber = valueArray.some(item => item === true);
 
   const handleTogglePercentages = () => {
-    if (decimal === undefined) setDecimal(2);
+    // if (decimal === undefined) setDecimal(2);
     if (showPercentages === undefined) setShowPercentages(true);
     else setShowPercentages(prevState => !prevState)
+
   };
 
 
