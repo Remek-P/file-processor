@@ -1,3 +1,5 @@
+import classes from "../../../output.module.scss";
+
 function ShowMetrics({
                        index,
                        labelData,
@@ -24,6 +26,7 @@ function ShowMetrics({
     }
   };
 
+  // Get the symbol from string
   const symbol = containsSymbol(colData, stringSymbolArray);
 
   const display = () => {
@@ -56,7 +59,7 @@ function ShowMetrics({
   }
 
   return (
-      <div key={`${colData}+${labelData}`} className={`subContainer subContainer${index}`}>
+      <div key={`${colData}+${labelData}`} className={`${classes.subContainer} subContainer${index}`}>
         <h6>{ labelData }</h6>
         <p>{ display() }</p>
       </div>

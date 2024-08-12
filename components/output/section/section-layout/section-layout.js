@@ -27,7 +27,6 @@ function SectionLayout({
 
   const [showBarChart, setShowBarChart] = useState(false);
   const [showDonutChart, setShowDonutChart] = useState(false);
-  const [sort, setSort] = useState(undefined);
 
   const valueRef = useRef(null);
 
@@ -98,13 +97,8 @@ function SectionLayout({
 
   const hidden = isContainingItemFromArray(value, excludedArray) ? {display: "none"} : null;
 
-  if (value === "Human") {
-    console.log("value", value)
-    console.log("isHidden", hidden)
-  }
-
   return (
-      <Tile className="shadow" style={hidden} aria-hidden={!!hidden}>
+      <Tile className={`${classes.optionContainer} shadow`} style={hidden} aria-hidden={!!hidden}>
 
         <div className={classes.topSection}>
           <h4>{value}</h4>

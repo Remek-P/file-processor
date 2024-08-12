@@ -16,6 +16,7 @@ function Show({
 
   const [showAllMetrics, setShowAllMetrics] = useState(false);
   const [showPercentages, setShowPercentages] = useState(undefined);
+  const [sort, setSort] = useState(undefined);
 
   const isNumber = useRef(undefined);
   const numbersEqualToZero = useRef(false);
@@ -27,6 +28,14 @@ function Show({
   const valueArray = [];
 
   const signsArray = ['%', '$', "US$", "USD", "AUD", "A$", "CAD", "C$", '€', "EUR", '¥', "JPY", '£', "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
+
+  const handleChartData = (type, index, value) => {
+    valueArray.push(type) //valueArray is sent as props and used to check if data is number
+    chartData.push({
+      group: labelDataArray[index],
+      value: value
+    });
+  }
 
   return (
 
@@ -53,59 +62,57 @@ function Show({
                     // check if contains a symbol from the array
                     const checkIfStringContainsArray = checkForString && signsArray.filter(symbol => colDataArray[index].includes(symbol));
 
-                    let cleanValue = colDataArray[index];
 
+                    let cleanValue = colDataArray[index];
                     // if number is a string with a symbol, filter out the symbol sign to create a clean string
                     if (checkIfStringContainsArray.length > 0) {
                       for (const sign in checkIfStringContainsArray) {
                         cleanValue = checkForString && cleanValue.includes(checkIfStringContainsArray[sign]) ? cleanValue.replace(checkIfStringContainsArray[sign], "") : cleanValue;
                       }
-                    } else cleanValue = colDataArray[index];
-                    
+                    }
+                    else cleanValue = colDataArray[index];
+
+
                     // if displayed value is a number, assign true to isNumber.current to help display the actions for numerical values
                     if (typeof colDataArray[index] === "number") isNumber.current = true
                     // if displayed value is a number in a string, assign true to isNumber.current to help display the actions for numerical values
                     else if (checkForString) isNumber.current = !isNaN(+cleanValue);
                     else isNumber.current = false;
 
+
                     // Needed for displaying hide/show 0s toggle
                     if (+cleanValue === 0) numbersEqualToZero.current = true;
 
+
                     // Show data not equal to zero
                     if (!showAllMetrics) {
-                      if (+cleanValue !== 0) {
-                        valueArray.push(isNumber.current) //valueArray is sent as props and used to check if data is number
-                        chartData.push({
-                          group: labelDataArray[index],
-                          value: +cleanValue
-                        });
 
-                        return (
-                            <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
+                      if (+cleanValue !== 0) {
+                        handleChartData(isNumber.current, index, +cleanValue)
+
+                        return <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
                                          index={index}
                                          colData={colDataArray[index]}
                                          labelData={labelDataArray[index]}
                                          showPercentages={showPercentages}
                                          decimal={decimal}
                             />
-                        )
                       }
-                    } else if (showAllMetrics) {
-                      valueArray.push(isNumber.current) //valueArray is sent as props and used to check if data is number
-                      chartData.push({
-                        group: labelDataArray[index],
-                        value: +cleanValue
-                      });
-
-                      return <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
-                                          index={index}
-                                          colData={colDataArray[index]}
-                                          labelData={labelDataArray[index]}
-                                          showPercentages={showPercentages}
-                                          decimal={decimal}
-                      />
-
                     }
+
+                      else if (showAllMetrics) {
+                        handleChartData(isNumber.current, index, +cleanValue)
+
+                        return <ShowMetrics key={`${colDataArray[index]}+${labelDataArray[index]}`}
+                                            index={index}
+                                            colData={colDataArray[index]}
+                                            labelData={labelDataArray[index]}
+                                            showPercentages={showPercentages}
+                                            decimal={decimal}
+                        />
+                    }
+
+
                   }
                 }
             )
