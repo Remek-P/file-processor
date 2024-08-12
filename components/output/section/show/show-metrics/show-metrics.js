@@ -15,8 +15,6 @@ function ShowMetrics({
           ? undefined
           : 2
 
-  if (localDecimal !== undefined) console.log("localDecimal", labelData, localDecimal)
-
   const convertToPercentages = (+colData * 100).toFixed(localDecimal);
   const roundToGivenDecimal = (+colData).toFixed(localDecimal);
 
@@ -52,16 +50,17 @@ function ShowMetrics({
         // if not a number test if this is a number stored as a string
         if (typeof colData === "string" && regexCheckForNumberWithSymbol.test(colData)) {
         const convertToNumber = (+(colData.replace(containsSymbol(colData, stringSymbolArray), "")));
+        const convertedAndRounded = convertToNumber.toFixed(decimal)
 
           if (symbol === "%" || symbol === "p%") {
 
-              if (showPercentages === undefined) return convertToNumber.toFixed(decimal) + symbol
-              return showPercentages ? `${convertToNumber.toFixed(decimal)}${symbol}` : convertToNumber.toFixed(decimal)
+              if (showPercentages === undefined) return convertedAndRounded + symbol
+              return showPercentages ? `${convertedAndRounded}${symbol}` : convertedAndRounded
 
           // traditionally the zł (currency indicator) is displayed after the value
-          } else if (symbol === "zł") return `${convertToNumber.toFixed(decimal)}${symbol}`
+          } else if (symbol === "zł") return `${convertedAndRounded}${symbol}`
 
-            else return `${convertToNumber.toFixed(decimal)}${symbol}`
+            else return `${symbol}${convertedAndRounded}`
 
         } else return colData
     }
