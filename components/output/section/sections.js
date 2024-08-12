@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
-import DisplayMultipleOutputs from "@/components/output/display-multiple-outputs/display-multiple-outputs";
+import DisplayMultipleSuggestions from "@/components/output/display-multiple-suggestions/display-multiple-suggestions";
 import DisplaySingleOutput from "@/components/output/display-single-output/display-single-output";
 
 import classes from "../output.module.scss";
@@ -48,10 +48,10 @@ function Sections({
     else if (searchRecords.length > 1)
       return (
               <div className={classes.grid}>
-                <DisplayMultipleOutputs inputValue={inputValue}
-                                        labelDataArray={labelDataArray}
-                                        setInputValue={setInputValue}
-                                        searchUsers={searchRecords}
+                <DisplayMultipleSuggestions inputValue={inputValue}
+                                            labelDataArray={labelDataArray}
+                                            setInputValue={setInputValue}
+                                            searchUsers={searchRecords}
                 />
               </div>
           )

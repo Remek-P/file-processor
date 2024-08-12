@@ -4,7 +4,9 @@ import classes from "../file-chosen.module.scss";
 
 function ActionsMenu({
                        decimal,
-                       handleOnChange,
+                       handleDecimalChange,
+                       handleShowAllHiddenArrays,
+                       handleHideAllArrays,
                        addPerson,
                        deleteAll,
                        handleFileChange,
@@ -21,10 +23,10 @@ function ActionsMenu({
           <NumberInput value={decimal}
                        min={0}
                        max={20}
-                       onChange={handleOnChange}
+                       onChange={handleDecimalChange}
                        step={1}
                        iconDescription="increase decrease"
-                       label="Increase or decrease decimal place"
+                       label="Set decimal place"
                        invalidText="Invalid value (0-20)"
                        size="sm"
                        id="decimal input"
@@ -34,13 +36,19 @@ function ActionsMenu({
                     onClick={addPerson}
                     className={classes.menuItem}
           />
+          <MenuItemDivider/>
+          <MenuItem label="Hide All"
+                    onClick={handleHideAllArrays}
+                    className={classes.menuItem}
+          />
+          <MenuItem label="Show All"
+                    onClick={handleShowAllHiddenArrays}
+                    className={classes.menuItem}
+          />
           {
-              isFetched && <>
-                <MenuItemDivider/>
-                <MenuItem label="Refresh Data"
-                          onClick={refreshData}
-                          className={classes.menuItem}/>
-              </>
+              isFetched && <MenuItem label="Refresh Data"
+                                     onClick={refreshData}
+                                     className={classes.menuItem}/>
 
           }
           <MenuItemDivider/>

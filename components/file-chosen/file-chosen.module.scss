@@ -104,5 +104,12 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
+  align-items: stretch;
   gap: 4px;
+
+  & > li > * {
+    cursor: pointer;
+    width: 100%;
+    min-height: 100%;
+  }
 }

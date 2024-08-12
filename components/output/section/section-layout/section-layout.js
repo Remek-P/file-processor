@@ -2,14 +2,13 @@ import { useState, useRef } from "react";
 
 import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
 
-import {DonutChart, SimpleBarChart} from "@carbon/charts-react";
-import {Tile, Toggle} from "@carbon/react";
+import { DonutChart, SimpleBarChart } from "@carbon/charts-react";
+import { Tile, Toggle } from "@carbon/react";
 
 import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
 
 function SectionLayout({
-                         index,
                          value,
                          chartData,
                          valueArray,
@@ -24,10 +23,11 @@ function SectionLayout({
                          children,
                        }) {
   // TODO: what if colData is mixed - number and string
-
+  
 
   const [showBarChart, setShowBarChart] = useState(false);
   const [showDonutChart, setShowDonutChart] = useState(false);
+  const [sort, setSort] = useState(undefined);
 
   const valueRef = useRef(null);
 
@@ -92,8 +92,19 @@ function SectionLayout({
     setExcludedArray([...excludedArray, valueRef.current.value])
   }
 
+  const isContainingItemFromArray = (item, arr) => {
+    return arr.includes(item)
+  }
+
+  const hidden = isContainingItemFromArray(value, excludedArray) ? {display: "none"} : null;
+
+  if (value === "Human") {
+    console.log("value", value)
+    console.log("isHidden", hidden)
+  }
+
   return (
-      <Tile className={`optionContainer optionContainer${index} shadow`}>
+      <Tile className="shadow" style={hidden} aria-hidden={!!hidden}>
 
         <div className={classes.topSection}>
           <h4>{value}</h4>

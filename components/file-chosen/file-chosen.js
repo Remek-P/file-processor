@@ -18,34 +18,42 @@ function FileChosen({
   const [decimal, setDecimal] = useState(undefined);
   const [excludedArray, setExcludedArray] = useState([]);
 
-
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
   }
 
   const deleteAll = () => {
-    setNumberOfOutputs([])
-    setExcludedArray([])
+    setNumberOfOutputs([]);
+    setExcludedArray([]);
   }
 
-  const handleOnChange = (event, { value, direction }) => {
+  const handleDecimalChange = (event, { value, direction }) => {
     if (direction === "down" && value >= 0) {
-      setDecimal(value)
+      setDecimal(value);
     }
     if (direction === "up") {
-      setDecimal(value)
+      setDecimal(value);
     }
     if (!direction && value > 0) {
-      setDecimal(value)
+      setDecimal(value);
     }
+  }
+
+  const handleShowAllHiddenArrays = () => {
+    setExcludedArray([]);
+  }
+  const handleHideAllArrays = () => {
+    setExcludedArray([...(new Set(excelFile[0]))]);
   }
 
   return (
       <section className={classes.sectionContainer}>
 
-        <ActionsMenu handleOnChange={handleOnChange}
+        <ActionsMenu handleDecimalChange={handleDecimalChange}
                      addPerson={addPerson}
                      deleteAll={deleteAll}
+                     handleShowAllHiddenArrays={handleShowAllHiddenArrays}
+                     handleHideAllArrays={handleHideAllArrays}
                      handleFileChange={handleFileChange}
                      decimal={decimal}
                      refreshData={refreshData}
@@ -63,9 +71,9 @@ function FileChosen({
           />
         </div>
 
-        <div className={classes.hiddenContainer}>
+        <ul className={classes.hiddenContainer}>
           <ExcludedData excludedArray={excludedArray} setExcludedArray={setExcludedArray} />
-        </div>
+        </ul>
 
       </section>
   );

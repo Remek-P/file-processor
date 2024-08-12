@@ -18,9 +18,11 @@ function ExcludedData({
         {
           excludedArray.map((value, index) => {
             return (
-                <Tile key={index} onClick={removeFromExcludedArray.bind(excludedValueRef)} ref={excludedValueRef}>
-                  <span>{value}</span>
-                </Tile>
+                <li key={index} >
+                    <Tile onClick={removeFromExcludedArray.bind(excludedValueRef)} ref={excludedValueRef}>
+                      <span>{value}</span>
+                    </Tile>
+                </li>
             )
           })
         }

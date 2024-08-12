@@ -5,7 +5,6 @@ import SectionLayout from "@/components/output/section/section-layout/section-la
 
 function Show({
                 value,
-                index,
                 headerDataArray,
                 labelDataArray,
                 colDataArray,
@@ -31,8 +30,7 @@ function Show({
 
   return (
 
-      <SectionLayout index={index}
-                     value={value}
+      <SectionLayout value={value}
                      decimal={decimal}
                      setDecimal={setDecimal}
                      chartData={chartData}

@@ -4,7 +4,7 @@ import classes from "@/components/output/output.module.scss";
 
 import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
 
-function DisplayMultipleOutputs({
+function DisplayMultipleSuggestions({
                                   labelDataArray,
                                   searchUsers,
                                   inputValue,
@@ -40,4 +40,4 @@ function DisplayMultipleOutputs({
   );
 }
 
-export default DisplayMultipleOutputs;
+export default DisplayMultipleSuggestions;
