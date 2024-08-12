@@ -8,8 +8,17 @@ function ShowMetrics({
                        decimal,
                      }) {
 
-  const convertToPercentages = (+colData * 100).toFixed(decimal);
-  const roundToGivenDecimal = (+colData).toFixed(decimal);
+  // Without this constant, the toggle percentages button in in SectionLayout, would have changed all the value by setting specific decimal place
+  const localDecimal = decimal !== undefined
+      ? decimal
+      : showPercentages === undefined
+          ? undefined
+          : 2
+
+  if (localDecimal !== undefined) console.log("localDecimal", labelData, localDecimal)
+
+  const convertToPercentages = (+colData * 100).toFixed(localDecimal);
+  const roundToGivenDecimal = (+colData).toFixed(localDecimal);
 
   // Double escape required for the regex test (regexCheckForNumberWithSymbol)
   const regexSymbolArray = ["%", "p\\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
@@ -54,7 +63,7 @@ function ShowMetrics({
 
             else return `${convertToNumber.toFixed(decimal)}${symbol}`
 
-      } else return colData
+        } else return colData
     }
   }
 

@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import { useRef, useState } from "react";
 
 import ShowMetrics from "@/components/output/section/show/show-metrics/show-metrics";
 import SectionLayout from "@/components/output/section/section-layout/section-layout";
@@ -16,7 +16,6 @@ function Show({
 
   const [showAllMetrics, setShowAllMetrics] = useState(false);
   const [showPercentages, setShowPercentages] = useState(undefined);
-  const [sort, setSort] = useState(undefined);
 
   const isNumber = useRef(undefined);
   const numbersEqualToZero = useRef(false);
@@ -27,7 +26,7 @@ function Show({
   // Sent as props to SectionLayout in case the data is of mixed type
   const valueArray = [];
 
-  const signsArray = ['%', '$', "US$", "USD", "AUD", "A$", "CAD", "C$", '€', "EUR", '¥', "JPY", '£', "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
+  const signsArray = ["%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
 
   const handleChartData = (type, index, value) => {
     valueArray.push(type) //valueArray is sent as props and used to check if data is number
@@ -60,14 +59,13 @@ function Show({
 
                     const checkForString = typeof colDataArray[index] === "string";
                     // check if contains a symbol from the array
-                    const checkIfStringContainsArray = checkForString && signsArray.filter(symbol => colDataArray[index].includes(symbol));
-
+                    const checkSymbolsInArray = checkForString && signsArray.filter(symbol => colDataArray[index].includes(symbol));
 
                     let cleanValue = colDataArray[index];
                     // if number is a string with a symbol, filter out the symbol sign to create a clean string
-                    if (checkIfStringContainsArray.length > 0) {
-                      for (const sign in checkIfStringContainsArray) {
-                        cleanValue = checkForString && cleanValue.includes(checkIfStringContainsArray[sign]) ? cleanValue.replace(checkIfStringContainsArray[sign], "") : cleanValue;
+                    if (checkSymbolsInArray.length > 0) {
+                      for (const sign in checkSymbolsInArray) {
+                        cleanValue = checkForString && cleanValue.includes(checkSymbolsInArray[sign]) ? cleanValue.replace(checkSymbolsInArray[sign], "") : cleanValue;
                       }
                     }
 
