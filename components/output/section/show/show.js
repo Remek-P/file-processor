@@ -70,7 +70,6 @@ function Show({
                         cleanValue = checkForString && cleanValue.includes(checkIfStringContainsArray[sign]) ? cleanValue.replace(checkIfStringContainsArray[sign], "") : cleanValue;
                       }
                     }
-                    else cleanValue = colDataArray[index];
 
 
                     // if displayed value is a number, assign true to isNumber.current to help display the actions for numerical values

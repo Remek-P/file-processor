@@ -17,31 +17,18 @@ function DisplaySingleOutput({
   return (
       <>
         {
-          excelFileUniqueValues.map((value, index) => {
-            // if (!isContainingItemFromArray(value, excludedArray)) {
-            //   return <Show key={value}
-            //                index={index}
-            //                value={value}
-            //                colDataArray={colDataArray}
-            //                labelDataArray={labelDataArray}
-            //                headerDataArray={headerDataArray}
-            //                excludedArray={excludedArray}
-            //                setExcludedArray={setExcludedArray}
-            //                decimal={decimal}
-            //                setDecimal={setDecimal}
-            //   />
-            // }
-              return <Show key={value}
-                           value={value}
-                           colDataArray={colDataArray}
-                           labelDataArray={labelDataArray}
-                           headerDataArray={headerDataArray}
-                           excludedArray={excludedArray}
-                           setExcludedArray={setExcludedArray}
-                           decimal={decimal}
-                           setDecimal={setDecimal}
+          excelFileUniqueValues.map(value => (
+              <Show key={value}
+                    value={value}
+                    colDataArray={colDataArray}
+                    labelDataArray={labelDataArray}
+                    headerDataArray={headerDataArray}
+                    excludedArray={excludedArray}
+                    setExcludedArray={setExcludedArray}
+                    decimal={decimal}
+                    setDecimal={setDecimal}
               />
-          })
+          ))
         }
       </>
   );
