@@ -37,6 +37,9 @@ function ShowMetrics({
   const symbol = containsSymbol(colData, stringSymbolArray);
 
   const display = () => {
+    // if empty
+    if (colData === "") return null;
+
     // Check if number
     if (!isNaN(+convertToPercentages)) {
 
@@ -47,22 +50,24 @@ function ShowMetrics({
 
     } else {
 
-        // if not a number test if this is a number stored as a string
-        if (typeof colData === "string" && regexCheckForNumberWithSymbol.test(colData)) {
+      // if empty
+      if (colData.trim() === "") return null;
+      // if not a number test if this is a number stored as a string
+      if (typeof colData === "string" && regexCheckForNumberWithSymbol.test(colData)) {
         const convertToNumber = (+(colData.replace(containsSymbol(colData, stringSymbolArray), "")));
         const convertedAndRounded = convertToNumber.toFixed(decimal)
 
-          if (symbol === "%" || symbol === "p%") {
+        if (symbol === "%" || symbol === "p%") {
 
-              if (showPercentages === undefined) return convertedAndRounded + symbol
-              return showPercentages ? `${convertedAndRounded}${symbol}` : convertedAndRounded
+          if (showPercentages === undefined) return `${convertedAndRounded}${symbol}`
+          return showPercentages ? `${convertedAndRounded}${symbol}` : convertedAndRounded
 
           // traditionally the zł (currency indicator) is displayed after the value
-          } else if (symbol === "zł") return `${convertedAndRounded}${symbol}`
+        } else if (symbol === "zł") return `${convertedAndRounded}${symbol}`
 
-            else return `${symbol}${convertedAndRounded}`
+        else return `${symbol}${convertedAndRounded}`
 
-        } else return colData
+      } else return colData
     }
   }
 
