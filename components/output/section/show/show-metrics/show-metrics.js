@@ -17,7 +17,6 @@ function ShowMetrics({
 
   const convertToPercentages = (+colData * 100).toFixed(localDecimal);
   const roundToGivenDecimal = (+colData).toFixed(localDecimal);
-  if (labelData === "day.month") console.log("colData", typeof colData)
 
   // Double escape required for the regex test (regexCheckForNumberWithSymbol)
   const regexSymbolArray = ["%", "p\\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
@@ -78,8 +77,8 @@ function ShowMetrics({
 
   return (
       <div key={`${colData}+${labelData}`} className={`${classes.subContainer} subContainer${index}`}>
-        <h6>{ labelData }</h6>
-        <p>{ display() }</p>
+        <h6>{labelData}</h6>
+        <p>{display()}</p>
       </div>
   )
 

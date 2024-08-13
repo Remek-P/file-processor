@@ -18,13 +18,11 @@ function SectionLayout({
                          setExcludedArray,
                          numbersEqualToZero,
                          setShowAllMetrics,
-                         decimal,
-                         setDecimal,
+                         setSort,
                          children,
                        }) {
   // TODO: what if colData is mixed - number and string
   // TODO: Delete decimal and setDecimal if needed
-
 
   const [showBarChart, setShowBarChart] = useState(false);
   const [showDonutChart, setShowDonutChart] = useState(false);
@@ -67,13 +65,16 @@ function SectionLayout({
 
   const isNumber = valueArray.some(item => item === true);
 
+  const sortValues = () => {
+    setSort(prevState => !prevState);
+  }
+
   const handleTogglePercentages = () => {
     // if (decimal === undefined) setDecimal(2);
     if (showPercentages === undefined) setShowPercentages(true);
     else setShowPercentages(prevState => !prevState)
 
   };
-
 
   const displayBarChart = () => {
     setShowBarChart(prevState => !prevState);
@@ -105,6 +106,9 @@ function SectionLayout({
         <div className={classes.topSection}>
           <h4>{value}</h4>
           <div className={classes.numberButtons}>
+            <ActionToggle onClick={sortValues} description={"sort"}>
+              {"Sort"}
+            </ActionToggle>
             {isNumber &&
                 <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
                   {percentagesIcon}
