@@ -17,6 +17,7 @@ function ShowMetrics({
 
   const convertToPercentages = (+colData * 100).toFixed(localDecimal);
   const roundToGivenDecimal = (+colData).toFixed(localDecimal);
+  if (labelData === "day.month") console.log("colData", typeof colData)
 
   // Double escape required for the regex test (regexCheckForNumberWithSymbol)
   const regexSymbolArray = ["%", "p\\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
@@ -48,7 +49,7 @@ function ShowMetrics({
       // enables toggling between percentage views
       return showPercentages ? `${convertToPercentages}%` : roundToGivenDecimal
 
-    } else {
+    } else if (colData === typeof "string") {
 
       // if empty
       if (colData.trim() === "") return null;
@@ -68,7 +69,11 @@ function ShowMetrics({
         else return `${symbol}${convertedAndRounded}`
 
       } else return colData
-    }
+    } else if (colData === typeof "date") {
+
+      return colData
+
+    } else return colData
   }
 
   return (
