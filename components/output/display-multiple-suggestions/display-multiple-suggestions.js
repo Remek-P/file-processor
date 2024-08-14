@@ -5,18 +5,17 @@ import classes from "@/components/output/output.module.scss";
 import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
 
 function DisplayMultipleSuggestions({
-                                  labelDataArray,
-                                  searchUsers,
-                                  inputValue,
-                                  setInputValue,
-                                }) {
+                                      IDIndex,
+                                      labelDataArray,
+                                      searchUsers,
+                                      inputValue,
+                                      setInputValue,
+                                    }) {
 
   const reducePerformanceStrain = inputValue.length < 3;
 
-  const indexOfID = labelDataArray.findIndex(element => element.toLowerCase() === "_id" || element.toLowerCase() === "id");
-
-  const pickSearchedPerson = (e) => {
-    setInputValue(e.target.value);
+  const pickSearchedOutput = (e) => {
+    setInputValue(e.target.dataset.value);
   }
 
   return (
@@ -30,9 +29,9 @@ function DisplayMultipleSuggestions({
               <SearchSuggestions key={index}
                                  label={label}
                                  index={index}
-                                 indexOfID={indexOfID}
+                                 IDIndex={IDIndex}
                                  searchUsers={searchUsers}
-                                 pickSearchedPerson={pickSearchedPerson}
+                                 pickSearchedOutput={pickSearchedOutput}
               />
           )}
         </ul>

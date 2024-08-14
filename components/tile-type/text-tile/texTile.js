@@ -2,7 +2,16 @@ import { Tile } from "@carbon/react";
 
 import classes from "../tile.module.scss";
 
-function TexTile({ text, handleClick }) {
+function TexTile({ text, handleClick, type, children }) {
+
+  if (type === "children") {
+    return (
+        <Tile className={`${classes.selectID} shadow`}>
+          { children }
+        </Tile>
+    )
+  }
+
   return (
       <Tile className={`${classes.findUser} shadow`} onClick={handleClick}>
         <h3>{text}</h3>

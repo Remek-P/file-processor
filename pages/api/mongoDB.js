@@ -21,8 +21,9 @@ export default async function helpers(req, res) {
       const db = client.db(`data-to-JS`);
       data = await db
           // .collection("data-to-JS")
-          .collection("test")
-          .find({}, {projection:{ _id: 0 }})
+          .collection("noID")
+          // .collection("test")
+          .find(/*{}, {projection:{ _id: 0 }}*/)
           .toArray();
     } catch (error) {
       await client.close();

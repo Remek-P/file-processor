@@ -1,4 +1,4 @@
-import {useMemo} from "react";
+import { useMemo } from "react";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
 import DisplayMultipleSuggestions from "@/components/output/display-multiple-suggestions/display-multiple-suggestions";
@@ -7,6 +7,7 @@ import DisplaySingleOutput from "@/components/output/display-single-output/displ
 import classes from "../output.module.scss";
 
 function Sections({
+                    IDIndex,
                     excelFile,
                     inputValue,
                     setInputValue,
@@ -14,7 +15,7 @@ function Sections({
                     decimal,
                     setDecimal,
                     excludedArray,
-                    setExcludedArray
+                    setExcludedArray,
                   }) {
 
   const labelDataArray = excelFile[1];
@@ -48,7 +49,8 @@ function Sections({
     else if (searchRecords.length > 1)
       return (
               <div className={classes.grid}>
-                <DisplayMultipleSuggestions inputValue={inputValue}
+                <DisplayMultipleSuggestions IDIndex={IDIndex}
+                                            inputValue={inputValue}
                                             labelDataArray={labelDataArray}
                                             setInputValue={setInputValue}
                                             searchUsers={searchRecords}

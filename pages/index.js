@@ -16,7 +16,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isFetched, setIsFetched] = useState(null)
 
-
   const readExcel = (data) => {
 
     const workbook = XLSX.readFile(data,
@@ -53,8 +52,11 @@ export default function Home() {
       header: 1,
     });
 
+    // Need to delete the first column, because it served as the base for key creation for MongoDb
     jsonData.shift()
-
+    // Two below indices are the ids from MongoDB
+    jsonData[0][0] = "MongoDB ID";
+    jsonData[1][0] = "_id";
     setExcelFile(jsonData);
     setExcelFileName("DB_file")
     setIsFetched(true);

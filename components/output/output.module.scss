@@ -14,10 +14,12 @@
     width: max-content;
   }
 
+  $data-container-gap: 18px;
+
   &DataContainer {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: $data-container-gap;
   }
 
   &Data {
@@ -25,13 +27,13 @@
 
     position: relative;
 
-    $height: 6px;
+    &::after {
+      $height: calc($data-container-gap / -2.2);
 
-    &::before {
       content: "";
       position: absolute;
-      inset: -$height -32px -$height 0;
-      min-height: $height;
+      inset: $height -30% $height 0;
+      min-height: -$height;
 
       background-color: transparent;
       z-index: 1;
@@ -48,6 +50,18 @@
 }
 
 //Output has been chosen by the user
+
+//-------------------------
+//User needs to pick ID
+
+.pickID {
+
+  &Li {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+}
 
 //-------------------------
 //Search input

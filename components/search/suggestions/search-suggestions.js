@@ -4,9 +4,9 @@ import classes from "@/components/output/output.module.scss";
 function SearchSuggestions({
                              label,
                              index,
-                             indexOfID,
+                             IDIndex,
                              searchUsers,
-                             pickSearchedPerson
+                             pickSearchedOutput
                            }) {
   return (
       <li>
@@ -14,13 +14,13 @@ function SearchSuggestions({
           <h5 className={classes.searchContainerHeader}>{label}</h5>
           <ul className={classes.searchContainerDataContainer}>
             {searchUsers.map(data =>
-                <li key={data[indexOfID]}
-                    value={data[indexOfID]}
-                    onClick={pickSearchedPerson}
-                    className={classes.searchContainerData}
-                >
-                  {data[index]}
-                </li>
+              <li key={data[IDIndex]}
+                  data-value={data[IDIndex]}
+                  onClick={pickSearchedOutput}
+                  className={classes.searchContainerData}
+              >
+                {data[index]}
+              </li>
             )}
           </ul>
         </Tile>
