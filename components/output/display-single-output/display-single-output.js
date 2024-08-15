@@ -12,43 +12,36 @@ function DisplaySingleOutput({
                                setExcludedArray
                              }) {
 
-  const excelFileUniqueValues = [... new Set(excelFile[0])];
-
   const headerDataArray = excelFile[0];
 
-  console.log("toggleIDView", toggleIDView)
-
-  // TODO: hide mongoDb index if other available
+  const excelFileUniqueValues = [... new Set(headerDataArray)];
+  
+  const filteredOutDB_ID =  excelFileUniqueValues.filter(item => item !== headerLabel);
 
   return (
       <>
         {
-          excelFileUniqueValues.map(value => {
-
-            if (value === "MongoDB ID") return null;
-
-            return <Show key={value}
-                         value={value}
-                         colDataArray={colDataArray}
-                         labelDataArray={labelDataArray}
-                         headerDataArray={headerDataArray}
-                         excludedArray={excludedArray}
-                         setExcludedArray={setExcludedArray}
-                         decimal={decimal}
-                         setDecimal={setDecimal}
-            />
-          })
+          filteredOutDB_ID.map(value => <Show key={value}
+                                              value={value}
+                                              colDataArray={colDataArray}
+                                              labelDataArray={labelDataArray}
+                                              headerDataArray={headerDataArray}
+                                              excludedArray={excludedArray}
+                                              setExcludedArray={setExcludedArray}
+                                              decimal={decimal}
+                                              setDecimal={setDecimal}
+              />
+          )
         }
-        {excelFileUniqueValues[0] === headerLabel
-            && toggleIDView
-            && <Show value={headerLabel}
-                     colDataArray={colDataArray}
-                     labelDataArray={labelDataArray}
-                     headerDataArray={headerDataArray}
-                     excludedArray={excludedArray}
-                     setExcludedArray={setExcludedArray}
-                     decimal={decimal}
-                     setDecimal={setDecimal}
+        {
+            toggleIDView && <Show value={headerLabel}
+                                  colDataArray={colDataArray}
+                                  labelDataArray={labelDataArray}
+                                  headerDataArray={headerDataArray}
+                                  excludedArray={excludedArray}
+                                  setExcludedArray={setExcludedArray}
+                                  decimal={decimal}
+                                  setDecimal={setDecimal}
             />
         }
       </>
