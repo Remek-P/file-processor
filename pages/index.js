@@ -7,6 +7,8 @@ import FileChosen from "@/components/file-chosen/file-chosen";
 
 import { Loading } from '@carbon/react';
 
+import { headerLabel, idLabel } from "@/constants/constants";
+
 import XLSX from "xlsx";
 
 export default function Home() {
@@ -55,8 +57,8 @@ export default function Home() {
     // Need to delete the first column, because it served as the base for key creation for MongoDb
     jsonData.shift()
     // Two below indices are the ids from MongoDB
-    jsonData[0][0] = "MongoDB ID";
-    jsonData[1][0] = "_id";
+    jsonData[0][0] = headerLabel;
+    jsonData[1][0] = idLabel;
     setExcelFile(jsonData);
     setExcelFileName("DB_file")
     setIsFetched(true);

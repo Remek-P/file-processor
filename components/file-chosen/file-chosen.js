@@ -17,6 +17,7 @@ function FileChosen({
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
   const [decimal, setDecimal] = useState(undefined);
   const [excludedArray, setExcludedArray] = useState([]);
+  const [toggleIDView, setToggleIDView] = useState(true)
 
   const indexOfID = excelFile[1].findIndex(element => element?.toLowerCase() === "id");
   const [IDIndex, setIDIndex] = useState(indexOfID);
@@ -48,6 +49,7 @@ function FileChosen({
   const handleHideAllArrays = () => {
     setExcludedArray([...(new Set(excelFile[0]))]);
   }
+  
 
   return (
       <section className={classes.sectionContainer}>
@@ -56,6 +58,8 @@ function FileChosen({
                      isFetched={isFetched}
                      setIDIndex={setIDIndex}
                      refreshData={refreshData}
+                     toggleIDView={toggleIDView}
+                     setToggleIDView={setToggleIDView}
                      handleFileChange={handleFileChange}
                      addPerson={addPerson}
                      deleteAll={deleteAll}
@@ -70,6 +74,7 @@ function FileChosen({
                          setIDIndex={setIDIndex}
                          decimal={decimal}
                          setDecimal={setDecimal}
+                         toggleIDView={toggleIDView}
                          numberOfOutputs={numberOfOutputs}
                          excludedArray={excludedArray}
                          setExcludedArray={setExcludedArray}

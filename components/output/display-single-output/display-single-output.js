@@ -1,4 +1,5 @@
 import Show from "@/components/output/section/show/show";
+import { headerLabel } from "@/constants/constants";
 
 function DisplaySingleOutput({
                                excelFile,
@@ -6,6 +7,7 @@ function DisplaySingleOutput({
                                labelDataArray,
                                decimal,
                                setDecimal,
+                               toggleIDView,
                                excludedArray,
                                setExcludedArray
                              }) {
@@ -13,6 +15,8 @@ function DisplaySingleOutput({
   const excelFileUniqueValues = [... new Set(excelFile[0])];
 
   const headerDataArray = excelFile[0];
+
+  console.log("toggleIDView", toggleIDView)
 
   // TODO: hide mongoDb index if other available
 
@@ -35,8 +39,9 @@ function DisplaySingleOutput({
             />
           })
         }
-        {excelFileUniqueValues[0] === "MongoDB ID"
-            && <Show value="MongoDB ID"
+        {excelFileUniqueValues[0] === headerLabel
+            && toggleIDView
+            && <Show value={headerLabel}
                      colDataArray={colDataArray}
                      labelDataArray={labelDataArray}
                      headerDataArray={headerDataArray}

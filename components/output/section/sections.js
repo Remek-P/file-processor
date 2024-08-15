@@ -14,6 +14,7 @@ function Sections({
                     handleClick,
                     decimal,
                     setDecimal,
+                    toggleIDView,
                     excludedArray,
                     setExcludedArray,
                   }) {
@@ -41,6 +42,7 @@ function Sections({
                                      decimal={decimal}
                                      setDecimal={setDecimal}
                                      excludedArray={excludedArray}
+                                     toggleIDView={toggleIDView}
                                      setExcludedArray={setExcludedArray}
                 />
               </div>

@@ -12,6 +12,7 @@ function IdAvailable({
                        excelFile,
                        decimal,
                        setDecimal,
+                       toggleIDView,
                        excludedArray,
                        setExcludedArray,
                        handleDeleteChecked,
@@ -59,6 +60,7 @@ function IdAvailable({
                   handleClick={handleClick}
                   decimal={decimal}
                   setDecimal={setDecimal}
+                  toggleIDView={toggleIDView}
                   excludedArray={excludedArray}
                   setExcludedArray={setExcludedArray}
         />

@@ -10,9 +10,10 @@ function DisplayOutput({
                          setIDIndex,
                          decimal,
                          setDecimal,
+                         toggleIDView,
                          excludedArray,
                          setExcludedArray
-}) {
+                       }) {
 
   const handleDeleteChecked = (e) => {
     if (e.target.checked) {
@@ -42,6 +43,7 @@ function DisplayOutput({
                             excelFile={excelFile}
                             decimal={decimal}
                             setDecimal={setDecimal}
+                            toggleIDView={toggleIDView}
                             excludedArray={excludedArray}
                             setExcludedArray={setExcludedArray}
                             handleDeleteChecked={handleDeleteChecked}

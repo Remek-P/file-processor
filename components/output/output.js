@@ -9,6 +9,7 @@ function Output({
                   decimal,
                   setDecimal,
                   excludedArray,
+                  toggleIDView,
                   setExcludedArray,
                   handleDeleteChecked,
                 }) {
@@ -26,19 +27,18 @@ function Output({
   if (IDIndex === -1) return <IdNotAvailable labels={excelFile[1]}
                                              handleIDPick={handleIDPick} />
 
-  return (
-        <IdAvailable index={index}
-                     IDIndex={IDIndex}
-                     setIDIndex={setIDIndex}
-                     excelFile={excelFile}
-                     decimal={decimal}
-                     setDecimal={setDecimal}
-                     handleDeleteChecked={handleDeleteChecked}
-                     excludedArray={excludedArray}
-                     setExcludedArray={setExcludedArray}
-                     searchSuggestionsArray={searchSuggestionsArray}
-        />
-  );
+  return <IdAvailable index={index}
+                      IDIndex={IDIndex}
+                      setIDIndex={setIDIndex}
+                      excelFile={excelFile}
+                      decimal={decimal}
+                      setDecimal={setDecimal}
+                      toggleIDView={toggleIDView}
+                      handleDeleteChecked={handleDeleteChecked}
+                      excludedArray={excludedArray}
+                      setExcludedArray={setExcludedArray}
+                      searchSuggestionsArray={searchSuggestionsArray}
+  />
 }
 
 export default Output;

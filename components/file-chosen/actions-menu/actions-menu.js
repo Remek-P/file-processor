@@ -9,14 +9,22 @@ function ActionsMenu({
                        isFetched,
                        setIDIndex,
                        refreshData,
+                       toggleIDView,
+                       setToggleIDView,
                        handleFileChange,
                        handleHideAllArrays,
                        handleDecimalChange,
                        handleShowAllHiddenArrays,
                      }) {
 
-  const resetID = () => {
+  const showHideDB_ID = toggleIDView ? "Hide" : "Show";
+
+  const handleResetID = () => {
     setIDIndex(-1)
+  }
+
+  const handleIDView = () => {
+    setToggleIDView(prevState => !prevState)
   }
 
 
@@ -60,7 +68,12 @@ function ActionsMenu({
           }
           <MenuItemDivider/>
           <MenuItem label="Reset ID"
-                    onClick={resetID}
+                    onClick={handleResetID}
+                    kind="danger"
+                    className={classes.menuItem}
+          />
+          <MenuItem label={`${showHideDB_ID} DB ID`}
+                    onClick={handleIDView}
                     kind="danger"
                     className={classes.menuItem}
           />
