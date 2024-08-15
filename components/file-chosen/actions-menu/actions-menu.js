@@ -4,18 +4,21 @@ import classes from "../file-chosen.module.scss";
 
 function ActionsMenu({
                        decimal,
+                       deleteAll,
+                       addPerson,
+                       isFetched,
+                       setIDIndex,
+                       refreshData,
+                       handleFileChange,
+                       handleHideAllArrays,
                        handleDecimalChange,
                        handleShowAllHiddenArrays,
-                       handleHideAllArrays,
-                       addPerson,
-                       deleteAll,
-                       handleFileChange,
-                       refreshData,
-                       isFetched,
                      }) {
 
-  // TODO: rest data formating
-  // TODO: rest ID selection
+  const resetID = () => {
+    setIDIndex(-1)
+  }
+
 
   return (
       <div className={`${classes.menuContainer} shadow`}>
@@ -41,11 +44,11 @@ function ActionsMenu({
                     className={classes.menuItem}
           />
           <MenuItemDivider/>
-          <MenuItem label="Hide All"
+          <MenuItem label="Hide All Sections"
                     onClick={handleHideAllArrays}
                     className={classes.menuItem}
           />
-          <MenuItem label="Show All"
+          <MenuItem label="Show All Sections"
                     onClick={handleShowAllHiddenArrays}
                     className={classes.menuItem}
           />
@@ -55,6 +58,12 @@ function ActionsMenu({
                                      className={classes.menuItem}/>
 
           }
+          <MenuItemDivider/>
+          <MenuItem label="Reset ID"
+                    onClick={resetID}
+                    kind="danger"
+                    className={classes.menuItem}
+          />
           <MenuItemDivider/>
           <MenuItem label="Delete All"
                     onClick={deleteAll}

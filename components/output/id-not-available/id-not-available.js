@@ -7,7 +7,7 @@ function IdNotAvailable({ labels, handleIDPick }) {
   return (
 
       <TexTile type="children">
-        <h2>Please select the unique Identification Number to </h2>
+        <h2>Please select the unique Identification Number</h2>
         <ul className={classes.grid}>
           {
             labels.map((label, index) =>

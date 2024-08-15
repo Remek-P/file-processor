@@ -12,10 +12,10 @@ function IdAvailable({
                        excelFile,
                        decimal,
                        setDecimal,
-                       searchSuggestionsArray,
                        excludedArray,
-                       handleDeleteChecked,
                        setExcludedArray,
+                       handleDeleteChecked,
+                       searchSuggestionsArray,
                      }) {
 
   const [inputValue, setInputValue] = useState("");
@@ -40,10 +40,10 @@ function IdAvailable({
         <div className={classes.outputSearchContainer}>
 
           <div className={`${classes.outputSearch} shadow`}>
-            <Search setInputValue={setInputValue}
-                    inputValue={inputValue}
-                    id={searchID}
+            <Search id={searchID}
                     searchRef={searchRef}
+                    inputValue={inputValue}
+                    setInputValue={setInputValue}
             />
           </div>
 

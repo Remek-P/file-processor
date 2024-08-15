@@ -18,6 +18,9 @@ function FileChosen({
   const [decimal, setDecimal] = useState(undefined);
   const [excludedArray, setExcludedArray] = useState([]);
 
+  const indexOfID = excelFile[1].findIndex(element => element?.toLowerCase() === "id");
+  const [IDIndex, setIDIndex] = useState(indexOfID);
+
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
   }
@@ -49,25 +52,28 @@ function FileChosen({
   return (
       <section className={classes.sectionContainer}>
 
-        <ActionsMenu handleDecimalChange={handleDecimalChange}
+        <ActionsMenu decimal={decimal}
+                     isFetched={isFetched}
+                     setIDIndex={setIDIndex}
+                     refreshData={refreshData}
+                     handleFileChange={handleFileChange}
                      addPerson={addPerson}
                      deleteAll={deleteAll}
-                     handleShowAllHiddenArrays={handleShowAllHiddenArrays}
                      handleHideAllArrays={handleHideAllArrays}
-                     handleFileChange={handleFileChange}
-                     decimal={decimal}
-                     refreshData={refreshData}
-                     isFetched={isFetched}
+                     handleDecimalChange={handleDecimalChange}
+                     handleShowAllHiddenArrays={handleShowAllHiddenArrays}
         />
 
         <div className={classes.outputsContainer}>
           <DisplayOutput excelFile={excelFile}
-                         numberOfOutputs={numberOfOutputs}
-                         setNumberOfOutputs={setNumberOfOutputs}
+                         IDIndex={IDIndex}
+                         setIDIndex={setIDIndex}
                          decimal={decimal}
                          setDecimal={setDecimal}
+                         numberOfOutputs={numberOfOutputs}
                          excludedArray={excludedArray}
                          setExcludedArray={setExcludedArray}
+                         setNumberOfOutputs={setNumberOfOutputs}
           />
         </div>
 

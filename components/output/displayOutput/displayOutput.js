@@ -6,6 +6,8 @@ function DisplayOutput({
                          numberOfOutputs,
                          setNumberOfOutputs,
                          excelFile,
+                         IDIndex,
+                         setIDIndex,
                          decimal,
                          setDecimal,
                          excludedArray,
@@ -34,13 +36,15 @@ function DisplayOutput({
               return (
                   <div key={index} className={classes.outputContainer}>
                     <Output key={index}
-                            excelFile={excelFile}
                             index={index}
-                            handleDeleteChecked={handleDeleteChecked}
+                            IDIndex={IDIndex}
+                            setIDIndex={setIDIndex}
+                            excelFile={excelFile}
                             decimal={decimal}
                             setDecimal={setDecimal}
                             excludedArray={excludedArray}
                             setExcludedArray={setExcludedArray}
+                            handleDeleteChecked={handleDeleteChecked}
                     />
                   </div>
               )
