@@ -38,7 +38,7 @@ function FileChosen({
     if (direction === "up") {
       setDecimal(value);
     }
-    if (!direction && value > 0) {
+    if (!direction && value >= 0) {
       setDecimal(value);
     }
   }
@@ -83,7 +83,8 @@ function FileChosen({
         </div>
 
         <ul className={classes.hiddenContainer}>
-          <ExcludedData excludedArray={excludedArray} setExcludedArray={setExcludedArray} />
+          <ExcludedData excludedArray={excludedArray}
+                        setExcludedArray={setExcludedArray} />
         </ul>
 
       </section>
