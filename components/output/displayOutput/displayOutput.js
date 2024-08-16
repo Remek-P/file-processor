@@ -29,18 +29,15 @@ function DisplayOutput({
   }
 
   // TODO: stop the outputs array from growing infinitely
-  const indexOfFirstElToKeep = numberOfOutputs.indexOf(el => el.delete === false);
 
-  const b = numberOfOutputs.map(element => element.delete === false ? 1 : 0).reduce((acc, curr) => acc + curr, 0);
-
-  console.log("numberOfOutputs", numberOfOutputs)
-  console.log("b", b)
-
-  if (numberOfOutputs.length > 1) {
-    if (b === 1) {
-      setNumberOfOutputs([{delete: false}]);
-    }
+  const checkHowManyOutputsToKeep = numberOfOutputs.map(element => element.delete === false ? 1 : 0).reduce((acc, curr) => acc + curr, 0);
+  //TODO: While deleting first output out of two, evereything is being reset
+  if (checkHowManyOutputsToKeep === 1 && numberOfOutputs.length > 1) {
+    const indexToKeep = numberOfOutputs.findIndex(output => output.delete === false);
+    console.log("numberOfOutputs", numberOfOutputs[indexToKeep])
+    setNumberOfOutputs([numberOfOutputs[indexToKeep]]);
   }
+
 
   return (
       <>

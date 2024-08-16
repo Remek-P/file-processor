@@ -26,8 +26,17 @@ function FileChosen({
       element?.toLowerCase() === "id" || element.toLowerCase() === idLabel);
   const [IDIndex, setIDIndex] = useState(indexOfID);
 
-  // TODO: hide hidden arrays when no input or no user
+  // If all objects are to delete
+  const checkIfOutputsToDelete = numberOfOutputs.every(output => output.delete === true);
 
+  // checkIfOutputsToDelete === true - hide the hidden array (there are no outputs shown)
+  const hideHiddenArraysWhenNoUser = checkIfOutputsToDelete
+      ? "hiddenContainerHide" : "hiddenContainerShow";
+
+  console.log("hideHiddenArraysWhenNoUser", hideHiddenArraysWhenNoUser)
+
+  // TODO: hide hidden arrays when no input or no user
+  // hide db id tile constant, when no db id in the labels array
   const hideDB_ID_Tile = excelFile[1].findIndex(element => element.toLowerCase() === idLabel) === -1;
   
   const addPerson = () => {
@@ -92,7 +101,7 @@ function FileChosen({
           />
         </div>
 
-        <ul className={classes.hiddenContainer}>
+        <ul className={`${classes[hideHiddenArraysWhenNoUser]}`}>
           <ExcludedData excludedArray={excludedArray}
                         setExcludedArray={setExcludedArray} />
         </ul>
