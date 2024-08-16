@@ -8,15 +8,15 @@ import classes from "../output.module.scss";
 
 function Sections({
                     IDIndex,
+                    decimal,
                     excelFile,
                     inputValue,
                     setInputValue,
-                    handleClick,
-                    decimal,
-                    setDecimal,
                     toggleIDView,
+                    hideDB_ID_Tile,
                     excludedArray,
                     setExcludedArray,
+                    handleClick,
                   }) {
 
   const labelDataArray = excelFile[1];
@@ -36,13 +36,13 @@ function Sections({
     else if (searchRecords.length === 1)
       return (
               <div className={classes.grid}>
-                <DisplaySingleOutput excelFile={excelFile}
+                <DisplaySingleOutput decimal={decimal}
+                                     excelFile={excelFile}
+                                     toggleIDView={toggleIDView}
                                      colDataArray={colDataArray}
                                      labelDataArray={labelDataArray}
-                                     decimal={decimal}
-                                     setDecimal={setDecimal}
+                                     hideDB_ID_Tile={hideDB_ID_Tile}
                                      excludedArray={excludedArray}
-                                     toggleIDView={toggleIDView}
                                      setExcludedArray={setExcludedArray}
                 />
               </div>

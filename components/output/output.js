@@ -7,9 +7,9 @@ function Output({
                   IDIndex,
                   setIDIndex,
                   decimal,
-                  setDecimal,
-                  excludedArray,
                   toggleIDView,
+                  hideDB_ID_Tile,
+                  excludedArray,
                   setExcludedArray,
                   handleDeleteChecked,
                 }) {
@@ -28,15 +28,15 @@ function Output({
                                              handleIDPick={handleIDPick} />
 
   return <IdAvailable index={index}
+                      decimal={decimal}
                       IDIndex={IDIndex}
                       setIDIndex={setIDIndex}
                       excelFile={excelFile}
-                      decimal={decimal}
-                      setDecimal={setDecimal}
                       toggleIDView={toggleIDView}
-                      handleDeleteChecked={handleDeleteChecked}
+                      hideDB_ID_Tile={hideDB_ID_Tile}
                       excludedArray={excludedArray}
                       setExcludedArray={setExcludedArray}
+                      handleDeleteChecked={handleDeleteChecked}
                       searchSuggestionsArray={searchSuggestionsArray}
   />
 }

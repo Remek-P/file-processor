@@ -1,13 +1,13 @@
 import Show from "@/components/output/section/show/show";
-import { headerLabel } from "@/constants/constants";
+import {headerLabel, idLabel} from "@/constants/constants";
 
 function DisplaySingleOutput({
                                excelFile,
                                colDataArray,
                                labelDataArray,
                                decimal,
-                               setDecimal,
                                toggleIDView,
+                               hideDB_ID_Tile,
                                excludedArray,
                                setExcludedArray
                              }) {
@@ -23,25 +23,24 @@ function DisplaySingleOutput({
         {
           filteredOutDB_ID.map(value => <Show key={value}
                                               value={value}
+                                              decimal={decimal}
                                               colDataArray={colDataArray}
                                               labelDataArray={labelDataArray}
                                               headerDataArray={headerDataArray}
                                               excludedArray={excludedArray}
                                               setExcludedArray={setExcludedArray}
-                                              decimal={decimal}
-                                              setDecimal={setDecimal}
               />
           )
         }
         {
-            toggleIDView && <Show value={headerLabel}
-                                  colDataArray={colDataArray}
-                                  labelDataArray={labelDataArray}
-                                  headerDataArray={headerDataArray}
-                                  excludedArray={excludedArray}
-                                  setExcludedArray={setExcludedArray}
-                                  decimal={decimal}
-                                  setDecimal={setDecimal}
+            !hideDB_ID_Tile && toggleIDView
+            && <Show decimal={decimal}
+                     value={headerLabel}
+                     colDataArray={colDataArray}
+                     labelDataArray={labelDataArray}
+                     headerDataArray={headerDataArray}
+                     excludedArray={excludedArray}
+                     setExcludedArray={setExcludedArray}
             />
         }
       </>

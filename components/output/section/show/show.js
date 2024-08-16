@@ -5,13 +5,12 @@ import SectionLayout from "@/components/output/section/section-layout/section-la
 
 function Show({
                 value,
-                headerDataArray,
-                labelDataArray,
+                decimal,
                 colDataArray,
+                labelDataArray,
+                headerDataArray,
                 excludedArray,
                 setExcludedArray,
-                setDecimal,
-                decimal,
               }) {
 
   const [showAllMetrics, setShowAllMetrics] = useState(false);
@@ -97,8 +96,6 @@ function Show({
   return (
 
       <SectionLayout value={value}
-                     decimal={decimal}
-                     setDecimal={setDecimal}
                      chartData={chartData}
                      valueArray={valueArray}
                      showPercentages={showPercentages}

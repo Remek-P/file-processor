@@ -9,12 +9,12 @@ import classes from "@/components/output/output.module.scss";
 function IdAvailable({
                        index,
                        IDIndex,
-                       excelFile,
                        decimal,
-                       setDecimal,
+                       excelFile,
                        toggleIDView,
                        excludedArray,
                        setExcludedArray,
+                       hideDB_ID_Tile,
                        handleDeleteChecked,
                        searchSuggestionsArray,
                      }) {
@@ -52,17 +52,17 @@ function IdAvailable({
 
         </div>
 
-        <Sections excelFile={excelFile}
-                  IDIndex={IDIndex}
+        <Sections IDIndex={IDIndex}
+                  decimal={decimal}
+                  excelFile={excelFile}
+                  searchRef={searchRef}
                   inputValue={deferredInputValue}
                   setInputValue={setInputValue}
-                  searchRef={searchRef}
-                  handleClick={handleClick}
-                  decimal={decimal}
-                  setDecimal={setDecimal}
-                  toggleIDView={toggleIDView}
+                  hideDB_ID_Tile={hideDB_ID_Tile}
                   excludedArray={excludedArray}
                   setExcludedArray={setExcludedArray}
+                  toggleIDView={toggleIDView}
+                  handleClick={handleClick}
         />
       </>
   );
