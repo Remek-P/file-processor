@@ -25,6 +25,10 @@ function FileChosen({
   const indexOfID = excelFile[1].findIndex(element =>
       element?.toLowerCase() === "id" || element.toLowerCase() === idLabel);
   const [IDIndex, setIDIndex] = useState(indexOfID);
+
+  // TODO: hide hidden arrays when no input or no user
+
+  const hideDB_ID_Tile = excelFile[1].findIndex(element => element.toLowerCase() === idLabel) === -1;
   
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
@@ -53,8 +57,8 @@ function FileChosen({
   const handleHideAllArrays = () => {
     setExcludedArray([...(new Set(excelFile[0]))]);
   }
-  
 
+  // TODO: even thought there is no displayed output, you can hide and reveal all the hidden tiles
   return (
       <section className={classes.sectionContainer}>
 
@@ -65,6 +69,7 @@ function FileChosen({
                      toggleIDView={toggleIDView}
                      setToggleIDView={setToggleIDView}
                      handleFileChange={handleFileChange}
+                     hideDB_ID_Tile={hideDB_ID_Tile}
                      addPerson={addPerson}
                      deleteAll={deleteAll}
                      handleHideAllArrays={handleHideAllArrays}
@@ -78,6 +83,7 @@ function FileChosen({
                          setIDIndex={setIDIndex}
                          decimal={decimal}
                          setDecimal={setDecimal}
+                         hideDB_ID_Tile={hideDB_ID_Tile}
                          toggleIDView={toggleIDView}
                          numberOfOutputs={numberOfOutputs}
                          excludedArray={excludedArray}
