@@ -4,6 +4,8 @@ import DisplayOutput from "@/components/output/displayOutput/displayOutput";
 import ActionsMenu from "@/components/file-chosen/actions-menu/actions-menu";
 import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
+import { idLabel } from "@/constants/constants";
+
 import classes from "./file-chosen.module.scss";
 
 
@@ -19,9 +21,11 @@ function FileChosen({
   const [excludedArray, setExcludedArray] = useState([]);
   const [toggleIDView, setToggleIDView] = useState(true)
 
-  const indexOfID = excelFile[1].findIndex(element => element?.toLowerCase() === "id");
+  // if the provided data (excelFile) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
+  const indexOfID = excelFile[1].findIndex(element =>
+      element?.toLowerCase() === "id" || element.toLowerCase() === idLabel);
   const [IDIndex, setIDIndex] = useState(indexOfID);
-
+  
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
   }
