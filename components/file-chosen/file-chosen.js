@@ -20,7 +20,7 @@ function FileChosen({
   const [decimal, setDecimal] = useState(undefined);
   const [excludedArray, setExcludedArray] = useState([]);
   const [toggleIDView, setToggleIDView] = useState(true)
-
+  console.log("numberOfOutputs", numberOfOutputs)
   // if the provided data (excelFile) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
   const indexOfID = excelFile[1].findIndex(element =>
       element?.toLowerCase() === "id" || element.toLowerCase() === idLabel);
@@ -32,8 +32,6 @@ function FileChosen({
   // checkIfOutputsToDelete === true - hide the hidden array (there are no outputs shown)
   const hideHiddenArraysWhenNoUser = checkIfOutputsToDelete
       ? "hiddenContainerHide" : "hiddenContainerShow";
-
-  console.log("hideHiddenArraysWhenNoUser", hideHiddenArraysWhenNoUser)
 
   // TODO: hide hidden arrays when no input or no user
   // hide db id tile constant, when no db id in the labels array

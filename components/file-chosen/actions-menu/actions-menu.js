@@ -62,8 +62,10 @@ function ActionsMenu({
                     className={classes.menuItem}
           />
           { isFetched && <MenuItem label="Refresh Data"
-                                     onClick={refreshData}
-                                     className={classes.menuItem}/>
+                                   onClick={refreshData}
+                                   className={classes.menuItem}
+                                   aria-hidden={!isFetched}
+          />
           }
           <MenuItemDivider/>
           <MenuItem label="Reset ID"
@@ -71,11 +73,12 @@ function ActionsMenu({
                     kind="danger"
                     className={classes.menuItem}
           />
-          { !hideDB_ID_Tile && <MenuItem label={`${showHideDB_ID} DB ID`}
-                           onClick={handleIDView}
-                           kind="danger"
-                           className={classes.menuItem}
-              />
+          {!hideDB_ID_Tile && <MenuItem label={`${showHideDB_ID} DB ID`}
+                                        onClick={handleIDView}
+                                        kind="danger"
+                                        className={classes.menuItem}
+                                        aria-hidden={hideDB_ID_Tile}
+          />
           }
           <MenuItemDivider/>
           <MenuItem label="Delete All"

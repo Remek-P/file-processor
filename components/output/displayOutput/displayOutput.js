@@ -25,13 +25,16 @@ function DisplayOutput({
             }
           })
       )
+      // const indexToDelete = +(e.target.value);
+      // const newOutputs = numberOfOutputs.filter((output) => output !== numberOfOutputs[indexToDelete]);
+      // setNumberOfOutputs(newOutputs);
     }
   }
 
   // TODO: stop the outputs array from growing infinitely
 
   const checkHowManyOutputsToKeep = numberOfOutputs.map(element => element.delete === false ? 1 : 0).reduce((acc, curr) => acc + curr, 0);
-  //TODO: While deleting first output out of two, evereything is being reset
+  //TODO: While deleting first output out of two, everything is being reset
   if (checkHowManyOutputsToKeep === 1 && numberOfOutputs.length > 1) {
     const indexToKeep = numberOfOutputs.findIndex(output => output.delete === false);
     console.log("numberOfOutputs", numberOfOutputs[indexToKeep])
