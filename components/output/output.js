@@ -1,11 +1,15 @@
-import IdAvailable from "@/components/output/id-available/id-available";
-import {useMemo} from "react";
+import { useDeferredValue, useMemo, useRef, useState } from "react";
+
+import Search from "@/components/search/search";
+import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
+import Sections from "@/components/output/section/sections";
+
+import classes from "@/components/output/output.module.scss";
 
 function Output({
                   excelFile,
                   index,
                   IDIndex,
-                  setIDIndex,
                   decimal,
                   toggleIDView,
                   hideDB_ID_Tile,
@@ -14,30 +18,63 @@ function Output({
                   handleDeleteChecked,
                 }) {
 
+  const [inputValue, setInputValue] = useState("");
   const userDataArray = useMemo(() =>  excelFile.slice(2), [excelFile]);
+
+  const searchRef = useRef(null);
+
+  const deferredInputValue = useDeferredValue(inputValue);
+
+  const searchID = "search";
+
   const defaultOrderSearchSuggestions = userDataArray;
   const ascendingOrderSearchSuggestions = userDataArray.sort((a, b) => a.toString().localeCompare(b.toString()));
   const descendingOrderSearchSuggestions = userDataArray.sort((a, b) => a.toString().localeCompare(b.toString()));
-
-
 
   const searchSuggestionsArray = descendingOrderSearchSuggestions.map(person =>
       <option key={person[IDIndex]} value={person[IDIndex]}>{person.id}</option>
   );
 
-  return <IdAvailable index={index}
-                      decimal={decimal}
-                      IDIndex={IDIndex}
-                      setIDIndex={setIDIndex}
-                      excelFile={excelFile}
-                      toggleIDView={toggleIDView}
-                      userDataArray={userDataArray}
-                      hideDB_ID_Tile={hideDB_ID_Tile}
-                      excludedArray={excludedArray}
-                      setExcludedArray={setExcludedArray}
-                      handleDeleteChecked={handleDeleteChecked}
-                      searchSuggestionsArray={searchSuggestionsArray}
-  />
+  const handleClick = () => {
+    searchRef.current.focus();
+  }
+
+  return (
+      <>
+        <datalist id={searchID}>
+          {searchSuggestionsArray}
+        </datalist>
+
+
+        <div className={classes.outputSearchContainer}>
+
+          <div className={`${classes.outputSearch} shadow`}>
+            <Search id={searchID}
+                    searchRef={searchRef}
+                    inputValue={inputValue}
+                    setInputValue={setInputValue}
+            />
+          </div>
+
+          <DeleteOutput index={index} handleDeleteChecked={handleDeleteChecked}/>
+
+        </div>
+
+        <Sections IDIndex={IDIndex}
+                  decimal={decimal}
+                  excelFile={excelFile}
+                  searchRef={searchRef}
+                  userDataArray={userDataArray}
+                  inputValue={deferredInputValue}
+                  setInputValue={setInputValue}
+                  hideDB_ID_Tile={hideDB_ID_Tile}
+                  excludedArray={excludedArray}
+                  setExcludedArray={setExcludedArray}
+                  toggleIDView={toggleIDView}
+                  handleClick={handleClick}
+        />
+      </>
+  );
 }
 
 export default Output;

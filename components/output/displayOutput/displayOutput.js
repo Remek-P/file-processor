@@ -5,7 +5,6 @@ import classes from "@/components/file-chosen/file-chosen.module.scss";
 function DisplayOutput({
                          decimal,
                          IDIndex,
-                         setIDIndex,
                          excelFile,
                          toggleIDView,
                          hideDB_ID_Tile,
@@ -53,7 +52,6 @@ function DisplayOutput({
                             index={index}
                             decimal={decimal}
                             IDIndex={IDIndex}
-                            setIDIndex={setIDIndex}
                             excelFile={excelFile}
                             toggleIDView={toggleIDView}
                             excludedArray={excludedArray}
