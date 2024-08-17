@@ -1,5 +1,6 @@
 import Show from "@/components/output/section/show/show";
-import {headerLabel, idLabel} from "@/constants/constants";
+
+import { headerLabel } from "@/constants/constants";
 
 function DisplaySingleOutput({
                                decimal,

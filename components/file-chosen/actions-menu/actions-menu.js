@@ -12,6 +12,8 @@ function ActionsMenu({
                        toggleIDView,
                        setToggleIDView,
                        hideDB_ID_Tile,
+                       searchSuggestionsOrder,
+                       setSearchSuggestionsOrder,
                        handleFileChange,
                        handleHideAllArrays,
                        handleDecimalChange,
@@ -19,6 +21,16 @@ function ActionsMenu({
                      }) {
 
   const showHideDB_ID = toggleIDView ? "Hide" : "Show";
+
+  const searchOrder = searchSuggestionsOrder ? "Ascending" : "Descending";
+
+  const handleSuggestionsDefaultOrder = () => {
+    setSearchSuggestionsOrder(undefined);
+  }
+
+  const handleSuggestionsOrder = () => {
+    setSearchSuggestionsOrder(prevState => !prevState);
+  }
 
   const handleResetID = () => {
     setIDIndex(-1)
@@ -35,6 +47,7 @@ function ActionsMenu({
                       aria-label="actions menu"
                       flipped={true}
         >
+
           <MenuItemDivider/>
           <NumberInput value={decimal}
                        min={0}
@@ -47,11 +60,13 @@ function ActionsMenu({
                        size="sm"
                        id="decimal input"
           />
+
           <MenuItemDivider/>
           <MenuItem label="Add"
                     onClick={addPerson}
                     className={classes.menuItem}
           />
+
           <MenuItemDivider/>
           <MenuItem label="Hide All Sections"
                     onClick={handleHideAllArrays}
@@ -67,6 +82,17 @@ function ActionsMenu({
                                    aria-hidden={!isFetched}
           />
           }
+
+          <MenuItemDivider/>
+          <MenuItem label="Reset Suggestions Order"
+                    onClick={handleSuggestionsDefaultOrder}
+                    className={classes.menuItem}
+          />
+          <MenuItem label={`${searchOrder} suggestions order`}
+                    onClick={handleSuggestionsOrder}
+                    className={classes.menuItem}
+          />
+
           <MenuItemDivider/>
           <MenuItem label="Reset ID"
                     onClick={handleResetID}

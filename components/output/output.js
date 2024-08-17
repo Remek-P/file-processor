@@ -15,6 +15,7 @@ function Output({
                   hideDB_ID_Tile,
                   excludedArray,
                   setExcludedArray,
+                  searchSuggestionsOrder,
                   handleDeleteChecked,
                 }) {
 
@@ -30,8 +31,15 @@ function Output({
   const defaultOrderSearchSuggestions = userDataArray;
   const ascendingOrderSearchSuggestions = userDataArray.sort((a, b) => a.toString().localeCompare(b.toString()));
   const descendingOrderSearchSuggestions = userDataArray.sort((a, b) => a.toString().localeCompare(b.toString()));
+  // TODO: change does not work
+  const searchArray = searchSuggestionsOrder === undefined
+      ? defaultOrderSearchSuggestions
+      : searchSuggestionsOrder
+          ? ascendingOrderSearchSuggestions
+          : descendingOrderSearchSuggestions;
 
-  const searchSuggestionsArray = descendingOrderSearchSuggestions.map(person =>
+
+  const searchSuggestionsArray = searchArray.map(person =>
       <option key={person[IDIndex]} value={person[IDIndex]}>{person.id}</option>
   );
 

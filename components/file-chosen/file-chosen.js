@@ -20,7 +20,8 @@ function FileChosen({
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
   const [decimal, setDecimal] = useState(undefined);
   const [excludedArray, setExcludedArray] = useState([]);
-  const [toggleIDView, setToggleIDView] = useState(true)
+  const [toggleIDView, setToggleIDView] = useState(true);
+  const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useState(undefined)
 
   // if the provided data (excelFile) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
   const labelArray = excelFile[1];
@@ -86,10 +87,12 @@ function FileChosen({
                      refreshData={refreshData}
                      toggleIDView={toggleIDView}
                      setToggleIDView={setToggleIDView}
-                     handleFileChange={handleFileChange}
                      hideDB_ID_Tile={hideDB_ID_Tile}
+                     searchSuggestionsOrder={searchSuggestionsOrder}
+                     setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                      addPerson={addPerson}
                      deleteAll={deleteAll}
+                     handleFileChange={handleFileChange}
                      handleHideAllArrays={handleHideAllArrays}
                      handleDecimalChange={handleDecimalChange}
                      handleShowAllHiddenArrays={handleShowAllHiddenArrays}
@@ -106,6 +109,7 @@ function FileChosen({
                          excludedArray={excludedArray}
                          setExcludedArray={setExcludedArray}
                          setNumberOfOutputs={setNumberOfOutputs}
+                         searchSuggestionsOrder={searchSuggestionsOrder}
           />
         </div>
 
