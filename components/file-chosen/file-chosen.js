@@ -74,7 +74,7 @@ function FileChosen({
     setIDIndex(e.target.dataset.value);
   }
 
-  if (IDIndex === -1) return <IdNotAvailable labels={excelFile[1]}
+  if (IDIndex === -1) return <IdNotAvailable labels={labelArray}
                                              handleIDPick={handleIDPick} />
 
   return (

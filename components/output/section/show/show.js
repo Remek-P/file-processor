@@ -54,12 +54,12 @@ function Show({
     }
 
     // Create an array of indices
-    const indexedData = headerValueArray.map((value, index) => ({ value, label: labelValueArray[index], index }));
+    const indexedDataArray = headerValueArray.map((value, index) => ({ value, label: labelValueArray[index], index }));
 
     if (sort) {
 
       // Sort the indexed data based on the value
-      indexedData.sort((a, b) => {
+      indexedDataArray.sort((a, b) => {
         if (typeof a.value === 'string' && typeof b.value === 'string') {
           return a.value.localeCompare(b.value);
         }
@@ -67,15 +67,15 @@ function Show({
       });
 
       // Separate the sorted values and labels back into their respective arrays
-      const sortedData = indexedData.map(item => item.value);
-      const sortedLabels = indexedData.map(item => item.label);
+      const sortedData = indexedDataArray.map(item => item.value);
+      const sortedLabels = indexedDataArray.map(item => item.label);
 
       return { sortedData, sortedLabels };
     }
     if (!sort) {
 
       // Sort the indexed data based on the value
-      indexedData.sort((a, b) => {
+      indexedDataArray.sort((a, b) => {
         if (typeof a.value === 'string' && typeof b.value === 'string') {
           return b.value.localeCompare(a.value);
         }
@@ -83,8 +83,8 @@ function Show({
       });
 
       // Separate the sorted values and labels back into their respective arrays
-      const sortedData = indexedData.map(item => item.value);
-      const sortedLabels = indexedData.map(item => item.label);
+      const sortedData = indexedDataArray.map(item => item.value);
+      const sortedLabels = indexedDataArray.map(item => item.label);
 
 
       return { sortedData, sortedLabels };

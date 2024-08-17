@@ -12,6 +12,7 @@ function IdAvailable({
                        decimal,
                        excelFile,
                        toggleIDView,
+                       userDataArray,
                        excludedArray,
                        setExcludedArray,
                        hideDB_ID_Tile,
@@ -56,6 +57,7 @@ function IdAvailable({
                   decimal={decimal}
                   excelFile={excelFile}
                   searchRef={searchRef}
+                  userDataArray={userDataArray}
                   inputValue={deferredInputValue}
                   setInputValue={setInputValue}
                   hideDB_ID_Tile={hideDB_ID_Tile}

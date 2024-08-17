@@ -12,6 +12,7 @@ function Sections({
                     excelFile,
                     inputValue,
                     setInputValue,
+                    userDataArray,
                     toggleIDView,
                     hideDB_ID_Tile,
                     excludedArray,
@@ -20,9 +21,8 @@ function Sections({
                   }) {
 
   const labelDataArray = excelFile[1];
-  const userData = useMemo(() =>  excelFile.slice(2), [excelFile]);
 
-  const searchRecords = useMemo(() => userData.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, excelFile, IDIndex]);
+  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, excelFile, IDIndex]);
   const colDataArray = searchRecords[0];
 
   const displayData = () => {
