@@ -7,6 +7,7 @@ import ExcludedData from "@/components/output/excluded-data/excluded-data";
 import { idLabel } from "@/constants/constants";
 
 import classes from "./file-chosen.module.scss";
+import IdNotAvailable from "@/components/output/id-not-available/id-not-available";
 
 
 function FileChosen({
@@ -22,7 +23,9 @@ function FileChosen({
   const [toggleIDView, setToggleIDView] = useState(true)
 
   // if the provided data (excelFile) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
-  const indexOfID = excelFile[1].findIndex(element =>
+  const labelArray = excelFile[1];
+
+  const indexOfID = labelArray.findIndex(element =>
       element?.toLowerCase() === "id" || element.toLowerCase() === idLabel);
   const [IDIndex, setIDIndex] = useState(indexOfID);
 
@@ -35,7 +38,7 @@ function FileChosen({
 
   // TODO: hide hidden arrays when no input or no user
   // hide db id tile constant, when no db id in the labels array
-  const hideDB_ID_Tile = excelFile[1].findIndex(element => element.toLowerCase() === idLabel) === -1;
+  const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === idLabel) === -1;
   
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
@@ -66,6 +69,14 @@ function FileChosen({
   }
 
   // TODO: even thought there is no displayed output, you can hide and reveal all the hidden tiles
+
+  const handleIDPick = (e) => {
+    setIDIndex(e.target.dataset.value);
+  }
+
+  if (IDIndex === -1) return <IdNotAvailable labels={excelFile[1]}
+                                             handleIDPick={handleIDPick} />
+
   return (
       <section className={classes.sectionContainer}>
 
