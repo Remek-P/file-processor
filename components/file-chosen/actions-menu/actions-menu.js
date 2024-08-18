@@ -22,7 +22,7 @@ function ActionsMenu({
 
   const showHideDB_ID = toggleIDView ? "Hide" : "Show";
 
-  const searchOrder = searchSuggestionsOrder ? "Ascending" : "Descending";
+  const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
 
   const handleSuggestionsDefaultOrder = () => {
     setSearchSuggestionsOrder(undefined);

@@ -28,19 +28,24 @@ function Output({
 
   const searchID = "search";
 
-  const defaultOrderSearchSuggestions = userDataArray;
-  const ascendingOrderSearchSuggestions = userDataArray.sort((a, b) => a.toString().localeCompare(b.toString()));
-  const descendingOrderSearchSuggestions = userDataArray.sort((a, b) => a.toString().localeCompare(b.toString()));
+
+  const defaultOrderSearchSuggestions = userDataArray.map(id => id[IDIndex]);
+  const ascendingOrderSearchSuggestions = [...defaultOrderSearchSuggestions].sort((a, b) => a.toString().localeCompare(b.toString()));
+  const descendingOrderSearchSuggestions = [...defaultOrderSearchSuggestions].sort((a, b) => b.toString().localeCompare(a.toString()));
   // TODO: change does not work
   const searchArray = searchSuggestionsOrder === undefined
       ? defaultOrderSearchSuggestions
       : searchSuggestionsOrder
           ? ascendingOrderSearchSuggestions
           : descendingOrderSearchSuggestions;
-
+  // console.log("userDataArray", userDataArray)
+  console.log("defaultOrderSearchSuggestions", defaultOrderSearchSuggestions)
+  // console.log("ascendingOrderSearchSuggestions", ascendingOrderSearchSuggestions)
+  // console.log("descendingOrderSearchSuggestions", descendingOrderSearchSuggestions)
+  // console.log("searchArray", searchArray)
 
   const searchSuggestionsArray = searchArray.map(person =>
-      <option key={person[IDIndex]} value={person[IDIndex]}>{person.id}</option>
+      <option key={person} value={person}>{person}</option>
   );
 
   const handleClick = () => {
