@@ -38,11 +38,6 @@ function Output({
       : searchSuggestionsOrder
           ? ascendingOrderSearchSuggestions
           : descendingOrderSearchSuggestions;
-  // console.log("userDataArray", userDataArray)
-  console.log("defaultOrderSearchSuggestions", defaultOrderSearchSuggestions)
-  // console.log("ascendingOrderSearchSuggestions", ascendingOrderSearchSuggestions)
-  // console.log("descendingOrderSearchSuggestions", descendingOrderSearchSuggestions)
-  // console.log("searchArray", searchArray)
 
   const searchSuggestionsArray = searchArray.map(person =>
       <option key={person} value={person}>{person}</option>
