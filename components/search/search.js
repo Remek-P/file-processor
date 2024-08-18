@@ -1,6 +1,7 @@
 import { Button, Tooltip } from "@carbon/react";
 
 import classes from "./search.module.scss";
+import {useEffect} from "react";
 
 function Search({ inputValue, setInputValue, searchRef, id="search" }) {
 
@@ -12,6 +13,10 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
     setInputValue("");
     searchRef.current.focus();
   }
+
+  useEffect(() => {
+    searchRef.current.focus();
+  }, []);
 
   return (
       <div className={classes.searchContainer}>
@@ -33,6 +38,7 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
                onChange={(e) => handleTyping(e)}
                ref={searchRef}
                autoComplete="on"
+               autoFocus
         />
 
         {

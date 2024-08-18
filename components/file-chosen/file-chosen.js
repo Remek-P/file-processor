@@ -2,12 +2,12 @@ import { useState } from "react";
 
 import DisplayOutput from "@/components/output/displayOutput/displayOutput";
 import ActionsMenu from "@/components/file-chosen/actions-menu/actions-menu";
+import IdNotAvailable from "@/components/output/id-not-available/id-not-available";
+
 import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
 import { idLabel } from "@/constants/constants";
-
 import classes from "./file-chosen.module.scss";
-import IdNotAvailable from "@/components/output/id-not-available/id-not-available";
 
 
 function FileChosen({
