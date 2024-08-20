@@ -67,6 +67,7 @@
 //Search input
 .outputSearchContainer {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
 }
 
@@ -75,10 +76,14 @@
   padding: 0 5px;
 }
 
+.outputDeleteOutput {
+  cursor: pointer;
+}
+
 .label {
-  display: flex;
-  align-items: center;
-  height: 100%;
+  display: block;
+  padding: 20px;
+  margin-left: 5px;
   cursor: pointer;
 }
 
@@ -188,7 +193,7 @@
     align-self: flex-end;
   }
 }
-
+//TODO: filling
 .iconFill {
   fill: blue !important;
 }
@@ -198,10 +203,4 @@
   justify-content: space-between;
   align-items: center;
   margin-left: -15px; //offsetting padding from the button
-}
-
-.outputDeleteOutput {
-  align-self: stretch;
-  padding: 5px;
-  cursor: pointer;
 }

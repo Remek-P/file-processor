@@ -31,10 +31,6 @@ function SectionLayout({
 
   const valueRef = useRef(null);
 
-  const percentagesIcon = "%";
-  const barChartIcon = "bar"
-  const donutChartIcon = "donut";
-
   const percentagesDescription = "toggle percentages"
   const barChartDescription = showBarChart ? "hide bar chart" : "show bar chart";
   const donutChartDescription = showDonutChart ? "hide donut chart" : "show donut chart";
