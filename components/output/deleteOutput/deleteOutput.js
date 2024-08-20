@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CloseFilled, CloseOutline } from "@carbon/icons-react";
 
 import classes from "../output.module.scss";
+import {Tooltip} from "@carbon/react";
 
 function DeleteOutput({ index, handleDeleteChecked }) {
 
@@ -15,8 +16,11 @@ function DeleteOutput({ index, handleDeleteChecked }) {
              onMouseLeave={() => setHover(false)}
         >
 
-          <label htmlFor={`output${index}`} className={classes.label} aria-label="Delete">
-            {!hover ? <CloseOutline aria-label="Delete"/> : <CloseFilled aria-label="Delete"/>}
+          <Tooltip label="Delete" align="bottom">
+            <label htmlFor={`output${index}`} className={classes.label} aria-label="Delete">
+              {!hover ? <CloseOutline aria-label="Delete"/> : <CloseFilled aria-label="Delete"/>}
+            </label>
+          </Tooltip>
 
             <input type="checkbox"
                    name="output"
@@ -25,7 +29,6 @@ function DeleteOutput({ index, handleDeleteChecked }) {
                    onChange={handleDeleteChecked}
                    className="visually-hidden"
             />
-          </label>
 
         </div>
 
