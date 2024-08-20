@@ -96,15 +96,16 @@ function Show({
   return (
 
       <SectionLayout value={value}
+                     sort={sort}
+                     setSort={setSort}
                      chartData={chartData}
                      valueArray={valueArray}
                      showPercentages={showPercentages}
                      setShowPercentages={setShowPercentages}
-                     setExcludedArray={setExcludedArray}
                      excludedArray={excludedArray}
+                     setExcludedArray={setExcludedArray}
                      numbersEqualToZero={numbersEqualToZero}
                      setShowAllMetrics={setShowAllMetrics}
-                     setSort={setSort}
       >
 
         <div>

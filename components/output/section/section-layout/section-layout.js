@@ -4,12 +4,15 @@ import ActionToggle from "@/components/output/section/action-toggle/action-toggl
 
 import { DonutChart, SimpleBarChart } from "@carbon/charts-react";
 import { Tile, Toggle } from "@carbon/react";
+import {ChartBar, ChartRing, CloseLarge, Percentage, SortAscending, SortDescending} from "@carbon/icons-react";
 
 import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
 
 function SectionLayout({
                          value,
+                         sort,
+                         setSort,
                          chartData,
                          valueArray,
                          showPercentages,
@@ -18,7 +21,6 @@ function SectionLayout({
                          setExcludedArray,
                          numbersEqualToZero,
                          setShowAllMetrics,
-                         setSort,
                          children,
                        }) {
   // TODO: what if colData is mixed - number and string
@@ -106,22 +108,24 @@ function SectionLayout({
         <div className={classes.topSection}>
           <h4>{value}</h4>
           <div className={classes.numberButtons}>
-            <ActionToggle onClick={sortValues} description={"sort"}>
-              {"Sort"}
+            <ActionToggle onClick={sortValues} description={!sort ? "Sort Ascending" : "Sort Descending"}>
+              {!sort
+                  ? <SortAscending className={classes.iconFill} aria-label="Sort Ascending" />
+                  : <SortDescending className={classes.iconFill} aria-label="Sort Descending" />}
             </ActionToggle>
             {isNumber &&
                 <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
-                  {percentagesIcon}
+                  <Percentage className={classes.iconFill} aria-label={percentagesDescription} />
                 </ActionToggle>}
 
             {isNumber &&
                 <ActionToggle onClick={displayBarChart} description={barChartDescription}>
-                  {barChartIcon}
+                  <ChartBar className={classes.iconFill} aria-label={barChartDescription}/>
                 </ActionToggle>}
 
             {isNumber &&
                 <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
-                  {donutChartIcon}
+                  <ChartRing className={classes.iconFill} aria-label={donutChartDescription} />
                 </ActionToggle>}
           </div>
         </div>
@@ -131,16 +135,16 @@ function SectionLayout({
         <div className={classes.toggleContainer}>
 
           <ActionToggle onClick={excludeFromDisplaying}
-                        description="hide"
+                        description="Hide"
                         value={value}
-                        valueRef={valueRef}
-                        children="X"
-          />
+                        valueRef={valueRef}>
+            <CloseLarge className={classes.iconFill}/>
+          </ActionToggle>
 
           {isNumber && numbersEqualToZero.current && <Toggle id={value}
                                                                      size="sm"
-                                                                     labelA="show all"
-                                                                     labelB="hide 0s"
+                                                                     labelA="Show all"
+                                                                     labelB="Hide 0s"
                                                                      defaultToggled={false}
                                                                      onToggle={handleShowAllMetrics}
                                                                      labelText=""

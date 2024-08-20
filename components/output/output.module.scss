@@ -94,7 +94,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax($grid170, 1fr));
+  grid-template-columns: $gridBreakpoint170;
   align-items: stretch;
   justify-items: stretch;
   gap: 6px;
@@ -107,16 +107,16 @@
   }
 
   @media (min-width: $breakpoint515) {
-    grid-template-columns: repeat(auto-fit, minmax($grid200, 1fr));
+    grid-template-columns: $gridBreakpoint515;
   }
 
   @media (min-width: $breakpoint600) {
-    grid-template-columns: repeat(auto-fit, minmax($grid255, 1fr));
+    grid-template-columns: $gridBreakpoint600;
     gap: 8px;
   }
 
   @media (min-width: $breakpoint900) {
-    grid-template-columns: repeat(auto-fit, minmax($grid280, 1fr));
+    grid-template-columns: $gridBreakpoint900;
     width: 95%;
   }
 }
@@ -187,6 +187,10 @@
   @media (max-width: $breakpoint600) {
     align-self: flex-end;
   }
+}
+
+.iconFill {
+  fill: blue !important;
 }
 
 .toggleContainer {

@@ -12,7 +12,7 @@ function DisplayOutput({
                          setNumberOfOutputs,
                          excludedArray,
                          setExcludedArray,
-                         searchSuggestionsOrder
+                         searchSuggestionsOrder,
                        }) {
 
   const handleDeleteChecked = (e) => {

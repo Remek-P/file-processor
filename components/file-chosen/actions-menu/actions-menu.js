@@ -1,4 +1,4 @@
-import { OverflowMenu, MenuItem, MenuItemDivider, NumberInput } from "@carbon/react";
+import { OverflowMenu, OverflowMenuItem, MenuItemDivider, NumberInput } from "@carbon/react";
 
 import classes from "../file-chosen.module.scss";
 
@@ -59,63 +59,70 @@ function ActionsMenu({
                        invalidText="Invalid value (0-20)"
                        size="sm"
                        id="decimal input"
+                       isFocused={false}
           />
 
-          <MenuItemDivider/>
-          <MenuItem label="Add"
-                    onClick={addPerson}
-                    className={classes.menuItem}
+          <OverflowMenuItem itemText="Add"
+                            onClick={addPerson}
+                            className={classes.menuItem}
+                            hasDivider
           />
 
-          <MenuItemDivider/>
-          <MenuItem label="Hide All Sections"
-                    onClick={handleHideAllArrays}
-                    className={classes.menuItem}
+          <OverflowMenuItem itemText="Hide All Sections"
+                            onClick={handleHideAllArrays}
+                            className={classes.menuItem}
+                            hasDivider
           />
-          <MenuItem label="Show All Sections"
-                    onClick={handleShowAllHiddenArrays}
-                    className={classes.menuItem}
+          <OverflowMenuItem itemText="Show All Sections"
+                            onClick={handleShowAllHiddenArrays}
+                            className={classes.menuItem}
           />
-          { isFetched && <MenuItem label="Refresh Data"
-                                   onClick={refreshData}
-                                   className={classes.menuItem}
-                                   aria-hidden={!isFetched}
+          {isFetched && <OverflowMenuItem itemText="Refresh Data"
+                                          onClick={refreshData}
+                                          className={classes.menuItem}
+                                          aria-hidden={!isFetched}
           />
           }
 
-          <MenuItemDivider/>
-          <MenuItem label="Reset Suggestions Order"
-                    onClick={handleSuggestionsDefaultOrder}
-                    className={classes.menuItem}
+          <OverflowMenuItem itemText="Suggestions Order"
+                            disabled={true}
+                            className={classes.menuItem}
+                            hasDivider
           />
-          <MenuItem label={`${searchOrder} suggestions order`}
-                    onClick={handleSuggestionsOrder}
-                    className={classes.menuItem}
+          <OverflowMenuItem itemText="Reset"
+                            onClick={handleSuggestionsDefaultOrder}
+                            className={classes.menuItem}
+          />
+          <OverflowMenuItem itemText={searchOrder}
+                            onClick={handleSuggestionsOrder}
+                            className={classes.menuItem}
+
           />
 
-          <MenuItemDivider/>
-          <MenuItem label="Reset ID"
-                    onClick={handleResetID}
-                    kind="danger"
-                    className={classes.menuItem}
+          <OverflowMenuItem itemText="Reset ID"
+                            onClick={handleResetID}
+                            isDelete={true}
+                            className={classes.menuItem}
+                            hasDivider
           />
-          {!hideDB_ID_Tile && <MenuItem label={`${showHideDB_ID} DB ID`}
-                                        onClick={handleIDView}
-                                        kind="danger"
-                                        className={classes.menuItem}
-                                        aria-hidden={hideDB_ID_Tile}
+          {!hideDB_ID_Tile && <OverflowMenuItem itemText={`${showHideDB_ID} DB ID`}
+                                                onClick={handleIDView}
+                                                isDelete={true}
+                                                className={classes.menuItem}
+                                                aria-hidden={hideDB_ID_Tile}
           />
           }
-          <MenuItemDivider/>
-          <MenuItem label="Delete All"
-                    onClick={deleteAll}
-                    kind="danger"
-                    className={classes.menuItem}
+
+          <OverflowMenuItem itemText="Delete All"
+                            onClick={deleteAll}
+                            isDelete={true}
+                            className={classes.menuItem}
+                            hasDivider
           />
-          <MenuItem label="Change File"
-                    onClick={handleFileChange}
-                    kind="danger"
-                    className={classes.menuItem}
+          <OverflowMenuItem itemText="Change File"
+                            onClick={handleFileChange}
+                            isDelete={true}
+                            className={classes.menuItem}
           />
         </OverflowMenu>
       </div>

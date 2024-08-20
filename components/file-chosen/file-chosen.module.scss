@@ -17,20 +17,20 @@
 
 .outputsContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax($grid170, 1fr));
+  grid-template-columns: $gridBreakpoint170;
   gap: 4px;
 
   @media (min-width: $breakpoint515) {
-    grid-template-columns: repeat(auto-fit, minmax($grid200, 1fr));
+    grid-template-columns: $gridBreakpoint515;
   }
 
   @media (min-width: $breakpoint600) {
-    grid-template-columns: repeat(auto-fit, minmax($grid255, 1fr));
+    grid-template-columns: $gridBreakpoint600;
     gap: 12px;
   }
 
   @media (min-width: $breakpoint900) {
-    grid-template-columns: repeat(auto-fit, minmax($grid280, 1fr));
+    grid-template-columns: $gridBreakpoint900;
   }
 }
 
@@ -74,10 +74,6 @@
 
   z-index: 10;
 
-  & > * > button {
-    font-size: 0;
-  }
-
   @media (min-width: $breakpoint800) {
     top: $actionsMenuHigh;
   }
@@ -91,19 +87,20 @@
 }
 
 .menuItem {
-  border-radius:$border-radius-main;
+
+  > div {
+    overflow: visible;
+  }
 }
 
 //--------------------------
 //Excluded arrays styling
 
 .hiddenContainerShow {
-  --_min: 160px;
-  //TODO: set width, gap and min values according to output values
 
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--_min), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax($grid170, 1fr));
   align-items: stretch;
   gap: 4px;
 
@@ -115,5 +112,5 @@
 }
 
 .hiddenContainerHide {
-  display: none !important;
+  display: none;
 }

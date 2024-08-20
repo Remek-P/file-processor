@@ -17,3 +17,8 @@ $grid170: 170px;
 $grid200: 200px;
 $grid255: 255px;
 $grid280: 280px;
+
+$gridBreakpoint170: repeat(auto-fit, minmax($grid170, 1fr));
+$gridBreakpoint515: repeat(auto-fit, minmax($grid200, 1fr));
+$gridBreakpoint600: repeat(auto-fit, minmax($grid255, 1fr));
+$gridBreakpoint900: repeat(auto-fit, minmax($grid280, 1fr));
