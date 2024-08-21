@@ -7,13 +7,13 @@ function ActionsMenu({
                        deleteAll,
                        addPerson,
                        isFetched,
-                       setIDIndex,
                        refreshData,
                        toggleIDView,
-                       setToggleIDView,
                        hideDB_ID_Tile,
                        searchSuggestionsOrder,
                        setSearchSuggestionsOrder,
+                       handleIDView,
+                       handleResetID,
                        handleFileChange,
                        handleHideAllArrays,
                        handleDecimalChange,
@@ -31,15 +31,6 @@ function ActionsMenu({
   const handleSuggestionsOrder = () => {
     setSearchSuggestionsOrder(prevState => !prevState);
   }
-
-  const handleResetID = () => {
-    setIDIndex(-1)
-  }
-
-  const handleIDView = () => {
-    setToggleIDView(prevState => !prevState);
-  }
-
 
   return (
       <div className={`${classes.menuContainer} shadow`}>

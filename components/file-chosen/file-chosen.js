@@ -75,6 +75,20 @@ function FileChosen({
     setIDIndex(e.target.dataset.value);
   }
 
+  const handleResetID = () => {
+    setIDIndex(-1)
+  }
+
+  const handleIDView = () => {
+    setToggleIDView(prevState => !prevState);
+  }
+
+  // TODO: Reset all data changes
+  const resetDataFormatting = () => {
+    setDecimal(undefined);
+
+  }
+
   if (IDIndex === -1) return <IdNotAvailable labels={labelArray}
                                              handleIDPick={handleIDPick} />
 
@@ -83,15 +97,15 @@ function FileChosen({
 
         <ActionsMenu decimal={decimal}
                      isFetched={isFetched}
-                     setIDIndex={setIDIndex}
                      refreshData={refreshData}
                      toggleIDView={toggleIDView}
-                     setToggleIDView={setToggleIDView}
                      hideDB_ID_Tile={hideDB_ID_Tile}
                      searchSuggestionsOrder={searchSuggestionsOrder}
                      setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                      addPerson={addPerson}
                      deleteAll={deleteAll}
+                     handleIDView={handleIDView}
+                     handleResetID={handleResetID}
                      handleFileChange={handleFileChange}
                      handleHideAllArrays={handleHideAllArrays}
                      handleDecimalChange={handleDecimalChange}
