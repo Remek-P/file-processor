@@ -20,6 +20,8 @@ export default function Home() {
   const [isFetched, setIsFetched] = useState(null);
   const [warnings, setWarnings] = useState([])
 
+  const showWarnings = warnings.length !== 0;
+
   const readExcel = (data) => {
 
     const workbook = XLSX.readFile(data,
@@ -82,7 +84,6 @@ export default function Home() {
   const refreshData = async () => {
     await fetchDataFromDB();
   }
-  console.log("warnings", warnings)
   return (
     <>
       <Head>
@@ -107,9 +108,9 @@ export default function Home() {
         />
 
         {
-          warnings.map((warning, index) => {
-            return <TexTile key={index} text={warning} />;
-          })
+            showWarnings && warnings.map((warning, index) => {
+              return <TexTile key={index} text={warning}/>;
+            })
         }
 
         {
