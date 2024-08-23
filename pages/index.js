@@ -10,23 +10,29 @@ import { Loading } from '@carbon/react';
 import { headerLabel, idLabel } from "@/constants/constants";
 
 import XLSX from "xlsx";
+import TexTile from "@/components/tile-type/text-tile/texTile";
 
 export default function Home() {
 
   const [excelFileName, setExcelFileName] = useState(null);
   const [excelFile, setExcelFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isFetched, setIsFetched] = useState(null)
+  const [isFetched, setIsFetched] = useState(null);
+  const [warnings, setWarnings] = useState([])
 
   const readExcel = (data) => {
 
     const workbook = XLSX.readFile(data,
         {sheetRows: 10}
     );
+    if (workbook?.Sheets.import["!merges"] !== undefined) setWarnings([...warnings, "Merged Cells detected, please unmerge them in the file"])
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
       header: 1,
     })
+    console.log("jsonData", jsonData)
+    console.log("data", new Date(workbook.Sheets.import.B3.w))
+    
     setExcelFile(jsonData);
   }
 
@@ -76,7 +82,7 @@ export default function Home() {
   const refreshData = async () => {
     await fetchDataFromDB();
   }
-
+  console.log("warnings", warnings)
   return (
     <>
       <Head>
@@ -101,7 +107,13 @@ export default function Home() {
         />
 
         {
-          excelFile &&
+          warnings.map((warning, index) => {
+            return <TexTile key={index} text={warning} />;
+          })
+        }
+
+        {
+          excelFile && warnings.length === 0 &&
             <FileChosen excelFile={excelFile}
                         handleFileChange={handleFileChange}
                         refreshData={refreshData}

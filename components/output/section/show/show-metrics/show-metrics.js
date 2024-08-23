@@ -8,15 +8,12 @@ function ShowMetrics({
                        decimal,
                      }) {
 
-  // Without this constant, the toggle percentages button in in SectionLayout, would have changed all the value by setting specific decimal place
+  // Without this constant, the toggle percentages button in SectionLayout, would have changed all the value by setting specific decimal place
   const localDecimal = decimal !== undefined
       ? decimal
       : showPercentages === undefined
           ? undefined
           : 2
-
-  const convertToPercentages = (+colData * 100).toFixed(localDecimal);
-  const roundToGivenDecimal = (+colData).toFixed(localDecimal);
 
   // Double escape required for the regex test (regexCheckForNumberWithSymbol)
   const regexSymbolArray = ["%", "p\\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
@@ -26,9 +23,9 @@ function ShowMetrics({
 
   const containsSymbol = (value, symbolArray) => {
     if (typeof value === "string") {
-      const array = symbolArray.map(sign => value.includes(sign));
+      const array = symbolArray.map(symbol => value.includes(symbol));
       const displaySymbol = []
-      array.find((sign, index) => sign === true ? displaySymbol.push(index) : null)
+      array.find((symbol, index) => symbol === true ? displaySymbol.push(index) : null)
       return symbolArray[displaySymbol]
     }
   };
@@ -40,20 +37,21 @@ function ShowMetrics({
     // if empty
     if (colData === "") return null;
 
+    const convertToPercentages = (+colData * 100).toFixed(localDecimal);
+    const roundToGivenDecimal = (+colData).toFixed(localDecimal);
+
     // Check if number
     if (!isNaN(+convertToPercentages)) {
-
       // returns original data
       if (showPercentages === undefined && decimal === undefined) return colData;
       // enables toggling between percentage views
       return showPercentages ? `${convertToPercentages}%` : roundToGivenDecimal
 
-    } else if (colData === typeof "string") {
+    } else if (typeof colData === "string") {
 
-      // if empty
-      if (colData.trim() === "") return null;
       // if not a number test if this is a number stored as a string
-      if (typeof colData === "string" && regexCheckForNumberWithSymbol.test(colData)) {
+      if (regexCheckForNumberWithSymbol.test(colData)) {
+
         const convertToNumber = (+(colData.replace(containsSymbol(colData, stringSymbolArray), "")));
         const convertedAndRounded = convertToNumber.toFixed(decimal)
 
@@ -68,11 +66,8 @@ function ShowMetrics({
         else return `${symbol}${convertedAndRounded}`
 
       } else return colData
-    } else if (colData === typeof "date") {
 
-      return colData
-
-    } else return colData
+    } else return typeof colData
   }
 
   return (

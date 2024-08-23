@@ -8,6 +8,7 @@ function UploadFileOption({ handleFile }) {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ".xlsx",
     ".xls",
+      ".csv",
   ];
 
   const buttonLabel = (
