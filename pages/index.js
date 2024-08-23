@@ -22,6 +22,15 @@ export default function Home() {
 
   const showWarnings = warnings.length !== 0;
 
+  const sheetTOJsonData = (obj) => {
+    return XLSX.utils.sheet_to_json(obj, {
+      header: 1,
+      raw: false,
+      rawNumbers: false,
+      UTC: true,
+    })
+  }
+//TODO: deal with finding dates
   const readExcel = (data) => {
 
     const workbook = XLSX.readFile(data,
@@ -30,14 +39,8 @@ export default function Home() {
     const isMerged = workbook.Sheets.import?.["!merges"] !== undefined;
     if (isMerged) setWarnings([...warnings, "Merged Cells detected, please unmerge them in the file"])
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const jsonData= XLSX.utils.sheet_to_json(worksheet, {
-      header: 1,
-      raw: true,
-    })
-    // console.log("jsonData", jsonData)
-    // console.log("data", new Date(workbook.Sheets.import.B3.w))
 
-    setExcelFile(jsonData);
+    setExcelFile(sheetTOJsonData(worksheet));
   }
 
   const handleFile = async (e) => {
@@ -60,12 +63,10 @@ export default function Home() {
     const res = await fetch("/api/mongoDB");
     const data = await res.json();
     const sheet = XLSX.utils.json_to_sheet(data);
-    const jsonData = XLSX.utils.sheet_to_json(sheet, {
-      header: 1,
-    });
+    const jsonData = sheetTOJsonData(sheet);
 
     // Need to delete the first column, because it served as the base for key creation for MongoDb
-    jsonData.shift()
+    jsonData.shift();
     // Two below indices are the ids from MongoDB
     jsonData[0][0] = headerLabel;
     jsonData[1][0] = idLabel;

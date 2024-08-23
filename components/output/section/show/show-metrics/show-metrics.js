@@ -15,6 +15,7 @@ function ShowMetrics({
           ? undefined
           : 2
 
+
   // Double escape required for the regex test (regexCheckForNumberWithSymbol)
   const regexSymbolArray = ["%", "p\\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
   const stringSymbolArray = regexSymbolArray.map((item) => item.replaceAll("\\", ""))
@@ -67,6 +68,8 @@ function ShowMetrics({
 
       } else return colData
 
+    } else if (colData instanceof Date) {
+//TODO: deal with finding dates
     } else return typeof colData
   }
 
