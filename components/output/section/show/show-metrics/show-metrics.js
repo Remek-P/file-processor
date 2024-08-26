@@ -70,6 +70,7 @@ function ShowMetrics({
 
     } else if (colData instanceof Date) {
 //TODO: deal with finding dates
+      console.log("colData", colData)
     } else return typeof colData
   }
 

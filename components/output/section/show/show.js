@@ -27,7 +27,7 @@ function Show({
   const headerValueArray = [];
   const labelValueArray = [];
 
-  const signsArray = ["%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
+  const symbolsArray = ["%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
 
   const handleChartData = (type, index, value) => {
     valueArray.push(type) //valueArray is sent as props and used to check if data is number
@@ -49,7 +49,7 @@ function Show({
     if (sort === undefined) {
       const sortedData = headerValueArray;
       const sortedLabels = labelValueArray;
-
+      
       return { sortedData, sortedLabels };
     }
 
@@ -92,7 +92,7 @@ function Show({
   }
 
   const {sortedData, sortedLabels} = sortDataAndLabelsArrayTogether();
-
+  
   return (
 
       <SectionLayout value={value}
@@ -113,7 +113,7 @@ function Show({
             sortedData.map((data, index) => {
               const checkForString = typeof data === "string";
               // check if contains a symbol from the array
-              const checkSymbolsInArray = checkForString && signsArray.filter(symbol => data.includes(symbol));
+              const checkSymbolsInArray = checkForString && symbolsArray.filter(symbol => data.includes(symbol));
 
               let processedData = data;
               // if number is a string with a symbol, filter out the symbol sign to create a clean string
@@ -168,7 +168,7 @@ function Show({
 
           {/*          const checkForString = typeof colDataArray[index] === "string";*/}
           {/*          // check if contains a symbol from the array*/}
-          {/*          const checkSymbolsInArray = checkForString && signsArray.filter(symbol => colDataArray[index].includes(symbol));*/}
+          {/*          const checkSymbolsInArray = checkForString && symbolsArray.filter(symbol => colDataArray[index].includes(symbol));*/}
 
           {/*          let cleanValue = colDataArray[index];*/}
           {/*          // if number is a string with a symbol, filter out the symbol sign to create a clean string*/}

@@ -87,6 +87,7 @@ export default function Home() {
   const refreshData = async () => {
     await fetchDataFromDB();
   }
+  
   return (
       <>
         <Head>
