@@ -159,16 +159,11 @@ function Show({
           {
             sortedData.map((data, index) => {
 
-
-              const isDate = dateValidator(data);
-
-              // TODO: if (data.trim() === 0) return null
-
               if (checkForNumber(data)) {
                 if (data === 0) numbersEqualToZero.current = true;
                 isNumber.current = true;
                 const numberData = {
-                  value: data,
+                  value: +data,
                   label: sortedLabels[index],
                 }
 
@@ -210,7 +205,7 @@ function Show({
                                                showPercentages={showPercentages}
                   />
 
-                } else if (isDate) {
+                } else if (dateValidator(data)) {
                   isNumber.current = false;
                   const dateData = {
                     value: data,
