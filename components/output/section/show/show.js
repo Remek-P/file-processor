@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 
-import ShowMetrics from "@/components/output/section/show/show-metrics/show-metrics";
 import SectionLayout from "@/components/output/section/section-layout/section-layout";
 
 import {dateValidator} from "@/utils/dateUtils";
@@ -20,7 +19,7 @@ function Show({
 
   const [showAllMetrics, setShowAllMetrics] = useState(false);
   const [showPercentages, setShowPercentages] = useState(undefined);
-  const [sort, setSort] = useState(false)
+  const [sort, setSort] = useState(undefined)
 
   const isNumber = useRef(undefined);
   const numbersEqualToZero = useRef(false);
@@ -31,6 +30,30 @@ function Show({
   const valueArray = [];
   const headerValueArray = [];
   const labelValueArray = [];
+
+  const checkForNumber = (data) => !isNaN(+data);
+  const checkForString = (data) => typeof data === "string";
+
+  const symbolsArray = [">", ">=", "<", "<=","%", "p%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł"];
+  const escapedRegexSymbolArray = symbolsArray.map(item => item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  // const regexCheckForNumberWithSymbolBefore = new RegExp(`^(${escapedRegexSymbolArray.join("|")})\\s*\\d+(\\.\\d+)?$`);
+  // const regexCheckForNumberWithSymbolAfter = new RegExp(`^\\d+(\\.\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})$`);
+  const regexOverall = new RegExp(`^((${escapedRegexSymbolArray.join("|")})\\s*|\\s*(${escapedRegexSymbolArray.join("|")})\\s*)?\\d+(\\.\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})?$`);
+
+  const separateNumbersAndStrings = (data) => {
+    // Check if data contains any symbols from symbols Array
+    const checkSymbolsInArray = symbolsArray.filter(symbol => data.includes(symbol));
+
+    let numberOnlyData = data;
+    // if number is a string with a symbol, filter out the symbol sign to create a clean string
+    if (checkSymbolsInArray.length > 0) {
+      for (const symbol in checkSymbolsInArray) {
+        numberOnlyData = numberOnlyData.replace(checkSymbolsInArray[symbol], "").trim()
+      }
+    }
+
+    return { numberOnlyData, checkSymbolsInArray };
+  }
 
   const handleChartData = (type, index, value) => {
     valueArray.push(type) //valueArray is sent as props and used to check if data is number
@@ -54,7 +77,9 @@ function Show({
   })
 
   // TODO: percentages and pseudo-numerical values treated like strings
+  // TODO: sort function is mutating data, so data is never displayed in an unsorted manner
   const sortDataAndLabelsArrayTogether = () => {
+
     if (sort === undefined) {
       const sortedData = headerValueArray;
       const sortedLabels = labelValueArray;
@@ -65,58 +90,53 @@ function Show({
     // Create an array of indices
     const indexedDataArray = headerValueArray.map((value, index) => ({ value, label: labelValueArray[index], index }));
 
-    if (sort) {
-
-      // Sort the indexed data based on the value
+    if (sort || sort === false) {
+      // Sort the indexed data based on the value and sort direction
       indexedDataArray.sort((a, b) => {
-        if (typeof a.value === 'string' && typeof b.value === 'string') {
-          return a.value.localeCompare(b.value);
+
+        const isA_Number = checkForNumber(a.value);
+        const isB_Number = checkForNumber(b.value);
+        // Sorting, if data are numbers (number as a string or number)
+        if (isA_Number && isB_Number) {
+          if (sort) return +a.value - +b.value;
+          else return +b.value - +a.value;
         }
-        return +a.value - +b.value;
+
+        // Are data
+        const isA_String = checkForString(a.value);
+        const isB_String = checkForString(b.value);
+        const bothAreStrings = isA_String && isB_String
+
+        // regex test
+        const numberAsStringWithSymbolsA = regexOverall.test(a.value);
+        const numberAsStringWithSymbolsB = regexOverall.test(b.value);
+        const bothPassedRegex = numberAsStringWithSymbolsA & numberAsStringWithSymbolsB
+
+        // Sorting if data are strings numbers with symbols from symbolsArray
+        if (bothAreStrings && bothPassedRegex) {
+
+          // extract number
+          const numberOnlyDataA = +separateNumbersAndStrings(a.value).numberOnlyData;
+          const numberOnlyDataB = +separateNumbersAndStrings(b.value).numberOnlyData;
+
+          if (sort) return numberOnlyDataA - numberOnlyDataB;
+          else return numberOnlyDataB - numberOnlyDataA;
+        }
+
+        // In every other case use local sorting
+        if (sort) return a.value.localeCompare(b.value);
+        else return b.value.localeCompare(a.value);
       });
 
       // Separate the sorted values and labels back into their respective arrays
       const sortedData = indexedDataArray.map(item => item.value);
       const sortedLabels = indexedDataArray.map(item => item.label);
-
-      return { sortedData, sortedLabels };
-    }
-    if (!sort) {
-
-      // Sort the indexed data based on the value
-      indexedDataArray.sort((a, b) => {
-        if (typeof a.value === 'string' && typeof b.value === 'string') {
-          return b.value.localeCompare(a.value);
-        }
-        return +b.value - +a.value;
-      });
-
-      // Separate the sorted values and labels back into their respective arrays
-      const sortedData = indexedDataArray.map(item => item.value);
-      const sortedLabels = indexedDataArray.map(item => item.label);
-
 
       return { sortedData, sortedLabels };
     }
   }
 
   const {sortedData, sortedLabels} = sortDataAndLabelsArrayTogether();
-
-  const symbolsArray = [">", ">=", "<", "<=","%", "p%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł"];
-  const escapedRegexSymbolArray = symbolsArray.map(item => item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  // const regexCheckForNumberWithSymbolBefore = new RegExp(`^(${escapedRegexSymbolArray.join("|")})\\s*\\d+(\\.\\d+)?$`);
-  // const regexCheckForNumberWithSymbolAfter = new RegExp(`^\\d+(\\.\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})$`);
-  const regexOverall = new RegExp(`^((${escapedRegexSymbolArray.join("|")})\\s*|\\s*(${escapedRegexSymbolArray.join("|")})\\s*)?\\d+(\\.\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})?$`);
-
-
-  const containsSymbol = (value, symbolArray) => {
-    if (typeof value === "string") {
-      const array = symbolArray.map(symbol => value.includes(symbol));
-      const displaySymbol = []
-      array.find((symbol, index) => symbol === true ? displaySymbol.push(index) : null)
-      return symbolArray[displaySymbol]
-    }
-  };
   
   return (
 
@@ -136,13 +156,13 @@ function Show({
         <div>
           {
             sortedData.map((data, index) => {
-              const checkForNumber = !isNaN(+data);
-              const checkForString = typeof data === "string";
+
+
               const isDate = dateValidator(data);
 
               // TODO: if (data.trim() === 0) return null
 
-              if (checkForNumber) {
+              if (checkForNumber(data)) {
                 if (data === 0) numbersEqualToZero.current = true;
                 isNumber.current = true;
                 const numberData = {
@@ -161,23 +181,16 @@ function Show({
                     />
                 )
 
-              } else if (checkForString) {
+              } else if (checkForString(data)) {
 
                 const numberAsString = regexOverall.test(data);
 
                 if (numberAsString) {
-                  const checkSymbolsInArray = symbolsArray.filter(symbol => data.includes(symbol));
 
-                  let numberOnlyData = data;
-                  // if number is a string with a symbol, filter out the symbol sign to create a clean string
-                  if (checkSymbolsInArray.length > 0) {
-                    for (const symbol in checkSymbolsInArray) {
-                      numberOnlyData = numberOnlyData.replace(checkSymbolsInArray[symbol], "").trim()
-                    }
-                  }
+                  const { numberOnlyData, checkSymbolsInArray} = separateNumbersAndStrings(data);
 
                   if (+numberOnlyData === 0) numbersEqualToZero.current = true;
-                  console.log("number as string", numbersEqualToZero.current)
+
                   isNumber.current = true;
                   const numberData = {
                     value: +numberOnlyData,
@@ -217,57 +230,7 @@ function Show({
               }
             })
           }
-          {/*{*/}
-          {/*  sortedData.map((data, index) => {*/}
-          {/*    const checkForString = typeof data === "string";*/}
-          {/*    // check if contains a symbol from the array*/}
-          {/*    const checkSymbolsInArray = checkForString && symbolsArray.filter(symbol => data.includes(symbol));*/}
 
-          {/*    let processedData = data;*/}
-          {/*    // if number is a string with a symbol, filter out the symbol sign to create a clean string*/}
-          {/*    if (checkSymbolsInArray.length > 0) {*/}
-          {/*      for (const sign in checkSymbolsInArray) {*/}
-          {/*        processedData = checkForString && processedData.includes(checkSymbolsInArray[sign]) ? processedData.replace(checkSymbolsInArray[sign], "") : processedData;*/}
-          {/*      }*/}
-          {/*    }*/}
-
-          {/*    // if displayed value is a number, assign true to isNumber.current to help display the actions for numerical values*/}
-          {/*    if (typeof data === "number") isNumber.current = true*/}
-          {/*    // if displayed value is a number in a string, assign true to isNumber.current to help display the actions for numerical values*/}
-          {/*    else if (checkForString) isNumber.current = !isNaN(+processedData);*/}
-          {/*    else isNumber.current = false;*/}
-
-          {/*    if (+processedData === 0) numbersEqualToZero.current = true;*/}
-
-          {/*    // Show data not equal to zero*/}
-          {/*    if (!showAllMetrics) {*/}
-
-          {/*      if (+processedData !== 0) {*/}
-          {/*        handleChartData(isNumber.current, index, +processedData)*/}
-
-          {/*        return <ShowMetrics key={`${data}+${sortedLabels[index]}`}*/}
-          {/*                            index={index}*/}
-          {/*                            colData={data}*/}
-          {/*                            labelData={sortedLabels[index]}*/}
-          {/*                            showPercentages={showPercentages}*/}
-          {/*                            decimal={decimal}*/}
-          {/*        />*/}
-          {/*      }*/}
-          {/*    }*/}
-
-          {/*    else if (showAllMetrics) {*/}
-          {/*      handleChartData(isNumber.current, index, +processedData)*/}
-
-          {/*      return <ShowMetrics key={`${data}+${sortedLabels[index]}`}*/}
-          {/*                          index={index}*/}
-          {/*                          colData={data}*/}
-          {/*                          labelData={sortedLabels[index]}*/}
-          {/*                          showPercentages={showPercentages}*/}
-          {/*                          decimal={decimal}*/}
-          {/*      />*/}
-          {/*    }*/}
-          {/*  })*/}
-          {/*}*/}
         </div>
 
       </SectionLayout>
