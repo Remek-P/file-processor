@@ -2,10 +2,12 @@ import { useRef, useState } from "react";
 
 import SectionLayout from "@/components/output/section/section-layout/section-layout";
 
-import {dateValidator} from "@/utils/dateUtils";
+import { dateValidator } from "@/utils/dateUtils";
+
 import ShowNumbers from "@/components/output/section/show/show-metrics/show-numbers";
 import ShowStringsAsNumbers from "@/components/output/section/show/show-metrics/show-strings-as-numbers";
-
+import ShowDate from "@/components/output/section/show/show-metrics/show-date";
+import ShowValues from "@/components/output/section/show/show-metrics/show-values";
 
 function Show({
                 value,
@@ -211,22 +213,39 @@ function Show({
                 } else if (isDate) {
                   isNumber.current = false;
                   const dateData = {
-
                     value: data,
                     label: sortedLabels[index],
                   }
+
+                  return <ShowDate key={`${data}+${sortedLabels[index]}`}
+                                   value={dateData.value}
+                                   label={dateData.label}
+                  />
+
                 } else {
                   isNumber.current = false;
                   const stringData = {
-                    isNumber: false,
                     value: data,
                     label: sortedLabels[index],
                   };
+
+                  return <ShowValues key={`${data}+${sortedLabels[index]}`}
+                                     label={stringData.label}
+                                     displayValue={stringData.value}
+                  />
                 }
 
               } else {
                 isNumber.current = false;
-                const stringData = { value: data };
+                const otherData = {
+                  value: data,
+                  label: sortedLabels[index],
+                };
+
+                return <ShowValues key={`${data}+${sortedLabels[index]}`}
+                                   label={otherData.label}
+                                   displayValue={otherData.value}
+                />
               }
             })
           }

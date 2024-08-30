@@ -23,7 +23,7 @@ function ShowNumbers({ data, decimal, showAllMetrics, showPercentages }) {
     return showPercentages ? `${convertToPercentages}%` : roundToGivenDecimal
   }
 
-  return <ShowValues label={label} displayValue={displayValue} />
+  return <ShowValues label={label} displayValue={displayValue()} />
 }
 
 export default ShowNumbers;

@@ -39,7 +39,7 @@ function ShowStringsAsNumbers({ data, decimal, showAllMetrics, showPercentages  
     return processedValue;
   }
 
-  return <ShowValues label={label} displayValue={displayValue} />
+  return <ShowValues label={label} displayValue={displayValue()} />
 }
 
 export default ShowStringsAsNumbers;

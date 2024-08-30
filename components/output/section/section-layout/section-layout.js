@@ -23,7 +23,7 @@ function SectionLayout({
                          setShowAllMetrics,
                          children,
                        }) {
-  // TODO: what if colData is mixed - number and string
+
   // TODO: Delete decimal and setDecimal if needed
 
   const [showBarChart, setShowBarChart] = useState(false);
