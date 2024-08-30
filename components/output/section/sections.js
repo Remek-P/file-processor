@@ -17,12 +17,13 @@ function Sections({
                     hideDB_ID_Tile,
                     excludedArray,
                     setExcludedArray,
+                    searchSuggestionsOrder,
                     handleClick,
                   }) {
 
   const labelDataArray = excelFile[1];
 
-  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, excelFile, IDIndex]);
+  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, excelFile, IDIndex, searchSuggestionsOrder]);
   const colDataArray = searchRecords[0];
 
   const displayData = () => {

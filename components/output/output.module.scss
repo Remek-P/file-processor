@@ -25,6 +25,9 @@
   &Data {
     cursor: pointer;
 
+    //width: max-content;
+    text-wrap: nowrap;
+
     position: relative;
 
     &::after {

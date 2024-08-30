@@ -79,6 +79,7 @@ function Output({
                   excludedArray={excludedArray}
                   setExcludedArray={setExcludedArray}
                   toggleIDView={toggleIDView}
+                  searchSuggestionsOrder={searchSuggestionsOrder}
                   handleClick={handleClick}
         />
       </>
