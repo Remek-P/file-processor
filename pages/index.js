@@ -27,7 +27,6 @@ export default function Home() {
       header: 1,
       raw: false,
       rawNumbers: false,
-      UTC: true,
     })
   }
 //TODO: deal with finding dates

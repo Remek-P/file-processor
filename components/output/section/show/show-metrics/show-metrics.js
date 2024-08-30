@@ -16,11 +16,12 @@ function ShowMetrics({
           : 2
 
 
-  // Double escape required for the regex test (regexCheckForNumberWithSymbol)
-  const regexSymbolArray = ["%", "p\\%", "\\$", "US\\$", "USD", "AUD", "A\\$", "CAD", "C\\$", "\\€", "EUR", "\\¥", "JPY", "\\£", "GBP", "CNY", "PLN", "zł", "\\>", "\\>\\=", "\\<", "\\<\\="];
-  const stringSymbolArray = regexSymbolArray.map((item) => item.replaceAll("\\", ""))
+  const regexSymbolArray = ["%", "p%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł", ">", ">=", "<", "<="];
+  //TODO: Is this needed?
+  const stringSymbolArray = regexSymbolArray.map(item => item.replaceAll("\\", ""));
+  const escapedRegexSymbolArray = regexSymbolArray.map(item => item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 
-  const regexCheckForNumberWithSymbol = new RegExp(`^\\d+(.\\d+)?(${regexSymbolArray.join("|")})$`);
+  const regexCheckForNumberWithSymbol = new RegExp(`^\\d+(\\.\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})$`);
 
   const containsSymbol = (value, symbolArray) => {
     if (typeof value === "string") {
@@ -36,21 +37,22 @@ function ShowMetrics({
 
   const display = () => {
     // if empty
-    if (colData === "") return null;
+    if (colData.trim() === "") return null;
 
     const convertToPercentages = (+colData * 100).toFixed(localDecimal);
     const roundToGivenDecimal = (+colData).toFixed(localDecimal);
 
     // Check if number
-    if (!isNaN(+convertToPercentages)) {
+    if (!isNaN(+colData)) {
       // returns original data
       if (showPercentages === undefined && decimal === undefined) return colData;
       // enables toggling between percentage views
       return showPercentages ? `${convertToPercentages}%` : roundToGivenDecimal
 
     } else if (typeof colData === "string") {
-
       // if not a number test if this is a number stored as a string
+      
+      const regexSymbol = colData.search(regexCheckForNumberWithSymbol)
       if (regexCheckForNumberWithSymbol.test(colData)) {
 
         const convertToNumber = (+(colData.replace(containsSymbol(colData, stringSymbolArray), "")));
@@ -62,15 +64,18 @@ function ShowMetrics({
           return showPercentages ? `${convertedAndRounded}${symbol}` : convertedAndRounded
 
           // traditionally the zł (currency indicator) is displayed after the value
-        } else if (symbol === "zł") return `${convertedAndRounded}${symbol}`
+        } else if (symbol === "zł") {
+          return `${convertedAndRounded}${symbol}`
+          
+        } else {
 
-        else return `${symbol}${convertedAndRounded}`
+          return `${symbol}${convertedAndRounded}`
+        }
 
       } else return colData
 
     } else if (colData instanceof Date) {
 //TODO: deal with finding dates
-      console.log("colData", colData)
     } else return typeof colData
   }
 

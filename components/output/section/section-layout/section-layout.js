@@ -97,7 +97,7 @@ function SectionLayout({
   }
 
   const hidden = isContainingItemFromArray(value, excludedArray) ? {display: "none"} : null;
-
+  
   return (
       <Tile className={`${classes.optionContainer} shadow`} style={hidden} aria-hidden={!!hidden}>
 
