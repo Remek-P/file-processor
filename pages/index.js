@@ -33,7 +33,7 @@ export default function Home() {
   const readExcel = (data) => {
 
     const workbook = XLSX.readFile(data,
-        {sheetRows: 10}
+        // {sheetRows: 10}
     );
     const isMerged = workbook.Sheets.import?.["!merges"] !== undefined;
     if (isMerged) setWarnings([...warnings, "Merged Cells detected, please unmerge them in the file"])
