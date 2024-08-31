@@ -8,10 +8,14 @@
 
   overflow-x: auto;
 
+  & > li {
+    width: fit-content;
+  }
+
   &Header {
     margin-bottom: 16px;
     margin-right: 12px;
-    width: max-content;
+    text-wrap: nowrap;
   }
 
   $data-container-gap: 18px;
@@ -25,7 +29,6 @@
   &Data {
     cursor: pointer;
 
-    //width: max-content;
     text-wrap: nowrap;
 
     position: relative;
@@ -35,16 +38,17 @@
 
       content: "";
       position: absolute;
-      inset: $height -30% $height 0;
+      inset: $height -25% $height -5%;
       min-height: -$height;
 
       background-color: transparent;
       z-index: 1;
     }
-  }
 
-  & > * > * {
-    height: max-content;
+    &:hover::after,
+    &:focus-visible::after {
+      background-color: rgba(255, 255, 255, 0.50);
+    }
   }
 }
 
