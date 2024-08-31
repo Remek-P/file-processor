@@ -29,6 +29,7 @@ function DisplayMultipleSuggestions({
     if (searchSuggestionsOrder === undefined) {
       return searchUsers;
     }
+
     // Sort the indexed data based on the value and sort direction (sortedUtils)
     if (searchSuggestionsOrder || searchSuggestionsOrder === false)
       return [...searchUsers].sort((a, b) => compareValues(
@@ -40,7 +41,7 @@ function DisplayMultipleSuggestions({
   }, [searchSuggestionsOrder, searchUsers, IDIndex]);
 
   // TODO: Loader indicating change od suggestion order is in progress
-  
+
   return (
       <section>
         {

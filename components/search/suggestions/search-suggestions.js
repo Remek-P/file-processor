@@ -2,7 +2,6 @@ import { Tile } from "@carbon/react";
 
 import classes from "@/components/output/output.module.scss";
 import { SortAscending, SortDescending } from "@carbon/icons-react";
-import {useState} from "react";
 
 function SearchSuggestions({
                              label,
@@ -14,9 +13,6 @@ function SearchSuggestions({
                              searchSuggestionsOrder,
                              setSearchSuggestionsOrder,
                            }) {
-
-
-  const [showIcon, setShowIcon] = useState(false)
 
   const sortIcon = searchSuggestionsOrder === undefined
       ? null
@@ -40,7 +36,6 @@ function SearchSuggestions({
               className={classes.searchContainerHeader}
           >
             <span>{ label }</span>
-            { showIcon && sortIcon }
           </h5>
           <ul className={classes.searchContainerDataContainer}>
             {sortedSuggestions.map(data =>
