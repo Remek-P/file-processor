@@ -35,9 +35,13 @@ function DisplayMultipleSuggestions({
       return searchUsers;
     }
 
-    if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
-      return [...searchUsers].sort((a, b) => compareValues(a[indexToSort.current], b[indexToSort.current], searchSuggestionsOrder));
-    }
+    // Sort the indexed data based on the value and sort direction (sortedUtils)
+    if (searchSuggestionsOrder || searchSuggestionsOrder === false)
+      [...searchUsers].sort((a, b) => compareValues(
+          a[indexToSort.current],
+          b[indexToSort.current],
+          searchSuggestionsOrder)
+      );
   }, [searchSuggestionsOrder, searchUsers, IDIndex]);
 
   // TODO: Loader indicating change od suggestion order is in progress
@@ -45,7 +49,8 @@ function DisplayMultipleSuggestions({
   return (
       <section>
         {
-            reducePerformanceStrain && <TexTile text={"Please type at least 3 characters to display search results"}/>
+            reducePerformanceStrain
+            && <TexTile text={"Please type at least 3 characters to display search results"}/>
         }
 
         <ul className={classes.searchContainer}>

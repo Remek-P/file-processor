@@ -74,7 +74,7 @@ function Show({
     const indexedDataArray = headerValueArray.map((value, index) => ({ value, label: labelValueArray[index], index }));
 
     if (sort || sort === false) {
-      // Sort the indexed data based on the value and sort direction
+      // Sort the indexed data based on the value and sort direction (sortedUtils)
       indexedDataArray.sort((a, b) => compareValues(a.value, b.value, sort));
 
       // Separate the sorted values and labels back into their respective arrays
