@@ -4,6 +4,13 @@ import TexTile from "@/components/tile-type/text-tile/texTile";
 import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
 
 import classes from "@/components/output/output.module.scss";
+import {
+  checkForNumber,
+  checkForString,
+  compareValues,
+  regexOverall,
+  separateNumbersAndStrings
+} from "@/utils/sortUtils";
 
 function DisplayMultipleSuggestions({
                                       IDIndex,
@@ -26,10 +33,10 @@ function DisplayMultipleSuggestions({
   const sortedSuggestions = useMemo(() => {
     if (searchSuggestionsOrder === undefined) {
       return searchUsers;
-    } else if (searchSuggestionsOrder) {
-      return [...searchUsers].sort((a, b) => a[indexToSort.current].toString().localeCompare(b[indexToSort.current].toString()));
-    } else if (!searchSuggestionsOrder) {
-      return [...searchUsers].sort((a, b) => b[indexToSort.current].toString().localeCompare(a[indexToSort.current].toString()));
+    }
+
+    if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
+      return [...searchUsers].sort((a, b) => compareValues(a[indexToSort.current], b[indexToSort.current], searchSuggestionsOrder));
     }
   }, [searchSuggestionsOrder, searchUsers, IDIndex]);
 

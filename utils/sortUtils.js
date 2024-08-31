@@ -22,3 +22,40 @@ export const separateNumbersAndStrings = (data) => {
 
 export const checkForNumber = (data) => !isNaN(+data);
 export const checkForString = (data) => typeof data === "string";
+
+export const compareValues = (aValue, bValue, sortOrder) => {
+
+  const isA_Number = checkForNumber(aValue);
+  const isB_Number = checkForNumber(bValue);
+
+  // Sorting, if data are numbers (number as a string or number)
+  if (isA_Number && isB_Number) {
+    if (sortOrder) return +aValue - +bValue;
+    else return +bValue - +aValue;
+  }
+
+  // Are data strings
+  const isA_String = checkForString(aValue);
+  const isB_String = checkForString(bValue);
+  const bothAreStrings = isA_String && isB_String
+
+  // regex test
+  const numberAsStringWithSymbolsA = regexOverall.test(aValue);
+  const numberAsStringWithSymbolsB = regexOverall.test(bValue);
+  const bothPassedRegex = numberAsStringWithSymbolsA & numberAsStringWithSymbolsB;
+
+  // Sorting if data are strings numbers with symbols from symbolsArray
+  if (bothAreStrings && bothPassedRegex) {
+
+    // extract number
+    const numberOnlyDataA = +separateNumbersAndStrings(aValue).numberOnlyData;
+    const numberOnlyDataB = +separateNumbersAndStrings(bValue).numberOnlyData;
+
+    if (sortOrder) return numberOnlyDataA - numberOnlyDataB;
+    else return numberOnlyDataB - numberOnlyDataA;
+  }
+
+  // In every other case use local sorting
+  if (sortOrder) return aValue.localeCompare(bValue);
+  else return bValue.localeCompare(aValue);
+}

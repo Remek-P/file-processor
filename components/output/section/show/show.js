@@ -8,7 +8,13 @@ import ShowNumbers from "@/components/output/section/show/show-metrics/show-numb
 import ShowStringsAsNumbers from "@/components/output/section/show/show-metrics/show-strings-as-numbers";
 import ShowDate from "@/components/output/section/show/show-metrics/show-date";
 import ShowValues from "@/components/output/section/show/show-metrics/show-values";
-import {checkForNumber, checkForString, regexOverall, separateNumbersAndStrings} from "@/utils/sortUtils";
+import {
+  checkForNumber,
+  checkForString,
+  compareValues,
+  regexOverall,
+  separateNumbersAndStrings
+} from "@/utils/sortUtils";
 
 function Show({
                 value,
@@ -69,41 +75,7 @@ function Show({
 
     if (sort || sort === false) {
       // Sort the indexed data based on the value and sort direction
-      indexedDataArray.sort((a, b) => {
-
-        const isA_Number = checkForNumber(a.value);
-        const isB_Number = checkForNumber(b.value);
-        // Sorting, if data are numbers (number as a string or number)
-        if (isA_Number && isB_Number) {
-          if (sort) return +a.value - +b.value;
-          else return +b.value - +a.value;
-        }
-
-        // Are data
-        const isA_String = checkForString(a.value);
-        const isB_String = checkForString(b.value);
-        const bothAreStrings = isA_String && isB_String
-
-        // regex test
-        const numberAsStringWithSymbolsA = regexOverall.test(a.value);
-        const numberAsStringWithSymbolsB = regexOverall.test(b.value);
-        const bothPassedRegex = numberAsStringWithSymbolsA & numberAsStringWithSymbolsB
-
-        // Sorting if data are strings numbers with symbols from symbolsArray
-        if (bothAreStrings && bothPassedRegex) {
-
-          // extract number
-          const numberOnlyDataA = +separateNumbersAndStrings(a.value).numberOnlyData;
-          const numberOnlyDataB = +separateNumbersAndStrings(b.value).numberOnlyData;
-
-          if (sort) return numberOnlyDataA - numberOnlyDataB;
-          else return numberOnlyDataB - numberOnlyDataA;
-        }
-
-        // In every other case use local sorting
-        if (sort) return a.value.localeCompare(b.value);
-        else return b.value.localeCompare(a.value);
-      });
+      indexedDataArray.sort((a, b) => compareValues(a.value, b.value, sort));
 
       // Separate the sorted values and labels back into their respective arrays
       const sortedData = indexedDataArray.map(item => item.value);
