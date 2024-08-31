@@ -13,6 +13,7 @@ function DisplayOutput({
                          excludedArray,
                          setExcludedArray,
                          searchSuggestionsOrder,
+                         setSearchSuggestionsOrder,
                        }) {
 
   const handleDeleteChecked = (e) => {
@@ -60,6 +61,7 @@ function DisplayOutput({
                             setExcludedArray={setExcludedArray}
                             hideDB_ID_Tile={hideDB_ID_Tile}
                             searchSuggestionsOrder={searchSuggestionsOrder}
+                            setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                             handleDeleteChecked={handleDeleteChecked}
                     />
                   </div>

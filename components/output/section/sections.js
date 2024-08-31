@@ -18,6 +18,7 @@ function Sections({
                     excludedArray,
                     setExcludedArray,
                     searchSuggestionsOrder,
+                    setSearchSuggestionsOrder,
                     handleClick,
                   }) {
 
@@ -57,6 +58,8 @@ function Sections({
                                             labelDataArray={labelDataArray}
                                             setInputValue={setInputValue}
                                             searchUsers={searchRecords}
+                                            searchSuggestionsOrder={searchSuggestionsOrder}
+                                            setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                 />
               </div>
           )

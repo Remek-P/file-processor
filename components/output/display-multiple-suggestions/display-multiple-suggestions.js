@@ -1,8 +1,9 @@
+import { useMemo, useRef } from "react";
+
 import TexTile from "@/components/tile-type/text-tile/texTile";
+import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
 
 import classes from "@/components/output/output.module.scss";
-
-import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
 
 function DisplayMultipleSuggestions({
                                       IDIndex,
@@ -10,6 +11,8 @@ function DisplayMultipleSuggestions({
                                       searchUsers,
                                       inputValue,
                                       setInputValue,
+                                      searchSuggestionsOrder,
+                                      setSearchSuggestionsOrder
                                     }) {
 
   const reducePerformanceStrain = inputValue.length < 3;
@@ -18,6 +21,18 @@ function DisplayMultipleSuggestions({
     setInputValue(e.target.dataset.value);
   }
 
+  const indexToSort = useRef(IDIndex);
+
+  const sortedSuggestions = useMemo(() => {
+    if (searchSuggestionsOrder === undefined) {
+      return searchUsers;
+    } else if (searchSuggestionsOrder) {
+      return [...searchUsers].sort((a, b) => a[indexToSort.current].toString().localeCompare(b[indexToSort.current].toString()));
+    } else if (!searchSuggestionsOrder) {
+      return [...searchUsers].sort((a, b) => b[indexToSort.current].toString().localeCompare(a[indexToSort.current].toString()));
+    }
+  }, [searchSuggestionsOrder, searchUsers, IDIndex]);
+  
   return (
       <section>
         {
@@ -30,7 +45,9 @@ function DisplayMultipleSuggestions({
                                  label={label}
                                  index={index}
                                  IDIndex={IDIndex}
-                                 searchUsers={searchUsers}
+                                 indexToSort={indexToSort}
+                                 sortedSuggestions={sortedSuggestions}
+                                 setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                                  pickSearchedOutput={pickSearchedOutput}
               />
           )}

@@ -124,6 +124,7 @@ function FileChosen({
                          setExcludedArray={setExcludedArray}
                          setNumberOfOutputs={setNumberOfOutputs}
                          searchSuggestionsOrder={searchSuggestionsOrder}
+                         setSearchSuggestionsOrder={setSearchSuggestionsOrder}
           />
         </div>
 

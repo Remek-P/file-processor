@@ -16,6 +16,7 @@ function Output({
                   excludedArray,
                   setExcludedArray,
                   searchSuggestionsOrder,
+                  setSearchSuggestionsOrder,
                   handleDeleteChecked,
                 }) {
 
@@ -71,7 +72,6 @@ function Output({
         <Sections IDIndex={IDIndex}
                   decimal={decimal}
                   excelFile={excelFile}
-                  searchRef={searchRef}
                   userDataArray={userDataArray}
                   inputValue={deferredInputValue}
                   setInputValue={setInputValue}
@@ -80,6 +80,7 @@ function Output({
                   setExcludedArray={setExcludedArray}
                   toggleIDView={toggleIDView}
                   searchSuggestionsOrder={searchSuggestionsOrder}
+                  setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                   handleClick={handleClick}
         />
       </>
