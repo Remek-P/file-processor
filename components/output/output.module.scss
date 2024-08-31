@@ -13,8 +13,13 @@
   }
 
   &Header {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 5px;
     margin-bottom: 16px;
-    margin-right: 12px;
+    margin-right: 7px;
     text-wrap: nowrap;
   }
 

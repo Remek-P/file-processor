@@ -49,6 +49,7 @@ function DisplayMultipleSuggestions({
                                  IDIndex={IDIndex}
                                  indexToSort={indexToSort}
                                  sortedSuggestions={sortedSuggestions}
+                                 searchSuggestionsOrder={searchSuggestionsOrder}
                                  setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                                  pickSearchedOutput={pickSearchedOutput}
               />

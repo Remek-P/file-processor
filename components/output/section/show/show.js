@@ -8,6 +8,7 @@ import ShowNumbers from "@/components/output/section/show/show-metrics/show-numb
 import ShowStringsAsNumbers from "@/components/output/section/show/show-metrics/show-strings-as-numbers";
 import ShowDate from "@/components/output/section/show/show-metrics/show-date";
 import ShowValues from "@/components/output/section/show/show-metrics/show-values";
+import {checkForNumber, checkForString, regexOverall, separateNumbersAndStrings} from "@/utils/sortUtils";
 
 function Show({
                 value,
@@ -33,30 +34,6 @@ function Show({
   const headerValueArray = [];
   const labelValueArray = [];
 
-  const checkForNumber = (data) => !isNaN(+data);
-  const checkForString = (data) => typeof data === "string";
-
-  const symbolsArray = [">", ">=", "<", "<=","%", "p%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł"];
-  const escapedRegexSymbolArray = symbolsArray.map(item => item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  // const regexCheckForNumberWithSymbolBefore = new RegExp(`^(${escapedRegexSymbolArray.join("|")})\\s*\\d+(\\.\\d+)?$`);
-  // const regexCheckForNumberWithSymbolAfter = new RegExp(`^\\d+(\\.\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})$`);
-  const regexOverall = new RegExp(`^((${escapedRegexSymbolArray.join("|")})\\s*|\\s*(${escapedRegexSymbolArray.join("|")})\\s*)?\\d+(\\.\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})?$`);
-
-  const separateNumbersAndStrings = (data) => {
-    // Check if data contains any symbols from symbols Array
-    const checkSymbolsInArray = symbolsArray.filter(symbol => data.includes(symbol));
-
-    let numberOnlyData = data;
-    // if number is a string with a symbol, filter out the symbol sign to create a clean string
-    if (checkSymbolsInArray.length > 0) {
-      for (const symbol in checkSymbolsInArray) {
-        numberOnlyData = numberOnlyData.replace(checkSymbolsInArray[symbol], "").trim()
-      }
-    }
-
-    return { numberOnlyData, checkSymbolsInArray };
-  }
-
   const handleChartData = (type, index, value) => {
     valueArray.push(type) //valueArray is sent as props and used to check if data is number
     chartData.push({
@@ -78,8 +55,6 @@ function Show({
     }
   })
 
-  // TODO: percentages and pseudo-numerical values treated like strings
-  // TODO: sort function is mutating data, so data is never displayed in an unsorted manner
   const sortDataAndLabelsArrayTogether = () => {
 
     if (sort === undefined) {
