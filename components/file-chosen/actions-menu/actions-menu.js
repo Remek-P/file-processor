@@ -17,6 +17,7 @@ function ActionsMenu({
                        handleFileChange,
                        handleHideAllArrays,
                        handleDecimalChange,
+                       resetDataFormatting,
                        handleShowAllHiddenArrays,
                      }) {
 
@@ -103,12 +104,16 @@ function ActionsMenu({
                                                 aria-hidden={hideDB_ID_Tile}
           />
           }
-
+          <OverflowMenuItem itemText="Reset Data Format"
+                            onClick={resetDataFormatting}
+                            isDelete={true}
+                            className={classes.menuItem}
+                            hasDivider
+          />
           <OverflowMenuItem itemText="Delete All"
                             onClick={deleteAll}
                             isDelete={true}
                             className={classes.menuItem}
-                            hasDivider
           />
           <OverflowMenuItem itemText="Change File"
                             onClick={handleFileChange}

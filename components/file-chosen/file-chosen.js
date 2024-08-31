@@ -86,7 +86,8 @@ function FileChosen({
   // TODO: Reset all data changes
   const resetDataFormatting = () => {
     setDecimal(undefined);
-
+    setSearchSuggestionsOrder(undefined);
+    setExcludedArray([])
   }
 
   if (IDIndex === -1) return <IdNotAvailable labels={labelArray}
@@ -109,6 +110,7 @@ function FileChosen({
                      handleFileChange={handleFileChange}
                      handleHideAllArrays={handleHideAllArrays}
                      handleDecimalChange={handleDecimalChange}
+                     resetDataFormatting={resetDataFormatting}
                      handleShowAllHiddenArrays={handleShowAllHiddenArrays}
         />
 

@@ -32,6 +32,8 @@ function DisplayMultipleSuggestions({
       return [...searchUsers].sort((a, b) => b[indexToSort.current].toString().localeCompare(a[indexToSort.current].toString()));
     }
   }, [searchSuggestionsOrder, searchUsers, IDIndex]);
+
+  // TODO: Loader indicating change od suggestion order is in progress
   
   return (
       <section>
