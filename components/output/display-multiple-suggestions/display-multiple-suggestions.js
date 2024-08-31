@@ -3,14 +3,9 @@ import { useMemo, useRef } from "react";
 import TexTile from "@/components/tile-type/text-tile/texTile";
 import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
 
+import { compareValues } from "@/utils/sortUtils";
+
 import classes from "@/components/output/output.module.scss";
-import {
-  checkForNumber,
-  checkForString,
-  compareValues,
-  regexOverall,
-  separateNumbersAndStrings
-} from "@/utils/sortUtils";
 
 function DisplayMultipleSuggestions({
                                       IDIndex,
@@ -34,14 +29,14 @@ function DisplayMultipleSuggestions({
     if (searchSuggestionsOrder === undefined) {
       return searchUsers;
     }
-
     // Sort the indexed data based on the value and sort direction (sortedUtils)
     if (searchSuggestionsOrder || searchSuggestionsOrder === false)
-      [...searchUsers].sort((a, b) => compareValues(
+      return [...searchUsers].sort((a, b) => compareValues(
           a[indexToSort.current],
           b[indexToSort.current],
           searchSuggestionsOrder)
       );
+
   }, [searchSuggestionsOrder, searchUsers, IDIndex]);
 
   // TODO: Loader indicating change od suggestion order is in progress
@@ -59,6 +54,7 @@ function DisplayMultipleSuggestions({
                                  label={label}
                                  index={index}
                                  IDIndex={IDIndex}
+                                 isLoading={isLoading}
                                  indexToSort={indexToSort}
                                  sortedSuggestions={sortedSuggestions}
                                  searchSuggestionsOrder={searchSuggestionsOrder}
