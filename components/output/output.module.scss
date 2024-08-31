@@ -18,9 +18,11 @@
     align-items: center;
     flex-wrap: nowrap;
     gap: 5px;
-    margin-bottom: 16px;
-    margin-right: 7px;
+    padding-bottom: 16px;
+    padding-right: 7px;
     text-wrap: nowrap;
+
+    cursor: pointer;
   }
 
   $data-container-gap: 18px;

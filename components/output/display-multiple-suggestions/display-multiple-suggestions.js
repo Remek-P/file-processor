@@ -54,7 +54,6 @@ function DisplayMultipleSuggestions({
                                  label={label}
                                  index={index}
                                  IDIndex={IDIndex}
-                                 isLoading={isLoading}
                                  indexToSort={indexToSort}
                                  sortedSuggestions={sortedSuggestions}
                                  searchSuggestionsOrder={searchSuggestionsOrder}
