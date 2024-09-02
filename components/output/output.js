@@ -1,24 +1,21 @@
-import { useDeferredValue, useMemo, useRef, useState } from "react";
+import {useContext, useDeferredValue, useMemo, useRef, useState} from "react";
 
 import Search from "@/components/search/search";
 import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
 import Sections from "@/components/output/section/sections";
 
 import classes from "@/components/output/output.module.scss";
+import {SearchSuggestionsOrderGlobalContext} from "@/context/global-context";
 
 function Output({
                   excelFile,
                   index,
                   IDIndex,
-                  decimal,
-                  toggleIDView,
                   hideDB_ID_Tile,
-                  excludedArray,
-                  setExcludedArray,
-                  searchSuggestionsOrder,
-                  setSearchSuggestionsOrder,
                   handleDeleteChecked,
                 }) {
+
+  const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
 
   const [inputValue, setInputValue] = useState("");
   const userDataArray = useMemo(() =>  excelFile.slice(2), [excelFile]);
@@ -29,7 +26,7 @@ function Output({
 
   const searchID = "search";
 
-
+  // TODO: Use sortData form sortUtils
   const defaultOrderSearchSuggestions = userDataArray.map(id => id[IDIndex]);
   const ascendingOrderSearchSuggestions = [...defaultOrderSearchSuggestions].sort((a, b) => a.toString().localeCompare(b.toString()));
   const descendingOrderSearchSuggestions = [...defaultOrderSearchSuggestions].sort((a, b) => b.toString().localeCompare(a.toString()));
@@ -70,15 +67,11 @@ function Output({
         </div>
 
         <Sections IDIndex={IDIndex}
-                  decimal={decimal}
                   excelFile={excelFile}
                   userDataArray={userDataArray}
                   inputValue={deferredInputValue}
                   setInputValue={setInputValue}
                   hideDB_ID_Tile={hideDB_ID_Tile}
-                  excludedArray={excludedArray}
-                  setExcludedArray={setExcludedArray}
-                  toggleIDView={toggleIDView}
                   searchSuggestionsOrder={searchSuggestionsOrder}
                   setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                   handleClick={handleClick}

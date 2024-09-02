@@ -1,11 +1,12 @@
-import { useRef } from "react";
+import {useContext, useRef} from "react";
+
+import {ExcludedDataGlobalContext} from "@/context/global-context";
 
 import { Tile } from "@carbon/react";
 
-function ExcludedData({
-                        excludedArray,
-                        setExcludedArray,
-                      }) {
+function ExcludedData() {
+
+  const [excludedArray, setExcludedArray] = useContext(ExcludedDataGlobalContext);
 
   const excludedValueRef = useRef(null);
 

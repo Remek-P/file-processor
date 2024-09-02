@@ -8,6 +8,7 @@ import ShowNumbers from "@/components/output/section/show/show-metrics/show-numb
 import ShowStringsAsNumbers from "@/components/output/section/show/show-metrics/show-strings-as-numbers";
 import ShowDate from "@/components/output/section/show/show-metrics/show-date";
 import ShowValues from "@/components/output/section/show/show-metrics/show-values";
+
 import {
   checkForNumber,
   checkForString,
@@ -18,19 +19,17 @@ import {
 
 function Show({
                 value,
-                decimal,
                 colDataArray,
                 labelDataArray,
                 headerDataArray,
-                excludedArray,
-                setExcludedArray,
               }) {
 
+  if (value === "MongoDB ID") console.log("dupa")
   const [showAllMetrics, setShowAllMetrics] = useState(false);
   const [showPercentages, setShowPercentages] = useState(undefined);
-  const [sort, setSort] = useState(undefined)
+  const [sort, setSort] = useState(undefined);
 
-  const isNumber = useRef(undefined);
+  const dataType = useRef(undefined);
   const numbersEqualToZero = useRef(false);
 
   const chartData = [];
@@ -40,18 +39,18 @@ function Show({
   const headerValueArray = [];
   const labelValueArray = [];
 
-  const handleChartData = (type, index, value) => {
-    valueArray.push(type) //valueArray is sent as props and used to check if data is number
+  const handleChartData = (dataType, index, value) => {
+    valueArray.push(dataType) //valueArray is sent as props and used to check the data type
     chartData.push({
       group: sortedLabels[index],
       value
     });
   }
 
-  const handleChartDataIfDataIs0AndNot0 = (isItANumber, indexOfALabel, numberDataValue) => {
+  const handleChartDataIfDataIs0AndNot0 = (dataType, indexOfALabel, numberDataValue) => {
     if (!showAllMetrics) {
-      if (numberDataValue !== 0) handleChartData(isItANumber, indexOfALabel, numberDataValue);
-    } else handleChartData(isItANumber, indexOfALabel, numberDataValue);
+      if (numberDataValue !== 0) handleChartData(dataType, indexOfALabel, numberDataValue);
+    } else handleChartData(dataType, indexOfALabel, numberDataValue);
   }
 
   headerDataArray.map((header, index) => {
@@ -96,8 +95,6 @@ function Show({
                      valueArray={valueArray}
                      showPercentages={showPercentages}
                      setShowPercentages={setShowPercentages}
-                     excludedArray={excludedArray}
-                     setExcludedArray={setExcludedArray}
                      numbersEqualToZero={numbersEqualToZero}
                      setShowAllMetrics={setShowAllMetrics}
       >
@@ -108,18 +105,17 @@ function Show({
 
               if (checkForNumber(data)) {
                 if (data === 0) numbersEqualToZero.current = true;
-                isNumber.current = true;
+                dataType.current = "number";
                 const numberData = {
                   value: +data,
                   label: sortedLabels[index],
                 }
 
-                handleChartDataIfDataIs0AndNot0(isNumber.current, index, numberData.value)
+                handleChartDataIfDataIs0AndNot0(dataType.current, index, numberData.value)
 
                 return (
                     <ShowNumbers key={`${data}+${sortedLabels[index]}`}
                                  data={numberData}
-                                 decimal={decimal}
                                  showAllMetrics={showAllMetrics}
                                  showPercentages={showPercentages}
                     />
@@ -135,7 +131,7 @@ function Show({
 
                   if (+numberOnlyData === 0) numbersEqualToZero.current = true;
 
-                  isNumber.current = true;
+                  dataType.current = "number";
                   const numberData = {
                     value: +numberOnlyData,
                     symbolsArray: checkSymbolsInArray,
@@ -143,17 +139,17 @@ function Show({
                     unrefined: data,
                   }
 
-                  handleChartDataIfDataIs0AndNot0(isNumber.current, index, +numberData.value)
+                  handleChartDataIfDataIs0AndNot0(dataType.current, index, +numberData.value)
 
                   return <ShowStringsAsNumbers key={`${data}+${sortedLabels[index]}`}
                                                data={numberData}
-                                               decimal={decimal}
                                                showAllMetrics={showAllMetrics}
                                                showPercentages={showPercentages}
                   />
 
                 } else if (dateValidator(data)) {
-                  isNumber.current = false;
+                  dataType.current = "date";
+                  valueArray.push(dataType.current)
                   const dateData = {
                     value: data,
                     label: sortedLabels[index],
@@ -165,7 +161,8 @@ function Show({
                   />
 
                 } else {
-                  isNumber.current = false;
+                  dataType.current = "string";
+                  valueArray.push(dataType.current)
                   const stringData = {
                     value: data,
                     label: sortedLabels[index],
@@ -178,7 +175,7 @@ function Show({
                 }
 
               } else {
-                isNumber.current = false;
+                dataType.current = "other";
                 const otherData = {
                   value: data,
                   label: sortedLabels[index],

@@ -1,12 +1,13 @@
-import {useState} from "react";
+import { useContext } from "react";
 
 import ShowValues from "@/components/output/section/show/show-metrics/show-values";
+import {DecimalGlobalContext} from "@/context/global-context";
 
-function ShowStringsAsNumbers({ data, decimal, showAllMetrics, showPercentages  }) {
+function ShowStringsAsNumbers({ data, showAllMetrics, showPercentages  }) {
 
-  const { value, symbolsArray, label, unrefined } = data;
+  const [decimal] = useContext(DecimalGlobalContext);
 
-  const [refine, setRefine] = useState(false)
+  const { value, symbolsArray, label } = data;
 
   const is0 = value === 0;
 
@@ -22,8 +23,6 @@ function ShowStringsAsNumbers({ data, decimal, showAllMetrics, showPercentages  
   const roundToGivenDecimal = (+value).toFixed(localDecimal);
 
   const displayValue = () => {
-
-    // if (!refine) return unrefined;
 
     let processedValue = value;
 

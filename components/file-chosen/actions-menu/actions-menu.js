@@ -1,29 +1,50 @@
-import { OverflowMenu, OverflowMenuItem, MenuItemDivider, NumberInput } from "@carbon/react";
+import {OverflowMenu, OverflowMenuItem, MenuItemDivider } from "@carbon/react";
+
+import {useContext} from "react";
+import {
+  ExcludedDataGlobalContext,
+  SearchSuggestionsOrderGlobalContext,
+  ToggleIDViewGlobalContext
+} from "@/context/global-context";
 
 import classes from "../file-chosen.module.scss";
+import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
+import ResetFormating from "@/components/file-chosen/actions-menu/menu-items/reset-formating";
 
 function ActionsMenu({
-                       decimal,
-                       deleteAll,
+                       labels,
                        addPerson,
                        isFetched,
                        refreshData,
-                       toggleIDView,
                        hideDB_ID_Tile,
-                       searchSuggestionsOrder,
-                       setSearchSuggestionsOrder,
-                       handleIDView,
+                       setNumberOfOutputs,
                        handleResetID,
                        handleFileChange,
-                       handleHideAllArrays,
-                       handleDecimalChange,
-                       resetDataFormatting,
-                       handleShowAllHiddenArrays,
                      }) {
+
+  const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
+  const [, setExcludedArray] = useContext(ExcludedDataGlobalContext);
+  const [toggleIDView, setToggleIDView] = useContext(ToggleIDViewGlobalContext);
 
   const showHideDB_ID = toggleIDView ? "Hide" : "Show";
 
   const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
+
+  const handleIDView = () => {
+    setToggleIDView(prevState => !prevState);
+  }
+
+  const handleDeleteAll = () => {
+    setNumberOfOutputs([]);
+    setExcludedArray([]);
+  }
+
+  const handleShowAllHiddenArrays = () => {
+    setExcludedArray([]);
+  }
+  const handleHideAllArrays = () => {
+    setExcludedArray([...(new Set(labels))]);
+  }
 
   const handleSuggestionsDefaultOrder = () => {
     setSearchSuggestionsOrder(undefined);
@@ -33,6 +54,9 @@ function ActionsMenu({
     setSearchSuggestionsOrder(prevState => !prevState);
   }
 
+  // TODO: Reset all data changes
+
+
   return (
       <div className={`${classes.menuContainer} shadow`}>
         <OverflowMenu className={classes.menu}
@@ -41,18 +65,7 @@ function ActionsMenu({
         >
 
           <MenuItemDivider/>
-          <NumberInput value={decimal}
-                       min={0}
-                       max={20}
-                       onChange={handleDecimalChange}
-                       step={1}
-                       iconDescription="increase decrease"
-                       label="Set decimal place"
-                       invalidText="Invalid value (0-20)"
-                       size="sm"
-                       id="decimal input"
-                       isFocused={false}
-          />
+          <DecimalPlace />
 
           <OverflowMenuItem itemText="Add"
                             onClick={addPerson}
@@ -97,21 +110,17 @@ function ActionsMenu({
                             className={classes.menuItem}
                             hasDivider
           />
-          {!hideDB_ID_Tile && <OverflowMenuItem itemText={`${showHideDB_ID} DB ID`}
+          {!hideDB_ID_Tile
+              && <OverflowMenuItem itemText={`${showHideDB_ID} DB ID`}
                                                 onClick={handleIDView}
                                                 isDelete={true}
                                                 className={classes.menuItem}
                                                 aria-hidden={hideDB_ID_Tile}
           />
           }
-          <OverflowMenuItem itemText="Reset Data Format"
-                            onClick={resetDataFormatting}
-                            isDelete={true}
-                            className={classes.menuItem}
-                            hasDivider
-          />
+          <ResetFormating />
           <OverflowMenuItem itemText="Delete All"
-                            onClick={deleteAll}
+                            onClick={handleDeleteAll}
                             isDelete={true}
                             className={classes.menuItem}
           />

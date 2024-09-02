@@ -8,15 +8,11 @@ import classes from "../output.module.scss";
 
 function Sections({
                     IDIndex,
-                    decimal,
                     excelFile,
                     inputValue,
                     setInputValue,
                     userDataArray,
-                    toggleIDView,
                     hideDB_ID_Tile,
-                    excludedArray,
-                    setExcludedArray,
                     searchSuggestionsOrder,
                     setSearchSuggestionsOrder,
                     handleClick,
@@ -38,14 +34,10 @@ function Sections({
     else if (searchRecords.length === 1)
       return (
               <div className={classes.grid}>
-                <DisplaySingleOutput decimal={decimal}
-                                     excelFile={excelFile}
-                                     toggleIDView={toggleIDView}
+                <DisplaySingleOutput excelFile={excelFile}
                                      colDataArray={colDataArray}
                                      labelDataArray={labelDataArray}
                                      hideDB_ID_Tile={hideDB_ID_Tile}
-                                     excludedArray={excludedArray}
-                                     setExcludedArray={setExcludedArray}
                 />
               </div>
           )

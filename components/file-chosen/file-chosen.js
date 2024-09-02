@@ -6,8 +6,13 @@ import IdNotAvailable from "@/components/output/id-not-available/id-not-availabl
 
 import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
-import { idLabel } from "@/constants/constants";
+import {idLabel} from "@/constants/constants";
 import classes from "./file-chosen.module.scss";
+import {
+  DecimalDataProvider,
+  ExcludedDataProvider,
+  SearchSuggestionsOrderGlobalProvider
+} from "@/context/global-context";
 
 
 function FileChosen({
@@ -16,12 +21,8 @@ function FileChosen({
                       refreshData,
                       isFetched,
                     }) {
-
+  
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
-  const [decimal, setDecimal] = useState(undefined);
-  const [excludedArray, setExcludedArray] = useState([]);
-  const [toggleIDView, setToggleIDView] = useState(true);
-  const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useState(undefined);
 
   // if the provided data (excelFile) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
   const labelArray = excelFile[1];
@@ -40,33 +41,9 @@ function FileChosen({
   // TODO: hide hidden arrays when no input or no user
   // hide db id tile constant, when no db id in the labels array
   const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === idLabel) === -1;
-  
+
   const addPerson = () => {
     setNumberOfOutputs(prevState => [...prevState, {delete: false}])
-  }
-
-  const deleteAll = () => {
-    setNumberOfOutputs([]);
-    setExcludedArray([]);
-  }
-
-  const handleDecimalChange = (event, { value, direction }) => {
-    if (direction === "down" && value >= 0) {
-      setDecimal(value);
-    }
-    if (direction === "up") {
-      setDecimal(value);
-    }
-    if (!direction && value >= 0) {
-      setDecimal(value);
-    }
-  }
-
-  const handleShowAllHiddenArrays = () => {
-    setExcludedArray([]);
-  }
-  const handleHideAllArrays = () => {
-    setExcludedArray([...(new Set(excelFile[0]))]);
   }
 
   // TODO: even thought there is no displayed output, you can hide and reveal all the hidden tiles
@@ -79,63 +56,45 @@ function FileChosen({
     setIDIndex(-1)
   }
 
-  const handleIDView = () => {
-    setToggleIDView(prevState => !prevState);
-  }
-
-  // TODO: Reset all data changes
-  const resetDataFormatting = () => {
-    setDecimal(undefined);
-    setSearchSuggestionsOrder(undefined);
-    setExcludedArray([])
-  }
-
   if (IDIndex === -1) return <IdNotAvailable labels={labelArray}
-                                             handleIDPick={handleIDPick} />
+                                             handleIDPick={handleIDPick}/>
 
   return (
-      <section className={classes.sectionContainer}>
+      <DecimalDataProvider>
+        <ExcludedDataProvider>
+          <SearchSuggestionsOrderGlobalProvider>
 
-        <ActionsMenu decimal={decimal}
-                     isFetched={isFetched}
-                     refreshData={refreshData}
-                     toggleIDView={toggleIDView}
-                     hideDB_ID_Tile={hideDB_ID_Tile}
-                     searchSuggestionsOrder={searchSuggestionsOrder}
-                     setSearchSuggestionsOrder={setSearchSuggestionsOrder}
-                     addPerson={addPerson}
-                     deleteAll={deleteAll}
-                     handleIDView={handleIDView}
-                     handleResetID={handleResetID}
-                     handleFileChange={handleFileChange}
-                     handleHideAllArrays={handleHideAllArrays}
-                     handleDecimalChange={handleDecimalChange}
-                     resetDataFormatting={resetDataFormatting}
-                     handleShowAllHiddenArrays={handleShowAllHiddenArrays}
-        />
+          <section className={classes.sectionContainer}>
 
-        <div className={classes.outputsContainer}>
-          <DisplayOutput excelFile={excelFile}
-                         IDIndex={IDIndex}
-                         decimal={decimal}
-                         setDecimal={setDecimal}
+            <ActionsMenu labels={excelFile[0]}
+                         isFetched={isFetched}
+                         refreshData={refreshData}
                          hideDB_ID_Tile={hideDB_ID_Tile}
-                         toggleIDView={toggleIDView}
-                         numberOfOutputs={numberOfOutputs}
-                         excludedArray={excludedArray}
-                         setExcludedArray={setExcludedArray}
                          setNumberOfOutputs={setNumberOfOutputs}
-                         searchSuggestionsOrder={searchSuggestionsOrder}
-                         setSearchSuggestionsOrder={setSearchSuggestionsOrder}
-          />
-        </div>
+                         addPerson={addPerson}
+                         handleResetID={handleResetID}
+                         handleFileChange={handleFileChange}
+            />
 
-        <ul className={`${classes[hideHiddenArraysWhenNoUser]}`}>
-          <ExcludedData excludedArray={excludedArray}
-                        setExcludedArray={setExcludedArray} />
-        </ul>
 
-      </section>
+            <div className={classes.outputsContainer}>
+              <DisplayOutput excelFile={excelFile}
+                             IDIndex={IDIndex}
+                             hideDB_ID_Tile={hideDB_ID_Tile}
+                             numberOfOutputs={numberOfOutputs}
+                             setNumberOfOutputs={setNumberOfOutputs}
+              />
+            </div>
+
+            <ul className={`${classes[hideHiddenArraysWhenNoUser]}`}>
+              <ExcludedData/>
+            </ul>
+
+          </section>
+            
+          </SearchSuggestionsOrderGlobalProvider>
+        </ExcludedDataProvider>
+      </DecimalDataProvider>
   );
 }
 

@@ -2,14 +2,16 @@ import { useState } from "react";
 
 import Head from "next/head";
 
+import {ExcelFileDataProvider, ToggleIDViewProvider} from "@/context/global-context";
+
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
+
 import TexTile from "@/components/tile-type/text-tile/texTile";
 
 import { Loading } from '@carbon/react';
 
 import { headerLabel, idLabel } from "@/constants/constants";
-
 import XLSX from "xlsx";
 
 export default function Home() {
@@ -86,7 +88,7 @@ export default function Home() {
   const refreshData = async () => {
     await fetchDataFromDB();
   }
-  
+
   return (
       <>
         <Head>
@@ -97,34 +99,38 @@ export default function Home() {
         </Head>
 
         <main>
+          <ExcelFileDataProvider>
+            <ToggleIDViewProvider>
 
-          {
-              !excelFileName && <ChooseFile handleFile={handleFile} fetchDataFromDB={fetchDataFromDB}/>
-          }
+            {
+                !excelFileName && <ChooseFile handleFile={handleFile} fetchDataFromDB={fetchDataFromDB}/>
+            }
 
-          <Loading id="indexLoading"
-                   small={false}
-                   withOverlay={true}
-                   className={null}
-                   description="Active loading indicator"
-                   active={isLoading}
-          />
+            <Loading id="indexLoading"
+                     small={false}
+                     withOverlay={true}
+                     className={null}
+                     description="Active loading indicator"
+                     active={isLoading}
+            />
 
-          {
-              showWarnings && warnings.map((warning, index) => {
-                return <TexTile key={index} text={warning}/>;
-              })
-          }
+            {
+                showWarnings && warnings.map((warning, index) => {
+                  return <TexTile key={index} text={warning}/>;
+                })
+            }
 
-          {
-              excelFile && warnings.length === 0 &&
-              <FileChosen excelFile={excelFile}
-                          handleFileChange={handleFileChange}
-                          refreshData={refreshData}
-                          isFetched={isFetched}
-              />
-          }
+            {
+                excelFile && warnings.length === 0 &&
+                <FileChosen excelFile={excelFile}
+                            handleFileChange={handleFileChange}
+                            refreshData={refreshData}
+                            isFetched={isFetched}
+                />
+            }
 
+            </ToggleIDViewProvider>
+          </ExcelFileDataProvider>
         </main>
       </>
   );

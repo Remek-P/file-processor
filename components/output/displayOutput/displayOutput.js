@@ -3,17 +3,11 @@ import Output from "@/components/output/output";
 import classes from "@/components/file-chosen/file-chosen.module.scss";
 
 function DisplayOutput({
-                         decimal,
                          IDIndex,
                          excelFile,
-                         toggleIDView,
                          hideDB_ID_Tile,
                          numberOfOutputs,
                          setNumberOfOutputs,
-                         excludedArray,
-                         setExcludedArray,
-                         searchSuggestionsOrder,
-                         setSearchSuggestionsOrder,
                        }) {
 
   const handleDeleteChecked = (e) => {
@@ -53,15 +47,9 @@ function DisplayOutput({
                   <div key={index} className={classes.outputContainer}>
                     <Output key={index}
                             index={index}
-                            decimal={decimal}
                             IDIndex={IDIndex}
                             excelFile={excelFile}
-                            toggleIDView={toggleIDView}
-                            excludedArray={excludedArray}
-                            setExcludedArray={setExcludedArray}
                             hideDB_ID_Tile={hideDB_ID_Tile}
-                            searchSuggestionsOrder={searchSuggestionsOrder}
-                            setSearchSuggestionsOrder={setSearchSuggestionsOrder}
                             handleDeleteChecked={handleDeleteChecked}
                     />
                   </div>

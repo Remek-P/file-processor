@@ -1,10 +1,12 @@
-import { useState, useRef } from "react";
+import {useState, useRef, useContext} from "react";
+
+import {ExcludedDataGlobalContext} from "@/context/global-context";
 
 import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
 
 import { DonutChart, SimpleBarChart } from "@carbon/charts-react";
 import { Tile, Toggle } from "@carbon/react";
-import {ChartBar, ChartRing, CloseLarge, Percentage, SortAscending, SortDescending} from "@carbon/icons-react";
+import {ChartBar, ChartRing, CloseLarge, Percentage, SortAscending, SortDescending, DataFormat} from "@carbon/icons-react";
 
 import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
@@ -17,14 +19,14 @@ function SectionLayout({
                          valueArray,
                          showPercentages,
                          setShowPercentages,
-                         excludedArray,
-                         setExcludedArray,
                          numbersEqualToZero,
                          setShowAllMetrics,
                          children,
                        }) {
 
   // TODO: Delete decimal and setDecimal if needed
+
+  const [excludedArray, setExcludedArray] = useContext(ExcludedDataGlobalContext);
 
   const [showBarChart, setShowBarChart] = useState(false);
   const [showDonutChart, setShowDonutChart] = useState(false);
@@ -34,6 +36,7 @@ function SectionLayout({
   const percentagesDescription = "toggle percentages"
   const barChartDescription = showBarChart ? "hide bar chart" : "show bar chart";
   const donutChartDescription = showDonutChart ? "hide donut chart" : "show donut chart";
+  const dataDescription = "Format date";
 
   const barChartOptions = {
     title: null,
@@ -61,7 +64,8 @@ function SectionLayout({
     height: "auto"
   };
 
-  const isNumber = valueArray.some(item => item === true);
+  const isNumber = valueArray.some(item => item === "number");
+  const isDate = valueArray.some(item => item === "date");
 
   const sortValues = () => {
     setSort(prevState => !prevState);
@@ -71,8 +75,11 @@ function SectionLayout({
     // if (decimal === undefined) setDecimal(2);
     if (showPercentages === undefined) setShowPercentages(true);
     else setShowPercentages(prevState => !prevState)
-
   };
+  
+  const handleFormatDate = () => {
+    //TODO: handle the data formatting
+  }
 
   const displayBarChart = () => {
     setShowBarChart(prevState => !prevState);
@@ -97,7 +104,7 @@ function SectionLayout({
   }
 
   const hidden = isContainingItemFromArray(value, excludedArray) ? {display: "none"} : null;
-  
+
   return (
       <Tile className={`${classes.optionContainer} shadow`} style={hidden} aria-hidden={!!hidden}>
 
@@ -109,20 +116,30 @@ function SectionLayout({
                   ? <SortAscending className={classes.iconFill} aria-label="Sort Ascending" />
                   : <SortDescending className={classes.iconFill} aria-label="Sort Descending" />}
             </ActionToggle>
-            {isNumber &&
-                <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
-                  <Percentage className={classes.iconFill} aria-label={percentagesDescription} />
-                </ActionToggle>}
+            {isNumber && <>
 
-            {isNumber &&
-                <ActionToggle onClick={displayBarChart} description={barChartDescription}>
-                  <ChartBar className={classes.iconFill} aria-label={barChartDescription}/>
-                </ActionToggle>}
+              <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
+                <Percentage className={classes.iconFill} aria-label={percentagesDescription}/>
+              </ActionToggle>
 
-            {isNumber &&
-                <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
-                  <ChartRing className={classes.iconFill} aria-label={donutChartDescription} />
-                </ActionToggle>}
+
+              <ActionToggle onClick={displayBarChart} description={barChartDescription}>
+                <ChartBar className={classes.iconFill} aria-label={barChartDescription}/>
+              </ActionToggle>
+
+
+              <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
+                <ChartRing className={classes.iconFill} aria-label={donutChartDescription}/>
+              </ActionToggle>
+
+            </>}
+            {isDate && <>
+
+              <ActionToggle onClick={handleFormatDate} description={dataDescription}>
+                <DataFormat className={classes.iconFill} aria-label={dataDescription}/>
+              </ActionToggle>
+
+            </>}
           </div>
         </div>
 

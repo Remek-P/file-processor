@@ -1,6 +1,10 @@
 import ShowValues from "@/components/output/section/show/show-metrics/show-values";
+import {useContext} from "react";
+import {DecimalGlobalContext} from "@/context/global-context";
 
-function ShowNumbers({ data, decimal, showAllMetrics, showPercentages }) {
+function ShowNumbers({ data, showAllMetrics, showPercentages }) {
+
+  const [decimal] = useContext(DecimalGlobalContext);
 
   const { value, label } = data;
 

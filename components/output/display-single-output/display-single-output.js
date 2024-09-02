@@ -1,17 +1,18 @@
 import Show from "@/components/output/section/show/show";
 
 import { headerLabel } from "@/constants/constants";
+import {useContext} from "react";
+import {ToggleIDViewGlobalContext} from "@/context/global-context";
 
 function DisplaySingleOutput({
-                               decimal,
                                excelFile,
-                               toggleIDView,
                                colDataArray,
                                labelDataArray,
                                hideDB_ID_Tile,
-                               excludedArray,
-                               setExcludedArray
                              }) {
+
+  const [toggleIDView] = useContext(ToggleIDViewGlobalContext);
+  console.log("labelDataArray", labelDataArray)
 
   const headerDataArray = excelFile[0];
 
@@ -19,29 +20,26 @@ function DisplaySingleOutput({
   
   const filteredOutDB_ID =  excelFileUniqueValues.filter(item => item !== headerLabel);
 
+  console.log("DisplaySingleOutput", hideDB_ID_Tile)
+  
   return (
       <>
         {
-          filteredOutDB_ID.map(value => <Show key={value}
-                                              value={value}
-                                              decimal={decimal}
-                                              colDataArray={colDataArray}
-                                              labelDataArray={labelDataArray}
-                                              headerDataArray={headerDataArray}
-                                              excludedArray={excludedArray}
-                                              setExcludedArray={setExcludedArray}
+          filteredOutDB_ID.map(value =>
+              <Show key={value}
+                    value={value}
+                    colDataArray={colDataArray}
+                    labelDataArray={labelDataArray}
+                    headerDataArray={headerDataArray}
               />
           )
         }
         {
             !hideDB_ID_Tile && toggleIDView
-            && <Show decimal={decimal}
-                     value={headerLabel}
+            && <Show value={headerLabel}
                      colDataArray={colDataArray}
                      labelDataArray={labelDataArray}
                      headerDataArray={headerDataArray}
-                     excludedArray={excludedArray}
-                     setExcludedArray={setExcludedArray}
             />
         }
       </>
