@@ -19,9 +19,8 @@ function FileChosen({
                       handleFileChange,
                       excelFile,
                       refreshData,
-                      isFetched,
                     }) {
-  
+
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
 
   // if the provided data (excelFile) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
@@ -67,7 +66,6 @@ function FileChosen({
           <section className={classes.sectionContainer}>
 
             <ActionsMenu labels={excelFile[0]}
-                         isFetched={isFetched}
                          refreshData={refreshData}
                          hideDB_ID_Tile={hideDB_ID_Tile}
                          setNumberOfOutputs={setNumberOfOutputs}
@@ -91,7 +89,7 @@ function FileChosen({
             </ul>
 
           </section>
-            
+
           </SearchSuggestionsOrderGlobalProvider>
         </ExcludedDataProvider>
       </DecimalDataProvider>

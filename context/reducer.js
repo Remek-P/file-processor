@@ -1,7 +1,7 @@
 export const CASE_NAME = {
   SET_LOADING: "SET_LOADING",
-  SET_EXCEL_FILE: "SET_EXCEL_FILE",
-  SET_EXCEL_FILE_NAME: "SET_EXCEL_FILE_NAME",
+  SET_FILE: "SET_FILE",
+  SET_FILE_NAME: "SET_FILE_NAME",
   ADD_WARNING: "ADD_WARNING",
   SET_FETCHED: "SET_FETCHED",
   SAVE_FILE: "SAVE_FILE",
@@ -13,9 +13,9 @@ export function Reducer(state, action) {
   switch (action.type) {
     case CASE_NAME.SET_LOADING:
       return { ...state, isLoading: action.payload };
-    case CASE_NAME.SET_EXCEL_FILE:
+    case CASE_NAME.SET_FILE:
       return { ...state, excelFile: action.payload };
-    case CASE_NAME.SET_EXCEL_FILE_NAME:
+    case CASE_NAME.SET_FILE_NAME:
       return { ...state, excelFileName: action.payload };
     case CASE_NAME.ADD_WARNING:
       return { ...state, warnings: [...state.warnings, action.payload] };

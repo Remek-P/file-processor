@@ -4,17 +4,17 @@ import {CASE_NAME, Reducer } from "./reducer";
 
 
 const excelFileInitialState = {
-  excelFileName: "test",
-  excelFile: null,
-  isLoading: false,
+  file: null,
+  fileName: null,
   isFetched: null,
-  warnings: [],
+  isLoading: false,
   savedFiles: [],
+  warnings: [],
 };
 
-export const ExcelFileDataGlobalContext = createContext(excelFileInitialState);
+export const FileDataGlobalContext = createContext(excelFileInitialState);
 
-export const ExcelFileDataProvider = ({ children }) => {
+export const FileDataProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(Reducer, excelFileInitialState);
 
@@ -25,17 +25,17 @@ export const ExcelFileDataProvider = ({ children }) => {
     })
   }
 
-  const setExcelFile = (excelFile) => {
+  const setFile = (file) => {
     dispatch({
-      type: CASE_NAME.SET_EXCEL_FILE,
-      payload: excelFile,
+      type: CASE_NAME.SET_FILE,
+      payload: file,
     })
   }
 
-  const setExcelFileName = (excelFileName) => {
+  const setFileName = (fileName) => {
     dispatch({
-      type: CASE_NAME.SET_EXCEL_FILE_NAME,
-      payload: excelFileName,
+      type: CASE_NAME.SET_FILE_NAME,
+      payload: fileName,
     })
   }
   const addWarnings = (warnings) => {
@@ -65,19 +65,19 @@ export const ExcelFileDataProvider = ({ children }) => {
   }
 
   return (
-      <ExcelFileDataGlobalContext.Provider
+      <FileDataGlobalContext.Provider
           value={{
-            excelFileInitialState: state.excelFileInitialState,
-            setLoading,
-            setExcelFile,
-            setExcelFileName,
             addWarnings,
             isDataFetched,
-            saveToLocalStorage,
             loadFromLocalStorage,
+            saveToLocalStorage,
+            setFile,
+            setFileName,
+            setLoading,
+            state,
           }}>
         {children}
-      </ExcelFileDataGlobalContext.Provider>
+      </FileDataGlobalContext.Provider>
   )
 }
 

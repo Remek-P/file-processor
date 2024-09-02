@@ -4,7 +4,8 @@ import {useContext} from "react";
 import {
   ExcludedDataGlobalContext,
   SearchSuggestionsOrderGlobalContext,
-  ToggleIDViewGlobalContext
+  ToggleIDViewGlobalContext,
+  FileDataGlobalContext
 } from "@/context/global-context";
 
 import classes from "../file-chosen.module.scss";
@@ -14,7 +15,6 @@ import ResetFormating from "@/components/file-chosen/actions-menu/menu-items/res
 function ActionsMenu({
                        labels,
                        addPerson,
-                       isFetched,
                        refreshData,
                        hideDB_ID_Tile,
                        setNumberOfOutputs,
@@ -22,6 +22,8 @@ function ActionsMenu({
                        handleFileChange,
                      }) {
 
+  const { state: {isFetched} } = useContext(FileDataGlobalContext);
+  
   const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
   const [, setExcludedArray] = useContext(ExcludedDataGlobalContext);
   const [toggleIDView, setToggleIDView] = useContext(ToggleIDViewGlobalContext);

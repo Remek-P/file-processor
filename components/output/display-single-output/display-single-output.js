@@ -12,15 +12,12 @@ function DisplaySingleOutput({
                              }) {
 
   const [toggleIDView] = useContext(ToggleIDViewGlobalContext);
-  console.log("labelDataArray", labelDataArray)
 
   const headerDataArray = excelFile[0];
 
   const excelFileUniqueValues = [... new Set(headerDataArray)];
   
   const filteredOutDB_ID =  excelFileUniqueValues.filter(item => item !== headerLabel);
-
-  console.log("DisplaySingleOutput", hideDB_ID_Tile)
   
   return (
       <>

@@ -10,6 +10,8 @@ function UploadFileOption({ handleFile }) {
     ".xls",
     ".csv",
     ".numbers",
+    ".rar",
+    ".zip"
   ];
 
   const buttonLabel = (
