@@ -18,15 +18,11 @@ import JSZip from "jszip";
 function HomePageAlt() {
 
   const {
-    // state,
-    // state:
-    //     {
-      file,
-      fileName,
-      isLoading,
-      savedFiles,
-      warnings,
-    // },
+    file,
+    fileName,
+    isLoading,
+    savedFiles,
+    warnings,
     addWarnings,
     isDataFetched,
     loadFromLocalStorage,
@@ -35,6 +31,7 @@ function HomePageAlt() {
     setFileName,
     setLoading,
   } = useContext(FileDataGlobalContext);
+
 
   const showWarnings = warnings.length !== 0;
 
@@ -110,6 +107,11 @@ function HomePageAlt() {
     }
     isDataFetched(false)
     setLoading(false);
+
+    dispatch({
+      type: "SET_FILE",
+      payload: file,
+    })
   };
 
   const loadSavedFile = (name) => {

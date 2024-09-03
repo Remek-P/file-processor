@@ -13,7 +13,7 @@ import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decim
 import ResetFormating from "@/components/file-chosen/actions-menu/menu-items/reset-formating";
 
 function ActionsMenu({
-                       labels,
+                       headers,
                        addPerson,
                        refreshData,
                        hideDB_ID_Tile,
@@ -45,7 +45,7 @@ function ActionsMenu({
     setExcludedArray([]);
   }
   const handleHideAllArrays = () => {
-    setExcludedArray([...(new Set(labels))]);
+    setExcludedArray([...(new Set(headers))]);
   }
 
   const handleSuggestionsDefaultOrder = () => {

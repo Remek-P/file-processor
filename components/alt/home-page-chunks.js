@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useContext } from "react";
 
-import { ToggleIDViewProvider } from "@/context/global-context";
+import {FileDataGlobalContext, ToggleIDViewProvider} from "@/context/global-context";
 
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
@@ -10,16 +10,24 @@ import TexTile from "@/components/tile-type/text-tile/texTile";
 import { Loading } from '@carbon/react';
 
 import { headerLabel, idLabel } from "@/constants/constants";
+
 import XLSX from "xlsx";
 
 export default function HomeChunks() {
 
-  const [excelFileName, setExcelFileName] = useState(null);
-  const [excelFile, setExcelFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFetched, setIsFetched] = useState(null);
-  const [warnings, setWarnings] = useState([]);
-
+  const {
+    file,
+    fileName,
+    isLoading,
+    warnings,
+    addWarnings,
+    isDataFetched,
+    setFile,
+    setFileName,
+    setLoading,
+      
+  } = useContext(FileDataGlobalContext);
+  
   const showWarnings = warnings.length !== 0;
 
   const sheetTOJsonData = (obj) => {
@@ -36,28 +44,30 @@ export default function HomeChunks() {
         // {sheetRows: 10}
     );
     const isMerged = workbook.Sheets.import?.["!merges"] !== undefined;
-    if (isMerged) setWarnings([...warnings, "Merged Cells detected, please unmerge them in the file"])
+    if (isMerged) addWarnings([...warnings, "Merged Cells detected, please unmerge them in the file"])
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-    setExcelFile(sheetTOJsonData(worksheet));
+    setFile(sheetTOJsonData(worksheet));
   }
 
   const handleFile = async (e) => {
 
-    setIsLoading(true);
-    setExcelFile(null);
+    setLoading(true);
+    setFile(null);
 
-    setExcelFileName(e.target.files[0].name);
+    setFileName(e.target.files[0].name);
     const excelFile = e.target.files[0];
     const data = await excelFile.arrayBuffer();
 
     readExcel(data);
-    setIsFetched(false);
-    setIsLoading(false);
+    isDataFetched(false);
+    setLoading(false);
+
+    console.log("fileName", fileName)
   }
 
   const fetchDataFromDB = async () => {
-    setIsLoading(true);
+    setLoading(true);
 
     // Initial fetch, without chunking
     let chunk = 1;
@@ -67,7 +77,7 @@ export default function HomeChunks() {
     partialDataArray.push(...result.data);
 
     //TODO: make it based on the size
-    if (result.totalDocuments > 200000) setWarnings([...warnings, "The data exceeds size limit"])
+    if (result.totalDocuments > 200000) addWarnings([...warnings, "The data exceeds size limit"])
 
     // If data in DB exceeds 10000 records, the while function will fetch the rest
     while (result.totalDocuments > partialDataArray.length) {
@@ -86,20 +96,20 @@ export default function HomeChunks() {
       // // Two below indices are the ids from MongoDB
       jsonData[0][0] = headerLabel;
       jsonData[1][0] = idLabel;
-      setExcelFile(jsonData);
-      setExcelFileName("DB_file")
-      setIsFetched(true);
-      setIsLoading(false);
+      setFile(jsonData);
+      setFileName("DB_file")
+      isDataFetched(true);
+      setLoading(false);
     } else {
-      setWarnings([...warnings, "Fetching data failed"])
+      addWarnings([...warnings, "Fetching data failed"])
     }
   }
 
   const handleFileChange = () => {
-    setIsLoading(true);
-    setExcelFile(null);
-    setExcelFileName(null);
-    setIsLoading(false);
+    setLoading(true);
+    setFile(null);
+    setFileName(null);
+    setLoading(false);
   }
 
   const refreshData = async () => {
@@ -107,37 +117,36 @@ export default function HomeChunks() {
   }
 
   return (
-        <main>
-            <ToggleIDViewProvider>
+      <main>
+        <ToggleIDViewProvider>
 
-              {
-                  !excelFileName && <ChooseFile handleFile={handleFile} fetchDataFromDB={fetchDataFromDB}/>
-              }
+          {
+              !fileName && <ChooseFile handleFile={handleFile} fetchDataFromDB={fetchDataFromDB}/>
+          }
 
-              <Loading id="indexLoading"
-                       small={false}
-                       withOverlay={true}
-                       className={null}
-                       description="Active loading indicator"
-                       active={isLoading}
+          <Loading id="indexLoading"
+                   small={false}
+                   withOverlay={true}
+                   className={null}
+                   description="Active loading indicator"
+                   active={isLoading}
+          />
+
+          {
+              showWarnings && warnings.map((warning, index) => {
+                return <TexTile key={index} text={warning}/>;
+              })
+          }
+
+          {
+              file && warnings.length === 0 &&
+              <FileChosen file={file}
+                          handleFileChange={handleFileChange}
+                          refreshData={refreshData}
               />
+          }
 
-              {
-                  showWarnings && warnings.map((warning, index) => {
-                    return <TexTile key={index} text={warning}/>;
-                  })
-              }
-
-              {
-                  excelFile && warnings.length === 0 &&
-                  <FileChosen excelFile={excelFile}
-                              handleFileChange={handleFileChange}
-                              refreshData={refreshData}
-                              isFetched={isFetched}
-                  />
-              }
-
-            </ToggleIDViewProvider>
-        </main>
+        </ToggleIDViewProvider>
+      </main>
   );
 }

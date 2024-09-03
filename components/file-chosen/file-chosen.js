@@ -17,14 +17,15 @@ import {
 
 function FileChosen({
                       handleFileChange,
-                      excelFile,
+                      file,
                       refreshData,
                     }) {
 
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
 
-  // if the provided data (excelFile) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
-  const labelArray = excelFile[1];
+  // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
+
+  const labelArray = file[1];
 
   const indexOfID = labelArray.findIndex(element =>
       element?.toLowerCase() === "id" || element.toLowerCase() === idLabel);
@@ -63,32 +64,32 @@ function FileChosen({
         <ExcludedDataProvider>
           <SearchSuggestionsOrderGlobalProvider>
 
-          <section className={classes.sectionContainer}>
+            <section className={classes.sectionContainer}>
 
-            <ActionsMenu labels={excelFile[0]}
-                         refreshData={refreshData}
-                         hideDB_ID_Tile={hideDB_ID_Tile}
-                         setNumberOfOutputs={setNumberOfOutputs}
-                         addPerson={addPerson}
-                         handleResetID={handleResetID}
-                         handleFileChange={handleFileChange}
-            />
-
-
-            <div className={classes.outputsContainer}>
-              <DisplayOutput excelFile={excelFile}
-                             IDIndex={IDIndex}
-                             hideDB_ID_Tile={hideDB_ID_Tile}
-                             numberOfOutputs={numberOfOutputs}
-                             setNumberOfOutputs={setNumberOfOutputs}
+              <ActionsMenu headers={file[0]}
+                           refreshData={refreshData}
+                           hideDB_ID_Tile={hideDB_ID_Tile}
+                           setNumberOfOutputs={setNumberOfOutputs}
+                           addPerson={addPerson}
+                           handleResetID={handleResetID}
+                           handleFileChange={handleFileChange}
               />
-            </div>
 
-            <ul className={`${classes[hideHiddenArraysWhenNoUser]}`}>
-              <ExcludedData/>
-            </ul>
 
-          </section>
+              <div className={classes.outputsContainer}>
+                <DisplayOutput excelFile={file}
+                               IDIndex={IDIndex}
+                               hideDB_ID_Tile={hideDB_ID_Tile}
+                               numberOfOutputs={numberOfOutputs}
+                               setNumberOfOutputs={setNumberOfOutputs}
+                />
+              </div>
+
+              <ul className={`${classes[hideHiddenArraysWhenNoUser]}`}>
+                <ExcludedData />
+              </ul>
+
+            </section>
 
           </SearchSuggestionsOrderGlobalProvider>
         </ExcludedDataProvider>
