@@ -22,7 +22,7 @@ function ActionsMenu({
                        handleFileChange,
                      }) {
 
-  const { state: {isFetched} } = useContext(FileDataGlobalContext);
+  const { isFetched } = useContext(FileDataGlobalContext);
   
   const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
   const [, setExcludedArray] = useContext(ExcludedDataGlobalContext);
