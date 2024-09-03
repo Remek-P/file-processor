@@ -19,15 +19,18 @@ export default async function handler(req, res) {
 
     try {
       const db = client.db(`data-to-JS`);
+
+      const collectionToConnect = "data-to-JS";
+      // const collectionToConnect = "formated";
+
       data = await db
-          // .collection("formated")
-          .collection("data-to-JS")
+          .collection(collectionToConnect)
           .find({})
           .skip((page - 1) * limit) // skip the first `page - 1` chunks
           .limit(parseInt(limit)) // limit the number of documents
           .toArray();
 
-      const totalDocuments = await db.collection("data-to-JS").countDocuments();
+      const totalDocuments = await db.collection(collectionToConnect).countDocuments();
 
       res.status(200).json({ data, totalDocuments, totalPages: Math.ceil(totalDocuments / limit) });
     } catch (error) {
