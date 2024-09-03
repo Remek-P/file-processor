@@ -3,6 +3,7 @@ import Head from "next/head";
 import { FileDataProvider } from "@/context/global-context";
 
 import HomePage from "@/components/HomePage/home-page";
+import HomeChunks from "@/components/alt/home-page-chunks";
 // import HomePageAlt from "@/components/alt/home-page-alt";
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
         </Head>
 
         <FileDataProvider>
-          <HomePage />
+          <HomeChunks />
         </FileDataProvider>
       </>
   );
