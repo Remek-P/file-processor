@@ -59,12 +59,17 @@ export default function HomeChunks() {
   const fetchDataFromDB = async () => {
     setIsLoading(true);
 
+    // Initial fetch, without chunking
     let chunk = 1;
     const partialDataArray = [];
     const res = await fetch(`/api/mongoDB_Chunks`); // fetching with limit
     const result = await res.json();
     partialDataArray.push(...result.data);
 
+    //TODO: make it based on the size
+    if (result.totalDocuments > 200000) setWarnings([...warnings, "The data exceeds size limit"])
+
+    // If data in DB exceeds 10000 records, the while function will fetch the rest
     while (result.totalDocuments > partialDataArray.length) {
       chunk += 1
       const res = await fetch(`/api/mongoDB_Chunks?page=${chunk}`); // fetching with limit

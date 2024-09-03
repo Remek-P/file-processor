@@ -15,22 +15,21 @@ export default async function handler(req, res) {
     }
 
     let data;
+
+    // TODO: divide the collection based on the size
     const { page = 1, limit = 10000 } = req.query;
 
     try {
       const db = client.db(`data-to-JS`);
+      const collection = db.collection("data-to-JS");
 
-      const collectionToConnect = "data-to-JS";
-      // const collectionToConnect = "formated";
-
-      data = await db
-          .collection(collectionToConnect)
+          data = await collection
           .find({})
           .skip((page - 1) * limit) // skip the first `page - 1` chunks
           .limit(parseInt(limit)) // limit the number of documents
           .toArray();
 
-      const totalDocuments = await db.collection(collectionToConnect).countDocuments();
+      const totalDocuments = await collection.countDocuments();
 
       res.status(200).json({ data, totalDocuments, totalPages: Math.ceil(totalDocuments / limit) });
     } catch (error) {
