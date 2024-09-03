@@ -24,7 +24,6 @@ function Show({
                 headerDataArray,
               }) {
 
-  if (value === "MongoDB ID") console.log("dupa")
   const [showAllMetrics, setShowAllMetrics] = useState(false);
   const [showPercentages, setShowPercentages] = useState(undefined);
   const [sort, setSort] = useState(undefined);
