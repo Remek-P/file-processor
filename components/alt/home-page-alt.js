@@ -1,8 +1,10 @@
 import {useContext, useEffect} from "react";
+// import Script from 'next/script'
 
 import {FileDataGlobalContext, ToggleIDViewProvider} from "@/context/global-context";
 
-import ChooseFile from "@/components/choose-file-screen/choose-file";
+// import ChooseFile from "@/components/choose-file-screen/choose-file";
+import ChooseFileAlt from "@/components/alt/choose-file-alt";
 import FileChosen from "@/components/file-chosen/file-chosen";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
@@ -13,16 +15,18 @@ import { headerLabel, idLabel } from "@/constants/constants";
 import XLSX from "xlsx";
 import JSZip from "jszip";
 
-export default function HomePageAlt() {
+function HomePageAlt() {
 
   const {
-    state: {
+    // state,
+    // state:
+    //     {
       file,
       fileName,
       isLoading,
       savedFiles,
       warnings,
-    },
+    // },
     addWarnings,
     isDataFetched,
     loadFromLocalStorage,
@@ -77,7 +81,7 @@ export default function HomePageAlt() {
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
 
     if (["xls", "xlsx", "csv"].includes(fileExtension)) {
-      const worker = new Worker("../utils/fileWorker.js");
+      const worker = new Worker(new URL("../../utils/fileWorker", import.meta.url));
 
       worker.onmessage = (event) => {
         if (event.data.status === "success") {
@@ -140,7 +144,6 @@ export default function HomePageAlt() {
     setFileName("DB_file")
     isDataFetched(true);
     setLoading(false);
-    console.log("fetchDataFromDB", fileName)
   }
 
 
@@ -154,18 +157,19 @@ export default function HomePageAlt() {
   const refreshData = async () => {
     await fetchDataFromDB();
   }
+  console.log("file", file)
 
   return (
       <main>
         <ToggleIDViewProvider>
 
           {
-            <ChooseFile file={file}
-                        fetchDataFromDB={fetchDataFromDB}
-                        handleFile={handleFile}
-                        loadSavedFile={loadSavedFile}
-                        saveFile={saveFile}
-                        savedFiles={savedFiles}
+            <ChooseFileAlt file={file}
+                           fetchDataFromDB={fetchDataFromDB}
+                           handleFile={handleFile}
+                           loadSavedFile={loadSavedFile}
+                           saveFile={saveFile}
+                           savedFiles={savedFiles}
             />
 
           }
@@ -193,3 +197,5 @@ export default function HomePageAlt() {
       </main>
   );
 }
+
+export default HomePageAlt;

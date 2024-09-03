@@ -3,6 +3,7 @@ import Head from "next/head";
 import { FileDataProvider } from "@/context/global-context";
 
 import HomePage from "@/components/HomePage/home-page";
+// import HomePageAlt from "@/components/alt/home-page-alt";
 
 export default function Home() {
   return (

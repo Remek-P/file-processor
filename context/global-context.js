@@ -1,7 +1,15 @@
 import { createContext, useReducer, useState } from "react";
-import {CASE_NAME, Reducer } from "./reducer";
+// import {CASE_NAME, Reducer } from "./reducer";
 
-
+const CASE_NAME = {
+  SET_LOADING: "SET_LOADING",
+  SET_FILE: "SET_FILE",
+  SET_FILE_NAME: "SET_FILE_NAME",
+  ADD_WARNING: "ADD_WARNING",
+  SET_FETCHED: "SET_FETCHED",
+  SAVE_FILE: "SAVE_FILE",
+  LOAD_SAVED_FILES: "LOAD_SAVED_FILES",
+}
 
 const excelFileInitialState = {
   file: null,
@@ -11,6 +19,29 @@ const excelFileInitialState = {
   savedFiles: [],
   warnings: [],
 };
+
+function Reducer(state, action) {
+  switch (action.type) {
+    case CASE_NAME.SET_LOADING:
+      return { ...state, isLoading: action.payload };
+    case CASE_NAME.SET_FILE:
+      return { ...state, excelFile: action.payload };
+    case CASE_NAME.SET_FILE_NAME:
+      return { ...state, excelFileName: action.payload };
+    case CASE_NAME.ADD_WARNING:
+      return { ...state, warnings: [...state.warnings, action.payload] };
+    case CASE_NAME.SET_FETCHED:
+      return { ...state, isFetched: action.payload };
+    case CASE_NAME.SAVE_FILE:
+      const updatedFiles = [...state.savedFiles, action.payload];
+      localStorage.setItem('savedFiles', JSON.stringify(updatedFiles));
+      return { ...state, savedFiles: updatedFiles };
+    case CASE_NAME.LOAD_SAVED_FILES:
+      return { ...state, savedFiles: action.payload };
+    default:
+      return state;
+  }
+}
 
 export const FileDataGlobalContext = createContext(excelFileInitialState);
 
@@ -74,7 +105,13 @@ export const FileDataProvider = ({ children }) => {
             setFile,
             setFileName,
             setLoading,
-            state,
+            // state,
+            file: state.file,
+            fileName: state.fileName,
+            isFetched: state.isFetched,
+            isLoading: state.isLoading,
+            savedFiles: state.savedFiles,
+            warnings: state.warnings,
           }}>
         {children}
       </FileDataGlobalContext.Provider>

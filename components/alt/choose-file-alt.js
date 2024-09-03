@@ -1,9 +1,9 @@
-import {useState} from "react";
+import { useState } from "react";
 
 import FetchOption from "@/components/choose-file-screen/fetch-option/fetch-option";
 
 import UploadFileOption from "@/components/choose-file-screen/upload-file-option/upload-file-option";
-import classes from "./choose-file.module.scss";
+import classes from "@/components/choose-file-screen/choose-file.module.scss";
 
 function ChooseFileAlt({
                       file,
@@ -14,10 +14,10 @@ function ChooseFileAlt({
                       savedFiles,
                     }) {
   const [fileName, setFileName] = useState("");
+
   const handleSave = () => {
     saveFile(fileName, file);
   };
-
 
   return (
       <section className={classes.chooseFileContainer}>
@@ -52,4 +52,4 @@ function ChooseFileAlt({
   );
 }
 
-export default ChooseFile;
+export default ChooseFileAlt;
