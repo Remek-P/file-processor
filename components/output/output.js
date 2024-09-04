@@ -1,4 +1,4 @@
-import {useContext, useDeferredValue, useMemo, useRef, useState} from "react";
+import {useContext, useMemo, useRef, useState} from "react";
 
 import Search from "@/components/search/search";
 import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
@@ -21,8 +21,6 @@ function Output({
   const userDataArray = useMemo(() =>  excelFile.slice(2), [excelFile]);
 
   const searchRef = useRef(null);
-
-  const deferredInputValue = useDeferredValue(inputValue);
 
   const searchID = "search";
 
@@ -69,7 +67,7 @@ function Output({
         <Sections IDIndex={IDIndex}
                   excelFile={excelFile}
                   userDataArray={userDataArray}
-                  inputValue={deferredInputValue}
+                  inputValue={inputValue}
                   setInputValue={setInputValue}
                   hideDB_ID_Tile={hideDB_ID_Tile}
                   searchSuggestionsOrder={searchSuggestionsOrder}
