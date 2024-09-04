@@ -1,18 +1,26 @@
-import { Button, Tooltip } from "@carbon/react";
+import {Button, InlineLoading, Tooltip} from "@carbon/react";
 import {Delete, Search as SearchIcon} from "@carbon/icons-react";
 
-import { useEffect } from "react";
+import {useEffect, useState, useTransition} from "react";
 
 import classes from "./search.module.scss";
 
 function Search({ inputValue, setInputValue, searchRef, id="search" }) {
 
+  const [localInputValue, setLocalInputValue] = useState("")
+  const [isPending, startTransition] = useTransition();
+
   const handleTyping = (e) => {
-    setInputValue(e.target.value);
+    setLocalInputValue(e.target.value)
+  }
+
+  const handleAccept = (e) => {
+    if (e.key === "Enter") startTransition(() => setInputValue(localInputValue));
   }
 
   const handleDeleteButton = () => {
     setInputValue("");
+    setLocalInputValue("");
     searchRef.current.focus();
   }
 
@@ -23,16 +31,17 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
   return (
       <div className={classes.searchContainer}>
 
-        <SearchIcon className={classes.searchIcon}/>
+        {isPending ? <InlineLoading id={id} status="active" /> : <SearchIcon className={classes.searchIcon}/>}
 
         <input id={id}
                name={id}
                list={id}
                type="search"
-               value={inputValue}
+               value={localInputValue}
                placeholder="Type at least 3 characters"
                className={classes.search}
-               onChange={(e) => handleTyping(e)}
+               onChange={handleTyping}
+               onKeyDown={handleAccept}
                ref={searchRef}
                autoComplete="on"
                autoFocus

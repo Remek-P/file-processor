@@ -125,19 +125,3 @@ export const SearchSuggestionsOrderGlobalProvider = ({ children }) => (
     </SearchSuggestionsOrderGlobalContext.Provider>
 )
 
-export const LabelsGlobalContext = createContext(undefined);
-
-export const LabelsGlobalProvider = ({ children }) => (
-    <LabelsGlobalContext.Provider value={useState(undefined)}>
-      {children}
-    </LabelsGlobalContext.Provider>
-)
-
-export const HeadersGlobalContext = createContext(undefined);
-
-export const HeadersOrderGlobalProvider = ({ children }) => (
-    <HeadersGlobalContext.Provider value={useState(undefined)}>
-      {children}
-    </HeadersGlobalContext.Provider>
-)
-
