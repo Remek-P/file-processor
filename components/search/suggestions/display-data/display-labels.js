@@ -2,6 +2,7 @@ import {Tooltip} from "@carbon/react";
 
 import classes from "@/components/output/output.module.scss";
 import ShowIcon from "@/components/search/suggestions/display-data/show-icon";
+import {useState} from "react";
 
 function DisplayLabels({
                          active,
@@ -12,11 +13,17 @@ function DisplayLabels({
                          handleSort,
 }) {
 
+  // const [sortDirection, setSortDirection] = useState();
+
   // TODO: efficient display of sorting icon
-  // const show = showIcon === active && searchSuggestionsOrder !== undefined
+  const show = showIcon === active && searchSuggestionsOrder !== undefined
+
+  const sortDirection = searchSuggestionsOrder === undefined
+      ? "Ascending"
+      : searchSuggestionsOrder ? "Descending" : "Ascending";
 
   return (
-      <Tooltip align="top" description="sort">
+      <Tooltip align="right" description={`Sort ${sortDirection}`}>
         <h5 role="button"
             tabIndex="0"
             onClick={handleSort}

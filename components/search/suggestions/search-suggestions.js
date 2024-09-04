@@ -27,6 +27,7 @@ function SearchSuggestions({
   // }, [searchSuggestionsOrder]);
 
   const handleSort = (event) => {
+    //TODO: each time the icon is pressed, the sorting should start from ascending and not oscillating
     indexToSort.current = event.currentTarget.dataset.index;
     setSearchSuggestionsOrder(prevState => !prevState);
     // if (+event.currentTarget.dataset.index === index) {

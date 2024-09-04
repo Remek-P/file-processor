@@ -6,8 +6,7 @@
 .searchContainer {
   display: flex;
 
-  overflow-x: visible;
-  overflow-y: visible;
+  overflow-x: auto;
 
   & > li {
     width: fit-content;
