@@ -1,14 +1,14 @@
-import {Button, InlineLoading, Tooltip} from "@carbon/react";
-import {Delete, Search as SearchIcon} from "@carbon/icons-react";
-
 import {useEffect, useState, useTransition} from "react";
 
 import classes from "./search.module.scss";
+import SearchbarIcon from "@/components/search/icon/searchbar-icon";
 
-function Search({ inputValue, setInputValue, searchRef, id="search" }) {
+function Search({ setInputValue, searchRef, id="search" }) {
 
   const [localInputValue, setLocalInputValue] = useState("")
   const [isPending, startTransition] = useTransition();
+
+  const isDeleteVisible = localInputValue.length !== 0
 
   const handleTyping = (e) => {
     setLocalInputValue(e.target.value)
@@ -18,12 +18,6 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
     if (e.key === "Enter") startTransition(() => setInputValue(localInputValue));
   }
 
-  const handleDeleteButton = () => {
-    setInputValue("");
-    setLocalInputValue("");
-    searchRef.current.focus();
-  }
-
   useEffect(() => {
     searchRef.current.focus();
   }, []);
@@ -31,7 +25,13 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
   return (
       <div className={classes.searchContainer}>
 
-        {isPending ? <InlineLoading id={id} status="active" /> : <SearchIcon className={classes.searchIcon}/>}
+        <SearchbarIcon isDeleteVisible={isDeleteVisible}
+                       id={id}
+                       isPending={isPending}
+                       setInputValue={setInputValue}
+                       setLocalInputValue={setLocalInputValue}
+                       searchRef={searchRef}
+        />
 
         <input id={id}
                name={id}
@@ -47,16 +47,6 @@ function Search({ inputValue, setInputValue, searchRef, id="search" }) {
                autoFocus
         />
 
-        {
-            inputValue.length !== 0 && (<Tooltip align="bottom" description="clear">
-                                          <Button kind="ghost"
-                                                  onClick={handleDeleteButton}
-                                                  size="sm"
-                                                  className={classes.deleteIcon}>
-                                            <Delete />
-                                          </Button>
-                                        </Tooltip>)
-        }
 
       </div>
 

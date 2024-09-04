@@ -55,7 +55,6 @@ function Output({
           <div className={`${classes.outputSearch} shadow`}>
             <Search id={searchID}
                     searchRef={searchRef}
-                    inputValue={inputValue}
                     setInputValue={setInputValue}
             />
           </div>
