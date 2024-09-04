@@ -45,8 +45,7 @@ function DisplayOutput({
             if (!output.delete) {
               return (
                   <div key={index} className={classes.outputContainer}>
-                    <Output key={index}
-                            index={index}
+                    <Output index={index}
                             IDIndex={IDIndex}
                             excelFile={excelFile}
                             hideDB_ID_Tile={hideDB_ID_Tile}

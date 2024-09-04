@@ -28,8 +28,6 @@ export function Reducer(state, action) {
       return { ...state, savedFiles: updatedFiles };
     case CASE_NAME.LOAD_SAVED_FILES:
       return { ...state, savedFiles: action.payload };
-    case CASE_NAME.CREATE_LABELS_ARRAY:
-      return { ...state, labelsArray: action.payload };
     default:
       return state;
   }

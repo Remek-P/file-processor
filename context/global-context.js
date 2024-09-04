@@ -8,7 +8,6 @@ const excelFileInitialState = {
   isLoading: false,
   savedFiles: [],
   warnings: [],
-  labelsArray: [],
 };
 
 export const FileDataGlobalContext = createContext(excelFileInitialState);
@@ -63,13 +62,6 @@ export const FileDataProvider = ({ children }) => {
     })
   }
 
-    const setLabelsArray = () => {
-      dispatch({
-        type: CASE_NAME.CREATE_LABELS_ARRAY,
-        payload: state.file[1],
-      })
-  }
-
   return (
       <FileDataGlobalContext.Provider
           value={{
@@ -79,14 +71,12 @@ export const FileDataProvider = ({ children }) => {
             isLoading: state.isLoading,
             savedFiles: state.savedFiles,
             warnings: state.warnings,
-            labelsArray: state.labelsArray,
             addWarnings,
             isDataFetched,
             loadFromLocalStorage,
             saveToLocalStorage,
             setFile,
             setFileName,
-            setLabelsArray,
             setLoading,
           }}>
         {children}
@@ -120,7 +110,6 @@ export const ExcludedDataProvider = ({ children }) => (
     </ExcludedDataGlobalContext.Provider>
 )
 
-
 export const ToggleIDViewGlobalContext = createContext(null);
 export const ToggleIDViewProvider = ({ children }) => (
     <ToggleIDViewGlobalContext.Provider value={useState(true)}>
@@ -128,12 +117,27 @@ export const ToggleIDViewProvider = ({ children }) => (
     </ToggleIDViewGlobalContext.Provider>
 )
 
-
 export const SearchSuggestionsOrderGlobalContext = createContext(null);
 
 export const SearchSuggestionsOrderGlobalProvider = ({ children }) => (
     <SearchSuggestionsOrderGlobalContext.Provider value={useState(undefined)}>
       {children}
     </SearchSuggestionsOrderGlobalContext.Provider>
+)
+
+export const LabelsGlobalContext = createContext(undefined);
+
+export const LabelsGlobalProvider = ({ children }) => (
+    <LabelsGlobalContext.Provider value={useState(undefined)}>
+      {children}
+    </LabelsGlobalContext.Provider>
+)
+
+export const HeadersGlobalContext = createContext(undefined);
+
+export const HeadersOrderGlobalProvider = ({ children }) => (
+    <HeadersGlobalContext.Provider value={useState(undefined)}>
+      {children}
+    </HeadersGlobalContext.Provider>
 )
 
