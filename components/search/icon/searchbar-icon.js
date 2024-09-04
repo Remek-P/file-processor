@@ -7,12 +7,13 @@ import classes from "@/components/search/search.module.scss";
 function SearchbarIcon({ id, isPending, isDeleteVisible, setInputValue, setLocalInputValue, searchRef }) {
 
   const handleDeleteButton = () => {
-    setInputValue("");
+    // TODO: check preferred behaviour
+    // setInputValue("");
     setLocalInputValue("");
     searchRef.current.focus();
   }
 
-    if (isPending) return <InlineLoading id={id} status="active"/>;
+    if (isPending) return <InlineLoading id={id} status="active" className={classes.inlineLoading} />;
 
     if (!isDeleteVisible) return <Search className={classes.searchIcon}/>;
 

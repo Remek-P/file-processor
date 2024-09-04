@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import {useMemo, useRef, useState} from "react";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
 import SearchSuggestions from "@/components/search/suggestions/search-suggestions";
@@ -17,7 +17,9 @@ function DisplayMultipleSuggestions({
                                       setSearchSuggestionsOrder
                                     }) {
 
-  const reducePerformanceStrain = inputValue.length < 3;
+  // const [active, setActive] = useState(IDIndex);
+
+  const reducePerformanceStrain = inputValue.length < 2;
 
   const pickSearchedOutput = (e) => {
     setInputValue(e.target.dataset.value);
@@ -35,7 +37,8 @@ function DisplayMultipleSuggestions({
       return [...searchUsers].sort((a, b) => compareValues(
           a[indexToSort.current],
           b[indexToSort.current],
-          searchSuggestionsOrder)
+          searchSuggestionsOrder
+          )
       );
 
   }, [searchSuggestionsOrder, searchUsers, IDIndex]);
@@ -53,6 +56,8 @@ function DisplayMultipleSuggestions({
           {!reducePerformanceStrain && labelDataArray.map((label, index) =>
               <SearchSuggestions key={index}
                                  label={label}
+                                 // active={active}
+                                 // setActive={setActive}
                                  index={index}
                                  IDIndex={IDIndex}
                                  indexToSort={indexToSort}

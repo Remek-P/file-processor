@@ -1,10 +1,16 @@
-import { Tile } from "@carbon/react";
+import {useEffect, useState} from "react";
+
+import DisplayValues from "@/components/search/suggestions/display-data/display-values";
+import DisplayLabels from "@/components/search/suggestions/display-data/display-labels";
+
+import {Tile} from "@carbon/react";
 
 import classes from "@/components/output/output.module.scss";
-import { SortAscending, SortDescending } from "@carbon/icons-react";
 
 function SearchSuggestions({
                              label,
+                             active,
+                             setActive,
                              index,
                              IDIndex,
                              indexToSort,
@@ -14,38 +20,40 @@ function SearchSuggestions({
                              setSearchSuggestionsOrder,
                            }) {
 
-  const sortIcon = searchSuggestionsOrder === undefined
-      ? null
-      : searchSuggestionsOrder
-          ? <SortAscending/>
-          : <SortDescending/>;
+  // const [showIcon, setShowIcon] = useState(searchSuggestionsOrder);
+
+  // useEffect(() => {
+  //   setShowIcon(index);
+  // }, [searchSuggestionsOrder]);
 
   const handleSort = (event) => {
     indexToSort.current = event.currentTarget.dataset.index;
     setSearchSuggestionsOrder(prevState => !prevState);
+    // if (+event.currentTarget.dataset.index === index) {
+    //   setShowIcon(index);
+    //   setActive(index);
+    // }
   }
+
 
   return (
       <li>
         <Tile>
-          <h5 role="button"
-              tabIndex="0"
-              onClick={handleSort}
-              onKeyDown={(e) => e.key === 'Enter' && handleSort(e)}
-              data-index={index}
-              className={classes.searchContainerHeader}
-          >
-            <span>{ label }</span>
-          </h5>
+          <DisplayLabels index={index}
+                         // active={active}
+                         label={label}
+                         // showIcon={showIcon}
+                         searchSuggestionsOrder={searchSuggestionsOrder}
+                         handleSort={handleSort}
+          />
           <ul className={classes.searchContainerDataContainer}>
-            {sortedSuggestions.map(data =>
-              <li key={data[IDIndex]}
-                  data-value={data[IDIndex]}
-                  onClick={pickSearchedOutput}
-                  className={classes.searchContainerData}
-              >
-                {data[index]}
-              </li>
+            {sortedSuggestions.map((data, i) =>
+                <DisplayValues key={i}
+                               data={data}
+                               index={index}
+                               IDIndex={IDIndex}
+                               pickSearchedOutput={pickSearchedOutput}
+                />
             )}
           </ul>
         </Tile>
