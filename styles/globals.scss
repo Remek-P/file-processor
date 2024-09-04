@@ -43,7 +43,7 @@ ul {
   }
 }
 
-.visually-hidden:not(:focus) {
+.visually-hidden {
   clip-path: inset(50%);
   height: 1px;
   overflow: hidden;

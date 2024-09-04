@@ -14,21 +14,23 @@ function DeleteOutput({ index, handleDeleteChecked }) {
              className={classes.outputDeleteOutput}
              onMouseEnter={() => setHover(true)}
              onMouseLeave={() => setHover(false)}
+             onFocus={() => setHover(true)}
+             onBlur={() => setHover(false)}
         >
 
           <Tooltip label="Delete" align="bottom">
             <label htmlFor={`output${index}`} className={classes.label} aria-label="Delete">
               {!hover ? <CloseOutline aria-label="Delete"/> : <CloseFilled aria-label="Delete"/>}
+              <input type="checkbox"
+                     name="output"
+                     id={`output${index}`}
+                     value={index}
+                     onChange={handleDeleteChecked}
+                     className="visually-hidden"
+              />
             </label>
           </Tooltip>
 
-            <input type="checkbox"
-                   name="output"
-                   id={`output${index}`}
-                   value={index}
-                   onChange={handleDeleteChecked}
-                   className="visually-hidden"
-            />
 
         </div>
 
