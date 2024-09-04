@@ -18,12 +18,14 @@ function DisplayLabels({
   // TODO: efficient display of sorting icon
   const show = showIcon === active && searchSuggestionsOrder !== undefined
 
-  const sortDirection = searchSuggestionsOrder === undefined
-      ? "Ascending"
-      : searchSuggestionsOrder ? "Descending" : "Ascending";
+  // const sortDirection = searchSuggestionsOrder === undefined
+  //     ? "Ascending"
+  //     : searchSuggestionsOrder ? "Descending" : "Ascending";
+
 
   return (
-      <Tooltip align="right" description={`Sort ${sortDirection}`}>
+      // <Tooltip align="right" description={`Sort ${sortDirection}`}>
+      <Tooltip align="right" description="Sort">
         <h5 role="button"
             tabIndex="0"
             onClick={handleSort}
