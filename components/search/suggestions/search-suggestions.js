@@ -26,15 +26,15 @@ function SearchSuggestions({
   //   setShowIcon(index);
   // }, [searchSuggestionsOrder]);
 
-  const handleSort = (event) => {
-    //TODO: each time the icon is pressed, the sorting should start from ascending and not oscillating
-    indexToSort.current = event.currentTarget.dataset.index;
-    setSearchSuggestionsOrder(prevState => !prevState);
+  // const handleSort = (event) => {
+  //   //TODO: each time the icon is pressed, the sorting should start from ascending and not oscillating
+  //   indexToSort.current = event.currentTarget.dataset.index;
+  //   setSearchSuggestionsOrder(prevState => !prevState);
     // if (+event.currentTarget.dataset.index === index) {
     //   setShowIcon(index);
     //   setActive(index);
     // }
-  }
+  // }
 
 
   return (
@@ -48,13 +48,14 @@ function SearchSuggestions({
                          handleSort={handleSort}
           />
           <ul className={classes.searchContainerDataContainer}>
-            {sortedSuggestions.map((data, i) =>
-                <DisplayValues key={i}
-                               data={data}
-                               index={index}
-                               IDIndex={IDIndex}
-                               pickSearchedOutput={pickSearchedOutput}
-                />
+            {sortedSuggestions.map((data, i) => {
+                  return <DisplayValues key={i}
+                                 data={data}
+                                 i={index}
+                                 IDIndex={IDIndex}
+                                 pickSearchedOutput={pickSearchedOutput}
+                  />
+                }
             )}
           </ul>
         </Tile>

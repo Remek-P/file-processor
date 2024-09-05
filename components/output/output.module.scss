@@ -3,62 +3,80 @@
 
 //Output has NOT been chosen yet
 
-.searchContainer {
-  display: flex;
+.search {
 
-  overflow-x: auto;
+  &Container {
+    display: flex;
 
-  & > li {
+    overflow-x: auto;
+
+    & > li {
+      box-sizing: border-box;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 5px;
+      padding-bottom: 16px;
+      padding-right: 7px;
+      text-wrap: nowrap;
+
+      cursor: pointer;
+    }
+
+    &Header {
+      box-sizing: border-box;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 5px;
+      padding-bottom: 16px;
+      padding-right: 7px;
+      text-wrap: nowrap;
+
+      cursor: pointer;
+    }
+
+    $data-container-gap: 18px;
+
+    &DataContainer {
+      display: flex;
+      flex-direction: column;
+      gap: $data-container-gap;
+    }
+
+    &Data {
+      cursor: pointer;
+
+      text-wrap: nowrap;
+
+      position: relative;
+
+      &::after {
+        $height: calc($data-container-gap / -2.2);
+
+        content: "";
+        position: absolute;
+        inset: $height 0 $height 0;
+        min-height: -$height;
+
+        background-color: transparent;
+        z-index: 1;
+      }
+
+      &:hover::after,
+      &:focus-visible::after {
+        background-color: rgba(255, 255, 255, 0.50);
+      }
+    }
+  }
+
+  &SuggestionsLi {
     width: fit-content;
   }
-
-  &Header {
-    box-sizing: border-box;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 5px;
-    padding-bottom: 16px;
-    padding-right: 7px;
-    text-wrap: nowrap;
-
-    cursor: pointer;
-  }
-
-  $data-container-gap: 18px;
-
-  &DataContainer {
-    display: flex;
-    flex-direction: column;
-    gap: $data-container-gap;
-  }
-
-  &Data {
-    cursor: pointer;
-
-    text-wrap: nowrap;
-
-    position: relative;
-
-    &::after {
-      $height: calc($data-container-gap / -2.2);
-
-      content: "";
-      position: absolute;
-      inset: $height -25% $height -5%;
-      min-height: -$height;
-
-      background-color: transparent;
-      z-index: 1;
-    }
-
-    &:hover::after,
-    &:focus-visible::after {
-      background-color: rgba(255, 255, 255, 0.50);
-    }
-  }
 }
+
 
 .outputLoader {
   margin: 0 auto;
