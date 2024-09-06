@@ -6,7 +6,7 @@ import { FixedSizeList as List } from "react-window";
 
 import { compareValues } from "@/utils/sortUtils";
 
-import { Tile } from "@carbon/react";
+import {Loading, Tile} from "@carbon/react";
 
 import classes from "@/components/output/output.module.scss";
 import useWindowDimensions from "@/utils/useWindowSize";
@@ -141,6 +141,8 @@ function DisplayMultipleSuggestions({
             reducePerformanceStrain
             && <TexTile text={"Please type at least 2 characters to display search results"}/>
         }
+
+        <Loading active={isLoading} description="Performing sorting" id="sortLoading" small={false} withOverlay={true} />
 
         <StickyList
             height={height}

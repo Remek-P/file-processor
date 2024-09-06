@@ -1,10 +1,10 @@
-import {Button, InlineLoading, Tooltip} from "@carbon/react";
+import {Button, Loading, Tooltip} from "@carbon/react";
 
 import {Delete, Search} from "@carbon/icons-react";
 
 import classes from "@/components/search/search.module.scss";
 
-function SearchbarIcon({ id, isPending, isDeleteVisible, setInputValue, setLocalInputValue, searchRef }) {
+function SearchbarIcon({ id, isPending, isDeleteVisible, setLocalInputValue, searchRef }) {
 
   const handleDeleteButton = () => {
     // TODO: check preferred behaviour
@@ -13,7 +13,7 @@ function SearchbarIcon({ id, isPending, isDeleteVisible, setInputValue, setLocal
     searchRef.current.focus();
   }
 
-    if (isPending) return <InlineLoading id={id} status="active" className={classes.inlineLoading} />;
+    if (isPending) return <Loading active="active" description="Searching for querry" id={id} small={true} withOverlay={false} className={null} />;
 
     if (!isDeleteVisible) return <Search className={classes.searchIcon}/>;
 

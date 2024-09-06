@@ -28,7 +28,6 @@ function Search({ setInputValue, searchRef, id="search" }) {
         <SearchbarIcon isDeleteVisible={isDeleteVisible}
                        id={id}
                        isPending={isPending}
-                       setInputValue={setInputValue}
                        setLocalInputValue={setLocalInputValue}
                        searchRef={searchRef}
         />
