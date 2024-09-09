@@ -5,72 +5,6 @@
 
 .search {
 
-  //&Container {
-  //  display: flex;
-  //
-  //  overflow-x: auto;
-  //
-  //  & > li {
-  //    box-sizing: border-box;
-  //    width: 100%;
-  //    display: flex;
-  //    align-items: center;
-  //    flex-wrap: nowrap;
-  //    gap: 5px;
-  //    padding-bottom: 16px;
-  //    padding-right: 7px;
-  //    text-wrap: nowrap;
-  //
-  //    cursor: pointer;
-  //  }
-  //
-  //  &Header {
-  //    box-sizing: border-box;
-  //    width: 100%;
-  //    display: flex;
-  //    align-items: center;
-  //    flex-wrap: nowrap;
-  //    gap: 5px;
-  //    padding-bottom: 16px;
-  //    padding-right: 7px;
-  //    text-wrap: nowrap;
-  //
-  //    cursor: pointer;
-  //  }
-  //
-  //  $data-container-gap: 18px;
-  //
-  //  &DataContainer {
-  //    display: flex;
-  //    flex-direction: column;
-  //    gap: $data-container-gap;
-  //  }
-  //
-  //  &Data {
-  //    cursor: pointer;
-  //
-  //    text-wrap: nowrap;
-  //
-  //    position: relative;
-  //
-  //    &::after {
-  //      $height: calc($data-container-gap / -2.2);
-  //
-  //      content: "";
-  //      position: absolute;
-  //      inset: $height 0 $height 0;
-  //      min-height: -$height;
-  //
-  //      background-color: transparent;
-  //      z-index: 1;
-  //    }
-  //
-  //    &:hover::after,
-  //    &:focus-visible::after {
-  //      background-color: rgba(255, 255, 255, 0.50);
-  //    }
-  //  }
-
     &Suggestion {
       &Table {
 
@@ -114,10 +48,6 @@
         }
       }
     }
-
-  //&SuggestionsLi {
-  //  width: fit-content;
-  //}
 }
 
 

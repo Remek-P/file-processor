@@ -13,7 +13,7 @@ function SearchbarIcon({ id, isPending, isDeleteVisible, setLocalInputValue, sea
     searchRef.current.focus();
   }
 
-    if (isPending) return <Loading active="active" description="Searching for querry" id={id} small={true} withOverlay={false} className={null} />;
+    if (isPending) return <Loading active={true} description="Searching for querry" id={id} small={true} withOverlay={false} className={null} />;
 
     if (!isDeleteVisible) return <Search className={classes.searchIcon}/>;
 
