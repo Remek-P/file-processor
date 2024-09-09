@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import TexTile from "@/components/tile-type/text-tile/texTile";
-
-import { compareValues } from "@/utils/sortUtils";
-
-import { Loading } from "@carbon/react";
-
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
+
+import { compareValues } from "@/utils/sortUtils";
 import useWindowDimensions from "@/utils/useWindowSize";
+
+import TexTile from "@/components/tile-type/text-tile/texTile";
+
+import { Loading } from "@carbon/react";
 
 function DisplayMultipleSuggestions({
                                       IDIndex,
