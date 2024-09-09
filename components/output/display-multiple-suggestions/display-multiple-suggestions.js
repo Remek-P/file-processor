@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
@@ -23,6 +23,7 @@ function DisplayMultipleSuggestions({
   // const [active, setActive] = useState(IDIndex);
   
   const [isLoading, setIsLoading] = useState(false);
+  const [sortedSuggestions, setSortedSuggestions] = useState(searchUsers);
 
   const { height } = useWindowDimensions();
 
@@ -34,22 +35,6 @@ function DisplayMultipleSuggestions({
   }
 
   const indexToSort = useRef(IDIndex);
-
-  const sortedSuggestions = useMemo(() => {
-    if (searchSuggestionsOrder === undefined) {
-      return searchUsers;
-    }
-
-    // Sort the indexed data based on the value and sort direction (sortedUtils)
-    if (searchSuggestionsOrder || searchSuggestionsOrder === false)
-      return [...searchUsers].sort((a, b) => compareValues(
-          a[indexToSort.current],
-          b[indexToSort.current],
-          searchSuggestionsOrder
-          )
-      );
-
-  }, [searchSuggestionsOrder, searchUsers, IDIndex]);
 
   // TODO: Loader indicating change od suggestion order is in progress
   // TODO: Is reducePerformanceStrain needed?
@@ -69,10 +54,60 @@ function DisplayMultipleSuggestions({
   }
 
   useEffect(() => {
-    setIsLoading(false);
-  }, [sortedSuggestions]);
 
+    // if browser support web workers and the list is a large list
+    if (typeof Worker !== 'undefined' && isLongList) {
 
+      if (searchSuggestionsOrder === undefined) {
+        setSortedSuggestions(searchUsers);
+        setIsLoading(false);
+
+        // Sort the indexed data based on the value and sort direction (sortedUtils) and sorting index
+      } else if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
+
+        const worker = new Worker(new URL("@/public/sortWorker", import.meta.url));
+
+        worker.onmessage = function (event) {
+          setSortedSuggestions(event.data);
+        };
+
+        const payload = {
+          searchSuggestionsOrder,
+          searchUsers,
+          indexToSort,
+        }
+
+        worker.postMessage(payload);
+        setIsLoading(false);
+
+        return () => {
+          worker.terminate();
+        };
+      }
+
+    } else {
+      // if browser does not support web workers or the list is short
+      if (searchSuggestionsOrder === undefined) {
+        setSortedSuggestions(searchUsers);
+        setIsLoading(false);
+      }
+
+      // Sort the indexed data based on the value and sort direction (sortedUtils)
+      else if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
+        const sorted = [...searchUsers].sort((a, b) => compareValues(
+                a[indexToSort.current],
+                b[indexToSort.current],
+                searchSuggestionsOrder
+            )
+        );
+        setSortedSuggestions(sorted)
+        setIsLoading(false);
+      }
+    }
+
+  }, [searchSuggestionsOrder, searchUsers, IDIndex]);
+
+  console.log("searchUsers", searchUsers)
 
   return (
       // The section style is necessary for ShortList component, to display sticky menu

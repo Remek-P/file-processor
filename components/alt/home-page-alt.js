@@ -78,7 +78,7 @@ function HomePageAlt() {
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
 
     if (["xls", "xlsx", "csv"].includes(fileExtension)) {
-      const worker = new Worker(new URL("../../utils/fileWorker", import.meta.url));
+      const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
 
       worker.onmessage = (event) => {
         if (event.data.status === "success") {
