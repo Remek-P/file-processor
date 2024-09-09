@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
 
-import { compareValues } from "@/utils/sortUtils";
 import useWindowDimensions from "@/utils/useWindowSize";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
@@ -23,23 +22,12 @@ function DisplayMultipleSuggestions({
   // const [active, setActive] = useState(IDIndex);
   
   const [isLoading, setIsLoading] = useState(false);
-  const [sortedSuggestions, setSortedSuggestions] = useState(searchUsers);
 
   const { height } = useWindowDimensions();
 
   const reducePerformanceStrain = inputValue.length < 2;
 
-  // TODO: if e.currentTarget.dataset.index === undefined No such user exists message
-  const pickSearchedOutput = (e) => {
-    setInputValue(e.currentTarget.dataset.value);
-  }
-
   const indexToSort = useRef(IDIndex);
-
-  // TODO: Loader indicating change od suggestion order is in progress
-  // TODO: Is reducePerformanceStrain needed?
-
-  const isLongList = searchUsers.length > 500;
 
   const handleSort = (event) => {
     //TODO: each time the icon is pressed, the sorting should start from ascending and not oscillating
@@ -53,61 +41,16 @@ function DisplayMultipleSuggestions({
     // }
   }
 
-  useEffect(() => {
+  // TODO: if e.currentTarget.dataset.index === undefined No such user exists message
+  const pickSearchedOutput = (e) => {
+    setInputValue(e.currentTarget.dataset.value);
+  }
 
-    // if browser support web workers and the list is a large list
-    if (typeof Worker !== 'undefined' && isLongList) {
+  // TODO: Loader indicating change od suggestion order is in progress
+  // TODO: Is reducePerformanceStrain needed?
 
-      if (searchSuggestionsOrder === undefined) {
-        setSortedSuggestions(searchUsers);
-        setIsLoading(false);
+  const isLongList = searchUsers.length > 500;
 
-        // Sort the indexed data based on the value and sort direction (sortedUtils) and sorting index
-      } else if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
-
-        const worker = new Worker(new URL("@/public/sortWorker", import.meta.url));
-
-        worker.onmessage = function (event) {
-          setSortedSuggestions(event.data);
-        };
-
-        const payload = {
-          searchSuggestionsOrder,
-          searchUsers,
-          indexToSort,
-        }
-
-        worker.postMessage(payload);
-        setIsLoading(false);
-
-        return () => {
-          worker.terminate();
-        };
-      }
-
-    } else {
-      // if browser does not support web workers or the list is short
-      if (searchSuggestionsOrder === undefined) {
-        setSortedSuggestions(searchUsers);
-        setIsLoading(false);
-      }
-
-      // Sort the indexed data based on the value and sort direction (sortedUtils)
-      else if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
-        const sorted = [...searchUsers].sort((a, b) => compareValues(
-                a[indexToSort.current],
-                b[indexToSort.current],
-                searchSuggestionsOrder
-            )
-        );
-        setSortedSuggestions(sorted)
-        setIsLoading(false);
-      }
-    }
-
-  }, [searchSuggestionsOrder, searchUsers, IDIndex]);
-
-  console.log("searchUsers", searchUsers)
 
   return (
       // The section style is necessary for ShortList component, to display sticky menu
@@ -125,17 +68,22 @@ function DisplayMultipleSuggestions({
                  className={null}
         />
         {
-          !isLongList
+          !reducePerformanceStrain && !isLongList
               ? <ShortList IDIndex={IDIndex}
+                           searchUsers={searchUsers}
                            labelDataArray={labelDataArray}
-                           sortedSuggestions={sortedSuggestions}
+                           searchSuggestionsOrder={searchSuggestionsOrder}
+                           pickSearchedOutput={pickSearchedOutput}
                            handleSort={handleSort}
-                           pickSearchedOutput={pickSearchedOutput}/>
+              />
               : <VirtualizedList IDIndex={IDIndex}
                                  labelDataArray={labelDataArray}
-                                 sortedSuggestions={sortedSuggestions}
-                                 handleSort={handleSort}
                                  pickSearchedOutput={pickSearchedOutput}
+                                 searchUsers={searchUsers}
+                                 searchSuggestionsOrder={searchSuggestionsOrder}
+                                 handleSort={handleSort}
+                                 setIsLoading={setIsLoading}
+                                 indexToSort={indexToSort}
               />
         }
 

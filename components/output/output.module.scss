@@ -10,34 +10,42 @@
       &ShortListTable {
         position: relative;
 
-        & th {
+        & thead {
           position: sticky;
           top: 0;
+          z-index: 2;
         }
       }
 
       &Table {
 
         $data-container-gap: 18px;
+        position: relative;
+
+        & > th {
+          overflow: hidden;
+          width: max-content;
+        }
 
         &Header,
         &Row {
-          text-wrap: nowrap;
-
+          //text-wrap: nowrap;
           cursor: pointer;
         }
 
         &Header {
-          position: sticky !important;
-          top: 0;
-          z-index: 2;
+          //position: sticky !important;
+          //top: 0;
+          //z-index: 2;
+
+
         }
 
         &Row {
 
 
 
-          position: relative;
+          //position: relative;
 
           //&::after {
           //  $height: calc($data-container-gap / -2.2);

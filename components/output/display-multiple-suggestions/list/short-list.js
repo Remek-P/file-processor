@@ -1,13 +1,37 @@
-import {Tile} from "@carbon/react";
+import { useMemo, useRef } from "react";
+
+import {compareValues} from "@/utils/sortUtils";
+
+import { Tile } from "@carbon/react";
+
 import classes from "@/components/output/output.module.scss";
 
 function ShortList({
                      IDIndex,
+                     searchUsers,
                      labelDataArray,
-                     sortedSuggestions,
-                     handleSort,
+                     searchSuggestionsOrder,
                      pickSearchedOutput,
+                     handleSort,
                    }) {
+
+  const indexToSort = useRef(IDIndex);
+
+  const sortedSuggestions = useMemo(() => {
+    if (searchSuggestionsOrder === undefined) {
+      return searchUsers;
+    }
+
+    // Sort the indexed data based on the value and sort direction (sortedUtils)
+    if (searchSuggestionsOrder || searchSuggestionsOrder === false)
+      return [...searchUsers].sort((a, b) => compareValues(
+              a[indexToSort.current],
+              b[indexToSort.current],
+              searchSuggestionsOrder
+          )
+      );
+
+  }, [searchSuggestionsOrder, searchUsers, IDIndex]);
 
   return (
       <table className={classes.searchSuggestionShortListTable}>
