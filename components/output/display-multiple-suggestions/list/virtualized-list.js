@@ -101,7 +101,7 @@ function VirtualizedList({
   const StickyRow = ({index, style}) => (
       <tr style={style}>
         {labelDataArray.map((label, index) => (
-            <th key={index} onClick={handleSort} className={classes.searchSuggestionTableHeader} tabIndex="0">
+            <th key={index} onClick={handleSort} tabIndex="0">
               <Tile>
                 {label}
               </Tile>
