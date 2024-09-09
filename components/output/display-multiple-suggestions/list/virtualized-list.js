@@ -86,7 +86,7 @@ function VirtualizedList({
   const Row = ({index, style}) => {
     const row = sortedSuggestions[index];
     return (
-        <tr className="row" style={style} className={classes.searchSuggestionTableRow}>
+        <tr style={style} className={classes.searchSuggestionTableRow}>
           {row.map((value, colIndex) => (
               <td key={colIndex} data-value={row[IDIndex]} onClick={pickSearchedOutput} tabIndex="0">
                 <Tile>
