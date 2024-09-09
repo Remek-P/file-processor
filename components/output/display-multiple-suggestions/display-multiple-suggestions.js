@@ -8,6 +8,7 @@ import { Loading } from "@carbon/react";
 
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
+import useWindowDimensions from "@/utils/useWindowSize";
 
 function DisplayMultipleSuggestions({
                                       IDIndex,
@@ -21,7 +22,9 @@ function DisplayMultipleSuggestions({
 
   // const [active, setActive] = useState(IDIndex);
   
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { height } = useWindowDimensions();
 
   const reducePerformanceStrain = inputValue.length < 2;
 
@@ -72,7 +75,8 @@ function DisplayMultipleSuggestions({
 
 
   return (
-      <section style={!isLongList ? {overflow: "auto"} : null}>
+      // The section style is necessary for ShortList component, to display sticky menu
+      <section style={!isLongList ? {overflow: "auto", height: height} : null}>
         {
             reducePerformanceStrain
             && <TexTile text={"Please type at least 2 characters to display search results"}/>

@@ -10,11 +10,15 @@ function ShortList({
                    }) {
 
   return (
-      <table>
+      <table className={classes.searchSuggestionShortListTable}>
         <thead>
         <tr>
           {labelDataArray.map((label, index) => (
-              <th key={index} onClick={handleSort} data-value={label[IDIndex]} className={classes.searchSuggestionTableRow} tabIndex="0">
+              <th key={index}
+                  onClick={handleSort}
+                  data-value={label[IDIndex]}
+                  className={classes.searchSuggestionTableHeader}
+                  tabIndex="0">
                 <Tile>
                   {label}
                 </Tile>
@@ -27,7 +31,11 @@ function ShortList({
         {sortedSuggestions.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((value, colIndex) => (
-                  <td data-value={row[IDIndex]} key={colIndex} onClick={pickSearchedOutput} className={classes.searchSuggestionTableHeader} tabIndex="0">
+                  <td data-value={row[IDIndex]}
+                      key={colIndex}
+                      onClick={pickSearchedOutput}
+                      className={classes.searchSuggestionTableRow}
+                      tabIndex="0">
                     <Tile>
                       {value}
                     </Tile>
