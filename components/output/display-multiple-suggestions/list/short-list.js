@@ -1,6 +1,6 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
-import {compareValues} from "@/utils/sortUtils";
+import { compareValues } from "@/utils/sortUtils";
 
 import { Tile } from "@carbon/react";
 
@@ -11,6 +11,7 @@ function ShortList({
                      searchUsers,
                      labelDataArray,
                      searchSuggestionsOrder,
+                     setIsLoading,
                      pickSearchedOutput,
                      handleSort,
                    }) {
@@ -33,6 +34,11 @@ function ShortList({
 
   }, [searchSuggestionsOrder, searchUsers, IDIndex]);
 
+  useEffect(() => {
+    setIsLoading(false)
+  },[searchSuggestionsOrder])
+
+
   return (
       <table className={classes.searchSuggestionShortListTable}>
         <thead>
@@ -41,7 +47,7 @@ function ShortList({
               <th key={index}
                   onClick={handleSort}
                   data-value={label[IDIndex]}
-                  className={classes.searchSuggestionTableHeader}
+                  className={classes.searchSuggestionShortListTableHeader}
                   tabIndex="0">
                 <Tile>
                   {label}
@@ -58,7 +64,7 @@ function ShortList({
                   <td data-value={row[IDIndex]}
                       key={colIndex}
                       onClick={pickSearchedOutput}
-                      className={classes.searchSuggestionTableRow}
+                      className={classes.searchSuggestionShortListTableRow}
                       tabIndex="0">
                     <Tile>
                       {value}

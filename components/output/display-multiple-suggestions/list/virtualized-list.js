@@ -1,4 +1,4 @@
-import {createContext, forwardRef, useEffect, useState} from "react";
+import {createContext, forwardRef, useEffect, useRef, useState} from "react";
 
 import useWindowDimensions from "@/utils/useWindowSize";
 
@@ -20,10 +20,15 @@ function VirtualizedList({
                            handleSort,
                          }) {
 
-  const [sortedSuggestions, setSortedSuggestions] = useState(searchUsers)
+  const suggestions = [labelDataArray, ...searchUsers];
+
+  const [sortedSuggestions, setSortedSuggestions] = useState(suggestions)
+  const [columnWidths, setColumnWidths] = useState([]);
+
+  const rowRef = useRef();
 
   const { width, height } = useWindowDimensions();
-  const virtualizedWidth = width - (0.1 * height);
+  const virtualizedWidth = width - (0.1 * width);
   const virtualizedHeight = height - (0.2 * height);
 
   const StickyListContext = createContext();
@@ -35,7 +40,7 @@ function VirtualizedList({
     if (typeof Worker !== 'undefined') {
 
       if (searchSuggestionsOrder === undefined) {
-        setSortedSuggestions(searchUsers);
+        setSortedSuggestions(suggestions);
         setIsLoading(false);
 
         // Sort the indexed data based on the value and sort direction (sortedUtils) and sorting index
@@ -44,7 +49,7 @@ function VirtualizedList({
         const worker = new Worker(new URL("@/public/sortWorker", import.meta.url));
 
         worker.onmessage = function (event) {
-          setSortedSuggestions(event.data);
+          setSortedSuggestions([labelDataArray, ...event.data]);
         };
 
         const payload = {
@@ -64,7 +69,7 @@ function VirtualizedList({
     } else {
       // if browser does not support web workers
       if (searchSuggestionsOrder === undefined) {
-        setSortedSuggestions(searchUsers);
+        setSortedSuggestions(suggestions);
         setIsLoading(false);
       }
 
@@ -76,32 +81,49 @@ function VirtualizedList({
                 searchSuggestionsOrder
             )
         );
-        setSortedSuggestions(sorted)
+        setSortedSuggestions([labelDataArray, ...sorted])
         setIsLoading(false);
       }
     }
 
   }, [searchSuggestionsOrder, searchUsers, IDIndex, indexToSort]);
 
+  useEffect(() => {
+    // Collect column widths after the component is rendered
+    if (rowRef.current) {
+      const cells = rowRef.current.querySelectorAll('td');
+      const widths = Array.from(cells).map(cell => cell.offsetWidth);
+      setColumnWidths(widths);
+    }
+  }, [sortedSuggestions]);
+
+  const stickyHeight = 30;
+  const padding = 86 - stickyHeight *2;
+
   const Row = ({index, style}) => {
     const row = sortedSuggestions[index];
     return (
-        <tr style={style} className={classes.searchSuggestionTableRow}>
+        <tr ref={rowRef} style={{...style, top: `${parseFloat(style.top) + padding}px`}}>
           {row.map((value, colIndex) => (
-              <td key={colIndex} data-value={row[IDIndex]} onClick={pickSearchedOutput} tabIndex="0">
+              <td key={colIndex} data-value={row[IDIndex]} onClick={pickSearchedOutput} style={{ width: columnWidths[colIndex]}} tabIndex="0">
                 <Tile>
                   {value}
                 </Tile>
               </td>
           ))}
         </tr>
-    )
+    );
   };
 
   const StickyRow = ({index, style}) => (
       <tr style={style}>
-        {labelDataArray.map((label, index) => (
-            <th key={index} onClick={handleSort} className={classes.searchSuggestionTableHeader} tabIndex="0">
+        {sortedSuggestions[index].map((label, colIndex) => (
+            <th
+                key={colIndex}
+                onClick={handleSort}
+                tabIndex="0"
+                style={{ width: columnWidths[colIndex]}} // Set the width
+            >
               <Tile>
                 {label}
               </Tile>
@@ -110,16 +132,17 @@ function VirtualizedList({
       </tr>
   );
 
+
   const innerElementType = forwardRef(({children, ...rest}, ref) => (
       <StickyListContext.Consumer>
         {({stickyIndices}) => (
-            <table ref={ref} {...rest} className={classes.searchSuggestionTable}>
-              <thead >
+            <table ref={ref} {...rest} className={classes.searchSuggestionLargeListTable}>
+              <thead>
               {stickyIndices.map((index) => (
                   <StickyRow
                       index={index}
                       key={index}
-                      style={{top: 0, left: 0, height: 30, position: "sticky", zIndex: "1"}}
+                      style={{top: 0, left: 0, height: `${stickyHeight}px`, position: "sticky", zIndex: "1"}}
                   />
               ))}
               </thead>
@@ -134,7 +157,7 @@ function VirtualizedList({
     if (stickyIndices && stickyIndices.includes(index)) {
       return null;
     }
-    return <ItemRenderer index={index} style={style}/>;
+    return <ItemRenderer index={index} style={style} />;
   };
 
   const StickyList = ({children, stickyIndices, ...rest}) => (
@@ -150,7 +173,7 @@ function VirtualizedList({
           height={virtualizedHeight}
           innerElementType={innerElementType}
           itemCount={sortedSuggestions.length}
-          itemSize={70}
+          itemSize={50}
           stickyIndices={[0]}
           width={virtualizedWidth}
       >

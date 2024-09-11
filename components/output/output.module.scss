@@ -7,62 +7,35 @@
 
     &Suggestion {
 
-      &ShortListTable {
-        position: relative;
+      &ShortListTable,
+      &LargeListTable {
+        th > *, td > * {
+          overflow: hidden;
+          text-align: left;
 
-        & thead {
-          position: sticky;
-          top: 0;
-          z-index: 2;
+          cursor: pointer;
         }
       }
 
-      &Table {
+      //prevents long text from overflowing
+      &ShortListTable {
+        white-space: nowrap;
+        max-width: 300px !important;
+        text-overflow: ellipsis;
+      }
 
-        $data-container-gap: 18px;
+      &LargeListTable {
+        table-layout: fixed;
+        width: 100%;
+      }
+
+      &ShortListTable {
         position: relative;
 
-        & > th {
-          overflow: hidden;
-          width: max-content;
-        }
-
-        &Header,
-        &Row {
-          //text-wrap: nowrap;
-          cursor: pointer;
-        }
-
         &Header {
-          //position: sticky !important;
-          //top: 0;
-          //z-index: 2;
-
-
-        }
-
-        &Row {
-
-
-
-          //position: relative;
-
-          //&::after {
-          //  $height: calc($data-container-gap / -2.2);
-          //
-          //  content: "";
-          //  position: absolute;
-          //  inset: $height 0 $height 0;
-          //  min-height: -$height;
-          //
-          //  background-color: transparent;
-          //  z-index: 1;
-          //}
-          //
-          &:hover,
-          &:focus-visible {
-            background-color: rgba(255, 255, 255, 0.50);
-          }
+          position: sticky;
+          top: 0;
+          z-index: 2;
         }
       }
     }
