@@ -26,7 +26,7 @@ function SaveFile({ setIsUpdate}) {
     try {
       await addData(assignedFileName, file);
     } catch (error) {
-      addWarnings("Error saving file: "+error.message);
+      addWarnings("Error saving file");
     } finally {
       setIsLoading(false);
       setAssignedFileName("");

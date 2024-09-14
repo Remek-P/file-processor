@@ -24,7 +24,7 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
         const res = await getFileNames(); // Call the function correctly
         setSavedFilesNames(res);
       } catch (error) {
-        addWarnings("Error fetching file names:", error);
+        addWarnings("Error fetching file names");
       } finally {
       }
     };
