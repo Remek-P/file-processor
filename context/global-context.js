@@ -6,7 +6,6 @@ const excelFileInitialState = {
   fileName: null,
   isFetched: null,
   isLoading: false,
-  savedFiles: [],
   warnings: [],
 };
 
@@ -49,18 +48,6 @@ export const FileDataProvider = ({ children }) => {
       payload: isFetched,
     })
   }
-  const saveToLocalStorage = (savedFiles) => {
-    dispatch({
-      type: CASE_NAME.SAVE_FILE,
-      payload: savedFiles,
-    })
-  }
-  const loadFromLocalStorage = (savedFiles) => {
-    dispatch({
-      type: CASE_NAME.LOAD_SAVED_FILES,
-      payload: savedFiles,
-    })
-  }
 
   return (
       <FileDataGlobalContext.Provider
@@ -69,12 +56,9 @@ export const FileDataProvider = ({ children }) => {
             fileName: state.fileName,
             isFetched: state.isFetched,
             isLoading: state.isLoading,
-            savedFiles: state.savedFiles,
             warnings: state.warnings,
             addWarnings,
             isDataFetched,
-            loadFromLocalStorage,
-            saveToLocalStorage,
             setFile,
             setFileName,
             setLoading,
@@ -83,8 +67,6 @@ export const FileDataProvider = ({ children }) => {
       </FileDataGlobalContext.Provider>
   )
 }
-
-
 
 export const DecimalGlobalContext = createContext(null);
 

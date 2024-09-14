@@ -39,6 +39,9 @@
     }
   }
 
+  &Header {
+    padding-bottom: 12px;
+  }
 
   &:first-child > * > p {
     margin-bottom: 14px;
@@ -56,4 +59,8 @@
   background-color: #fff;
   border: 1px solid transparent;
   border-radius: $border-radius-main;
+}
+
+.saveFile {
+  padding-bottom: 16px;
 }

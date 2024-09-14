@@ -1,3 +1,5 @@
+export const DB_NAME = 'FileDatabase';
+export const STORE_NAME = 'FileStore';
 
-export const headerLabel = "MongoDB ID";
-export const idLabel = "_id";
+export const HEADER_LABEL = "MongoDB ID";
+export const ID_LABEL = "_id";

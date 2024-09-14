@@ -1,6 +1,6 @@
 import Show from "@/components/output/section/show/show";
 
-import { headerLabel } from "@/constants/constants";
+import { HEADER_LABEL } from "@/constants/constants";
 import {useContext} from "react";
 import {ToggleIDViewGlobalContext} from "@/context/global-context";
 
@@ -17,7 +17,7 @@ function DisplaySingleOutput({
 
   const excelFileUniqueValues = [... new Set(headerDataArray)];
   
-  const filteredOutDB_ID =  excelFileUniqueValues.filter(item => item !== headerLabel);
+  const filteredOutDB_ID =  excelFileUniqueValues.filter(item => item !== HEADER_LABEL);
   
   return (
       <>
@@ -33,7 +33,7 @@ function DisplaySingleOutput({
         }
         {
             !hideDB_ID_Tile && toggleIDView
-            && <Show value={headerLabel}
+            && <Show value={HEADER_LABEL}
                      colDataArray={colDataArray}
                      labelDataArray={labelDataArray}
                      headerDataArray={headerDataArray}

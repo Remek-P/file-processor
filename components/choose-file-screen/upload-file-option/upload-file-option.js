@@ -25,7 +25,7 @@ function UploadFileOption({ handleFile }) {
       <Tile className={classes.tile}>
         <FileUploader filenameStatus="complete"
                       labelTitle="Please choose a file to upload"
-                      labelDescription="Only Excel files will be accepted"
+                      labelDescription="Only selected files types will be accepted"
                       buttonLabel={buttonLabel}
                       onChange={handleFile}
                       accept={fileTypes}
