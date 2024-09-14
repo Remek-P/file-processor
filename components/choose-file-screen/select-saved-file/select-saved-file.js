@@ -3,9 +3,10 @@ import {useContext, useEffect, useState} from "react";
 import { Button, Select, SelectItem, Tile } from "@carbon/react";
 import { Run } from "@carbon/icons-react";
 
-import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import {FileDataGlobalContext} from "@/context/global-context";
 import {getFileNames} from "@/utils/create-indexedDB";
+
+import classes from "@/components/choose-file-screen/choose-file.module.scss";
 
 function SelectSavedFile({isUpdate, loadSavedFile}) {
 

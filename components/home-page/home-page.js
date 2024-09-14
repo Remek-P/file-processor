@@ -60,7 +60,7 @@ export default function HomePage() {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       setFile(sheetToJsonData(worksheet));
     } catch (error) {
-      addWarnings("Error while processing file"+ error.message);
+      addWarnings("Error while processing file");
     }
   };
 
