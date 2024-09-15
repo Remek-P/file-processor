@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useContext, useState} from "react";
 
 import DisplayOutput from "@/components/output/displayOutput/displayOutput";
 import ActionsMenu from "@/components/file-chosen/actions-menu/actions-menu";
@@ -10,7 +10,7 @@ import {ID_LABEL} from "@/constants/constants";
 import classes from "./file-chosen.module.scss";
 import {
   DecimalDataProvider,
-  ExcludedDataProvider,
+  ExcludedDataProvider, FileDataGlobalContext,
   SearchSuggestionsOrderGlobalProvider
 } from "@/context/global-context";
 
@@ -22,6 +22,8 @@ function FileChosen({
                     }) {
 
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
+
+  const { setLoading } = useContext(FileDataGlobalContext);
 
   // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
 
@@ -43,7 +45,9 @@ function FileChosen({
   const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === ID_LABEL) === -1;
 
   const addPerson = () => {
-    setNumberOfOutputs(prevState => [...prevState, {delete: false}])
+    setLoading(true);
+    setNumberOfOutputs(prevState => [...prevState, {delete: false}]);
+    setLoading(false);
   }
 
   // TODO: even thought there is no displayed output, you can hide and reveal all the hidden tiles
@@ -53,7 +57,7 @@ function FileChosen({
   }
 
   const handleResetID = () => {
-    setIDIndex(-1)
+    setIDIndex(-1);
   }
 
   if (IDIndex === -1) return <IdNotAvailable labels={labelArray}

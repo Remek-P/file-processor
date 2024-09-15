@@ -135,12 +135,14 @@ export default function HomePage() {
   }
 
   const loadSavedFile = async (name) => {
+    setLoading(true);
     const file = await getData(name);
     if (file) {
       setFile(file);
       setFileName(name);
       setFinalDataAvailable(true);
     }
+    setLoading(false);
   };
 
   const handleFileChange = () => {
