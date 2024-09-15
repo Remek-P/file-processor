@@ -25,7 +25,7 @@ function SectionLayout({
                        }) {
 
   // TODO: Delete decimal and setDecimal if needed
-
+// TODO: Tooltip is hidden due to overflow auto, set height to fix?
   const [excludedArray, setExcludedArray] = useContext(ExcludedDataGlobalContext);
 
   const [showBarChart, setShowBarChart] = useState(false);
