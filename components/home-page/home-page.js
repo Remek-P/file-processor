@@ -51,7 +51,7 @@ export default function HomePage() {
 
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
 
-    const handleWorker = async (workerData) => {
+    const handleFileWorker = async (workerData) => {
       const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
 
       worker.postMessage({ file: workerData });
@@ -62,27 +62,26 @@ export default function HomePage() {
         } else if (event.data.status === "error") {
           addWarnings(event.data.message);
         }
+        worker.terminate();
         setLoading(false);
-        worker.terminate()
       };
     }
 
     if (["xls", "xlsx", "csv"].includes(fileExtension)) {
-
       const data = await targetFile.arrayBuffer();
 
-      await handleWorker(data);
+      await handleFileWorker(data);
 
-    } else if (["rar", "zip"].includes(fileExtension)) {
-
-      await handleWorker(targetFile);
+    } else if (["zip"].includes(fileExtension)) {
+// TODO: need a lib to handle .rar files
+      await handleFileWorker(targetFile);
 
     } else {
       addWarnings("Unsupported file format");
+      setLoading(false);
     }
 
     isDataFetched(false)
-    setLoading(false);
   };
 
   const fetchDataFromDB = async () => {

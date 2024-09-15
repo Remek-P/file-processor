@@ -2,7 +2,7 @@ import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import {FileUploader, Tile} from "@carbon/react";
 import {Upload} from "@carbon/icons-react";
 
-function UploadFileOption({ handleFile }) {
+function UploadFileOption({ setIsFileDelivered, handleFile }) {
 
   const fileTypes = [
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -21,13 +21,18 @@ function UploadFileOption({ handleFile }) {
       </>
   )
 
+  const handleClick = (e) => {
+    handleFile(e)
+    setIsFileDelivered(true);
+  }
+
   return (
       <Tile className={classes.tile}>
         <FileUploader filenameStatus="complete"
                       labelTitle="Please choose a file to upload"
                       labelDescription="Only selected files types will be accepted"
                       buttonLabel={buttonLabel}
-                      onChange={handleFile}
+                      onChange={(e) => handleClick(e)}
                       accept={fileTypes}
                       name="uploader"
         />
