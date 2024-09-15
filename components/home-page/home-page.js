@@ -5,7 +5,7 @@ import {FileDataGlobalContext, ToggleIDViewProvider} from "@/context/global-cont
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
 
-import { getData } from "@/utils/create-indexedDB";
+import {addData, getData } from "@/utils/create-indexedDB";
 import {sheetToJsonData} from "@/utils/xlsxUtils";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
@@ -51,11 +51,10 @@ export default function HomePage() {
 
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
 
-    if (["xls", "xlsx", "csv"].includes(fileExtension)) {
+    const handleWorker = async (workerData) => {
       const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
 
-      const data = await targetFile.arrayBuffer();
-      worker.postMessage({ file: data });
+      worker.postMessage({ file: workerData });
 
       worker.onmessage = (event) => {
         if (event.data.status === "success") {
@@ -66,21 +65,17 @@ export default function HomePage() {
         setLoading(false);
         worker.terminate()
       };
+    }
+
+    if (["xls", "xlsx", "csv"].includes(fileExtension)) {
+
+      const data = await targetFile.arrayBuffer();
+
+      await handleWorker(data);
 
     } else if (["rar", "zip"].includes(fileExtension)) {
-      const worker = new Worker(new URL("@/public/compressedFileWorker", import.meta.url));
 
-      worker.postMessage({ file: targetFile });
-
-      worker.onmessage = (event) => {
-        if (event.data.status === "success") {
-          setFile(event.data.data);
-        } else if (event.data.status === "error") {
-          addWarnings(event.data.message);
-        }
-        setLoading(false);
-        worker.terminate()
-      };
+      await handleWorker(targetFile);
 
     } else {
       addWarnings("Unsupported file format");
@@ -92,6 +87,7 @@ export default function HomePage() {
 
   const fetchDataFromDB = async () => {
     setLoading(true);
+
 
     const partialDataArray = [];
 
@@ -127,7 +123,9 @@ export default function HomePage() {
       jsonData[1][0] = ID_LABEL;
 
       setFile(jsonData);
-      setFileName("DB_file")
+      // for refetching
+      const checkFileName = fileName ? fileName : "DB_file"
+      setFileName(checkFileName)
       isDataFetched(true);
 
     } catch (error) {
@@ -157,18 +155,12 @@ export default function HomePage() {
 
   const refreshData = async () => {
     await fetchDataFromDB();
+    await addData(fileName, file);
   }
 
   return (
       <main>
         <ToggleIDViewProvider>
-
-          {!finalDataAvailable
-              && <ChooseFile file={file}
-                             fetchDataFromDB={fetchDataFromDB}
-                             handleFile={handleFile}
-                             loadSavedFile={loadSavedFile}
-              />}
 
           <Loading id="indexLoading"
                    small={false}
@@ -177,6 +169,15 @@ export default function HomePage() {
                    description="Active loading indicator"
                    active={isLoading}
           />
+
+          {
+              !finalDataAvailable
+              && <ChooseFile file={file}
+                             fetchDataFromDB={fetchDataFromDB}
+                             handleFile={handleFile}
+                             loadSavedFile={loadSavedFile}
+              />
+          }
 
           {
               showWarnings && warnings.map((warning, index) => {

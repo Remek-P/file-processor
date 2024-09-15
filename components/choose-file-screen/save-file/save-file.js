@@ -3,16 +3,15 @@ import {useContext, useEffect, useState} from "react";
 import { addData } from "@/utils/create-indexedDB";
 import { FileDataGlobalContext } from "@/context/global-context";
 
-import {Button, Loading, TextInput, Tile} from "@carbon/react";
+import {Button, TextInput, Tile} from "@carbon/react";
 import { Save } from "@carbon/icons-react";
 
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 
 function SaveFile({ setIsUpdate}) {
 
-  const { file, fileName, addWarnings } = useContext(FileDataGlobalContext);
+  const { file, fileName, addWarnings, setLoading } = useContext(FileDataGlobalContext);
 
-  const [isLoading, setIsLoading] = useState(false);
   const [assignedFileName, setAssignedFileName] = useState("");
 
   const labelText = "Save File";
@@ -22,13 +21,13 @@ function SaveFile({ setIsUpdate}) {
   }, [fileName]);
 
   const handleSave = async () => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       await addData(assignedFileName, file);
     } catch (error) {
       addWarnings("Error saving file");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
       setAssignedFileName("");
       setIsUpdate(prevState => !prevState);
     }
@@ -38,8 +37,6 @@ function SaveFile({ setIsUpdate}) {
   return (
 
       <Tile className={classes.tile}>
-        <Loading active={isLoading} className={null} description="Saving file" id="savingFile" small={false}
-                 withOverlay={true}/>
 
         <h6 className={classes.optionContainerHeader}>Save file</h6>
         <TextInput id="saveFile"
