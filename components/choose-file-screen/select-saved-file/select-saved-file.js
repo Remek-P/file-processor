@@ -22,7 +22,7 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
   useEffect(() => {
     const getSavedFilesNames = async () => {
       try {
-        const res = await getFileNames(); // Call the function correctly
+        const res = await getFileNames();
         setSavedFilesNames(res);
       } catch (error) {
         addWarnings("Error fetching file names");
@@ -32,6 +32,10 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
 
     getSavedFilesNames();
   }, [isUpdate]);
+
+  const handleClick = () => {
+    loadSavedFile(selectedOption);
+  }
 
   return (
       <Tile className={classes.tile}>
@@ -48,7 +52,7 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
         ))}
         </Select>
 
-        <Button onClick={loadSavedFile(selectedOption)} size="md">
+        <Button onClick={handleClick} size="md">
           <Run/>
           <span>Load saved file</span>
         </Button>
