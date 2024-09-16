@@ -6,16 +6,16 @@ import { FileDataGlobalContext } from "@/context/global-context";
 
 import { deleteData, getFileNames} from "@/utils/create-indexedDB";
 
-import { IconButton, Tile } from "@carbon/react";
-import { TrashCan, Undo } from "@carbon/icons-react";
-
-import classes from "./delete-file.module.scss";
+import TexTile from "@/components/tile-type/text-tile/texTile";
+import DeleteFileListItem from "@/components/delete-file-page/delete-file-list/delete-file-list-item";
 
 
 function DeleteFilePage() {
 
   const [fileList, setFileList] = useState([]);
   const [fileName, setFileName] = useState(null);
+
+  const isFiles = fileList.length !== 0;
 
   const size = "md"
 
@@ -50,54 +50,28 @@ function DeleteFilePage() {
   return (
       <>
 
-        { fileList.length === 0 && <NoFiles/> }
+        { !isFiles && <NoFiles/> }
 
-        <ul>
-          {fileList.map((file, index) => (
-              <Tile key={index} className={classes.tile}>
-                <li className={classes.deleteItemContainer}>
+        {
+          isFiles &&
+            <TexTile type="children">
+              <h3>Choose files to delete</h3>
 
-                  <div className={classes.transition} aria-hidden={fileName !== file} style={fileName !== file ? {width: 0, height: 0} : null}>
-                    <p>Delete <span className={classes.deleteFileName}>{fileName}</span>?</p>
-                    <div className={classes.deleteIconContainer}>
-                      <IconButton data-value={file}
-                                  onClick={handleDelete}
-                                  size={size}
-                                  kind="danger"
-                                  label="Delete file"
-                                  className={classes.deleteButton}
-                      >
-                        <TrashCan/>
-                      </IconButton>
-                      <IconButton data-value={file}
-                                  onClick={(e) => handleCancel(e)}
-                                  size={size}
-                                  kind="primary"
-                                  label="Delete file"
-                                  className={classes.deleteButton}
-                      >
-                        <Undo/>
-                      </IconButton>
-                    </div>
-                  </div>
-
-                  <div className={classes.transition} aria-hidden={fileName === file} style={fileName === file ? {width: 0} : null}>
-                    <span>{file}</span>
-                    <IconButton data-value={file}
-                                onClick={(e) => handleConfirmation(e)}
-                                size={size}
-                                kind="danger"
-                                label="Delete file"
-                                className={classes.deleteButton}
-                    >
-                      <TrashCan />
-                    </IconButton>
-                  </div>
-
-                </li>
-              </Tile>
-          ))}
-        </ul>
+              <ul>
+                {fileList.map((file, index) => (
+                    <DeleteFileListItem key={index}
+                                        file={file}
+                                        fileName={fileName}
+                                        index={index}
+                                        size={size}
+                                        handleDelete={handleDelete}
+                                        handleConfirmation={handleConfirmation}
+                                        handleCancel={handleCancel}
+                    />
+                ))}
+              </ul>
+            </TexTile>
+        }
 
       </>
   );
