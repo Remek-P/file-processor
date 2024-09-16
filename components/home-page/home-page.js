@@ -51,8 +51,7 @@ export default function HomePage() {
 
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
 
-    const handleFileWorker = async (workerData) => {
-      const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
+    const handleFileWorker = async (worker, workerData) => {
 
       worker.postMessage({ file: workerData });
 
@@ -70,11 +69,16 @@ export default function HomePage() {
     if (["xls", "xlsx", "csv"].includes(fileExtension)) {
       const data = await targetFile.arrayBuffer();
 
-      await handleFileWorker(data);
+      const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
+
+      await handleFileWorker(worker, data);
 
     } else if (["zip"].includes(fileExtension)) {
 // TODO: need a lib to handle .rar files
-      await handleFileWorker(targetFile);
+
+      const worker = new Worker(new URL("@/public/compressedFileWorker", import.meta.url));
+
+      await handleFileWorker(worker, targetFile);
 
     } else {
       addWarnings("Unsupported file format");

@@ -10,9 +10,10 @@ function UploadFileOption({ setIsFileDelivered, handleFile }) {
     ".xls",
     ".csv",
     ".numbers",
-    ".rar",
     ".zip"
   ];
+
+  const displayFormats = fileTypes.slice(1).map((fileType) => " "+fileType)
 
   const buttonLabel = (
       <>
@@ -27,10 +28,14 @@ function UploadFileOption({ setIsFileDelivered, handleFile }) {
   }
 
   return (
-      <Tile className={classes.tile}>
+      <Tile className={`${classes.tile}`}>
         <FileUploader filenameStatus="complete"
-                      labelTitle="Please choose a file to upload"
-                      labelDescription="Only selected files types will be accepted"
+                      labelTitle="Upload"
+                      labelDescription={<>
+          Accepted file formats: <br />
+            {displayFormats}
+        </>
+        }
                       buttonLabel={buttonLabel}
                       onChange={(e) => handleClick(e)}
                       accept={fileTypes}

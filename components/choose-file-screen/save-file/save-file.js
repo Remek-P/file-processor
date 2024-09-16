@@ -14,7 +14,7 @@ function SaveFile({ setIsUpdate}) {
 
   const [assignedFileName, setAssignedFileName] = useState("");
 
-  const labelText = "Save File";
+  const labelText = "Save the file";
 
   useEffect(() => {
     if (fileName !== null && fileName !== "") setAssignedFileName(fileName);
@@ -35,10 +35,9 @@ function SaveFile({ setIsUpdate}) {
 
 
   return (
+      <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
 
-      <Tile className={classes.tile}>
-
-        <h6 className={classes.optionContainerHeader}>Save file</h6>
+        <h6>Save file</h6>
         <TextInput id="saveFile"
                    labelText={labelText}
                    value={assignedFileName}
@@ -46,12 +45,12 @@ function SaveFile({ setIsUpdate}) {
                    placeholder="Enter file name to save"
                    hideLabel={true}
                    size="sm"
-                   className={classes.saveFile}
+                   className={classes.optionContainerSelect}
         />
 
         <Button size="md" onClick={handleSave}>
           <Save />
-          <span>{labelText}</span>
+          <span>Save</span>
         </Button>
       </Tile>
   );

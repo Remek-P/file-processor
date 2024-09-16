@@ -11,9 +11,11 @@ function FetchOption({ setIsFileDelivered, fetchDataFromDB }) {
   }
 
   return (
-      <Tile className={classes.tile}>
-        <h6>Download the file from database</h6>
-        <p>Downloaded preconfigured file</p>
+      <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
+        <div className={classes.optionContainerDescription}>
+          <h6>Download from database</h6>
+          <p className={classes.optionContainerP}>Downloaded preconfigured file</p>
+        </div>
         <Button size="md" onClick={handleClick}>
           <CloudDownload />
           <span>Download</span>

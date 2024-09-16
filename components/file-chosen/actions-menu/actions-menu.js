@@ -11,6 +11,7 @@ import {
 import classes from "../file-chosen.module.scss";
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
 import ResetFormating from "@/components/file-chosen/actions-menu/menu-items/reset-formating";
+import Link from "next/link";
 
 function ActionsMenu({
                        headers,
@@ -131,6 +132,7 @@ function ActionsMenu({
                             isDelete={true}
                             className={classes.menuItem}
           />
+          <Link href="/delete-file">Delete saved files</Link>
         </OverflowMenu>
       </div>
   );

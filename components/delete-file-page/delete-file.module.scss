@@ -1,0 +1,42 @@
+@import "../../styles/variables/variables";
+
+.tile {
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: $border-radius-main;
+}
+
+.delete {
+
+  &ItemContainer {
+    display: flex;
+    transition: width 1s ease-in-out;
+  }
+
+  &IconContainer {
+    display: flex;
+    gap: 20px;
+  }
+
+  &FileName {
+    color: red;
+  }
+
+  &Button {
+    border-radius: $border-radius-main;
+  }
+
+  &Empty {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.transition {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}

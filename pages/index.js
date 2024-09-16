@@ -1,7 +1,5 @@
 import Head from "next/head";
 
-import { FileDataProvider } from "@/context/global-context";
-
 import HomePage from "@/components/home-page/home-page";
 
 export default function Home() {
@@ -14,9 +12,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.jpg"/>
         </Head>
 
-        <FileDataProvider>
-          <HomePage />
-        </FileDataProvider>
+        <HomePage />
       </>
   );
 }

@@ -38,15 +38,18 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
   }
 
   return (
-      <Tile className={classes.tile}>
+      <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
+
         <h6>Select a saved file:</h6>
         <Select id="selectSavedFile"
-                labelText="Select a saved file:"
+                labelText="Select the saved file:"
                 hideLabel={true}
                 value={selectedOption}
                 onChange={handleSelect}
-                size="sm">
-          <SelectItem value=""  text="Please choose file to load" />
+                size="sm"
+                className={classes.optionContainerSelect}
+        >
+          <SelectItem value=""  text="Choose file to load" />
           {savedFilesNames.map((fileName, index) => (
               <SelectItem key={index} value={fileName} text={fileName} />
         ))}
@@ -54,7 +57,7 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
 
         <Button onClick={handleClick} size="md">
           <Run/>
-          <span>Load saved file</span>
+          <span>Load</span>
         </Button>
 
       </Tile>
