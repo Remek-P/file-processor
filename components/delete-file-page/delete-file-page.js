@@ -9,6 +9,7 @@ import { deleteData, getFileNames} from "@/utils/create-indexedDB";
 import TexTile from "@/components/tile-type/text-tile/texTile";
 import DeleteFileListItem from "@/components/delete-file-page/delete-file-list/delete-file-list-item";
 
+import classes from "./delete-file.module.scss";
 
 function DeleteFilePage() {
 
@@ -48,7 +49,7 @@ function DeleteFilePage() {
   }
 
   return (
-      <>
+      <section className={classes.delete}>
 
         { !isFiles && <NoFiles/> }
 
@@ -73,7 +74,7 @@ function DeleteFilePage() {
             </TexTile>
         }
 
-      </>
+      </section>
   );
 }
 
