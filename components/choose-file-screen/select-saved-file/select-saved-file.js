@@ -12,9 +12,13 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
 
   const [selectedOption, setSelectedOption] = useState('');
   const [savedFilesNames, setSavedFilesNames] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(true)
 
   const handleSelect = (event) => {
-    setSelectedOption(event.target.value);
+    const value = event.target.value;
+    if (value !== "")setIsDisabled(false);
+    else setIsDisabled(true);
+    setSelectedOption(value);
   };
 
   const { addWarnings } = useContext(FileDataGlobalContext);
@@ -55,7 +59,7 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
         ))}
         </Select>
 
-        <Button onClick={handleClick} size="md">
+        <Button onClick={handleClick} size="md" disabled={isDisabled}>
           <Run/>
           <span>Load</span>
         </Button>
