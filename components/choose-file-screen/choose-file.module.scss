@@ -59,6 +59,10 @@
     align-items: center;
     gap: 10px;
     border-radius: $border-radius-main;
+
+    @media (max-width: $breakpoint700) {
+      align-self: flex-end;
+    }
   }
 
   @media (max-width: $breakpoint700) {

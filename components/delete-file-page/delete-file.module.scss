@@ -20,7 +20,12 @@
   }
 
   &List {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     padding: 1rem 0 2rem;
+    overflow: auto;
+    height: 500px;
   }
 
   &IconContainer {
