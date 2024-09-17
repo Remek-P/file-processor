@@ -5,6 +5,7 @@ export const sheetToJsonData = (obj) => {
     header: 1,
     raw: false,
     rawNumbers: false,
+    blankrows: false,
   })
 }
 
