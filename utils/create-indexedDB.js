@@ -25,6 +25,11 @@ export const deleteData = async (key) => {
   return await db.delete(STORE_NAME, key);
 };
 
+export const deleteDataAll = async () => {
+  const db = await initDB();
+  return await db.clear(STORE_NAME);
+};
+
 export const getAllData = async () => {
   const db = await initDB();
   return await db.getAll(STORE_NAME);
