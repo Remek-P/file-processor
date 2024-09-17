@@ -49,6 +49,7 @@ function DeleteFilePage() {
   const handleDeleteAll = async () => {
     await deleteDataAll();
     setRefresh(prevState => !prevState);
+    setFileName(null);
   };
 
   const handleConfirmation = (e) => {
