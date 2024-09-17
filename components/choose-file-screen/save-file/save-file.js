@@ -13,12 +13,22 @@ function SaveFile({ setIsUpdate}) {
   const { file, fileName, addWarnings, setLoading } = useContext(FileDataGlobalContext);
 
   const [assignedFileName, setAssignedFileName] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false)
 
   const labelText = "Save the file";
 
   useEffect(() => {
     if (fileName !== null && fileName !== "") setAssignedFileName(fileName);
   }, [fileName]);
+
+  useEffect(() => {
+    if (assignedFileName.trim() === "") setIsDisabled(true);
+    else setIsDisabled(false);
+  }, [assignedFileName]);
+
+  const handleChange = (e) => {
+    setAssignedFileName(e.target.value);
+  }
 
   const handleSave = async () => {
     setLoading(true);
@@ -30,9 +40,9 @@ function SaveFile({ setIsUpdate}) {
       setLoading(false);
       setAssignedFileName("");
       setIsUpdate(prevState => !prevState);
+      setIsDisabled(true);
     }
   };
-
 
   return (
       <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
@@ -41,14 +51,14 @@ function SaveFile({ setIsUpdate}) {
         <TextInput id="saveFile"
                    labelText={labelText}
                    value={assignedFileName}
-                   onChange={(e) => setAssignedFileName(e.target.value)}
+                   onChange={handleChange}
                    placeholder="Enter file name to save"
                    hideLabel={true}
                    size="sm"
                    className={classes.optionContainerSelect}
         />
 
-        <Button size="md" onClick={handleSave}>
+        <Button size="md" onClick={handleSave} disabled={isDisabled}>
           <Save />
           <span>Save</span>
         </Button>
