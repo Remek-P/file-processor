@@ -10,6 +10,8 @@ import TexTile from "@/components/tile-type/text-tile/texTile";
 import DeleteFileListItem from "@/components/delete-file-page/delete-file-list/delete-file-list-item";
 
 import classes from "./delete-file.module.scss";
+import {Button} from "@carbon/react";
+import Link from "next/link";
 
 function DeleteFilePage() {
 
@@ -58,7 +60,7 @@ function DeleteFilePage() {
             <TexTile type="children">
               <h3>Choose files to delete</h3>
 
-              <ul>
+              <ul className={classes.deleteList}>
                 {fileList.map((file, index) => (
                     <DeleteFileListItem key={index}
                                         file={file}
@@ -71,6 +73,10 @@ function DeleteFilePage() {
                     />
                 ))}
               </ul>
+
+              <Link href="/">
+                <Button className={classes.deleteButton} size="md">Home</Button>
+              </Link>
             </TexTile>
         }
 

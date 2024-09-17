@@ -1,6 +1,8 @@
-import {OverflowMenu, OverflowMenuItem, MenuItemDivider } from "@carbon/react";
 
 import {useContext} from "react";
+
+import { useRouter } from "next/router";
+
 import {
   ExcludedDataGlobalContext,
   SearchSuggestionsOrderGlobalContext,
@@ -8,10 +10,12 @@ import {
   FileDataGlobalContext
 } from "@/context/global-context";
 
-import classes from "../file-chosen.module.scss";
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
 import ResetFormating from "@/components/file-chosen/actions-menu/menu-items/reset-formating";
-import Link from "next/link";
+
+import {OverflowMenu, OverflowMenuItem, MenuItemDivider } from "@carbon/react";
+
+import classes from "../file-chosen.module.scss";
 
 function ActionsMenu({
                        headers,
@@ -28,6 +32,8 @@ function ActionsMenu({
   const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
   const [, setExcludedArray] = useContext(ExcludedDataGlobalContext);
   const [toggleIDView, setToggleIDView] = useContext(ToggleIDViewGlobalContext);
+
+  const router = useRouter();
 
   const showHideDB_ID = toggleIDView ? "Hide" : "Show";
 
@@ -55,6 +61,10 @@ function ActionsMenu({
 
   const handleSuggestionsOrder = () => {
     setSearchSuggestionsOrder(prevState => !prevState);
+  }
+
+  const handleLink = () => {
+    router.push(`/delete-file`);
   }
 
   // TODO: Reset all data changes
@@ -132,7 +142,12 @@ function ActionsMenu({
                             isDelete={true}
                             className={classes.menuItem}
           />
-          <Link href="/delete-file">Delete saved files</Link>
+          <OverflowMenuItem itemText="Delete stored files"
+                            onClick={handleLink}
+                            isDelete={true}
+                            className={classes.menuItem}
+                            hasDivider
+          />
         </OverflowMenu>
       </div>
   );
