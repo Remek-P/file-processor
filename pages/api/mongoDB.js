@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import { COLLECTION } from "@/constants/constants"
 
 export default async function handler(req, res) {
 
@@ -20,9 +21,7 @@ export default async function handler(req, res) {
     try {
       const db = client.db(`data-to-JS`);
       data = await db
-          .collection("data-to-JS")
-          // .collection("testNoID")
-          // .collection("formated")
+          .collection(COLLECTION)
           .find(/*{}, {projection:{ _id: 0 }}*/)
           .toArray();
     } catch (error) {

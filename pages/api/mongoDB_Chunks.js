@@ -1,4 +1,5 @@
 import {MongoClient} from "mongodb";
+import { COLLECTION } from "@/constants/constants"
 
 export default async function handler(req, res) {
 
@@ -21,7 +22,7 @@ export default async function handler(req, res) {
 
     try {
       const db = client.db(`data-to-JS`);
-      const collection = db.collection("data-to-JS");
+      const collection = db.collection(COLLECTION);
 
           data = await collection
           .find({})

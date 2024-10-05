@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 
 import { compareValues } from "@/utils/sortUtils";
 
@@ -14,9 +14,8 @@ function ShortList({
                      setIsLoading,
                      pickSearchedOutput,
                      handleSort,
+                     indexToSort,
                    }) {
-
-  const indexToSort = useRef(IDIndex);
 
   const sortedSuggestions = useMemo(() => {
     if (searchSuggestionsOrder === undefined) {

@@ -71,6 +71,7 @@ function DisplayMultipleSuggestions({
                            labelDataArray={labelDataArray}
                            searchSuggestionsOrder={searchSuggestionsOrder}
                            setIsLoading={setIsLoading}
+                           indexToSort={indexToSort}
                            pickSearchedOutput={pickSearchedOutput}
                            handleSort={handleSort}
               />

@@ -30,7 +30,6 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
         setSavedFilesNames(res);
       } catch (error) {
         addWarnings("Error fetching file names");
-      } finally {
       }
     };
 
@@ -60,10 +59,9 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
         </Select>
 
         <Button onClick={handleClick} size="md" disabled={isDisabled}>
-          <Run/>
+          <Run />
           <span>Load</span>
         </Button>
-
       </Tile>
   );
 }
