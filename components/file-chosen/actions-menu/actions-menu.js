@@ -13,9 +13,10 @@ import {
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
 import ResetFormating from "@/components/file-chosen/actions-menu/menu-items/reset-formating";
 
-import {OverflowMenu, OverflowMenuItem, MenuItemDivider } from "@carbon/react";
+import { OverflowMenu, OverflowMenuItem, MenuItemDivider } from "@carbon/react";
 
 import classes from "../file-chosen.module.scss";
+import {HEADER_LABEL} from "@/constants/constants";
 
 function ActionsMenu({
                        headers,
@@ -45,7 +46,9 @@ function ActionsMenu({
   }
 
   const handleHideAllArrays = () => {
-    setExcludedArray([...(new Set(headers))]);
+    const uniqueHeaders = [...(new Set(headers))]
+    const headersToHide = toggleIDView ? uniqueHeaders : uniqueHeaders.filter(header => header !== HEADER_LABEL);
+    setExcludedArray([...(new Set(headersToHide))]);
   }
 
   const handleIDView = () => {

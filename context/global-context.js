@@ -94,7 +94,7 @@ export const ExcludedDataProvider = ({ children }) => (
 
 export const ToggleIDViewGlobalContext = createContext(null);
 export const ToggleIDViewProvider = ({ children }) => (
-    <ToggleIDViewGlobalContext.Provider value={useState(true)}>
+    <ToggleIDViewGlobalContext.Provider value={useState(false)}>
       {children}
     </ToggleIDViewGlobalContext.Provider>
 )
