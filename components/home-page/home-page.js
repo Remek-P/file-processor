@@ -1,12 +1,12 @@
-import {useContext, useState} from "react";
+import { useContext, useState } from "react";
 
-import {FileDataGlobalContext, ToggleIDViewProvider} from "@/context/global-context";
+import { FileDataGlobalContext, ToggleIDViewProvider } from "@/context/global-context";
 
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
 
-import {addData, getData } from "@/utils/create-indexedDB";
-import {sheetToJsonData} from "@/utils/xlsxUtils";
+import { addData, getData } from "@/utils/create-indexedDB";
+import { sheetToJsonData } from "@/utils/xlsxUtils";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
 
@@ -15,6 +15,7 @@ import XLSX from "xlsx";
 import { Loading } from '@carbon/react';
 
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
+import dayjs from "dayjs";
 
 export default function HomePage() {
 
@@ -88,9 +89,8 @@ export default function HomePage() {
     isDataFetched(false)
   };
 
-  const fetchDataFromDB = async () => {
+  const fetchDataFromDB = async (addToIndexedDB = false) => {
     setLoading(true);
-
 
     const partialDataArray = [];
 
@@ -127,9 +127,13 @@ export default function HomePage() {
 
       setFile(jsonData);
       // for refetching
-      const checkFileName = fileName ? fileName : "DB_file"
+      const checkFileName = fileName ? fileName : `DB_file_${timeStamp()}`
       setFileName(checkFileName)
       isDataFetched(true);
+
+      if (addToIndexedDB) {
+        await addData(checkFileName, jsonData);
+      }
 
     } catch (error) {
       addWarnings([...warnings, "Incorrect file structure"])
@@ -159,8 +163,11 @@ export default function HomePage() {
   }
 
   const refreshData = async () => {
-    await fetchDataFromDB();
-    await addData(fileName, file);
+    await fetchDataFromDB(true);
+  }
+
+  const timeStamp = () => {
+    return `${dayjs().format('YYYY-MM-DD HH:mm')}`;
   }
 
   return (

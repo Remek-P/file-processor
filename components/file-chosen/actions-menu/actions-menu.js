@@ -39,20 +39,25 @@ function ActionsMenu({
 
   const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
 
-  const handleIDView = () => {
-    setToggleIDView(prevState => !prevState);
-  }
-
   const handleDeleteAll = () => {
     setNumberOfOutputs([]);
     setExcludedArray([]);
   }
 
-  const handleShowAllHiddenArrays = () => {
-    setExcludedArray([]);
-  }
   const handleHideAllArrays = () => {
     setExcludedArray([...(new Set(headers))]);
+  }
+
+  const handleIDView = () => {
+    setToggleIDView(prevState => !prevState);
+  }
+
+  const handleLink = () => {
+    router.push(`/delete-file`);
+  }
+
+  const handleShowAllHiddenArrays = () => {
+    setExcludedArray([]);
   }
 
   const handleSuggestionsDefaultOrder = () => {
@@ -61,10 +66,6 @@ function ActionsMenu({
 
   const handleSuggestionsOrder = () => {
     setSearchSuggestionsOrder(prevState => !prevState);
-  }
-
-  const handleLink = () => {
-    router.push(`/delete-file`);
   }
 
   // TODO: Reset all data changes
