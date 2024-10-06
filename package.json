@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@carbon/charts-react": "^1.19.2",
-    "@carbon/icons-react": "^11.47.0",
-    "@carbon/react": "^1.58.0",
+    "@carbon/react": "^1.67.1",
     "d3": "^7.9.0",
     "d3-cloud": "^1.2.7",
     "d3-sankey": "^0.12.3",
@@ -19,7 +18,7 @@
     "idb": "^8.0.0",
     "jszip": "^3.10.1",
     "mongodb": "^6.8.0",
-    "next": "14.2.3",
+    "next": "^14.2.14",
     "react": "^18",
     "react-dom": "^18",
     "react-window": "^1.8.10",

@@ -54,40 +54,37 @@ function DisplayMultipleSuggestions({
   if (reducePerformanceStrain) return <TexTile text={"Please type at least 3 characters to display search results"} />
 
   return (
-      // The section style is necessary for ShortList component, to display sticky menu
-      <section style={!isLongList ? {overflow: "auto", height: height} : null}>
-
-        <Loading active={isLoading}
-                 description="Performing sorting"
-                 id="sortLoading"
-                 small={false}
-                 withOverlay={true}
-                 className={null}
-        />
-        {
-          !isLongList
-              ? <ShortList IDIndex={IDIndex}
-                           searchUsers={searchUsers}
-                           labelDataArray={labelDataArray}
-                           searchSuggestionsOrder={searchSuggestionsOrder}
-                           setIsLoading={setIsLoading}
-                           indexToSort={indexToSort}
-                           pickSearchedOutput={pickSearchedOutput}
-                           handleSort={handleSort}
-              />
-              : <VirtualizedList IDIndex={IDIndex}
-                                 labelDataArray={labelDataArray}
-                                 pickSearchedOutput={pickSearchedOutput}
-                                 searchUsers={searchUsers}
-                                 searchSuggestionsOrder={searchSuggestionsOrder}
-                                 handleSort={handleSort}
-                                 setIsLoading={setIsLoading}
-                                 indexToSort={indexToSort}
-              />
-        }
-
-
-      </section>
+    // The section style is necessary for ShortList component, to display sticky menu
+    (<section style={!isLongList ? {overflow: "auto", height: height} : null}>
+      <Loading active={isLoading}
+               description="Performing sorting"
+               id="sortLoading"
+               small={false}
+               withOverlay={true}
+               className={null}
+      />
+      {
+        !isLongList
+            ? <ShortList IDIndex={IDIndex}
+                         searchUsers={searchUsers}
+                         labelDataArray={labelDataArray}
+                         searchSuggestionsOrder={searchSuggestionsOrder}
+                         setIsLoading={setIsLoading}
+                         indexToSort={indexToSort}
+                         pickSearchedOutput={pickSearchedOutput}
+                         handleSort={handleSort}
+            />
+            : <VirtualizedList IDIndex={IDIndex}
+                               labelDataArray={labelDataArray}
+                               pickSearchedOutput={pickSearchedOutput}
+                               searchUsers={searchUsers}
+                               searchSuggestionsOrder={searchSuggestionsOrder}
+                               handleSort={handleSort}
+                               setIsLoading={setIsLoading}
+                               indexToSort={indexToSort}
+            />
+      }
+    </section>)
   );
 }
 
