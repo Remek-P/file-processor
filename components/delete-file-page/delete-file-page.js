@@ -97,17 +97,22 @@ function DeleteFilePage() {
                   <Button className={classes.deleteButton} size="md">Home</Button>
                 </Link>
 
-                { !isVisible && <IconButton onClick={handleConfirmationAll}
-                             size={size}
-                             kind="danger"
-                             label="Delete all"
-                             className={classes.deleteButton}
-                >
-                  <TrashCan/>
-                </IconButton> }
+                {!isVisible
+                    && <IconButton onClick={handleConfirmationAll}
+                                   size={size}
+                                   kind="danger"
+                                   label="Delete all"
+                                   className={classes.deleteButton}
+                    >
+                      <TrashCan/>
+                    </IconButton>
+                }
 
                 { isVisible &&
-                    <ConfirmDeleteButtons handleDelete={handleDeleteAll} handleCancel={handleCancelAll} /> }
+                    <ConfirmDeleteButtons handleDelete={handleDeleteAll}
+                                          handleCancel={handleCancelAll}
+                    />
+                }
               </div>
             </TexTile>
         }

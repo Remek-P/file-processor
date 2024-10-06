@@ -19,55 +19,67 @@
   }
 }
 
-.optionContainer {
-  border-radius: $border-radius-main;
+.option {
 
-  &Spacing {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 152px;
-    width: 100%;
-  }
-
-  &Description {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  &Select {
-    flex: 0;
-    width: 100%;
+  &Container {
     border-radius: $border-radius-main;
 
+    &Spacing {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 152px;
+      width: 100%;
+    }
+
+    &Description {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    &Select {
+      flex: 0;
+      width: 100%;
+      border-radius: $border-radius-main;
+
+      @media (max-width: $breakpoint700) {
+        width: 200px;
+      }
+    }
+
+    &P {
+      margin-bottom: 14px;
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: #525252;
+    }
+
+    & button {
+      display: flex;
+      gap: 10px;
+      border-radius: $border-radius-main;
+
+      @media (max-width: $breakpoint700) {
+        align-self: flex-end;
+      }
+    }
+
     @media (max-width: $breakpoint700) {
-      width: 200px;
+      width: 90%;
+      max-width: 500px;
     }
   }
 
-  &P {
-    margin-bottom: 14px;
-    font-size: 0.875rem;
-    font-weight: 400;
-    color: #525252;
-  }
-
-  & button {
+  &ButtonContainer {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    border-radius: $border-radius-main;
+    gap: 5px;
 
     @media (max-width: $breakpoint700) {
+      gap: 25px;
       align-self: flex-end;
     }
-  }
-
-  @media (max-width: $breakpoint700) {
-    width: 90%;
-    max-width: 500px;
   }
 }
 

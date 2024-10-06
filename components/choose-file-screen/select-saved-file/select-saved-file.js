@@ -1,12 +1,13 @@
 import {useContext, useEffect, useState} from "react";
 
-import { Button, Select, SelectItem, Tile } from "@carbon/react";
-import { Run } from "@carbon/icons-react";
+import {Button, IconButton, Select, SelectItem, Tile} from "@carbon/react";
+import {Run, TrashCan} from "@carbon/icons-react";
 
 import {FileDataGlobalContext} from "@/context/global-context";
 import {getFileNames} from "@/utils/create-indexedDB";
 
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
+import Link from "next/link";
 
 function SelectSavedFile({isUpdate, loadSavedFile}) {
 
@@ -54,14 +55,26 @@ function SelectSavedFile({isUpdate, loadSavedFile}) {
         >
           <SelectItem value=""  text="Choose file to load" />
           {savedFilesNames.map((fileName, index) => (
-              <SelectItem key={index} value={fileName} text={fileName} />
-        ))}
+              <SelectItem key={index} value={fileName} text={fileName} />))}
         </Select>
 
-        <Button onClick={handleClick} size="md" disabled={isDisabled}>
-          <Run />
-          <span>Load</span>
-        </Button>
+        <div className={classes.optionButtonContainer}>
+          <Button onClick={handleClick} size="md" disabled={isDisabled}>
+            <Run/>
+            <span>Load</span>
+          </Button>
+
+          <Link href="/delete-file">
+            <IconButton onClick={null}
+                        size="md"
+                        kind="danger"
+                        label="Delete files"
+                // className={classes.deleteButton}
+            >
+              <TrashCan/>
+            </IconButton>
+          </Link>
+        </div>
       </Tile>
   );
 }
