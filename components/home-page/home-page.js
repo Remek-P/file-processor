@@ -211,7 +211,7 @@ export default function HomePage() {
 
           {
               warnings.length === 0 && finalDataAvailable &&
-              <ErrorBoundary fallback={ <FileChosenFallback syncAction={handleFileChange} asyncAction={handleErrorDelete} /> }>
+              <ErrorBoundary fallback={ <FileChosenFallback syncAction={handleFileChange} asyncAction={handleErrorDelete} fileName={fileName} /> }>
                 <FileChosen file={file}
                             fileName={fileName}
                             handleFileChange={handleFileChange}

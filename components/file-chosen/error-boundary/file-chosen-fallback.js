@@ -4,7 +4,7 @@ import { Button } from "@carbon/react";
 import classes from "./file-chosen-fallback.module.scss";
 import Link from "next/link";
 
-function FileChosenFallback({ syncAction = null, asyncAction = null }) {
+function FileChosenFallback({ fileName, syncAction = null, asyncAction = null }) {
 
   const handleSyncClick = () => {
     if (syncAction) {
@@ -20,7 +20,7 @@ function FileChosenFallback({ syncAction = null, asyncAction = null }) {
 
   return (
       <TexTile type="children">
-        <h2>The file is unsupported or has been corrupted.</h2>
+        <h2>The {fileName} file is unsupported or has been corrupted.</h2>
         <div className={classes.buttonContainer}>
           <Button className={classes.button} kind="danger" onClick={handleAsyncClick}>Delete file</Button>
           <Link href="/">
