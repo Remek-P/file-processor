@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import { useState } from "react";
 
 import FetchOption from "@/components/choose-file-screen/fetch-option/fetch-option";
 import UploadFileOption from "@/components/choose-file-screen/upload-file-option/upload-file-option";

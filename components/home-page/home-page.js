@@ -5,7 +5,7 @@ import { FileDataGlobalContext, ToggleIDViewProvider } from "@/context/global-co
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
 
-import { addData, getData } from "@/utils/create-indexedDB";
+import { addData, deleteData, getData } from "@/utils/create-indexedDB";
 import { sheetToJsonData } from "@/utils/xlsxUtils";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
@@ -16,6 +16,8 @@ import { Loading } from '@carbon/react';
 
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
 import dayjs from "dayjs";
+import ErrorBoundary from "@/components/error-boundary/error-boundary";
+import FileChosenFallback from "@/components/file-chosen/error-boundary/file-chosen-fallback";
 
 export default function HomePage() {
 
@@ -157,9 +159,19 @@ export default function HomePage() {
     setLoading(true);
     setFile(null);
     setFileName(null);
-    setLoading(false);
     isDataFetched(undefined)
     setFinalDataAvailable(false);
+    setLoading(false);
+  }
+
+  const handleErrorDelete = async () => {
+    setLoading(true);
+    await deleteData(fileName);
+    setFile(null);
+    setFileName(null);
+    isDataFetched(undefined)
+    setFinalDataAvailable(false);
+    setLoading(false);
   }
 
   const refreshData = async () => {
@@ -199,11 +211,14 @@ export default function HomePage() {
 
           {
               warnings.length === 0 && finalDataAvailable &&
-              <FileChosen file={file}
-                          fileName={fileName}
-                          handleFileChange={handleFileChange}
-                          refreshData={refreshData}
-              />
+              <ErrorBoundary fallback={ <FileChosenFallback syncAction={handleFileChange} asyncAction={handleErrorDelete} /> }>
+                <FileChosen file={file}
+                            fileName={fileName}
+                            handleFileChange={handleFileChange}
+                            refreshData={refreshData}
+                />
+              </ErrorBoundary>
+
           }
 
         </ToggleIDViewProvider>

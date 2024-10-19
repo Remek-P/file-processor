@@ -1,0 +1,19 @@
+@import "../../../styles/variables/variables";
+@import "../../../styles/variables/breakpoints";
+
+.buttonContainer {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+
+  @media (max-width: $breakpoint380) {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+  }
+}
+
+.button {
+  margin-top: 1.5rem;
+  border-radius: $border-radius-main;
+}
