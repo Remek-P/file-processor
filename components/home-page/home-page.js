@@ -27,11 +27,13 @@ export default function HomePage() {
     isLoading,
     warnings,
     addWarnings,
+    deleteWarning,
     isDataFetched,
     setFile,
     setFileName,
     setLoading,
   } = useContext(FileDataGlobalContext);
+  console.log("warnings", warnings)
 
   const [finalDataAvailable, setFinalDataAvailable] = useState(false);
   
@@ -209,7 +211,7 @@ export default function HomePage() {
 
           {
               showWarnings && warnings.map((warning, index) => {
-                return <TexTile key={index} text={warning}/>;
+                return <TexTile key={index} text={warning} handleClick={() => deleteWarning(index)} />;
               })
           }
 

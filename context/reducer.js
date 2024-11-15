@@ -11,17 +11,30 @@ export const CASE_NAME = {
 export function Reducer(state, action) {
   switch (action.type) {
     case CASE_NAME.SET_LOADING:
-      return { ...state, isLoading: action.payload };
+      return {
+        ...state,
+        isLoading: action.payload };
     case CASE_NAME.SET_FILE:
-      return { ...state, file: action.payload };
+      return {
+        ...state,
+        file: action.payload };
     case CASE_NAME.SET_FILE_NAME:
-      return { ...state, fileName: action.payload };
+      return {
+        ...state,
+        fileName: action.payload };
     case CASE_NAME.ADD_WARNING:
-      return { ...state, warnings: [...state.warnings, action.payload] };
-    // case CASE_NAME.DELETE_WARNING:
-    //   return { ...state, warnings: [...state.warnings.filter(warning => warning !== action.payload)] };
+      return {
+        ...state,
+        warnings: [...state.warnings, action.payload] };
+    case CASE_NAME.DELETE_WARNING:
+      return {
+        ...state,
+        warnings: state.warnings.filter((_, index) => index !== action.payload),
+      };
     case CASE_NAME.SET_FETCHED:
-      return { ...state, isFetched: action.payload };
+      return {
+        ...state,
+        isFetched: action.payload };
     default:
       return state;
   }

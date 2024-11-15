@@ -42,6 +42,13 @@ export const FileDataProvider = ({ children }) => {
     })
   }
 
+  const deleteWarning = (warning) => {
+    dispatch({
+      type: CASE_NAME.DELETE_WARNING,
+      payload: warning,
+    })
+  }
+
   const isDataFetched = (isFetched) => {
     dispatch({
       type: CASE_NAME.SET_FETCHED,
@@ -58,6 +65,7 @@ export const FileDataProvider = ({ children }) => {
             isLoading: state.isLoading,
             warnings: state.warnings,
             addWarnings,
+            deleteWarning,
             isDataFetched,
             setFile,
             setFileName,
