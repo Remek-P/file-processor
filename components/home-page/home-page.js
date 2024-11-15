@@ -182,6 +182,8 @@ export default function HomePage() {
     return `${dayjs().format('YYYY-MM-DD HH:mm')}`;
   }
 
+  //TODO: error boundary to ChooseFile;
+
   return (
       <main>
         <ToggleIDViewProvider>
@@ -195,12 +197,14 @@ export default function HomePage() {
           />
 
           {
-              !finalDataAvailable
-              && <ChooseFile file={file}
-                             fetchDataFromDB={fetchDataFromDB}
-                             handleFile={handleFile}
-                             loadSavedFile={loadSavedFile}
-              />
+              !finalDataAvailable &&
+              <ErrorBoundary fallback={ <h1>Access denied</h1> }>
+                <ChooseFile file={file}
+                            fetchDataFromDB={fetchDataFromDB}
+                            handleFile={handleFile}
+                            loadSavedFile={loadSavedFile}
+                />
+              </ErrorBoundary>
           }
 
           {
@@ -215,13 +219,11 @@ export default function HomePage() {
                                                             asyncAction={handleErrorDelete}
                                                             fileName={fileName} />
               }>
-
                 <FileChosen file={file}
                             fileName={fileName}
                             handleFileChange={handleFileChange}
                             refreshData={refreshData}
                 />
-
               </ErrorBoundary>
 
           }
