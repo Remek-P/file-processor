@@ -1,5 +1,5 @@
 import { createContext, useReducer, useState } from "react";
-import {CASE_NAME, Reducer } from "./reducer";
+import { CASE_NAME, Reducer } from "./reducer";
 
 const excelFileInitialState = {
   file: null,

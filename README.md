@@ -1,21 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# File Processor
 
-## Getting Started
+This app serves the purpose of displaying sheets data in a mre readable manner, by importing properly structured .xlsx, .numbers, .zip files or data from DB.
 
-This app use SheetsJS v0.20.2, so use npm install the dependencies first
+## Tech used
 
-Then, run the development server:
+1. Next.js - 14.2.14;
+2. Carbon Design System - 1.19.2;
+3. Carbon Design System Charts - 1.67.1
+4. Days.js - 1.11.13;
+5. idb - 8.0.0;
+6. JSZip - 3.10.1;
+7. MongoDB - 6.8.0;
+8. SASS - 1.71.0;
+9. xlsx/SheetsJS - 0.20.0.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+All rights are reserved.
 
 
