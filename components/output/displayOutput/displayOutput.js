@@ -4,7 +4,6 @@ import classes from "@/components/file-chosen/file-chosen.module.scss";
 
 function DisplayOutput({
                          IDIndex,
-                         excelFile,
                          hideDB_ID_Tile,
                          numberOfOutputs,
                          setNumberOfOutputs,
@@ -47,7 +46,6 @@ function DisplayOutput({
                   <div key={index} className={classes.outputContainer}>
                     <Output index={index}
                             IDIndex={IDIndex}
-                            excelFile={excelFile}
                             hideDB_ID_Tile={hideDB_ID_Tile}
                             handleDeleteChecked={handleDeleteChecked}
                     />

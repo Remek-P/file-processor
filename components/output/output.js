@@ -5,20 +5,21 @@ import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
 import Sections from "@/components/output/section/sections";
 
 import classes from "@/components/output/output.module.scss";
-import {SearchSuggestionsOrderGlobalContext} from "@/context/global-context";
+import {FileDataGlobalContext, SearchSuggestionsOrderGlobalContext} from "@/context/global-context";
 
 function Output({
-                  excelFile,
                   index,
                   IDIndex,
                   hideDB_ID_Tile,
                   handleDeleteChecked,
                 }) {
 
+  const { file} = useContext(FileDataGlobalContext);
+
   const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
 
   const [inputValue, setInputValue] = useState("");
-  const userDataArray = useMemo(() =>  excelFile.slice(2), [excelFile]);
+  const userDataArray = useMemo(() =>  file.slice(2), [file]);
 
   const searchRef = useRef(null);
 
@@ -64,7 +65,7 @@ function Output({
         </div>
 
         <Sections IDIndex={IDIndex}
-                  excelFile={excelFile}
+                  file={file}
                   userDataArray={userDataArray}
                   inputValue={inputValue}
                   setInputValue={setInputValue}

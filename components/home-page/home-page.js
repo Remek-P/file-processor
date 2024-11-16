@@ -4,20 +4,19 @@ import { FileDataGlobalContext, ToggleIDViewProvider } from "@/context/global-co
 
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
+import FileChosenFallback from "@/components/file-chosen/error-boundary/file-chosen-fallback";
+import TexTile from "@/components/tile-type/text-tile/texTile";
+import ErrorBoundary from "@/components/error-boundary/error-boundary";
 
 import { addData, deleteData, getData } from "@/utils/create-indexedDB";
 import { sheetToJsonData } from "@/utils/xlsxUtils";
-
-import TexTile from "@/components/tile-type/text-tile/texTile";
-
-import XLSX from "xlsx";
-
 import { Loading } from '@carbon/react';
 
-import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
+import XLSX from "xlsx";
 import dayjs from "dayjs";
-import ErrorBoundary from "@/components/error-boundary/error-boundary";
-import FileChosenFallback from "@/components/file-chosen/error-boundary/file-chosen-fallback";
+
+import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
+
 
 export default function HomePage() {
 
@@ -33,7 +32,6 @@ export default function HomePage() {
     setFileName,
     setLoading,
   } = useContext(FileDataGlobalContext);
-  console.log("warnings", warnings)
 
   const [finalDataAvailable, setFinalDataAvailable] = useState(false);
   
@@ -56,15 +54,19 @@ export default function HomePage() {
 
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
 
+    // Send task to chosen worker
     const handleFileWorker = async (worker, workerData) => {
 
       worker.postMessage({ file: workerData });
 
       worker.onmessage = (event) => {
         if (event.data.status === "success") {
+
           setFile(event.data.data);
         } else if (event.data.status === "error") {
           addWarnings(event.data.message);
+        } else {
+          throw new Error("Something went wrong");
         }
         worker.terminate();
         setLoading(false);

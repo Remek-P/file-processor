@@ -8,7 +8,7 @@ import classes from "../output.module.scss";
 
 function Sections({
                     IDIndex,
-                    excelFile,
+                    file,
                     inputValue,
                     setInputValue,
                     userDataArray,
@@ -18,9 +18,10 @@ function Sections({
                     handleClick,
                   }) {
 
-  const labelDataArray = excelFile[1];
+  const headerDataArray = file[0];
+  const labelDataArray = file[1];
 
-  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, excelFile, IDIndex, searchSuggestionsOrder]);
+  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, file, IDIndex, searchSuggestionsOrder]);
   const colDataArray = searchRecords[0];
 
   const displayData = () => {
@@ -34,10 +35,10 @@ function Sections({
     else if (searchRecords.length === 1)
       return (
               <div className={classes.grid}>
-                <DisplaySingleOutput excelFile={excelFile}
-                                     colDataArray={colDataArray}
+                <DisplaySingleOutput colDataArray={colDataArray}
                                      labelDataArray={labelDataArray}
                                      hideDB_ID_Tile={hideDB_ID_Tile}
+                                     headerDataArray={headerDataArray}
                 />
               </div>
           )

@@ -9,7 +9,7 @@ import {getFileNames} from "@/utils/create-indexedDB";
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import Link from "next/link";
 
-function SelectSavedFile({isUpdate, loadSavedFile}) {
+function SelectSavedFile({ isUpdate, loadSavedFile }) {
 
   const [selectedOption, setSelectedOption] = useState('');
   const [savedFilesNames, setSavedFilesNames] = useState([]);

@@ -5,15 +5,13 @@ import {useContext} from "react";
 import {ToggleIDViewGlobalContext} from "@/context/global-context";
 
 function DisplaySingleOutput({
-                               excelFile,
                                colDataArray,
                                labelDataArray,
                                hideDB_ID_Tile,
+                               headerDataArray,
                              }) {
 
   const [toggleIDView] = useContext(ToggleIDViewGlobalContext);
-
-  const headerDataArray = excelFile[0];
 
   const excelFileUniqueValues = [... new Set(headerDataArray)];
   

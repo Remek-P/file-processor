@@ -79,8 +79,7 @@ function FileChosen({
 
 
               <div className={classes.outputsContainer}>
-                <DisplayOutput excelFile={file}
-                               IDIndex={IDIndex}
+                <DisplayOutput IDIndex={IDIndex}
                                hideDB_ID_Tile={hideDB_ID_Tile}
                                numberOfOutputs={numberOfOutputs}
                                setNumberOfOutputs={setNumberOfOutputs}
