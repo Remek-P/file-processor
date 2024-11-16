@@ -6,6 +6,7 @@ import Sections from "@/components/output/section/sections";
 
 import classes from "@/components/output/output.module.scss";
 import {FileDataGlobalContext, SearchSuggestionsOrderGlobalContext} from "@/context/global-context";
+import {checkForNumber} from "@/utils/sortUtils";
 
 function Output({
                   index,
@@ -19,7 +20,18 @@ function Output({
   const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
 
   const [inputValue, setInputValue] = useState("");
-  const userDataArray = useMemo(() =>  file.slice(2), [file]);
+
+  const isContainingSubheaders = !file[1].some(datum => checkForNumber(datum));
+
+  const userDataArray = useMemo(() => {
+    if (isContainingSubheaders) {
+      return file.slice(2);
+    } else if (!isContainingSubheaders) {
+      return file.slice(1);
+    } else {
+      throw new Error("Unsupported number of headers");
+    }
+  }, [file]);
 
   const searchRef = useRef(null);
 
