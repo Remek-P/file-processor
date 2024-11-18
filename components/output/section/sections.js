@@ -21,7 +21,7 @@ function Sections({
   const headerDataArray = file[0];
   const labelDataArray = file[1];
 
-  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, file, IDIndex, searchSuggestionsOrder]);
+  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, userDataArray, IDIndex, searchSuggestionsOrder]);
   const colDataArray = searchRecords[0];
 
   const displayData = () => {
@@ -56,7 +56,6 @@ function Sections({
                 />
               </div>
           )
-
 
     else
       return (

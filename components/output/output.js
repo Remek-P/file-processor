@@ -6,7 +6,8 @@ import Sections from "@/components/output/section/sections";
 
 import classes from "@/components/output/output.module.scss";
 import {FileDataGlobalContext, SearchSuggestionsOrderGlobalContext} from "@/context/global-context";
-import {checkForNumber} from "@/utils/sortUtils";
+
+import {isContainingSubheaders, parseDataArray, parseHeaders} from "@/utils/parserUtils";
 
 function Output({
                   index,
@@ -21,17 +22,17 @@ function Output({
 
   const [inputValue, setInputValue] = useState("");
 
-  const isContainingSubheaders = !file[1].some(datum => checkForNumber(datum));
+  // TODO: Make sure to implement user override;
+
+  const headersArray = useMemo(() => {
+    return parseHeaders(file);
+  }, [file]);
 
   const userDataArray = useMemo(() => {
-    if (isContainingSubheaders) {
-      return file.slice(2);
-    } else if (!isContainingSubheaders) {
-      return file.slice(1);
-    } else {
-      throw new Error("Unsupported number of headers");
-    }
+    return parseDataArray(file);
   }, [file]);
+
+  // console.log("userDataArray", userDataArray)
 
   const searchRef = useRef(null);
 
@@ -72,7 +73,8 @@ function Output({
             />
           </div>
 
-          <DeleteOutput index={index} handleDeleteChecked={handleDeleteChecked}/>
+          <DeleteOutput index={index}
+                        handleDeleteChecked={handleDeleteChecked} />
 
         </div>
 
