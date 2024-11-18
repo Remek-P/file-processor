@@ -80,6 +80,7 @@ function Output({
 
         <Sections IDIndex={IDIndex}
                   file={file}
+                  headersArray={headersArray}
                   userDataArray={userDataArray}
                   inputValue={inputValue}
                   setInputValue={setInputValue}

@@ -8,7 +8,7 @@ import classes from "../output.module.scss";
 
 function Sections({
                     IDIndex,
-                    file,
+                    headersArray,
                     inputValue,
                     setInputValue,
                     userDataArray,
@@ -18,8 +18,8 @@ function Sections({
                     handleClick,
                   }) {
 
-  const headerDataArray = file[0];
-  const labelDataArray = file[1];
+  const headerDataArray = headersArray[0];
+  const labelDataArray = headersArray[1];
 
   const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, userDataArray, IDIndex, searchSuggestionsOrder]);
   const colDataArray = searchRecords[0];
