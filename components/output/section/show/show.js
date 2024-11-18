@@ -19,6 +19,7 @@ import {
 
 function Show({
                 value,
+                isSubheaders,
                 colDataArray,
                 labelDataArray,
                 headerDataArray,

@@ -154,25 +154,26 @@ function SectionLayout({
             <CloseLarge className={classes.iconFill}/>
           </ActionToggle>
 
-          {isNumber && numbersEqualToZero.current && <Toggle id={value}
-                                                                     size="sm"
-                                                                     labelA="Show all"
-                                                                     labelB="Hide 0s"
-                                                                     defaultToggled={false}
-                                                                     onToggle={handleShowAllMetrics}
-                                                                     labelText=""
-                                                                     readOnly={false}
-                                                                     aria-labelledby="show/hide all metrics"
-                                                                     disabled={false}
-                                                                     hideLabel={false}/>
+          {isNumber && numbersEqualToZero.current
+              && <Toggle id={value}
+                         size="sm"
+                         labelA="Show all"
+                         labelB="Hide 0s"
+                         defaultToggled={false}
+                         onToggle={handleShowAllMetrics}
+                         labelText=""
+                         readOnly={false}
+                         aria-labelledby="show/hide all metrics"
+                         disabled={false}
+                         hideLabel={false} />
           }
         </div>
 
         {
-            showBarChart && <SimpleBarChart data={chartData} options={barChartOptions}/>
+            showBarChart && <SimpleBarChart data={chartData} options={barChartOptions} />
         }
         {
-            showDonutChart && <DonutChart data={chartData} options={donutChartOptions}/>
+            showDonutChart && <DonutChart data={chartData} options={donutChartOptions} />
         }
       </Tile>
   );

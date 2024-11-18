@@ -8,6 +8,7 @@ import classes from "../output.module.scss";
 
 function Sections({
                     IDIndex,
+                    isSubheaders,
                     headersArray,
                     inputValue,
                     setInputValue,
@@ -18,8 +19,8 @@ function Sections({
                     handleClick,
                   }) {
 
-  const headerDataArray = headersArray[0];
-  const labelDataArray = headersArray[1];
+  const headerDataArray = isSubheaders ? headersArray[0] : headersArray;
+  const labelDataArray = isSubheaders ? headersArray[1] : headersArray;
 
   const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, userDataArray, IDIndex, searchSuggestionsOrder]);
   const colDataArray = searchRecords[0];
@@ -36,6 +37,7 @@ function Sections({
       return (
               <div className={classes.grid}>
                 <DisplaySingleOutput colDataArray={colDataArray}
+                                     isSubheaders={isSubheaders}
                                      labelDataArray={labelDataArray}
                                      hideDB_ID_Tile={hideDB_ID_Tile}
                                      headerDataArray={headerDataArray}
@@ -45,16 +47,16 @@ function Sections({
 
     else if (searchRecords.length > 1)
       return (
-              <div className={classes.grid}>
-                <DisplayMultipleSuggestions IDIndex={IDIndex}
-                                            inputValue={inputValue}
-                                            labelDataArray={labelDataArray}
-                                            setInputValue={setInputValue}
-                                            searchUsers={searchRecords}
-                                            searchSuggestionsOrder={searchSuggestionsOrder}
-                                            setSearchSuggestionsOrder={setSearchSuggestionsOrder}
-                />
-              </div>
+          <div className={classes.grid}>
+            <DisplayMultipleSuggestions IDIndex={IDIndex}
+                                        inputValue={inputValue}
+                                        labelDataArray={labelDataArray}
+                                        setInputValue={setInputValue}
+                                        searchUsers={searchRecords}
+                                        searchSuggestionsOrder={searchSuggestionsOrder}
+                                        setSearchSuggestionsOrder={setSearchSuggestionsOrder}
+            />
+          </div>
           )
 
     else

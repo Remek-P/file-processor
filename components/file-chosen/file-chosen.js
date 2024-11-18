@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   DecimalDataProvider,
@@ -15,6 +15,7 @@ import ExcludedData from "@/components/output/excluded-data/excluded-data";
 import {ID_LABEL} from "@/constants/constants";
 
 import classes from "./file-chosen.module.scss";
+import {isContainingSubheaders} from "@/utils/parserUtils";
 
 
 function FileChosen({
@@ -27,7 +28,10 @@ function FileChosen({
 
   // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
 
-  const labelArray = file[1];
+  const isSubheaders = useMemo(() =>
+      isContainingSubheaders(file), [file]);
+
+  const labelArray = isSubheaders === true ? file[1] : file[0];
 
   const indexOfID = labelArray.findIndex(element =>
       element?.toLowerCase() === "id" || element.toLowerCase() === ID_LABEL);
@@ -80,6 +84,7 @@ function FileChosen({
 
               <div className={classes.outputsContainer}>
                 <DisplayOutput IDIndex={IDIndex}
+                               isSubheaders={isSubheaders}
                                hideDB_ID_Tile={hideDB_ID_Tile}
                                numberOfOutputs={numberOfOutputs}
                                setNumberOfOutputs={setNumberOfOutputs}

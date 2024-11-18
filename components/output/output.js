@@ -12,6 +12,7 @@ import {isContainingSubheaders, parseDataArray, parseHeaders} from "@/utils/pars
 function Output({
                   index,
                   IDIndex,
+                  isSubheaders,
                   hideDB_ID_Tile,
                   handleDeleteChecked,
                 }) {
@@ -23,7 +24,6 @@ function Output({
   const [inputValue, setInputValue] = useState("");
 
   // TODO: Make sure to implement user override;
-
   const headersArray = useMemo(() => {
     return parseHeaders(file);
   }, [file]);
@@ -31,8 +31,6 @@ function Output({
   const userDataArray = useMemo(() => {
     return parseDataArray(file);
   }, [file]);
-
-  // console.log("userDataArray", userDataArray)
 
   const searchRef = useRef(null);
 
@@ -82,6 +80,7 @@ function Output({
                   file={file}
                   headersArray={headersArray}
                   userDataArray={userDataArray}
+                  isSubheaders={isSubheaders}
                   inputValue={inputValue}
                   setInputValue={setInputValue}
                   hideDB_ID_Tile={hideDB_ID_Tile}
