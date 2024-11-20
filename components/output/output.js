@@ -4,10 +4,11 @@ import Search from "@/components/search/search";
 import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
 import Sections from "@/components/output/section/sections";
 
-import classes from "@/components/output/output.module.scss";
 import {FileDataGlobalContext, SearchSuggestionsOrderGlobalContext} from "@/context/global-context";
+import { parseDataArray, parseHeaders } from "@/utils/parserUtils";
 
-import {isContainingSubheaders, parseDataArray, parseHeaders} from "@/utils/parserUtils";
+import classes from "@/components/output/output.module.scss";
+
 
 function Output({
                   index,

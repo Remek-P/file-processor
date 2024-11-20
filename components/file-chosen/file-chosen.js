@@ -12,10 +12,11 @@ import IdNotAvailable from "@/components/output/id-not-available/id-not-availabl
 
 import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
+import {isContainingSubheaders} from "@/utils/parserUtils";
+
 import {ID_LABEL} from "@/constants/constants";
 
 import classes from "./file-chosen.module.scss";
-import {isContainingSubheaders} from "@/utils/parserUtils";
 
 
 function FileChosen({
@@ -26,13 +27,12 @@ function FileChosen({
 
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
 
-  // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
-
   const isSubheaders = useMemo(() =>
       isContainingSubheaders(file), [file]);
 
   const labelArray = isSubheaders === true ? file[1] : file[0];
 
+  // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
   const indexOfID = labelArray.findIndex(element =>
       element?.toLowerCase() === "id" || element.toLowerCase() === ID_LABEL);
   const [IDIndex, setIDIndex] = useState(indexOfID);

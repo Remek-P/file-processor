@@ -11,7 +11,7 @@ import {ChartBar, ChartRing, CloseLarge, Percentage, SortAscending, SortDescendi
 import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
 
-function SectionLayout({
+function SectionLayoutWithoutSubheaders({
                          value,
                          sort,
                          setSort,
@@ -179,4 +179,4 @@ function SectionLayout({
   );
 }
 
-export default SectionLayout;
+export default SectionLayoutWithoutSubheaders;
