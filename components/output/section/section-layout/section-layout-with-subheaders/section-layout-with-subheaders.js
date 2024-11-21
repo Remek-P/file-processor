@@ -6,7 +6,7 @@ import ActionToggle from "@/components/output/section/action-toggle/action-toggl
 
 import { DonutChart, SimpleBarChart } from "@carbon/charts-react";
 import { Tile, Toggle } from "@carbon/react";
-import {ChartBar, ChartRing, CloseLarge, Percentage, SortAscending, SortDescending, DataFormat} from "@carbon/icons-react";
+import { ChartBar, ChartRing, Percentage, SortAscending, SortDescending, DataFormat, ViewOff } from "@carbon/icons-react";
 
 import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
@@ -111,13 +111,14 @@ function SectionLayoutWithSubheaders({
         <div className={classes.topSection}>
           <h4>{value}</h4>
           <div className={classes.numberButtons}>
+
             <ActionToggle onClick={sortValues} description={!sort ? "Sort Ascending" : "Sort Descending"}>
               {!sort
                   ? <SortAscending className={classes.iconFill} aria-label="Sort Ascending" />
                   : <SortDescending className={classes.iconFill} aria-label="Sort Descending" />}
             </ActionToggle>
-            {isNumber && <>
 
+            {isNumber && <>
               <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
                 <Percentage className={classes.iconFill} aria-label={percentagesDescription}/>
               </ActionToggle>
@@ -131,15 +132,13 @@ function SectionLayoutWithSubheaders({
               <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
                 <ChartRing className={classes.iconFill} aria-label={donutChartDescription}/>
               </ActionToggle>
-
             </>}
-            {isDate && <>
 
+            {isDate &&
               <ActionToggle onClick={handleFormatDate} description={dataDescription}>
                 <DataFormat className={classes.iconFill} aria-label={dataDescription}/>
-              </ActionToggle>
+              </ActionToggle>}
 
-            </>}
           </div>
         </div>
 
@@ -151,7 +150,7 @@ function SectionLayoutWithSubheaders({
                         description="Hide"
                         value={value}
                         valueRef={valueRef}>
-            <CloseLarge className={classes.iconFill}/>
+            <ViewOff className={classes.iconFill}/>
           </ActionToggle>
 
           {isNumber && numbersEqualToZero.current
