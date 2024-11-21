@@ -16,6 +16,7 @@ function SectionLayoutWithoutSubheaders({
                                           showPercentages,
                                           setShowPercentages,
                                           numbersEqualToZero,
+                                          showAllMetrics,
                                           setShowAllMetrics,
                                           children,
                                         }) {
@@ -88,13 +89,15 @@ function SectionLayoutWithoutSubheaders({
                          size="sm"
                          labelA="Show all"
                          labelB="Hide 0s"
-                         defaultToggled={false}
+                         defaultToggled={showAllMetrics}
                          onToggle={handleShowAllMetrics}
                          labelText=""
                          readOnly={false}
                          aria-labelledby="show/hide all metrics"
                          disabled={false}
-                         hideLabel={false}/>
+                         hideLabel={false}
+                         className={null}
+              />
           }
         </div>
       </Tile>

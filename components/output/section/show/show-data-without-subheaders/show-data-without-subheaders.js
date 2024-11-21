@@ -19,7 +19,7 @@ function ShowDataWithoutSubheaders({
                                      labelDataArray,
                                    }) {
 
-  const [showAllMetrics, setShowAllMetrics] = useState(false);
+  const [showAllMetrics, setShowAllMetrics] = useState(true);
   const [showPercentages, setShowPercentages] = useState(undefined);
 
   const dataType = useRef(undefined);
@@ -42,6 +42,7 @@ function ShowDataWithoutSubheaders({
                                         showPercentages={showPercentages}
                                         setShowPercentages={setShowPercentages}
                                         numbersEqualToZero={numbersEqualToZero}
+                                        showAllMetrics={showAllMetrics}
                                         setShowAllMetrics={setShowAllMetrics}
         >
           <ShowNumbers key={`${data}+${labelDataArray[index]}`}
@@ -76,6 +77,7 @@ function ShowDataWithoutSubheaders({
                                           showPercentages={showPercentages}
                                           setShowPercentages={setShowPercentages}
                                           numbersEqualToZero={numbersEqualToZero}
+                                          showAllMetrics={showAllMetrics}
                                           setShowAllMetrics={setShowAllMetrics}
           >
             <ShowStringsAsNumbers key={`${data}+${labelDataArray[index]}`}
@@ -100,6 +102,7 @@ function ShowDataWithoutSubheaders({
                                           showPercentages={showPercentages}
                                           setShowPercentages={setShowPercentages}
                                           numbersEqualToZero={numbersEqualToZero}
+                                          showAllMetrics={showAllMetrics}
                                           setShowAllMetrics={setShowAllMetrics}
           >
             <ShowDate key={`${data}+${labelDataArray[index]}`}
@@ -122,6 +125,7 @@ function ShowDataWithoutSubheaders({
                                           showPercentages={showPercentages}
                                           setShowPercentages={setShowPercentages}
                                           numbersEqualToZero={numbersEqualToZero}
+                                          showAllMetrics={showAllMetrics}
                                           setShowAllMetrics={setShowAllMetrics}
           >
             <ShowValues key={`${data}+${labelDataArray[index]}`}
@@ -145,6 +149,7 @@ function ShowDataWithoutSubheaders({
                                         showPercentages={showPercentages}
                                         setShowPercentages={setShowPercentages}
                                         numbersEqualToZero={numbersEqualToZero}
+                                        showAllMetrics={showAllMetrics}
                                         setShowAllMetrics={setShowAllMetrics}
         >
           <ShowValues key={`${data}+${labelDataArray[index]}`}

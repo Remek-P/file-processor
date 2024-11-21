@@ -91,6 +91,7 @@ function ShowDataWithSubheaders({
                                    showPercentages={showPercentages}
                                    setShowPercentages={setShowPercentages}
                                    numbersEqualToZero={numbersEqualToZero}
+                                   showAllMetrics={showAllMetrics}
                                    setShowAllMetrics={setShowAllMetrics}
       >
 

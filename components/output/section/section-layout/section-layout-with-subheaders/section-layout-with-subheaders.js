@@ -12,17 +12,18 @@ import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
 
 function SectionLayoutWithSubheaders({
-                         value,
-                         sort,
-                         setSort,
-                         chartData,
-                         valueArray,
-                         showPercentages,
-                         setShowPercentages,
-                         numbersEqualToZero,
-                         setShowAllMetrics,
-                         children,
-                       }) {
+                                       value,
+                                       sort,
+                                       setSort,
+                                       chartData,
+                                       valueArray,
+                                       showPercentages,
+                                       setShowPercentages,
+                                       numbersEqualToZero,
+                                       showAllMetrics,
+                                       setShowAllMetrics,
+                                       children,
+                                     }) {
 
   // TODO: Delete decimal and setDecimal if needed
 // TODO: Tooltip is hidden due to overflow auto, set height to fix?
@@ -158,13 +159,15 @@ function SectionLayoutWithSubheaders({
                          size="sm"
                          labelA="Show all"
                          labelB="Hide 0s"
-                         defaultToggled={false}
+                         defaultToggled={showAllMetrics}
                          onToggle={handleShowAllMetrics}
                          labelText=""
                          readOnly={false}
                          aria-labelledby="show/hide all metrics"
                          disabled={false}
-                         hideLabel={false} />
+                         hideLabel={false}
+                         className={null}
+              />
           }
         </div>
 
