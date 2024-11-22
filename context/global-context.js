@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState } from "react";
+import {createContext, useReducer, useState} from "react";
 import { CASE_NAME, Reducer } from "./reducer";
 
 const excelFileInitialState = {
@@ -71,7 +71,7 @@ export const FileDataProvider = ({ children }) => {
             setFileName,
             setLoading,
           }}>
-        {children}
+        { children }
       </FileDataGlobalContext.Provider>
   )
 }
@@ -80,38 +80,65 @@ export const DecimalGlobalContext = createContext(null);
 
 export const DecimalDataProvider = ({ children }) => (
     <DecimalGlobalContext.Provider value={useState(undefined)}>
-      {children}
+      { children }
     </DecimalGlobalContext.Provider>
-)
+);
 
 export const PercentGlobalContext = createContext(null);
 
 export const PercentDataProvider = ({ children }) => (
     <PercentGlobalContext.Provider value={useState(undefined)}>
-      {children}
+      { children }
     </PercentGlobalContext.Provider>
-)
+);
 
 export const ExcludedDataGlobalContext = createContext([]);
 
 export const ExcludedDataProvider = ({ children }) => (
     <ExcludedDataGlobalContext.Provider value={useState([])}>
-      {children}
+      { children }
     </ExcludedDataGlobalContext.Provider>
-)
+);
 
 export const ToggleIDViewGlobalContext = createContext(null);
 export const ToggleIDViewProvider = ({ children }) => (
     <ToggleIDViewGlobalContext.Provider value={useState(false)}>
-      {children}
+      { children }
     </ToggleIDViewGlobalContext.Provider>
-)
+);
+
+export const ShowAllMetricsContext = createContext(null);
+export const ShowAllMetricsProvider = ({ children }) => (
+    <ShowAllMetricsContext.Provider value={useState(true)}>
+      { children }
+    </ShowAllMetricsContext.Provider>
+);
 
 export const SearchSuggestionsOrderGlobalContext = createContext(null);
 
 export const SearchSuggestionsOrderGlobalProvider = ({ children }) => (
     <SearchSuggestionsOrderGlobalContext.Provider value={useState(undefined)}>
-      {children}
+      { children }
     </SearchSuggestionsOrderGlobalContext.Provider>
-)
+);
 
+// export const IsContainingSubheadersContext = createContext(null);
+//
+// export const IsContainingSubheadersProvider = ({ children }) => {
+//   const [isSubheaders, setIsSubheaders] = useState(undefined);
+//
+//   const { file } = useContext(FileDataGlobalContext);
+//
+//   const contextValue = useMemo(() => {
+//     return {
+//       isSubheaders,
+//       checkForSubheaders: () => setIsSubheaders(isContainingSubheaders(file)),
+//     };
+//   }, [isSubheaders, file]);
+//
+//   return (
+//       <IsContainingSubheadersContext.Provider value={contextValue}>
+//         { children }
+//       </IsContainingSubheadersContext.Provider>
+//   );
+// };

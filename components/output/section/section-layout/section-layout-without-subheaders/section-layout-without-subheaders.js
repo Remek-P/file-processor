@@ -4,7 +4,7 @@ import {ExcludedDataGlobalContext} from "@/context/global-context";
 
 import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
 
-import { Tile, Toggle } from "@carbon/react";
+import { Tile } from "@carbon/react";
 import { Percentage, DataFormat, ViewOff } from "@carbon/icons-react";
 
 import classes from "@/components/output/output.module.scss";
@@ -15,9 +15,6 @@ function SectionLayoutWithoutSubheaders({
                                           dataType,
                                           showPercentages,
                                           setShowPercentages,
-                                          numbersEqualToZero,
-                                          showAllMetrics,
-                                          setShowAllMetrics,
                                           children,
                                         }) {
 
@@ -42,10 +39,6 @@ function SectionLayoutWithoutSubheaders({
   const handleFormatDate = () => {
     //TODO: handle the data formatting
   }
-
-  const handleShowAllMetrics = () => {
-      setShowAllMetrics(prevState => !prevState)
-    };
 
   const excludeFromDisplaying = () => {
     setExcludedArray([...excludedArray, valueRef.current.value])
@@ -73,33 +66,18 @@ function SectionLayoutWithoutSubheaders({
 
           <div className={classes.numberButtons}>
             {isNumber &&
-              <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
-                <Percentage className={classes.iconFill} aria-label={percentagesDescription}/>
-              </ActionToggle>
-            }
+                <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
+                  <Percentage className={classes.iconFill} aria-label={percentagesDescription}/>
+                </ActionToggle>}
+
             {isDate &&
                 <ActionToggle onClick={handleFormatDate} description={dataDescription}>
                   <DataFormat className={classes.iconFill} aria-label={dataDescription}/>
-                </ActionToggle>
-            }
+                </ActionToggle>}
           </div>
 
-          {isNumber && numbersEqualToZero.current
-              && <Toggle id={value}
-                         size="sm"
-                         labelA="Show all"
-                         labelB="Hide 0s"
-                         defaultToggled={showAllMetrics}
-                         onToggle={handleShowAllMetrics}
-                         labelText=""
-                         readOnly={false}
-                         aria-labelledby="show/hide all metrics"
-                         disabled={false}
-                         hideLabel={false}
-                         className={null}
-              />
-          }
         </div>
+
       </Tile>
   );
 }

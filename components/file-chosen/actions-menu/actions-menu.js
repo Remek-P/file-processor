@@ -1,4 +1,3 @@
-
 import {useContext} from "react";
 
 import { useRouter } from "next/router";
@@ -7,7 +6,8 @@ import {
   ExcludedDataGlobalContext,
   SearchSuggestionsOrderGlobalContext,
   ToggleIDViewGlobalContext,
-  FileDataGlobalContext
+  FileDataGlobalContext,
+  ShowAllMetricsContext
 } from "@/context/global-context";
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
@@ -22,6 +22,7 @@ function ActionsMenu({
                        headers,
                        addPerson,
                        refreshData,
+                       isSubheaders,
                        hideDB_ID_Tile,
                        setNumberOfOutputs,
                        handleResetID,
@@ -29,14 +30,16 @@ function ActionsMenu({
                      }) {
 
   const { isFetched } = useContext(FileDataGlobalContext);
-  
-  const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
-  const [, setExcludedArray] = useContext(ExcludedDataGlobalContext);
-  const [toggleIDView, setToggleIDView] = useContext(ToggleIDViewGlobalContext);
+
+  const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
+  const [, setExcludedArray ] = useContext(ExcludedDataGlobalContext);
+  const [ toggleIDView, setToggleIDView ] = useContext(ToggleIDViewGlobalContext);
+  const [ showAllMetrics, setShowAllMetrics ] = useContext(ShowAllMetricsContext);
 
   const router = useRouter();
 
   const showHideDB_ID = toggleIDView ? "Hide" : "Show";
+  const showHide0Values = showAllMetrics ? "Hide 0's" : "Show all";
 
   const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
 
@@ -53,6 +56,10 @@ function ActionsMenu({
 
   const handleIDView = () => {
     setToggleIDView(prevState => !prevState);
+  }
+
+  const handleShowAllMetrics = () => {
+    setShowAllMetrics(prevState => !prevState);
   }
 
   const handleLink = () => {
@@ -72,7 +79,6 @@ function ActionsMenu({
   }
 
   // TODO: Reset all data changes
-
 
   return (
       <div className={`${classes.menuContainer} shadow`}>
@@ -134,6 +140,13 @@ function ActionsMenu({
                                                 className={classes.menuItem}
                                                 aria-hidden={hideDB_ID_Tile}
           />
+          }
+          {!isSubheaders
+              && <OverflowMenuItem itemText={showHide0Values}
+                                   onClick={handleShowAllMetrics}
+                                   className={classes.menuItem}
+                                   aria-hidden={!isSubheaders}
+              />
           }
           <ResetFormating />
           <OverflowMenuItem itemText="Delete All"

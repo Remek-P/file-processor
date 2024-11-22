@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {
   checkForNumber,
   checkForString,
@@ -12,6 +12,7 @@ import ShowStringsAsNumbers from "@/components/output/section/show/show-metrics/
 import {dateValidator} from "@/utils/dateUtils";
 import ShowDate from "@/components/output/section/show/show-metrics/show-date";
 import ShowValues from "@/components/output/section/show/show-metrics/show-values";
+import {ShowAllMetricsContext} from "@/context/global-context";
 
 function ShowDataWithoutSubheaders({
                                      value,
@@ -19,7 +20,8 @@ function ShowDataWithoutSubheaders({
                                      labelDataArray,
                                    }) {
 
-  const [showAllMetrics, setShowAllMetrics] = useState(true);
+  const [ showAllMetrics ] = useContext(ShowAllMetricsContext);
+
   const [showPercentages, setShowPercentages] = useState(undefined);
 
   const dataType = useRef(undefined);
@@ -41,9 +43,6 @@ function ShowDataWithoutSubheaders({
                                         dataType={dataType}
                                         showPercentages={showPercentages}
                                         setShowPercentages={setShowPercentages}
-                                        numbersEqualToZero={numbersEqualToZero}
-                                        showAllMetrics={showAllMetrics}
-                                        setShowAllMetrics={setShowAllMetrics}
         >
           <ShowNumbers key={`${data}+${labelDataArray[index]}`}
                        data={numberData}
@@ -76,9 +75,6 @@ function ShowDataWithoutSubheaders({
                                           dataType={dataType}
                                           showPercentages={showPercentages}
                                           setShowPercentages={setShowPercentages}
-                                          numbersEqualToZero={numbersEqualToZero}
-                                          showAllMetrics={showAllMetrics}
-                                          setShowAllMetrics={setShowAllMetrics}
           >
             <ShowStringsAsNumbers key={`${data}+${labelDataArray[index]}`}
                                   data={numberData}
@@ -101,9 +97,6 @@ function ShowDataWithoutSubheaders({
                                           dataType={dataType}
                                           showPercentages={showPercentages}
                                           setShowPercentages={setShowPercentages}
-                                          numbersEqualToZero={numbersEqualToZero}
-                                          showAllMetrics={showAllMetrics}
-                                          setShowAllMetrics={setShowAllMetrics}
           >
             <ShowDate key={`${data}+${labelDataArray[index]}`}
                       value={dateData.value}
@@ -124,9 +117,6 @@ function ShowDataWithoutSubheaders({
                                           dataType={dataType}
                                           showPercentages={showPercentages}
                                           setShowPercentages={setShowPercentages}
-                                          numbersEqualToZero={numbersEqualToZero}
-                                          showAllMetrics={showAllMetrics}
-                                          setShowAllMetrics={setShowAllMetrics}
           >
             <ShowValues key={`${data}+${labelDataArray[index]}`}
                         label={stringData.label}
@@ -148,9 +138,6 @@ function ShowDataWithoutSubheaders({
                                         dataType={dataType}
                                         showPercentages={showPercentages}
                                         setShowPercentages={setShowPercentages}
-                                        numbersEqualToZero={numbersEqualToZero}
-                                        showAllMetrics={showAllMetrics}
-                                        setShowAllMetrics={setShowAllMetrics}
         >
           <ShowValues key={`${data}+${labelDataArray[index]}`}
                       label={otherData.label}

@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import {
   DecimalDataProvider,
   ExcludedDataProvider,
-  SearchSuggestionsOrderGlobalProvider
+  SearchSuggestionsOrderGlobalProvider,
+  ShowAllMetricsProvider
 } from "@/context/global-context";
 
 import DisplayOutput from "@/components/output/displayOutput/displayOutput";
@@ -12,7 +13,7 @@ import IdNotAvailable from "@/components/output/id-not-available/id-not-availabl
 
 import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
-import {isContainingSubheaders} from "@/utils/parserUtils";
+import { isContainingSubheaders } from "@/utils/parserUtils";
 
 import {ID_LABEL} from "@/constants/constants";
 
@@ -68,12 +69,14 @@ function FileChosen({
   return (
       <DecimalDataProvider>
         <ExcludedDataProvider>
-          <SearchSuggestionsOrderGlobalProvider>
+          <ShowAllMetricsProvider>
+            <SearchSuggestionsOrderGlobalProvider>
 
             <section className={classes.sectionContainer}>
 
               <ActionsMenu headers={file[0]}
                            refreshData={refreshData}
+                           isSubheaders={isSubheaders}
                            hideDB_ID_Tile={hideDB_ID_Tile}
                            setNumberOfOutputs={setNumberOfOutputs}
                            addPerson={addPerson}
@@ -97,7 +100,8 @@ function FileChosen({
 
             </section>
 
-          </SearchSuggestionsOrderGlobalProvider>
+            </SearchSuggestionsOrderGlobalProvider>
+          </ShowAllMetricsProvider>
         </ExcludedDataProvider>
       </DecimalDataProvider>
   );
