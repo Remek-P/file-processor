@@ -1,5 +1,6 @@
-import {createContext, useReducer, useState} from "react";
+import {createContext, useContext, useEffect, useReducer, useState} from "react";
 import { CASE_NAME, Reducer } from "./reducer";
+import {isContainingSubheaders} from "@/utils/parserUtils";
 
 const excelFileInitialState = {
   file: null,
@@ -122,23 +123,26 @@ export const SearchSuggestionsOrderGlobalProvider = ({ children }) => (
     </SearchSuggestionsOrderGlobalContext.Provider>
 );
 
-// export const IsContainingSubheadersContext = createContext(null);
-//
-// export const IsContainingSubheadersProvider = ({ children }) => {
-//   const [isSubheaders, setIsSubheaders] = useState(undefined);
-//
-//   const { file } = useContext(FileDataGlobalContext);
-//
-//   const contextValue = useMemo(() => {
-//     return {
-//       isSubheaders,
-//       checkForSubheaders: () => setIsSubheaders(isContainingSubheaders(file)),
-//     };
-//   }, [isSubheaders, file]);
-//
-//   return (
-//       <IsContainingSubheadersContext.Provider value={contextValue}>
-//         { children }
-//       </IsContainingSubheadersContext.Provider>
-//   );
-// };
+export const IsContainingSubheadersContext = createContext(null);
+
+export const IsContainingSubheadersProvider = ({ children }) => {
+  const [isSubheaders, setIsSubheaders] = useState(undefined);
+
+  const { file } = useContext(FileDataGlobalContext);
+
+  useEffect(() => {
+    if (file === null && isSubheaders !== undefined) setIsSubheaders(undefined);
+    if (file !== null && isSubheaders === undefined) setIsSubheaders(isContainingSubheaders(file));
+  }, [file]);
+
+  const contextValue = {
+    isSubheaders,
+    overrideSubheadersDetection: () => setIsSubheaders(prevState => !prevState),
+    };
+  console.log("isSubheaders", isSubheaders)
+  return (
+      <IsContainingSubheadersContext.Provider value={contextValue}>
+        { children }
+      </IsContainingSubheadersContext.Provider>
+  );
+};

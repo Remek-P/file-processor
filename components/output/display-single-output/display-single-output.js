@@ -6,7 +6,6 @@ import {ToggleIDViewGlobalContext} from "@/context/global-context";
 
 function DisplaySingleOutput({
                                colDataArray,
-                               isSubheaders,
                                hideDB_ID_Tile,
                                labelDataArray,
                                headerDataArray,
@@ -24,7 +23,6 @@ function DisplaySingleOutput({
           filteredOutDB_ID.map(value =>
               <Show key={value}
                     value={value}
-                    isSubheaders={isSubheaders}
                     colDataArray={colDataArray}
                     labelDataArray={labelDataArray}
                     headerDataArray={headerDataArray}
@@ -34,7 +32,6 @@ function DisplaySingleOutput({
         {
             !hideDB_ID_Tile && toggleIDView
             && <Show value={HEADER_LABEL}
-                     isSubheaders={isSubheaders}
                      colDataArray={colDataArray}
                      labelDataArray={labelDataArray}
                      headerDataArray={headerDataArray}

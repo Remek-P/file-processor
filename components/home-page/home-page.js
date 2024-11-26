@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import {useContext, useState} from "react";
 
-import { FileDataGlobalContext, ToggleIDViewProvider } from "@/context/global-context";
+import {FileDataGlobalContext, IsContainingSubheadersContext, ToggleIDViewProvider} from "@/context/global-context";
 
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
@@ -32,8 +32,9 @@ export default function HomePage() {
     setFileName,
     setLoading,
   } = useContext(FileDataGlobalContext);
+  const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
-  const [finalDataAvailable, setFinalDataAvailable] = useState(false);
+  const [ finalDataAvailable, setFinalDataAvailable ] = useState(false);
   
   const showWarnings = warnings.length !== 0;
 
@@ -218,7 +219,9 @@ export default function HomePage() {
           }
 
           {
-              warnings.length === 0 && finalDataAvailable &&
+              warnings.length === 0
+              && finalDataAvailable
+              && isSubheaders !== undefined &&
               <ErrorBoundary fallback={ <FileChosenFallback syncAction={handleFileChange}
                                                             asyncAction={handleErrorDelete}
                                                             fileName={fileName} />

@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import {useContext, useMemo, useState} from "react";
 
 import {
   DecimalDataProvider,
-  ExcludedDataProvider,
+  ExcludedDataProvider, IsContainingSubheadersContext,
   SearchSuggestionsOrderGlobalProvider,
   ShowAllMetricsProvider
 } from "@/context/global-context";
@@ -21,15 +21,17 @@ import classes from "./file-chosen.module.scss";
 
 
 function FileChosen({
-                      handleFileChange,
                       file,
                       refreshData,
+                      handleFileChange,
                     }) {
+
+  const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
   const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
 
-  const isSubheaders = useMemo(() =>
-      isContainingSubheaders(file), [file]);
+  // const isSubheaders = useMemo(() =>
+  //     isContainingSubheaders(file), [file]);
 
   const labelArray = isSubheaders === true ? file[1] : file[0];
 

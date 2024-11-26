@@ -4,7 +4,7 @@ import classes from "@/components/file-chosen/file-chosen.module.scss";
 
 function DisplayOutput({
                          IDIndex,
-                         isSubheaders,
+
                          hideDB_ID_Tile,
                          numberOfOutputs,
                          setNumberOfOutputs,
@@ -47,7 +47,6 @@ function DisplayOutput({
                   <div key={index} className={classes.outputContainer}>
                     <Output index={index}
                             IDIndex={IDIndex}
-                            isSubheaders={isSubheaders}
                             hideDB_ID_Tile={hideDB_ID_Tile}
                             handleDeleteChecked={handleDeleteChecked}
                     />

@@ -7,7 +7,8 @@ import {
   SearchSuggestionsOrderGlobalContext,
   ToggleIDViewGlobalContext,
   FileDataGlobalContext,
-  ShowAllMetricsContext
+  ShowAllMetricsContext,
+  IsContainingSubheadersContext,
 } from "@/context/global-context";
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
@@ -30,9 +31,10 @@ function ActionsMenu({
                      }) {
 
   const { isFetched } = useContext(FileDataGlobalContext);
+  const { overrideSubheadersDetection } = useContext(IsContainingSubheadersContext);
 
   const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
-  const [, setExcludedArray ] = useContext(ExcludedDataGlobalContext);
+  const [ , setExcludedArray ] = useContext(ExcludedDataGlobalContext);
   const [ toggleIDView, setToggleIDView ] = useContext(ToggleIDViewGlobalContext);
   const [ showAllMetrics, setShowAllMetrics ] = useContext(ShowAllMetricsContext);
 
@@ -161,6 +163,12 @@ function ActionsMenu({
           />
           <OverflowMenuItem itemText="Delete stored files"
                             onClick={handleLink}
+                            isDelete={true}
+                            className={classes.menuItem}
+                            hasDivider
+          />
+          <OverflowMenuItem itemText="Contains subheaders"
+                            onClick={overrideSubheadersDetection}
                             isDelete={true}
                             className={classes.menuItem}
                             hasDivider

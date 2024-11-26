@@ -1,14 +1,14 @@
-import { useMemo } from "react";
+import {useContext, useMemo} from "react";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
 import DisplayMultipleSuggestions from "@/components/output/display-multiple-suggestions/display-multiple-suggestions";
 import DisplaySingleOutput from "@/components/output/display-single-output/display-single-output";
 
 import classes from "../output.module.scss";
+import {IsContainingSubheadersContext} from "@/context/global-context";
 
 function Sections({
                     IDIndex,
-                    isSubheaders,
                     headersArray,
                     inputValue,
                     setInputValue,
@@ -18,6 +18,8 @@ function Sections({
                     setSearchSuggestionsOrder,
                     handleClick,
                   }) {
+
+  const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
   const headerDataArray = isSubheaders ? headersArray[0] : headersArray;
   const labelDataArray = isSubheaders ? headersArray[1] : headersArray;

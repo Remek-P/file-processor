@@ -13,7 +13,6 @@ import classes from "@/components/output/output.module.scss";
 function Output({
                   index,
                   IDIndex,
-                  isSubheaders,
                   hideDB_ID_Tile,
                   handleDeleteChecked,
                 }) {
@@ -81,7 +80,6 @@ function Output({
                   file={file}
                   headersArray={headersArray}
                   userDataArray={userDataArray}
-                  isSubheaders={isSubheaders}
                   inputValue={inputValue}
                   setInputValue={setInputValue}
                   hideDB_ID_Tile={hideDB_ID_Tile}
