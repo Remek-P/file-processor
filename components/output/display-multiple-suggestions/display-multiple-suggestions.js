@@ -21,7 +21,7 @@ function DisplayMultipleSuggestions({
 
   // const [active, setActive] = useState(IDIndex);
   
-  const [isLoading, setIsLoading] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(false);
 
   const { height } = useWindowDimensions();
 
