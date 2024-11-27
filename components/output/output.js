@@ -25,18 +25,18 @@ function Output({
   const { file} = useContext(FileDataGlobalContext);
   const { isSubheaders} = useContext(IsContainingSubheadersContext);
 
-  const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
+  const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
 
-  const [inputValue, setInputValue] = useState("");
+  const [ inputValue, setInputValue ] = useState("");
 
   // TODO: Make sure to implement user override;
   const headersArray = useMemo(() => {
     return parseHeaders(file);
-  }, [file, isSubheaders]);
+  }, [ file, isSubheaders ]);
 
   const userDataArray = useMemo(() => {
     return parseDataArray(file);
-  }, [file, isSubheaders]);
+  }, [ file, isSubheaders ]);
 
   const searchRef = useRef(null);
 
