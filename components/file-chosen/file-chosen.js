@@ -1,4 +1,4 @@
-import {useContext, useMemo, useState} from "react";
+import { useContext, useState } from "react";
 
 import {
   DecimalDataProvider,
@@ -15,7 +15,7 @@ import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
 import { isContainingSubheaders } from "@/utils/parserUtils";
 
-import {ID_LABEL} from "@/constants/constants";
+import { ID_LABEL } from "@/constants/constants";
 
 import classes from "./file-chosen.module.scss";
 

@@ -1,13 +1,18 @@
-import {useContext, useMemo, useRef, useState} from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 
 import Search from "@/components/search/search";
 import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
 import Sections from "@/components/output/section/sections";
 
-import {FileDataGlobalContext, SearchSuggestionsOrderGlobalContext} from "@/context/global-context";
+import {
+  FileDataGlobalContext,
+  IsContainingSubheadersContext,
+  SearchSuggestionsOrderGlobalContext
+} from "@/context/global-context";
 import { parseDataArray, parseHeaders } from "@/utils/parserUtils";
 
 import classes from "@/components/output/output.module.scss";
+import SearchSuggestions from "@/components/search/search-suggestions/search-suggestions";
 
 
 function Output({
@@ -18,6 +23,7 @@ function Output({
                 }) {
 
   const { file} = useContext(FileDataGlobalContext);
+  const { isSubheaders} = useContext(IsContainingSubheadersContext);
 
   const [searchSuggestionsOrder, setSearchSuggestionsOrder] = useContext(SearchSuggestionsOrderGlobalContext);
 
@@ -26,30 +32,15 @@ function Output({
   // TODO: Make sure to implement user override;
   const headersArray = useMemo(() => {
     return parseHeaders(file);
-  }, [file]);
+  }, [file, isSubheaders]);
 
   const userDataArray = useMemo(() => {
     return parseDataArray(file);
-  }, [file]);
+  }, [file, isSubheaders]);
 
   const searchRef = useRef(null);
 
   const searchID = "search";
-
-  // TODO: Use sortData form sortUtils
-  const defaultOrderSearchSuggestions = userDataArray.map(id => id[IDIndex]);
-  const ascendingOrderSearchSuggestions = [...defaultOrderSearchSuggestions].sort((a, b) => a.toString().localeCompare(b.toString()));
-  const descendingOrderSearchSuggestions = [...defaultOrderSearchSuggestions].sort((a, b) => b.toString().localeCompare(a.toString()));
-  // TODO: change does not work
-  const searchArray = searchSuggestionsOrder === undefined
-      ? defaultOrderSearchSuggestions
-      : searchSuggestionsOrder
-          ? ascendingOrderSearchSuggestions
-          : descendingOrderSearchSuggestions;
-
-  const searchSuggestionsArray = searchArray.map(person =>
-      <option key={person} value={person}>{person}</option>
-  );
 
   const handleClick = () => {
     searchRef.current.focus();
@@ -57,10 +48,11 @@ function Output({
 
   return (
       <>
-        <datalist id={searchID}>
-          {searchSuggestionsArray}
-        </datalist>
 
+        <SearchSuggestions IDIndex={IDIndex}
+                           searchID={searchID}
+                           userDataArray={userDataArray}
+                           searchSuggestionsOrder={searchSuggestionsOrder} />
 
         <div className={classes.outputSearchContainer}>
 
