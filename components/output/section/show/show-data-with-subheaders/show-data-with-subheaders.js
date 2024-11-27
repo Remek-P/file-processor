@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import { useRef, useState } from "react";
 import {
   checkForNumber,
   checkForString,
@@ -9,7 +9,7 @@ import {
 import SectionLayoutWithSubheaders from "@/components/output/section/section-layout/section-layout-with-subheaders/section-layout-with-subheaders";
 import ShowNumbers from "@/components/output/section/show/show-metrics/show-numbers";
 import ShowStringsAsNumbers from "@/components/output/section/show/show-metrics/show-strings-as-numbers";
-import {dateValidator} from "@/utils/dateUtils";
+import { dateValidator } from "@/utils/dateUtils";
 import ShowDate from "@/components/output/section/show/show-metrics/show-date";
 import ShowValues from "@/components/output/section/show/show-metrics/show-values";
 
@@ -20,9 +20,9 @@ function ShowDataWithSubheaders({
                                   headerDataArray,
                                 }) {
 
-  const [showAllMetrics, setShowAllMetrics] = useState(false);
-  const [showPercentages, setShowPercentages] = useState(undefined);
-  const [sort, setSort] = useState(undefined);
+  const [ showAllMetrics, setShowAllMetrics ] = useState(false);
+  const [ showPercentages, setShowPercentages ] = useState(undefined);
+  const [ sort, setSort ] = useState(undefined);
 
   const dataType = useRef(undefined);
   const numbersEqualToZero = useRef(false);
@@ -79,7 +79,7 @@ function ShowDataWithSubheaders({
     }
   }
 
-  const {sortedData, sortedLabels} = sortDataAndLabelsArrayTogether();
+  const { sortedData, sortedLabels } = sortDataAndLabelsArrayTogether();
 
   return (
 

@@ -8,7 +8,7 @@ import classes from "@/components/output/output.module.scss";
 
 function ShortList({
                      IDIndex,
-                     searchUsers,
+                     searchRecords,
                      labelDataArray,
                      searchSuggestionsOrder,
                      setIsLoading,
@@ -19,24 +19,23 @@ function ShortList({
 
   const sortedSuggestions = useMemo(() => {
     if (searchSuggestionsOrder === undefined) {
-      return searchUsers;
+      return searchRecords;
     }
 
     // Sort the indexed data based on the value and sort direction (sortedUtils)
     if (searchSuggestionsOrder || searchSuggestionsOrder === false)
-      return [...searchUsers].sort((a, b) => compareValues(
+      return [...searchRecords].sort((a, b) => compareValues(
               a[indexToSort.current],
               b[indexToSort.current],
               searchSuggestionsOrder
           )
       );
 
-  }, [searchSuggestionsOrder, searchUsers, IDIndex]);
+  }, [searchSuggestionsOrder, searchRecords, IDIndex]);
 
   useEffect(() => {
     setIsLoading(false)
   },[searchSuggestionsOrder])
-
 
   return (
       <table className={classes.searchSuggestionShortListTable}>

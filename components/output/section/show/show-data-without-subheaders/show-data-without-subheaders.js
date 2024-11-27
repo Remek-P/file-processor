@@ -22,7 +22,7 @@ function ShowDataWithoutSubheaders({
 
   const [ showAllMetrics ] = useContext(ShowAllMetricsContext);
 
-  const [showPercentages, setShowPercentages] = useState(undefined);
+  const [ showPercentages, setShowPercentages ] = useState(undefined);
 
   const dataType = useRef(undefined);
   const numbersEqualToZero = useRef(false);

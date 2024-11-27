@@ -11,7 +11,7 @@ function DisplaySingleOutput({
                                headerDataArray,
                              }) {
 
-  const [toggleIDView] = useContext(ToggleIDViewGlobalContext);
+  const [ toggleIDView ] = useContext(ToggleIDViewGlobalContext);
 
   const excelFileUniqueValues = [... new Set(headerDataArray)];
   

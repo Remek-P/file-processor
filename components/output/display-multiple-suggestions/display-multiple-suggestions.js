@@ -12,7 +12,7 @@ import { Loading } from "@carbon/react";
 function DisplayMultipleSuggestions({
                                       IDIndex,
                                       labelDataArray,
-                                      searchUsers,
+                                      searchRecords,
                                       inputValue,
                                       setInputValue,
                                       searchSuggestionsOrder,
@@ -47,11 +47,11 @@ function DisplayMultipleSuggestions({
   // TODO: Loader indicating change od suggestion order is in progress
   // TODO: Is reducePerformanceStrain needed?
 
-  const isLongList = searchUsers.length > 500;
+  const isLongList = searchRecords.length > 500;
 
-  const reducePerformanceStrain = inputValue.length < 3;
-
-  if (reducePerformanceStrain) return <TexTile text={"Please type at least 3 characters to display search results"} />
+  // const reducePerformanceStrain = inputValue.length < 3;
+  //
+  // if (reducePerformanceStrain) return <TexTile text={"Please type at least 2 characters to display search results"} />
 
   return (
     // The section style is necessary for ShortList component, to display sticky menu
@@ -66,7 +66,7 @@ function DisplayMultipleSuggestions({
       {
         !isLongList
             ? <ShortList IDIndex={IDIndex}
-                         searchUsers={searchUsers}
+                         searchRecords={searchRecords}
                          labelDataArray={labelDataArray}
                          searchSuggestionsOrder={searchSuggestionsOrder}
                          setIsLoading={setIsLoading}
@@ -77,7 +77,7 @@ function DisplayMultipleSuggestions({
             : <VirtualizedList IDIndex={IDIndex}
                                labelDataArray={labelDataArray}
                                pickSearchedOutput={pickSearchedOutput}
-                               searchUsers={searchUsers}
+                               searchRecords={searchRecords}
                                searchSuggestionsOrder={searchSuggestionsOrder}
                                handleSort={handleSort}
                                setIsLoading={setIsLoading}

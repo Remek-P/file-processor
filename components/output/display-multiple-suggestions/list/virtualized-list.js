@@ -14,13 +14,13 @@ function VirtualizedList({
                            indexToSort,
                            labelDataArray,
                            pickSearchedOutput,
-                           searchUsers,
+                           searchRecords,
                            searchSuggestionsOrder,
                            setIsLoading,
                            handleSort,
                          }) {
 
-  const suggestions = [labelDataArray, ...searchUsers];
+  const suggestions = [labelDataArray, ...searchRecords];
 
   const [sortedSuggestions, setSortedSuggestions] = useState(suggestions)
   const [columnWidths, setColumnWidths] = useState([]);
@@ -54,7 +54,7 @@ function VirtualizedList({
 
         const payload = {
           searchSuggestionsOrder,
-          searchUsers,
+          searchRecords,
           indexToSort,
         }
 
@@ -75,7 +75,7 @@ function VirtualizedList({
 
       // Sort the indexed data based on the value and sort direction (sortedUtils)
       else if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
-        const sorted = [...searchUsers].sort((a, b) => compareValues(
+        const sorted = [...searchRecords].sort((a, b) => compareValues(
                 a[indexToSort.current],
                 b[indexToSort.current],
                 searchSuggestionsOrder
@@ -86,7 +86,7 @@ function VirtualizedList({
       }
     }
 
-  }, [searchSuggestionsOrder, searchUsers, IDIndex, indexToSort]);
+  }, [searchSuggestionsOrder, searchRecords, IDIndex, indexToSort]);
 
   useEffect(() => {
     // Collect column widths after the component is rendered

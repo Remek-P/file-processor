@@ -1,11 +1,11 @@
-import {useContext, useMemo} from "react";
+import { useContext, useMemo } from "react";
 
 import TexTile from "@/components/tile-type/text-tile/texTile";
 import DisplayMultipleSuggestions from "@/components/output/display-multiple-suggestions/display-multiple-suggestions";
 import DisplaySingleOutput from "@/components/output/display-single-output/display-single-output";
 
 import classes from "../output.module.scss";
-import {IsContainingSubheadersContext} from "@/context/global-context";
+import { IsContainingSubheadersContext } from "@/context/global-context";
 
 function Sections({
                     IDIndex,
@@ -16,7 +16,7 @@ function Sections({
                     hideDB_ID_Tile,
                     searchSuggestionsOrder,
                     setSearchSuggestionsOrder,
-                    handleClick,
+                    handleFocus,
                   }) {
 
   const { isSubheaders } = useContext(IsContainingSubheadersContext);
@@ -24,18 +24,19 @@ function Sections({
   const headerDataArray = isSubheaders ? headersArray[0] : headersArray;
   const labelDataArray = isSubheaders ? headersArray[1] : headersArray;
 
-  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue)), [inputValue, userDataArray, IDIndex, searchSuggestionsOrder]);
-  const colDataArray = searchRecords[0];
+  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue.toLowerCase())), [inputValue, userDataArray, IDIndex, searchSuggestionsOrder, isSubheaders]);
+  const searchResult = searchRecords.filter(record => record[IDIndex] === inputValue);
+  const colDataArray = searchResult[0];
 
   const displayData = () => {
 
     if (!inputValue)
       return (
           <div className={classes.select}>
-            <TexTile text="Type to search" handleClick={handleClick} />
+            <TexTile text="Type to search" handleClick={handleFocus} />
           </div>
       )
-    else if (searchRecords.length === 1)
+    else if (searchResult.length === 1)
       return (
               <div className={classes.grid}>
                 <DisplaySingleOutput colDataArray={colDataArray}
@@ -54,7 +55,7 @@ function Sections({
                                         inputValue={inputValue}
                                         labelDataArray={labelDataArray}
                                         setInputValue={setInputValue}
-                                        searchUsers={searchRecords}
+                                        searchRecords={searchRecords}
                                         searchSuggestionsOrder={searchSuggestionsOrder}
                                         setSearchSuggestionsOrder={setSearchSuggestionsOrder}
             />
@@ -64,7 +65,7 @@ function Sections({
     else
       return (
           <div className={classes.select}>
-            <TexTile text="No such user data" handleClick={handleClick} />
+            <TexTile text="No such user data" handleClick={handleFocus} />
           </div>
       )
   }

@@ -9,7 +9,7 @@ import {
   IsContainingSubheadersContext,
   SearchSuggestionsOrderGlobalContext
 } from "@/context/global-context";
-import { parseDataArray, parseHeaders } from "@/utils/parserUtils";
+import { isContainingSubheaders } from "@/utils/parserUtils";
 
 import classes from "@/components/output/output.module.scss";
 import SearchSuggestions from "@/components/search/search-suggestions/search-suggestions";
@@ -23,28 +23,40 @@ function Output({
                 }) {
 
   const { file} = useContext(FileDataGlobalContext);
-  const { isSubheaders} = useContext(IsContainingSubheadersContext);
+  const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
   const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
 
   const [ inputValue, setInputValue ] = useState("");
 
+  const isSubheadersTrue = isContainingSubheaders(file);
+
   // TODO: Make sure to implement user override;
   const headersArray = useMemo(() => {
-    return parseHeaders(file);
+    if ((isSubheadersTrue && isSubheaders === false)
+        || (!isSubheadersTrue && (isSubheaders === undefined || isSubheaders === false)))
+      return file[0];
+
+    return [file[0], file[1]];
   }, [ file, isSubheaders ]);
 
   const userDataArray = useMemo(() => {
-    return parseDataArray(file);
+    if ((isSubheadersTrue && isSubheaders === false)
+        || (!isSubheadersTrue && (isSubheaders === undefined || isSubheaders === false)))
+      return file.slice(1);
+
+    return file.slice(2);
   }, [ file, isSubheaders ]);
 
   const searchRef = useRef(null);
 
   const searchID = "search";
 
-  const handleClick = () => {
+  const handleFocus = () => {
     searchRef.current.focus();
   }
+
+  // TODO: If isSubheadersTrue === true and there is none
 
   return (
       <>
@@ -77,7 +89,7 @@ function Output({
                   hideDB_ID_Tile={hideDB_ID_Tile}
                   searchSuggestionsOrder={searchSuggestionsOrder}
                   setSearchSuggestionsOrder={setSearchSuggestionsOrder}
-                  handleClick={handleClick}
+                  handleFocus={handleFocus}
         />
       </>
   );
