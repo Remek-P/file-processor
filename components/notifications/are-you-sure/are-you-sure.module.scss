@@ -1,0 +1,46 @@
+@import "../../../styles/variables/variables";
+@import "../../../styles/variables/breakpoints";
+
+$_gap: 1rem;
+$_position: 76%;
+
+.notificationContainer {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10; //covers the menu sign
+
+  // The Tile (a React Carbon Component) is finally rendered as div, thus this is a hack to influence the display of it.
+  & > div {
+    top: 80%;
+    transform: translateY(-50%);
+
+    display: flex;
+    flex-direction: column;
+    gap: $_gap;
+
+    @media (min-width: $breakpoint700) {
+      top: 40%;
+      left: (100% - $_position) / 2;
+      width: $_position;
+      gap: clamp($_gap * 2, 7%, $_gap * 5);
+
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
+  }
+}
+
+.header, .buttonContainer {
+  width: fit-content;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: $_gap;
+  align-self: flex-end;
+}
+
+.button {
+  border-radius: $border-radius-main;
+}

@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "react";
 
-import TexTile from "@/components/tile-type/text-tile/texTile";
+import TextTile from "@/components/tile-type/text-tile/textTile";
 import DisplayMultipleSuggestions from "@/components/output/display-multiple-suggestions/display-multiple-suggestions";
 import DisplaySingleOutput from "@/components/output/display-single-output/display-single-output";
 
@@ -33,7 +33,7 @@ function Sections({
     if (!inputValue)
       return (
           <div className={classes.select}>
-            <TexTile text="Type to search" handleClick={handleFocus} />
+            <TextTile text="Type to search" handleClick={handleFocus} />
           </div>
       )
     else if (searchResult.length === 1)
@@ -65,7 +65,7 @@ function Sections({
     else
       return (
           <div className={classes.select}>
-            <TexTile text="No such user data" handleClick={handleFocus} />
+            <TextTile text="No such user data" handleClick={handleFocus} />
           </div>
       )
   }

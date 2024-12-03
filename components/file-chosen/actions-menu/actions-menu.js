@@ -8,7 +8,6 @@ import {
   ToggleIDViewGlobalContext,
   FileDataGlobalContext,
   ShowAllMetricsContext,
-  IsContainingSubheadersContext,
 } from "@/context/global-context";
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
@@ -27,11 +26,11 @@ function ActionsMenu({
                        hideDB_ID_Tile,
                        setNumberOfOutputs,
                        handleResetID,
+                       handleSubheadersChange,
                        handleFileChange,
                      }) {
 
   const { isFetched } = useContext(FileDataGlobalContext);
-  const { overrideSubheadersDetection } = useContext(IsContainingSubheadersContext);
 
   const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
   const [ , setExcludedArray ] = useContext(ExcludedDataGlobalContext);
@@ -42,8 +41,8 @@ function ActionsMenu({
 
   const showHideDB_ID = toggleIDView ? "Hide" : "Show";
   const showHide0Values = showAllMetrics ? "Hide 0's" : "Show all";
-
   const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
+  const containsSubheader = isSubheaders ? "Contains subheader" : "Doesn't contain subheader";
 
   const handleDeleteAll = () => {
     setNumberOfOutputs([]);
@@ -167,8 +166,8 @@ function ActionsMenu({
                             className={classes.menuItem}
                             hasDivider
           />
-          <OverflowMenuItem itemText="Contains subheaders"
-                            onClick={overrideSubheadersDetection}
+          <OverflowMenuItem itemText={containsSubheader}
+                            onClick={handleSubheadersChange}
                             isDelete={true}
                             className={classes.menuItem}
                             hasDivider

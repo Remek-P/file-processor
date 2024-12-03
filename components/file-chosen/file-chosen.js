@@ -2,18 +2,17 @@ import { useContext, useState } from "react";
 
 import {
   DecimalDataProvider,
-  ExcludedDataProvider, IsContainingSubheadersContext,
+  ExcludedDataProvider,
   SearchSuggestionsOrderGlobalProvider,
-  ShowAllMetricsProvider
+  ShowAllMetricsProvider,
+  IsContainingSubheadersContext,
 } from "@/context/global-context";
 
 import DisplayOutput from "@/components/output/displayOutput/displayOutput";
 import ActionsMenu from "@/components/file-chosen/actions-menu/actions-menu";
 import IdNotAvailable from "@/components/output/id-not-available/id-not-available";
-
+import AreYouSure from "@/components/notifications/are-you-sure/are-you-sure";
 import ExcludedData from "@/components/output/excluded-data/excluded-data";
-
-import { isContainingSubheaders } from "@/utils/parserUtils";
 
 import { ID_LABEL } from "@/constants/constants";
 
@@ -26,12 +25,10 @@ function FileChosen({
                       handleFileChange,
                     }) {
 
-  const { isSubheaders } = useContext(IsContainingSubheadersContext);
+  const { isSubheaders, overrideSubheadersDetection } = useContext(IsContainingSubheadersContext);
 
-  const [numberOfOutputs, setNumberOfOutputs] = useState([{delete: false}]);
-
-  // const isSubheaders = useMemo(() =>
-  //     isContainingSubheaders(file), [file]);
+  const [ numberOfOutputs, setNumberOfOutputs ] = useState([{delete: false}]);
+  const [ isNotificationVisible, setIsNotificationVisible ] = useState(false);
 
   const labelArray = isSubheaders === true ? file[1] : file[0];
 
@@ -65,6 +62,19 @@ function FileChosen({
     setIDIndex(-1);
   }
 
+  const handleSubheadersChange = () => {
+    setIsNotificationVisible(true);
+  }
+
+  const handleRejectNotification = () => {
+    setIsNotificationVisible(false);
+  }
+  const handleConfirmNotification = () => {
+    overrideSubheadersDetection();
+    setIsNotificationVisible(false);
+  }
+
+
   if (IDIndex === -1) return <IdNotAvailable labels={labelArray}
                                              handleIDPick={handleIDPick}/>
 
@@ -83,6 +93,7 @@ function FileChosen({
                            setNumberOfOutputs={setNumberOfOutputs}
                            addPerson={addPerson}
                            handleResetID={handleResetID}
+                           handleSubheadersChange={handleSubheadersChange}
                            handleFileChange={handleFileChange}
               />
 
@@ -99,6 +110,11 @@ function FileChosen({
               <ul className={`${classes[hideHiddenArraysWhenNoUser]}`}>
                 <ExcludedData />
               </ul>
+
+              {isNotificationVisible &&
+                  <AreYouSure handleConfirm={handleConfirmNotification}
+                              handleReject={handleRejectNotification} />
+              }
 
             </section>
 

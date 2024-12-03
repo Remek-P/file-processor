@@ -2,7 +2,7 @@ import { Tile } from "@carbon/react";
 
 import classes from "../tile.module.scss";
 
-function TexTile({ text, handleClick, type, children = null }) {
+function TextTile({ text, handleClick, type, children = null }) {
 
   if (type === "children") {
     return (
@@ -20,4 +20,4 @@ function TexTile({ text, handleClick, type, children = null }) {
   );
 }
 
-export default TexTile;
+export default TextTile;

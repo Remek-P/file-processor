@@ -1,4 +1,4 @@
-import TexTile from "@/components/tile-type/text-tile/texTile";
+import TextTile from "@/components/tile-type/text-tile/textTile";
 import { Tile } from "@carbon/react";
 
 import classes from "../output.module.scss"
@@ -6,7 +6,7 @@ import classes from "../output.module.scss"
 function IdNotAvailable({ labels, handleIDPick }) {
   return (
 
-      <TexTile type="children">
+      <TextTile type="children">
         <h2>Please select the unique Identification Number</h2>
         <ul className={classes.grid}>
           {
@@ -17,7 +17,7 @@ function IdNotAvailable({ labels, handleIDPick }) {
             )
           }
         </ul>
-      </TexTile>
+      </TextTile>
 
   );
 }

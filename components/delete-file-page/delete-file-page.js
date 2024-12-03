@@ -6,7 +6,7 @@ import { FileDataGlobalContext } from "@/context/global-context";
 
 import { deleteData, deleteDataAll, getFileNames } from "@/utils/create-indexedDB";
 
-import TexTile from "@/components/tile-type/text-tile/texTile";
+import TextTile from "@/components/tile-type/text-tile/textTile";
 import DeleteFileListItem from "@/components/delete-file-page/delete-file-list/delete-file-list-item";
 
 import classes from "./delete-file.module.scss";
@@ -75,7 +75,7 @@ function DeleteFilePage() {
 
         {
           isFiles &&
-            <TexTile type="children">
+            <TextTile type="children">
               <h3>Choose files to delete</h3>
 
               <article className={classes.deleteList} role="list">
@@ -114,7 +114,7 @@ function DeleteFilePage() {
                     />
                 }
               </div>
-            </TexTile>
+            </TextTile>
         }
 
       </section>

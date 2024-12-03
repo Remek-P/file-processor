@@ -5,7 +5,7 @@ import {FileDataGlobalContext, IsContainingSubheadersContext, ToggleIDViewProvid
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
 import FileChosenFallback from "@/components/file-chosen/error-boundary/file-chosen-fallback";
-import TexTile from "@/components/tile-type/text-tile/texTile";
+import TextTile from "@/components/tile-type/text-tile/textTile";
 import ErrorBoundary from "@/components/error-boundary/error-boundary";
 
 import { addData, deleteData, getData } from "@/utils/create-indexedDB";
@@ -214,7 +214,7 @@ export default function HomePage() {
 
           {
               showWarnings && warnings.map((warning, index) => {
-                return <TexTile key={index} text={warning} handleClick={() => deleteWarning(index)} />;
+                return <TextTile key={index} text={warning} handleClick={() => deleteWarning(index)} />;
               })
           }
 

@@ -5,7 +5,7 @@ import ShortList from "@/components/output/display-multiple-suggestions/list/sho
 
 import useWindowDimensions from "@/utils/useWindowSize";
 
-import TexTile from "@/components/tile-type/text-tile/texTile";
+import TextTile from "@/components/tile-type/text-tile/textTile";
 
 import { Loading } from "@carbon/react";
 

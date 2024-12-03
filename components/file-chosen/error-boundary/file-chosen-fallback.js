@@ -1,5 +1,5 @@
 import React from "react";
-import TexTile from "@/components/tile-type/text-tile/texTile";
+import TextTile from "@/components/tile-type/text-tile/textTile";
 import { Button } from "@carbon/react";
 import classes from "./file-chosen-fallback.module.scss";
 import Link from "next/link";
@@ -19,7 +19,7 @@ function FileChosenFallback({ fileName, syncAction = null, asyncAction = null })
   };
 
   return (
-      <TexTile type="children">
+      <TextTile type="children">
         <h2>The {fileName} file is unsupported or has been corrupted.</h2>
         <div className={classes.buttonContainer}>
           <Button className={classes.button} kind="danger" onClick={handleAsyncClick}>Delete file</Button>
@@ -27,7 +27,7 @@ function FileChosenFallback({ fileName, syncAction = null, asyncAction = null })
             <Button className={classes.button} kind="primary" onClick={handleSyncClick}>Load other file</Button>
           </Link>
         </div>
-      </TexTile>
+      </TextTile>
   );
 }
 

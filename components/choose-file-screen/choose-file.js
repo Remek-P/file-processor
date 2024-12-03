@@ -16,8 +16,6 @@ function ChooseFile({
   const [isUpdate, setIsUpdate] = useState(false);
   const [isFileDelivered, setIsFileDelivered] = useState(false);
 
-  // TODO: fails when default name - no update?
-
   return (
       <section className={classes.chooseFileContainer}>
 
