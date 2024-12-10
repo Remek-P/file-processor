@@ -188,7 +188,7 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    !file ? handleFileChange() : null;
+    file ? handleFileChange() : null;
   }, []);
 
   //TODO: error boundary to ChooseFile;
