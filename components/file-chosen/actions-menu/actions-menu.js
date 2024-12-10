@@ -42,7 +42,7 @@ function ActionsMenu({
   const showHideDB_ID = toggleIDView ? "Hide" : "Show";
   const showHide0Values = showAllMetrics ? "Hide 0's" : "Show all";
   const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
-  const containsSubheader = isSubheaders ? "Contains subheader" : "Doesn't contain subheader";
+  const containsSubheader = !isSubheaders ? "Contains subheader" : "No subheader";
 
   const handleDeleteAll = () => {
     setNumberOfOutputs([]);
