@@ -2,7 +2,7 @@ import Output from "@/components/output/output";
 
 import classes from "@/components/file-chosen/file-chosen.module.scss";
 
-function DisplayOutput({
+function DisplayOutputs({
                          IDIndex,
 
                          hideDB_ID_Tile,
@@ -59,4 +59,4 @@ function DisplayOutput({
   );
 }
 
-export default DisplayOutput;
+export default DisplayOutputs;

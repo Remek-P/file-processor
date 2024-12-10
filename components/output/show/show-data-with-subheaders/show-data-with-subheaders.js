@@ -1,4 +1,12 @@
 import { useRef, useState } from "react";
+
+import SectionLayoutWithSubheaders
+  from "@/components/output/section-layout/section-layout-with-subheaders/section-layout-with-subheaders";
+import ShowNumbers from "@/components/output/show/show-metrics/show-numbers";
+import ShowStringsAsNumbers from "@/components/output/show/show-metrics/show-strings-as-numbers";
+import ShowDate from "@/components/output/show/show-metrics/show-date";
+import ShowValues from "@/components/output/show/show-metrics/show-values";
+
 import {
   checkForNumber,
   checkForString,
@@ -6,12 +14,8 @@ import {
   regexOverall,
   separateNumbersAndStrings
 } from "@/utils/sortUtils";
-import SectionLayoutWithSubheaders from "@/components/output/section/section-layout/section-layout-with-subheaders/section-layout-with-subheaders";
-import ShowNumbers from "@/components/output/section/show/show-metrics/show-numbers";
-import ShowStringsAsNumbers from "@/components/output/section/show/show-metrics/show-strings-as-numbers";
+
 import { dateValidator } from "@/utils/dateUtils";
-import ShowDate from "@/components/output/section/show/show-metrics/show-date";
-import ShowValues from "@/components/output/section/show/show-metrics/show-values";
 
 function ShowDataWithSubheaders({
                                   value,

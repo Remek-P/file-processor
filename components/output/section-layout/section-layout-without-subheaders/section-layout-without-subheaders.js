@@ -1,10 +1,9 @@
 import { useRef, useContext } from "react";
 
+import ActionToggle from "@/components/output/action-toggle/action-toggle";
+
 import {ExcludedDataGlobalContext} from "@/context/global-context";
 
-import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
-
-import { Tile } from "@carbon/react";
 import { Percentage, DataFormat, ViewOff } from "@carbon/icons-react";
 
 import classes from "@/components/output/output.module.scss";
@@ -51,7 +50,7 @@ function SectionLayoutWithoutSubheaders({
   const hidden = isContainingItemFromArray(value, excludedArray) ? {display: "none"} : null;
 
   return (
-      <Tile className={`${classes.optionContainer} shadow`} style={hidden} aria-hidden={!!hidden}>
+      <div className={classes.optionContainer} style={hidden} aria-hidden={!!hidden}>
 
         {children}
 
@@ -78,7 +77,7 @@ function SectionLayoutWithoutSubheaders({
 
         </div>
 
-      </Tile>
+      </div>
   );
 }
 

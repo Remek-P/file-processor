@@ -64,7 +64,7 @@ function ActionsMenu({
   }
 
   const handleLink = () => {
-    router.push(`/delete-file`);
+    router.push('/delete-file', undefined, { shallow: true });
   }
 
   const handleShowAllHiddenArrays = () => {
@@ -97,12 +97,12 @@ function ActionsMenu({
                             hasDivider
           />
 
-          <OverflowMenuItem itemText="Hide All Sections"
+          <OverflowMenuItem itemText="Hide All DisplayData"
                             onClick={handleHideAllArrays}
                             className={classes.menuItem}
                             hasDivider
           />
-          <OverflowMenuItem itemText="Show All Sections"
+          <OverflowMenuItem itemText="Show All DisplayData"
                             onClick={handleShowAllHiddenArrays}
                             className={classes.menuItem}
           />

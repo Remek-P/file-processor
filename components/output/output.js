@@ -1,8 +1,8 @@
 import { useContext, useMemo, useRef, useState } from "react";
 
 import Search from "@/components/search/search";
-import DeleteOutput from "@/components/output/deleteOutput/deleteOutput";
-import Sections from "@/components/output/section/sections";
+import DeleteOutput from "@/components/output/delete-output/delete-output";
+import DisplayData from "@/components/output/display-data/display-data";
 
 import {
   FileDataGlobalContext,
@@ -80,16 +80,16 @@ function Output({
 
         </div>
 
-        <Sections IDIndex={IDIndex}
-                  file={file}
-                  headersArray={headersArray}
-                  userDataArray={userDataArray}
-                  inputValue={inputValue}
-                  setInputValue={setInputValue}
-                  hideDB_ID_Tile={hideDB_ID_Tile}
-                  searchSuggestionsOrder={searchSuggestionsOrder}
-                  setSearchSuggestionsOrder={setSearchSuggestionsOrder}
-                  handleFocus={handleFocus}
+        <DisplayData IDIndex={IDIndex}
+                     file={file}
+                     headersArray={headersArray}
+                     userDataArray={userDataArray}
+                     inputValue={inputValue}
+                     setInputValue={setInputValue}
+                     hideDB_ID_Tile={hideDB_ID_Tile}
+                     searchSuggestionsOrder={searchSuggestionsOrder}
+                     setSearchSuggestionsOrder={setSearchSuggestionsOrder}
+                     handleFocus={handleFocus}
         />
       </>
   );

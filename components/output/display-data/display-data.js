@@ -2,12 +2,12 @@ import { useContext, useMemo } from "react";
 
 import TextTile from "@/components/tile-type/text-tile/textTile";
 import DisplayMultipleSuggestions from "@/components/output/display-multiple-suggestions/display-multiple-suggestions";
-import DisplaySingleOutput from "@/components/output/display-single-output/display-single-output";
+import DisplaySearchedData from "@/components/output/display-searched-data/display-searched-data";
 
 import classes from "../output.module.scss";
 import { IsContainingSubheadersContext } from "@/context/global-context";
 
-function Sections({
+function DisplayData({
                     IDIndex,
                     headersArray,
                     inputValue,
@@ -28,7 +28,7 @@ function Sections({
   const searchResult = searchRecords.filter(record => record[IDIndex] === inputValue);
   const colDataArray = searchResult[0];
 
-  const displayData = () => {
+  const display = () => {
 
     if (!inputValue)
       return (
@@ -39,7 +39,7 @@ function Sections({
     else if (searchResult.length === 1)
       return (
               <div className={classes.grid}>
-                <DisplaySingleOutput colDataArray={colDataArray}
+                <DisplaySearchedData colDataArray={colDataArray}
                                      isSubheaders={isSubheaders}
                                      labelDataArray={labelDataArray}
                                      hideDB_ID_Tile={hideDB_ID_Tile}
@@ -72,10 +72,10 @@ function Sections({
 
   return (
       <>
-        { displayData() }
+        { display() }
       </>
 
   );
 }
 
-export default Sections;
+export default DisplayData;

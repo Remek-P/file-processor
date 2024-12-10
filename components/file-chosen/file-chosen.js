@@ -8,7 +8,7 @@ import {
   IsContainingSubheadersContext,
 } from "@/context/global-context";
 
-import DisplayOutput from "@/components/output/displayOutput/displayOutput";
+import DisplayOutput from "@/components/output/display-outputs/display-outputs";
 import ActionsMenu from "@/components/file-chosen/actions-menu/actions-menu";
 import IdNotAvailable from "@/components/output/id-not-available/id-not-available";
 import AreYouSure from "@/components/notifications/are-you-sure/are-you-sure";

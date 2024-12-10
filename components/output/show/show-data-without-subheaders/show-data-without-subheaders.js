@@ -1,18 +1,22 @@
-import React, {useContext, useRef, useState} from 'react';
+import { useContext, useRef, useState } from 'react';
+
+import SectionLayoutWithoutSubheaders
+  from "@/components/output/section-layout/section-layout-without-subheaders/section-layout-without-subheaders";
+import ShowNumbers from "@/components/output/show/show-metrics/show-numbers";
+import ShowStringsAsNumbers from "@/components/output/show/show-metrics/show-strings-as-numbers";
+import ShowDate from "@/components/output/show/show-metrics/show-date";
+import ShowValues from "@/components/output/show/show-metrics/show-values";
+
 import {
   checkForNumber,
   checkForString,
   regexOverall,
   separateNumbersAndStrings
 } from "@/utils/sortUtils";
-import SectionLayoutWithoutSubheaders
-  from "@/components/output/section/section-layout/section-layout-without-subheaders/section-layout-without-subheaders";
-import ShowNumbers from "@/components/output/section/show/show-metrics/show-numbers";
-import ShowStringsAsNumbers from "@/components/output/section/show/show-metrics/show-strings-as-numbers";
-import {dateValidator} from "@/utils/dateUtils";
-import ShowDate from "@/components/output/section/show/show-metrics/show-date";
-import ShowValues from "@/components/output/section/show/show-metrics/show-values";
-import {ShowAllMetricsContext} from "@/context/global-context";
+
+import { dateValidator } from "@/utils/dateUtils";
+
+import { ShowAllMetricsContext } from "@/context/global-context";
 
 function ShowDataWithoutSubheaders({
                                      value,

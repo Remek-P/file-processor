@@ -2,7 +2,7 @@ import {useState, useRef, useContext} from "react";
 
 import {ExcludedDataGlobalContext} from "@/context/global-context";
 
-import ActionToggle from "@/components/output/section/action-toggle/action-toggle";
+import ActionToggle from "@/components/output/action-toggle/action-toggle";
 
 import { DonutChart, SimpleBarChart } from "@carbon/charts-react";
 import { Tile, Toggle } from "@carbon/react";

@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 
 import {FileDataGlobalContext, IsContainingSubheadersContext, ToggleIDViewProvider} from "@/context/global-context";
 
@@ -186,6 +186,10 @@ export default function HomePage() {
   const timeStamp = () => {
     return `${dayjs().format('YYYY-MM-DD HH:mm')}`;
   }
+
+  useEffect(() => {
+    !file ? handleFileChange() : null;
+  }, []);
 
   //TODO: error boundary to ChooseFile;
 
