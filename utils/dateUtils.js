@@ -57,10 +57,18 @@ const dateFormats = [
   "MM/DD/YYYY",       // 10/15/2023
   "MM DD YYYY",       // 10 15 2023
   "MM.DD.YYYY",       // 10.15.2023
-  "MM-D-YYYY",       // 10-15-2023
-  "MM/D/YYYY",       // 10/15/2023
-  "MM D YYYY",       // 10 15 2023
-  "MM.D.YYYY",       // 10.15.2023
+  "MM-D-YYYY",       // 10-5-2023
+  "MM/D/YYYY",       // 10/5/2023
+  "MM D YYYY",       // 10 5 2023
+  "MM.D.YYYY",       // 10.5.2023
+  "M-DD-YYYY",       // 1/15/2023
+  "M DD YYYY",       // 1/15/2023
+  "M.DD.YYYY",       // 1/15/2023
+  "M/DD/YYYY",       // 1/15/2023
+  "M-DD-YY",       // 1/15/23
+  "M DD YY",       // 1/15/23
+  "M.DD.YY",       // 1/15/23
+  "M/DD/YY",       // 1/15/23
   "DD-MMMM-YYYY",       // 15-10-2023
   "DD/MMMM/YYYY",       // 15/10/2023
   "DD MMMM YYYY",       // 15 10 2023

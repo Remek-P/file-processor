@@ -1,6 +1,6 @@
 import {useContext} from "react";
 
-import ShowValues from "@/components/output/show/show-metrics/show-values";
+import ShowValues from "@/components/output/show-metrics/show-values";
 
 import {DecimalGlobalContext} from "@/context/global-context";
 

@@ -1,4 +1,4 @@
-import ShowValues from "@/components/output/show/show-metrics/show-values";
+import ShowValues from "@/components/output/show-metrics/show-values";
 
 
 function ShowDate({ value, label }) {

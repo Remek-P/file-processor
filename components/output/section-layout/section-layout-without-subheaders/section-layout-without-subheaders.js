@@ -10,7 +10,7 @@ import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
 
 function SectionLayoutWithoutSubheaders({
-                                          value,
+                                          label,
                                           dataType,
                                           showPercentages,
                                           setShowPercentages,
@@ -26,8 +26,8 @@ function SectionLayoutWithoutSubheaders({
   const percentagesDescription = "toggle percentages"
   const dataDescription = "Format date";
 
-  const isNumber = dataType.current === "number";
-  const isDate = dataType.current === "date";
+  const isNumber = dataType === "number";
+  const isDate = dataType === "date";
 
   const handleTogglePercentages = () => {
     // if (decimal === undefined) setDecimal(2);
@@ -47,7 +47,7 @@ function SectionLayoutWithoutSubheaders({
     return arr.includes(item)
   }
 
-  const hidden = isContainingItemFromArray(value, excludedArray) ? {display: "none"} : null;
+  const hidden = isContainingItemFromArray(label, excludedArray) ? {display: "none"} : null;
 
   return (
       <div className={classes.optionContainer} style={hidden} aria-hidden={!!hidden}>
@@ -58,7 +58,7 @@ function SectionLayoutWithoutSubheaders({
 
           <ActionToggle onClick={excludeFromDisplaying}
                         description="Hide"
-                        value={value}
+                        value={label}
                         valueRef={valueRef}>
             <ViewOff className={classes.iconFill}/>
           </ActionToggle>

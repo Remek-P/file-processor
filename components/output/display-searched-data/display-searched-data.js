@@ -1,9 +1,11 @@
 import { useContext } from "react";
 
-import Show from "@/components/output/show/show";
-
 import { HEADER_LABEL } from "@/constants/constants";
-import { ToggleIDViewGlobalContext } from "@/context/global-context";
+import { IsContainingSubheadersContext } from "@/context/global-context";
+
+
+import ShowDataWithoutSubheaders from "@/components/output/show-data-without-subheaders/show-data-without-subheaders";
+import ShowDataWithSubheaders from "@/components/output/show-data-with-subheaders/show-data-with-subheaders";
 
 function DisplaySearchedData({
                                colDataArray,
@@ -12,42 +14,23 @@ function DisplaySearchedData({
                                headerDataArray,
                              }) {
 
-  const [ toggleIDView ] = useContext(ToggleIDViewGlobalContext);
+  // const [ toggleIDView ] = useContext(ToggleIDViewGlobalContext);
+  const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
   const excelFileUniqueValues = [... new Set(headerDataArray)];
   
   const filteredOutDB_ID =  excelFileUniqueValues.filter(item => item !== HEADER_LABEL);
 
-  // return <DetectDataSubheaders colDataArray={colDataArray}
-  //                              labelDataArray={labelDataArray}
-  //                              headerDataArray={headerDataArray}
-  //                              filteredOutDB_ID={filteredOutDB_ID}
-  //                              excelFileUniqueValues={excelFileUniqueValues}
-  // />
-
-  return (
-      <>
-
-        {
-          filteredOutDB_ID.map(value =>
-              <Show key={value}
-                    value={value}
-                    colDataArray={colDataArray}
-                    labelDataArray={labelDataArray}
-                    headerDataArray={headerDataArray}
-              />
-          )
-        }
-        {
-          !hideDB_ID_Tile && toggleIDView &&
-            <Show value={HEADER_LABEL}
-                  colDataArray={colDataArray}
-                  labelDataArray={labelDataArray}
-                  headerDataArray={headerDataArray}
-            />
-        }
-      </>
-  );
+  return isSubheaders === true
+      ? <ShowDataWithSubheaders colDataArray={colDataArray}
+                          labelDataArray={labelDataArray}
+                          headerDataArray={headerDataArray}
+                          filteredOutDB_ID={filteredOutDB_ID}
+                          hideDB_ID_Tile={hideDB_ID_Tile}
+      />
+      : <ShowDataWithoutSubheaders colDataArray={colDataArray}
+                                   labelDataArray={labelDataArray}
+      />
 }
 
 export default DisplaySearchedData;

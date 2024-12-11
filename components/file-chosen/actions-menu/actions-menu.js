@@ -97,12 +97,12 @@ function ActionsMenu({
                             hasDivider
           />
 
-          <OverflowMenuItem itemText="Hide All DisplayData"
+          <OverflowMenuItem itemText="Hide All Data"
                             onClick={handleHideAllArrays}
                             className={classes.menuItem}
                             hasDivider
           />
-          <OverflowMenuItem itemText="Show All DisplayData"
+          <OverflowMenuItem itemText="Show All Data"
                             onClick={handleShowAllHiddenArrays}
                             className={classes.menuItem}
           />

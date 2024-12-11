@@ -166,7 +166,7 @@ function SectionLayoutWithSubheaders({
                          aria-labelledby="show/hide all metrics"
                          disabled={false}
                          hideLabel={false}
-                         className={null}
+                         className={classes.zeroToggle}
               />
           }
         </div>

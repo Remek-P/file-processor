@@ -78,7 +78,6 @@ export const FileDataProvider = ({ children }) => {
 }
 
 export const DecimalGlobalContext = createContext(null);
-
 export const DecimalDataProvider = ({ children }) => (
     <DecimalGlobalContext.Provider value={useState(undefined)}>
       { children }
@@ -86,7 +85,6 @@ export const DecimalDataProvider = ({ children }) => (
 );
 
 export const PercentGlobalContext = createContext(null);
-
 export const PercentDataProvider = ({ children }) => (
     <PercentGlobalContext.Provider value={useState(undefined)}>
       { children }
@@ -94,7 +92,6 @@ export const PercentDataProvider = ({ children }) => (
 );
 
 export const ExcludedDataGlobalContext = createContext([]);
-
 export const ExcludedDataProvider = ({ children }) => (
     <ExcludedDataGlobalContext.Provider value={useState([])}>
       { children }
@@ -116,7 +113,6 @@ export const ShowAllMetricsProvider = ({ children }) => (
 );
 
 export const SearchSuggestionsOrderGlobalContext = createContext(null);
-
 export const SearchSuggestionsOrderGlobalProvider = ({ children }) => (
     <SearchSuggestionsOrderGlobalContext.Provider value={useState(undefined)}>
       { children }
@@ -124,7 +120,6 @@ export const SearchSuggestionsOrderGlobalProvider = ({ children }) => (
 );
 
 export const IsContainingSubheadersContext = createContext(null);
-
 export const IsContainingSubheadersProvider = ({ children }) => {
   const [isSubheaders, setIsSubheaders] = useState(undefined);
 

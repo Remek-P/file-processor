@@ -202,3 +202,8 @@
   align-items: center;
   margin-left: -15px; //offsetting padding from the button
 }
+
+//Toggle's label is displayed first, to suit the layout.
+.zeroToggle * span {
+  order: -1;
+}

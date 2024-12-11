@@ -2,10 +2,10 @@ import { useRef, useState } from "react";
 
 import SectionLayoutWithSubheaders
   from "@/components/output/section-layout/section-layout-with-subheaders/section-layout-with-subheaders";
-import ShowNumbers from "@/components/output/show/show-metrics/show-numbers";
-import ShowStringsAsNumbers from "@/components/output/show/show-metrics/show-strings-as-numbers";
-import ShowDate from "@/components/output/show/show-metrics/show-date";
-import ShowValues from "@/components/output/show/show-metrics/show-values";
+import ShowNumbers from "@/components/output/show-metrics/show-numbers";
+import ShowStringsAsNumbers from "@/components/output/show-metrics/show-strings-as-numbers";
+import ShowDate from "@/components/output/show-metrics/show-date";
+import ShowValues from "@/components/output/show-metrics/show-values";
 
 import {
   checkForNumber,
@@ -17,7 +17,7 @@ import {
 
 import { dateValidator } from "@/utils/dateUtils";
 
-function ShowDataWithSubheaders({
+function DisplayDataWithSubheaders({
                                   value,
                                   colDataArray,
                                   labelDataArray,
@@ -84,7 +84,7 @@ function ShowDataWithSubheaders({
   }
 
   const { sortedData, sortedLabels } = sortDataAndLabelsArrayTogether();
-
+  
   return (
 
       <SectionLayoutWithSubheaders value={value}
@@ -195,4 +195,4 @@ function ShowDataWithSubheaders({
   );
 }
 
-export default ShowDataWithSubheaders;
+export default DisplayDataWithSubheaders;
