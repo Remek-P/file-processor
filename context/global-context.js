@@ -141,3 +141,10 @@ export const IsContainingSubheadersProvider = ({ children }) => {
       </IsContainingSubheadersContext.Provider>
   );
 };
+
+export const SearchReducePerformanceContext = createContext(null);
+export const SearchReducePerformanceProvider = ({ children }) => (
+    <SearchReducePerformanceContext.Provider value={useState(true)}>
+      { children }
+    </SearchReducePerformanceContext.Provider>
+);

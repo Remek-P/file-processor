@@ -6,6 +6,7 @@ import {
   SearchSuggestionsOrderGlobalProvider,
   ShowAllMetricsProvider,
   IsContainingSubheadersContext,
+  SearchReducePerformanceProvider,
 } from "@/context/global-context";
 
 import DisplayOutput from "@/components/output/display-outputs/display-outputs";
@@ -17,6 +18,7 @@ import ExcludedData from "@/components/output/excluded-data/excluded-data";
 import { ID_LABEL } from "@/constants/constants";
 
 import classes from "./file-chosen.module.scss";
+import ProviderWrapper from "@/components/provider-wrapper/provider-wrapper";
 
 
 function FileChosen({
@@ -79,10 +81,7 @@ function FileChosen({
                                              handleIDPick={handleIDPick}/>
 
   return (
-      <DecimalDataProvider>
-        <ExcludedDataProvider>
-          <ShowAllMetricsProvider>
-            <SearchSuggestionsOrderGlobalProvider>
+      <ProviderWrapper>
 
             <section className={classes.sectionContainer}>
 
@@ -118,10 +117,7 @@ function FileChosen({
 
             </section>
 
-            </SearchSuggestionsOrderGlobalProvider>
-          </ShowAllMetricsProvider>
-        </ExcludedDataProvider>
-      </DecimalDataProvider>
+      </ProviderWrapper>
   );
 }
 
