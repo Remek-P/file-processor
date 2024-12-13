@@ -5,7 +5,7 @@ import DisplayMultipleSuggestions from "@/components/output/display-multiple-sug
 import DisplaySearchedData from "@/components/output/display-searched-data/display-searched-data";
 
 import classes from "../output.module.scss";
-import { IsContainingSubheadersContext } from "@/context/global-context";
+import {IsContainingSubheadersContext, SearchReducePerformanceContext} from "@/context/global-context";
 
 function DisplayData({
                     IDIndex,
@@ -20,13 +20,21 @@ function DisplayData({
                   }) {
 
   const { isSubheaders } = useContext(IsContainingSubheadersContext);
+  const [ isPerformanceStrainReduced ] = useContext(SearchReducePerformanceContext);
 
   const headerDataArray = isSubheaders ? headersArray[0] : headersArray;
   const labelDataArray = isSubheaders ? headersArray[1] : headersArray;
 
-  const searchRecords = useMemo(() => userDataArray.filter((user) => user.toString().toLowerCase().includes(inputValue.toLowerCase())), [inputValue, userDataArray, IDIndex, searchSuggestionsOrder, isSubheaders]);
+  const searchRecords = useMemo(() => userDataArray.filter((user) =>
+          user.toString()
+              .toLowerCase()
+              .includes( inputValue.toLowerCase() )
+      ),
+      [inputValue, userDataArray, IDIndex, searchSuggestionsOrder, isSubheaders]
+  );
   const searchResult = searchRecords.filter(record => record[IDIndex] === inputValue);
   const colDataArray = searchResult[0];
+  const characters = 3;
 
   const display = () => {
 
@@ -36,17 +44,25 @@ function DisplayData({
             <TextTile text="Type to search" handleClick={handleFocus} />
           </div>
       )
+
+    else if (isPerformanceStrainReduced && inputValue.length < characters)
+      return (
+          <div className={classes.select}>
+            <TextTile text={`Please type at least ${characters} characters to display search results. To deactivate this feature, please use the menu.`} />
+          </div>
+      )
+
     else if (searchResult.length === 1)
       return (
-              <div className={classes.grid}>
-                <DisplaySearchedData colDataArray={colDataArray}
-                                     isSubheaders={isSubheaders}
-                                     labelDataArray={labelDataArray}
-                                     hideDB_ID_Tile={hideDB_ID_Tile}
-                                     headerDataArray={headerDataArray}
-                />
-              </div>
-          )
+          <div className={classes.grid}>
+            <DisplaySearchedData colDataArray={colDataArray}
+                                 isSubheaders={isSubheaders}
+                                 labelDataArray={labelDataArray}
+                                 hideDB_ID_Tile={hideDB_ID_Tile}
+                                 headerDataArray={headerDataArray}
+            />
+          </div>
+      )
 
     else if (searchRecords.length > 1)
       return (
@@ -59,7 +75,7 @@ function DisplayData({
                                         setSearchSuggestionsOrder={setSearchSuggestionsOrder}
             />
           </div>
-          )
+      )
 
     else
       return (

@@ -48,10 +48,6 @@ function DisplayMultipleSuggestions({
 
   const isLongList = searchRecords.length > 500;
 
-  // const reducePerformanceStrain = inputValue.length < 3;
-  //
-  // if (reducePerformanceStrain) return <TexTile text={"Please type at least 2 characters to display search results"} />
-
   return (
     // The section style is necessary for ShortList component, to display sticky menu
     (<section style={!isLongList ? {overflow: "auto", height: height} : null}>

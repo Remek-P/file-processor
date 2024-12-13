@@ -14,7 +14,6 @@ function DisplaySearchedData({
                                headerDataArray,
                              }) {
 
-  // const [ toggleIDView ] = useContext(ToggleIDViewGlobalContext);
   const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
   const excelFileUniqueValues = [... new Set(headerDataArray)];

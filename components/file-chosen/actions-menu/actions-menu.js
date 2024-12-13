@@ -7,7 +7,7 @@ import {
   SearchSuggestionsOrderGlobalContext,
   ToggleIDViewGlobalContext,
   FileDataGlobalContext,
-  ShowAllMetricsContext,
+  ShowAllMetricsContext, SearchReducePerformanceContext,
 } from "@/context/global-context";
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
@@ -36,6 +36,7 @@ function ActionsMenu({
   const [ , setExcludedArray ] = useContext(ExcludedDataGlobalContext);
   const [ toggleIDView, setToggleIDView ] = useContext(ToggleIDViewGlobalContext);
   const [ showAllMetrics, setShowAllMetrics ] = useContext(ShowAllMetricsContext);
+  const [ isPerformanceStrainReduced, setIsPerformanceStrainReduced ] = useContext(SearchReducePerformanceContext);
 
   const router = useRouter();
 
@@ -43,6 +44,7 @@ function ActionsMenu({
   const showHide0Values = showAllMetrics ? "Hide 0's" : "Show all";
   const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
   const containsSubheader = !isSubheaders ? "Contains subheader" : "No subheader";
+  const reducePerformanceStrain = isPerformanceStrainReduced ? "Search limit off" : "Search limit on";
 
   const handleDeleteAll = () => {
     setNumberOfOutputs([]);
@@ -79,6 +81,10 @@ function ActionsMenu({
     setSearchSuggestionsOrder(prevState => !prevState);
   }
 
+  const handleSearchReducePerformance = () => {
+    setIsPerformanceStrainReduced(prevState => !prevState);
+  }
+
   // TODO: Reset all data changes
 
   return (
@@ -102,10 +108,12 @@ function ActionsMenu({
                             className={classes.menuItem}
                             hasDivider
           />
+
           <OverflowMenuItem itemText="Show All Data"
                             onClick={handleShowAllHiddenArrays}
                             className={classes.menuItem}
           />
+
           {isFetched && <OverflowMenuItem itemText="Refresh Data"
                                           onClick={refreshData}
                                           className={classes.menuItem}
@@ -118,10 +126,12 @@ function ActionsMenu({
                             className={classes.menuItem}
                             hasDivider
           />
+
           <OverflowMenuItem itemText="Reset"
                             onClick={handleSuggestionsDefaultOrder}
                             className={classes.menuItem}
           />
+
           <OverflowMenuItem itemText={searchOrder}
                             onClick={handleSuggestionsOrder}
                             className={classes.menuItem}
@@ -134,14 +144,15 @@ function ActionsMenu({
                             className={classes.menuItem}
                             hasDivider
           />
+
           {!hideDB_ID_Tile
               && <OverflowMenuItem itemText={`${showHideDB_ID} DB ID`}
                                                 onClick={handleIDView}
                                                 isDelete={true}
                                                 className={classes.menuItem}
                                                 aria-hidden={hideDB_ID_Tile}
-          />
-          }
+          />}
+
           {!isSubheaders
               && <OverflowMenuItem itemText={showHide0Values}
                                    onClick={handleShowAllMetrics}
@@ -149,25 +160,37 @@ function ActionsMenu({
                                    aria-hidden={!isSubheaders}
               />
           }
+
           <ResetFormating />
+
           <OverflowMenuItem itemText="Delete All"
                             onClick={handleDeleteAll}
                             isDelete={true}
                             className={classes.menuItem}
           />
+
           <OverflowMenuItem itemText="Change File"
                             onClick={handleFileChange}
                             isDelete={true}
                             className={classes.menuItem}
           />
+
           <OverflowMenuItem itemText="Delete stored files"
                             onClick={handleLink}
                             isDelete={true}
                             className={classes.menuItem}
                             hasDivider
           />
+
           <OverflowMenuItem itemText={containsSubheader}
                             onClick={handleSubheadersChange}
+                            isDelete={true}
+                            className={classes.menuItem}
+                            hasDivider
+          />
+
+          <OverflowMenuItem itemText={reducePerformanceStrain}
+                            onClick={handleSearchReducePerformance}
                             isDelete={true}
                             className={classes.menuItem}
                             hasDivider
