@@ -1,12 +1,7 @@
 import { useContext, useState } from "react";
 
 import {
-  DecimalDataProvider,
-  ExcludedDataProvider,
-  SearchSuggestionsOrderGlobalProvider,
-  ShowAllMetricsProvider,
   IsContainingSubheadersContext,
-  SearchReducePerformanceProvider,
 } from "@/context/global-context";
 
 import DisplayOutput from "@/components/output/display-outputs/display-outputs";

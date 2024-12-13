@@ -5,8 +5,6 @@ import ShortList from "@/components/output/display-multiple-suggestions/list/sho
 
 import useWindowDimensions from "@/utils/useWindowSize";
 
-import TextTile from "@/components/tile-type/text-tile/textTile";
-
 import { Loading } from "@carbon/react";
 
 function DisplayMultipleSuggestions({
