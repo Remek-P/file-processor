@@ -52,7 +52,6 @@ function DisplayData({
       return (
           <div className={classes.grid}>
             <DisplayMultipleSuggestions IDIndex={IDIndex}
-                                        inputValue={inputValue}
                                         labelDataArray={labelDataArray}
                                         setInputValue={setInputValue}
                                         searchRecords={searchRecords}

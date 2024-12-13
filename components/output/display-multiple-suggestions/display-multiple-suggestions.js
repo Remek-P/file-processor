@@ -13,7 +13,6 @@ function DisplayMultipleSuggestions({
                                       IDIndex,
                                       labelDataArray,
                                       searchRecords,
-                                      inputValue,
                                       setInputValue,
                                       searchSuggestionsOrder,
                                       setSearchSuggestionsOrder

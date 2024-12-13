@@ -63,7 +63,6 @@ function DisplayDataWithoutSubheaders({
       }
       displayData = <ShowNumbers key={`${value}+${labelDataArray[index]}`}
                                  data={numberData}
-                                 showAllMetrics={showAllMetrics}
                                  showPercentages={showPercentages}
       />
       break;
@@ -97,7 +96,6 @@ function DisplayDataWithoutSubheaders({
 
       displayData = <ShowStringsAsNumbers key={`${value}+${labelDataArray[index]}`}
                                           data={numberData}
-                                          showAllMetrics={showAllMetrics}
                                           showPercentages={showPercentages}
       />
       break

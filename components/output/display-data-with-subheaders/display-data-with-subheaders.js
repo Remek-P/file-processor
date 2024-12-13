@@ -24,7 +24,7 @@ function DisplayDataWithSubheaders({
                                   headerDataArray,
                                 }) {
 
-  const [ showAllMetrics, setShowAllMetrics ] = useState(false);
+  const [ showAllMetrics, setShowAllMetrics ] = useState(true);
   const [ showPercentages, setShowPercentages ] = useState(undefined);
   const [ sort, setSort ] = useState(undefined);
 
@@ -104,7 +104,11 @@ function DisplayDataWithSubheaders({
             sortedData.map((data, index) => {
 
               if (checkForNumber(data)) {
-                if (data === 0) numbersEqualToZero.current = true;
+
+                const isZero = data === 0;
+                if (isZero && !showAllMetrics) return null;
+                if (isZero) numbersEqualToZero.current = true;
+
                 dataType.current = "number";
                 const numberData = {
                   value: +data,
@@ -116,7 +120,6 @@ function DisplayDataWithSubheaders({
                 return (
                     <ShowNumbers key={`${data}+${sortedLabels[index]}`}
                                  data={numberData}
-                                 showAllMetrics={showAllMetrics}
                                  showPercentages={showPercentages}
                     />
                 )
@@ -129,7 +132,11 @@ function DisplayDataWithSubheaders({
 
                   const { numberOnlyData, checkSymbolsInArray} = separateNumbersAndStrings(data);
 
-                  if (+numberOnlyData === 0) numbersEqualToZero.current = true;
+                  const isZero = +numberOnlyData === 0;
+                  if (isZero && !showAllMetrics) return null;
+
+                  if (isZero) numbersEqualToZero.current = true;
+
 
                   dataType.current = "number";
                   const numberData = {
@@ -143,7 +150,6 @@ function DisplayDataWithSubheaders({
 
                   return <ShowStringsAsNumbers key={`${data}+${sortedLabels[index]}`}
                                                data={numberData}
-                                               showAllMetrics={showAllMetrics}
                                                showPercentages={showPercentages}
                   />
 

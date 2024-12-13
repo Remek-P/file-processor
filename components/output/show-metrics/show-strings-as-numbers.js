@@ -4,15 +4,11 @@ import ShowValues from "@/components/output/show-metrics/show-values";
 
 import {DecimalGlobalContext} from "@/context/global-context";
 
-function ShowStringsAsNumbers({ data, showAllMetrics, showPercentages  }) {
+function ShowStringsAsNumbers({ data, showPercentages  }) {
 
   const [decimal] = useContext(DecimalGlobalContext);
 
   const { value, symbolsArray, label } = data;
-
-  const is0 = value === 0;
-
-  if (!showAllMetrics && is0) return null
 
   const localDecimal = decimal !== undefined
       ? decimal
