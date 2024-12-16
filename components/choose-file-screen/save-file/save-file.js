@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 
-import { addData } from "@/utils/create-indexedDB";
+import { addData } from "@/utils/indexedDB";
 import { FileDataGlobalContext } from "@/context/global-context";
 
 import {Button, TextInput, Tile} from "@carbon/react";

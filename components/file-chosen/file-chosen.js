@@ -15,7 +15,6 @@ import { ID_LABEL } from "@/constants/constants";
 import classes from "./file-chosen.module.scss";
 import ProviderWrapper from "@/components/provider-wrapper/provider-wrapper";
 
-
 function FileChosen({
                       file,
                       refreshData,
@@ -36,8 +35,6 @@ function FileChosen({
   // TODO: hide hidden arrays when no input or no user
   // hide db id tile constant, when no db id in the labels array
   const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === ID_LABEL) === -1;
-
-  // TODO: even thought there is no displayed output, you can hide and reveal all the hidden tiles
 
   const handleIDPick = (e) => {
     setIDIndex(e.target.dataset.value);
@@ -62,6 +59,7 @@ function FileChosen({
 
   if (IDIndex === -1) return <IdNotAvailable labels={labelArray}
                                              handleIDPick={handleIDPick}/>
+
 
   return (
       <ProviderWrapper>

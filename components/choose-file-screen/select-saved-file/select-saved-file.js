@@ -4,7 +4,7 @@ import {Button, IconButton, Select, SelectItem, Tile} from "@carbon/react";
 import {Run, TrashCan} from "@carbon/icons-react";
 
 import {FileDataGlobalContext} from "@/context/global-context";
-import {getFileNames} from "@/utils/create-indexedDB";
+import {getFileNames} from "@/utils/indexedDB";
 
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import Link from "next/link";

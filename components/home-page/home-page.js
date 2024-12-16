@@ -8,7 +8,7 @@ import FileChosenFallback from "@/components/file-chosen/error-boundary/file-cho
 import TextTile from "@/components/tile-type/text-tile/textTile";
 import ErrorBoundary from "@/components/error-boundary/error-boundary";
 
-import { addData, deleteData, getData } from "@/utils/create-indexedDB";
+import { addData, deleteData, getData } from "@/utils/indexedDB";
 import { sheetToJsonData } from "@/utils/xlsxUtils";
 import { Loading } from '@carbon/react';
 
