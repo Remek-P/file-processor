@@ -7,7 +7,9 @@ import {
   SearchSuggestionsOrderGlobalContext,
   ToggleIDViewGlobalContext,
   FileDataGlobalContext,
-  ShowAllMetricsContext, SearchReducePerformanceContext,
+  ShowAllMetricsContext,
+  SearchReducePerformanceContext,
+  NumberOfOutputsContext,
 } from "@/context/global-context";
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
@@ -20,11 +22,9 @@ import {HEADER_LABEL} from "@/constants/constants";
 
 function ActionsMenu({
                        headers,
-                       addPerson,
                        refreshData,
                        isSubheaders,
                        hideDB_ID_Tile,
-                       setNumberOfOutputs,
                        handleResetID,
                        handleSubheadersChange,
                        handleFileChange,
@@ -37,6 +37,7 @@ function ActionsMenu({
   const [ toggleIDView, setToggleIDView ] = useContext(ToggleIDViewGlobalContext);
   const [ showAllMetrics, setShowAllMetrics ] = useContext(ShowAllMetricsContext);
   const [ isPerformanceStrainReduced, setIsPerformanceStrainReduced ] = useContext(SearchReducePerformanceContext);
+  const [ , setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
 
   const router = useRouter();
 
@@ -45,6 +46,11 @@ function ActionsMenu({
   const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
   const containsSubheader = !isSubheaders ? "Contains subheader" : "No subheader";
   const reducePerformanceStrain = isPerformanceStrainReduced ? "Search limit off" : "Search limit on";
+
+  const addPerson = () => {
+    const outputID = Date.now();
+    setNumberOfOutputs(prevState => [...prevState, {id: outputID}]);
+  }
 
   const handleDeleteAll = () => {
     setNumberOfOutputs([]);

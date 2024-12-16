@@ -148,3 +148,9 @@ export const SearchReducePerformanceProvider = ({ children }) => (
       { children }
     </SearchReducePerformanceContext.Provider>
 );
+export const NumberOfOutputsContext = createContext([null] );
+export const NumberOfOutputsProvider = ({ children }) => (
+    <NumberOfOutputsContext.Provider value={useState([{id: 1}] )}>
+      { children }
+    </NumberOfOutputsContext.Provider>
+);

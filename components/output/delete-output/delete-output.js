@@ -1,36 +1,41 @@
-import { useState } from "react";
+import {useContext, useState} from "react";
+
+import {NumberOfOutputsContext} from "@/context/global-context";
 
 import { CloseFilled, CloseOutline } from "@carbon/icons-react";
+import { IconButton } from "@carbon/react";
 
 import classes from "../output.module.scss";
-import {Tooltip} from "@carbon/react";
 
-function DeleteOutput({ index, handleDeleteChecked }) {
+function DeleteOutput({ outputId }) {
 
-  const [hover, setHover] = useState(false)
+  const [ , setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
+
+  const [hover, setHover] = useState(false);
+
+  const handleMouseEnter = () => {setHover(true)}
+  const handleMouseLeave = () => {setHover(false)}
+  const handleOnFocus = () => {setHover(true)}
+  const handleOnBlur = () => {setHover(false)}
+  
+  const handleDelete = () => {
+    setNumberOfOutputs(prevState => [...prevState].filter(output => output.id !== outputId));
+  }
 
   return (
-        <div key={index}
+        <div key={outputId}
              className={classes.outputDeleteOutput}
-             onMouseEnter={() => setHover(true)}
-             onMouseLeave={() => setHover(false)}
-             onFocus={() => setHover(true)}
-             onBlur={() => setHover(false)}
-        >
+             onMouseEnter={handleMouseEnter}
+             onMouseLeave={handleMouseLeave}
+             onFocus={handleOnFocus}
+             onBlur={handleOnBlur}>
 
-          <Tooltip label="Delete" align="bottom">
-            <label htmlFor={`output${index}`} className={classes.label} aria-label="Delete">
-              {!hover ? <CloseOutline aria-label="Delete"/> : <CloseFilled aria-label="Delete"/>}
-              <input type="checkbox"
-                     name="output"
-                     id={`output${index}`}
-                     value={index}
-                     onChange={handleDeleteChecked}
-                     className="visually-hidden"
-              />
-            </label>
-          </Tooltip>
-
+          <IconButton kind="ghost" label="Delete" align="bottom" onClick={handleDelete.bind(outputId)}>
+            {!hover
+                ? <CloseOutline aria-label="Delete" />
+                : <CloseFilled aria-label="Delete" />
+            }
+          </IconButton>
 
         </div>
 

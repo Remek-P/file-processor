@@ -24,7 +24,6 @@ function FileChosen({
 
   const { isSubheaders, overrideSubheadersDetection } = useContext(IsContainingSubheadersContext);
 
-  const [ numberOfOutputs, setNumberOfOutputs ] = useState([{delete: false}]);
   const [ isNotificationVisible, setIsNotificationVisible ] = useState(false);
 
   const labelArray = isSubheaders === true ? file[1] : file[0];
@@ -34,20 +33,9 @@ function FileChosen({
       element?.toLowerCase() === "id" || element.toLowerCase() === ID_LABEL);
   const [IDIndex, setIDIndex] = useState(indexOfID);
 
-  // If all objects are to delete
-  const checkIfOutputsToDelete = numberOfOutputs.every(output => output.delete === true);
-
-  // checkIfOutputsToDelete === true - hide the hidden array (there are no outputs shown)
-  const hideHiddenArraysWhenNoUser = checkIfOutputsToDelete
-      ? "hiddenContainerHide" : "hiddenContainerShow";
-
   // TODO: hide hidden arrays when no input or no user
   // hide db id tile constant, when no db id in the labels array
   const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === ID_LABEL) === -1;
-
-  const addPerson = () => {
-    setNumberOfOutputs(prevState => [...prevState, {delete: false}]);
-  }
 
   // TODO: even thought there is no displayed output, you can hide and reveal all the hidden tiles
 
@@ -84,8 +72,6 @@ function FileChosen({
                            refreshData={refreshData}
                            isSubheaders={isSubheaders}
                            hideDB_ID_Tile={hideDB_ID_Tile}
-                           setNumberOfOutputs={setNumberOfOutputs}
-                           addPerson={addPerson}
                            handleResetID={handleResetID}
                            handleSubheadersChange={handleSubheadersChange}
                            handleFileChange={handleFileChange}
@@ -96,14 +82,10 @@ function FileChosen({
                 <DisplayOutput IDIndex={IDIndex}
                                isSubheaders={isSubheaders}
                                hideDB_ID_Tile={hideDB_ID_Tile}
-                               numberOfOutputs={numberOfOutputs}
-                               setNumberOfOutputs={setNumberOfOutputs}
                 />
               </div>
 
-              <ul className={`${classes[hideHiddenArraysWhenNoUser]}`}>
                 <ExcludedData />
-              </ul>
 
               {isNotificationVisible &&
                   <AreYouSure handleConfirm={handleConfirmNotification}

@@ -16,10 +16,9 @@ import SearchSuggestions from "@/components/search/search-suggestions/search-sug
 
 
 function Output({
-                  index,
                   IDIndex,
+                  outputId,
                   hideDB_ID_Tile,
-                  handleDeleteChecked,
                 }) {
 
   const { file} = useContext(FileDataGlobalContext);
@@ -75,8 +74,7 @@ function Output({
             />
           </div>
 
-          <DeleteOutput index={index}
-                        handleDeleteChecked={handleDeleteChecked} />
+          <DeleteOutput outputId={outputId} />
 
         </div>
 
