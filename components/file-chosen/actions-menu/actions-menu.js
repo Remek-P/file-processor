@@ -42,9 +42,9 @@ function ActionsMenu({
   const router = useRouter();
 
   const showHideDB_ID = toggleIDView ? "Hide" : "Show";
-  const showHide0Values = showAllMetrics ? "Hide 0's" : "Show all";
+  const showHide0Values = showAllMetrics ? "Hide 0's" : "Show all values";
   const searchOrder = !searchSuggestionsOrder ? "Ascending" : "Descending";
-  const containsSubheader = !isSubheaders ? "Contains subheader" : "No subheader";
+  const containsSubheader = !isSubheaders ? "Contains subheader" : "No subheaders";
   const reducePerformanceStrain = isPerformanceStrainReduced ? "Search limit off" : "Search limit on";
 
   const addPerson = () => {
@@ -103,7 +103,7 @@ function ActionsMenu({
           <MenuItemDivider/>
           <DecimalPlace />
 
-          <OverflowMenuItem itemText="Add"
+          <OverflowMenuItem itemText="Add output"
                             onClick={addPerson}
                             className={classes.menuItem}
                             hasDivider
