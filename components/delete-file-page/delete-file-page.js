@@ -4,7 +4,7 @@ import NoFiles from "@/components/delete-file-page/no-files/no-files";
 
 import { FileDataGlobalContext } from "@/context/global-context";
 
-import { deleteData, deleteDataAll, getFileNames } from "@/utils/create-indexedDB";
+import { deleteData, deleteDataAll, getFileNames } from "@/utils/indexedDB";
 
 import TextTile from "@/components/tile-type/text-tile/textTile";
 import DeleteFileListItem from "@/components/delete-file-page/delete-file-list/delete-file-list-item";
