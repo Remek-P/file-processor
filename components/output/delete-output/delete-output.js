@@ -9,7 +9,7 @@ import classes from "../output.module.scss";
 
 function DeleteOutput({ outputId }) {
 
-  const [ , setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
+  const [ numberOfOutputs, setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
 
   const [hover, setHover] = useState(false);
 
@@ -19,7 +19,9 @@ function DeleteOutput({ outputId }) {
   const handleOnBlur = () => {setHover(false)}
   
   const handleDelete = () => {
-    setNumberOfOutputs(prevState => [...prevState].filter(output => output.id !== outputId));
+    // setNumberOfOutputs([...numberOfOutputs].filter(output => output.id !== outputId));
+    if (numberOfOutputs.length <= 1) setNumberOfOutputs([{ id: Date.now() }])
+    else setNumberOfOutputs([...numberOfOutputs].filter(output => output.id !== outputId));
   }
 
   return (
