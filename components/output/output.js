@@ -30,7 +30,6 @@ function Output({
 
   const isSubheadersTrue = isContainingSubheaders(file);
 
-  // TODO: Make sure to implement user override;
   const headersArray = useMemo(() => {
     if ((isSubheadersTrue && isSubheaders === false)
         || (!isSubheadersTrue && (isSubheaders === undefined || isSubheaders === false)))

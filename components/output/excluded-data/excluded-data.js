@@ -1,15 +1,19 @@
 import {useContext, useRef} from "react";
 
-import { ExcludedDataGlobalContext, NumberOfOutputsContext}  from "@/context/global-context";
+import {ExcludedDataGlobalContext, HideTileContext, NumberOfOutputsContext} from "@/context/global-context";
 
 import { Tile } from "@carbon/react";
 import classes from "@/components/file-chosen/file-chosen.module.scss";
 
-function ExcludedData() {
+function ExcludedData({ labelArrayLength, isSubheaders}) {
 
   const [ numberOfOutputs ] = useContext(NumberOfOutputsContext);
+  const [ , setHideTile ] = useContext(HideTileContext);
 
   const [excludedArray, setExcludedArray] = useContext(ExcludedDataGlobalContext);
+
+  if (!isSubheaders && labelArrayLength === excludedArray.length) setHideTile(true)
+  else setHideTile(false)
 
   const excludedValueRef = useRef(null);
 

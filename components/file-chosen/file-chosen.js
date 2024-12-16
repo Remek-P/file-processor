@@ -83,7 +83,9 @@ function FileChosen({
                 />
               </div>
 
-                <ExcludedData />
+                <ExcludedData labelArrayLength={labelArray.length}
+                              isSubheaders={isSubheaders}
+                />
 
               {isNotificationVisible &&
                   <AreYouSure handleConfirm={handleConfirmNotification}

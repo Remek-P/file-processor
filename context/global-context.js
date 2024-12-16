@@ -98,6 +98,13 @@ export const ExcludedDataProvider = ({ children }) => (
     </ExcludedDataGlobalContext.Provider>
 );
 
+export const HideTileContext = createContext(null);
+export const HideTileProvider = ({ children }) => (
+    <HideTileContext.Provider value={useState(false)}>
+      { children }
+    </HideTileContext.Provider>
+);
+
 export const ToggleIDViewGlobalContext = createContext(null);
 export const ToggleIDViewProvider = ({ children }) => (
     <ToggleIDViewGlobalContext.Provider value={useState(false)}>
