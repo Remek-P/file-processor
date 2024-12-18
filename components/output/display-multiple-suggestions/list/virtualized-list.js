@@ -120,6 +120,8 @@ function VirtualizedList({
     );
   };
 
+  // TODO: set equal height of the sticky row
+
   const StickyRow = ({index, style}) => (
       <tr style={style}>
         {sortedSuggestions[index].map((label, colIndex) => (
