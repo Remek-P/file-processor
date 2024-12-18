@@ -108,7 +108,7 @@ function VirtualizedList({
               <td key={colIndex}
                   data-value={row[IDIndex]}
                   onClick={pickSearchedOutput}
-                  style={{ width: columnWidths[colIndex]}}
+                  style={{ width: columnWidths[colIndex], minWidth: columnWidths[colIndex] }}
                   tabIndex="0"
               >
                 <Tile>
@@ -127,7 +127,7 @@ function VirtualizedList({
                 key={colIndex}
                 onClick={handleSort}
                 tabIndex="0"
-                style={{ width: columnWidths[colIndex]}} // Set the width
+                style={{ width: columnWidths[colIndex] }} // Set the width
             >
               <Tile>
                 {label}
