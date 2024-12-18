@@ -22,13 +22,13 @@ function VirtualizedList({
 
   const suggestions = [labelDataArray, ...searchRecords];
 
-  const [sortedSuggestions, setSortedSuggestions] = useState(suggestions)
-  const [columnWidths, setColumnWidths] = useState([]);
+  const [ sortedSuggestions, setSortedSuggestions]  = useState(suggestions)
+  const [ columnWidths, setColumnWidths ] = useState([]);
 
   const rowRef = useRef();
 
   const { width, height } = useWindowDimensions();
-  const virtualizedWidth = width - (0.1 * width);
+  const virtualizedWidth = width - (0.05 * width);
   const virtualizedHeight = height - (0.2 * height);
 
   const StickyListContext = createContext();
@@ -105,7 +105,12 @@ function VirtualizedList({
     return (
         <tr ref={rowRef} style={{...style, top: `${parseFloat(style.top) + padding}px`}}>
           {row.map((value, colIndex) => (
-              <td key={colIndex} data-value={row[IDIndex]} onClick={pickSearchedOutput} style={{ width: columnWidths[colIndex]}} tabIndex="0">
+              <td key={colIndex}
+                  data-value={row[IDIndex]}
+                  onClick={pickSearchedOutput}
+                  style={{ width: columnWidths[colIndex]}}
+                  tabIndex="0"
+              >
                 <Tile>
                   {value}
                 </Tile>
@@ -153,7 +158,7 @@ function VirtualizedList({
   ));
 
   const ItemWrapper = ({data, index, style}) => {
-    const {ItemRenderer, stickyIndices} = data;
+    const { ItemRenderer, stickyIndices } = data;
     if (stickyIndices && stickyIndices.includes(index)) {
       return null;
     }
@@ -161,9 +166,9 @@ function VirtualizedList({
   };
 
   const StickyList = ({children, stickyIndices, ...rest}) => (
-      <StickyListContext.Provider value={{ItemRenderer: children, stickyIndices}}>
-        <List itemData={{ItemRenderer: children, stickyIndices}} {...rest}>
-          {ItemWrapper}
+      <StickyListContext.Provider value={{ ItemRenderer: children, stickyIndices }}>
+        <List itemData={{ ItemRenderer: children, stickyIndices }} {...rest}>
+          { ItemWrapper }
         </List>
       </StickyListContext.Provider>
   );

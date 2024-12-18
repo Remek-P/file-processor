@@ -48,7 +48,7 @@ function DisplayMultipleSuggestions({
 
   return (
     // The section style is necessary for ShortList component, to display sticky menu
-    (<section style={!isLongList ? {overflow: "auto", height: height} : null}>
+    <section style={!isLongList ? {overflow: "auto", height: height} : null}>
       <Loading active={isLoading}
                description="Performing sorting"
                id="sortLoading"
@@ -77,7 +77,7 @@ function DisplayMultipleSuggestions({
                                indexToSort={indexToSort}
             />
       }
-    </section>)
+    </section>
   );
 }
 

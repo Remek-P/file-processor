@@ -32,7 +32,6 @@ function FileChosen({
       element?.toLowerCase() === "id" || element.toLowerCase() === ID_LABEL);
   const [IDIndex, setIDIndex] = useState(indexOfID);
 
-  // TODO: hide hidden arrays when no input or no user
   // hide db id tile constant, when no db id in the labels array
   const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === ID_LABEL) === -1;
 
