@@ -16,6 +16,7 @@ import XLSX from "xlsx";
 import dayjs from "dayjs";
 
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
+import NoFileNeeded from "@/components/no-file-needed/no-file-needed";
 
 
 export default function HomePage() {
@@ -237,6 +238,10 @@ export default function HomePage() {
                 />
               </ErrorBoundary>
 
+          }
+
+          {
+            <NoFileNeeded />
           }
 
         </ToggleIDViewProvider>

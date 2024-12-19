@@ -6,6 +6,8 @@ import SaveFile from "@/components/choose-file-screen/save-file/save-file";
 import SelectSavedFile from "@/components/choose-file-screen/select-saved-file/select-saved-file";
 
 import classes from "./choose-file.module.scss";
+import SearchDbDirectly from "@/components/choose-file-screen/search-DB-directly/search-db-directly";
+import SearchDatabaseInput from "@/components/choose-file-screen/search-database-input/search-database-input";
 
 function ChooseFile({
                       handleFile,
@@ -15,12 +17,13 @@ function ChooseFile({
 
   const [isUpdate, setIsUpdate] = useState(false);
   const [isFileDelivered, setIsFileDelivered] = useState(false);
+  const [isSearchDatabase, setIsSearchDatabased] = useState(false);
 
   return (
       <section className={classes.chooseFileContainer}>
 
         {
-            !isFileDelivered &&
+            !isFileDelivered && !isSearchDatabase &&
             <>
               <div className={`${classes.optionContainer} shadow`}>
                 <FetchOption fetchDataFromDB={fetchDataFromDB}
@@ -39,8 +42,13 @@ function ChooseFile({
                                  loadSavedFile={loadSavedFile}
                 />
               </div>
+
+              <div className={`${classes.optionContainer} shadow`}>
+                <SearchDbDirectly setIsSearchDatabased={setIsSearchDatabased} />
+              </div>
             </>
         }
+
         {
             isFileDelivered &&
             <>
@@ -54,6 +62,13 @@ function ChooseFile({
                 />
               </div>
             </>
+        }
+
+        {
+            isSearchDatabase &&
+              <div className={`${classes.optionContainer} shadow`}>
+                <SearchDatabaseInput />
+              </div>
         }
 
       </section>
