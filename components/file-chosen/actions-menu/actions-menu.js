@@ -22,6 +22,7 @@ import {HEADER_LABEL} from "@/constants/constants";
 
 function ActionsMenu({
                        headers,
+                       userQuery,
                        refreshData,
                        isSubheaders,
                        hideDB_ID_Tile,
@@ -121,7 +122,7 @@ function ActionsMenu({
           />
 
           {isFetched && <OverflowMenuItem itemText="Refresh Data"
-                                          onClick={refreshData}
+                                          onClick={refreshData.bind(userQuery)}
                                           className={classes.menuItem}
                                           aria-hidden={!isFetched}
           />

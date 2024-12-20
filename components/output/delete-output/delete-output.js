@@ -7,7 +7,7 @@ import { IconButton } from "@carbon/react";
 
 import classes from "../output.module.scss";
 
-function DeleteOutput({ outputId }) {
+function DeleteOutput({ outputId, setUserQuery }) {
 
   const [ numberOfOutputs, setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
 
@@ -22,6 +22,7 @@ function DeleteOutput({ outputId }) {
     // setNumberOfOutputs([...numberOfOutputs].filter(output => output.id !== outputId));
     if (numberOfOutputs.length <= 1) setNumberOfOutputs([{ id: Date.now() }])
     else setNumberOfOutputs([...numberOfOutputs].filter(output => output.id !== outputId));
+    setUserQuery("")
   }
 
   return (

@@ -1,4 +1,4 @@
-import { useContext, useMemo, useRef, useState } from "react";
+import {useContext, useEffect, useMemo, useRef, useState} from "react";
 
 import Search from "@/components/search/search";
 import DeleteOutput from "@/components/output/delete-output/delete-output";
@@ -13,12 +13,17 @@ import { isContainingSubheaders } from "@/utils/parserUtils";
 
 import classes from "@/components/output/output.module.scss";
 import SearchSuggestions from "@/components/search/search-suggestions/search-suggestions";
+import SearchDatabaseInput from "@/components/choose-file-screen/search-database-input/search-database-input";
 
 
 function Output({
                   IDIndex,
                   outputId,
+                  userQuery,
+                  setUserQuery,
                   hideDB_ID_Tile,
+                  isDirectFetchResults,
+                  fetchDirectlyDataFromDB,
                 }) {
 
   const { file} = useContext(FileDataGlobalContext);
@@ -56,6 +61,10 @@ function Output({
 
   // TODO: If isSubheadersTrue === true and there is none
 
+  useEffect(() => {
+    if (userQuery) setInputValue(userQuery);
+  }, [userQuery]);
+
   return (
       <>
 
@@ -67,13 +76,20 @@ function Output({
         <div className={classes.outputSearchContainer}>
 
           <div className={`${classes.outputSearch} shadow`}>
-            <Search id={searchID}
-                    searchRef={searchRef}
-                    setInputValue={setInputValue}
-            />
+            {
+              !isDirectFetchResults
+                  ? <Search id={searchID}
+                            searchRef={searchRef}
+                            setInputValue={setInputValue}
+                  />
+                  : <SearchDatabaseInput userQuery={userQuery}
+                                         setUserQuery={setUserQuery}
+                                         fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}
+                  />
+            }
           </div>
 
-          <DeleteOutput outputId={outputId} />
+          <DeleteOutput outputId={outputId} setUserQuery={setUserQuery} />
 
         </div>
 

@@ -8,16 +8,16 @@ import classes from "../output.module.scss";
 import {IsContainingSubheadersContext, SearchReducePerformanceContext} from "@/context/global-context";
 
 function DisplayData({
-                    IDIndex,
-                    headersArray,
-                    inputValue,
-                    setInputValue,
-                    userDataArray,
-                    hideDB_ID_Tile,
-                    searchSuggestionsOrder,
-                    setSearchSuggestionsOrder,
-                    handleFocus,
-                  }) {
+                       IDIndex,
+                       headersArray,
+                       inputValue,
+                       setInputValue,
+                       userDataArray,
+                       hideDB_ID_Tile,
+                       searchSuggestionsOrder,
+                       setSearchSuggestionsOrder,
+                       handleFocus,
+                     }) {
 
   const { isSubheaders } = useContext(IsContainingSubheadersContext);
   const [ isPerformanceStrainReduced ] = useContext(SearchReducePerformanceContext);

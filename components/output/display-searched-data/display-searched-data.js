@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import {useContext, useMemo} from "react";
 
 import { HEADER_LABEL } from "@/constants/constants";
 import { IsContainingSubheadersContext } from "@/context/global-context";
@@ -16,14 +16,32 @@ function DisplaySearchedData({
 
   const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
-  const excelFileUniqueValues = [... new Set(headerDataArray)];
+  const processText = (array) => {
+    return array.map(item => {
+      if(item === "_id") return item;
+      if (typeof item === "string") {
+        return item.replace(/_/g, ' '); // Remove the extra closing parenthesis
+      }
+      else return item;
+    });
+  }
+
+  const processedLabelDataArray = useMemo(() => {
+    return processText(labelDataArray);
+  }, labelDataArray);
+
+  const processedHeaderDataArray = useMemo(() => {
+    return processText(headerDataArray);
+  }, headerDataArray);
+
+  const excelFileUniqueValues = [... new Set(processedHeaderDataArray)];
   
   const filteredOutDB_ID =  excelFileUniqueValues.filter(item => item !== HEADER_LABEL);
 
   return isSubheaders === true
       ? <ShowDataWithSubheaders colDataArray={colDataArray}
-                          labelDataArray={labelDataArray}
-                          headerDataArray={headerDataArray}
+                          labelDataArray={processedLabelDataArray}
+                          headerDataArray={processedHeaderDataArray}
                           filteredOutDB_ID={filteredOutDB_ID}
                           hideDB_ID_Tile={hideDB_ID_Tile}
       />

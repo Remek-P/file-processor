@@ -8,7 +8,7 @@ const uri = `${process.env.DB_HOST}://${process.env.DB_USER}:${process.env.DB_PA
 
 async function getDbClient() {
   if (!client) {
-    client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    client = await MongoClient.connect(uri);
     db = client.db("data-to-JS");
   }
   return db;
@@ -19,8 +19,12 @@ async function ensureTextIndexes(collection) {
   const textIndexExists = indexes.some(index => index.key && index.key.hasOwnProperty('$**')); // Check for a wildcard text index
 
   if (!textIndexExists) {
-    // No text index found, check the fields in the third document
-    const sampleDoc = await collection.find().skip(2).limit(1).next();
+    // No text index found, check the keys of the third document for index creation
+    const sampleDoc = await collection
+        .find()
+        .skip(2)
+        .limit(1)
+        .next();
 
     if (sampleDoc) {
       const keys = Object.keys(sampleDoc); // Extract keys from the third document
@@ -43,6 +47,7 @@ async function ensureTextIndexes(collection) {
 export default async function handler(req, res) {
   if (req.method === "GET") {
     const { query } = req.query;
+    console.log("query", query)
 
     if (!query) {
       return res.status(400).json({ message: "Query parameter is required" });
@@ -58,17 +63,20 @@ export default async function handler(req, res) {
 
       const isNumber = !isNaN(query);
       const numberQuery = parseFloat(query);
+      const firstRow = await collection.find().limit(1).toArray();
 
       // Step 1: Query for numeric fields (like ID)
       if (isNumber) {
         data = await collection.find({ ID: numberQuery }).toArray();
+        data = [...firstRow, ...data];
       }
 
       // Step 2: Query for text fields using $text search
       if (!isNumber && typeof query === "string" && query.trim()) {
         const textResults = await collection.find({ $text: { $search: query } }).toArray();
-        data = [...data, ...textResults]; // Combine results from both queries
+        data = [...firstRow, ...data, ...textResults]; // Combine results from both queries
       }
+
 
     } catch (error) {
       console.error("Error fetching data:", error);

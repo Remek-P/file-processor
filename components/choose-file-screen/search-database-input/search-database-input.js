@@ -1,30 +1,15 @@
 import classes from "@/components/search/search.module.scss";
 import SearchbarIcon from "@/components/search/icon/searchbar-icon";
-import {useContext, useEffect, useRef, useState, useTransition} from "react";
-import {FileDataGlobalContext} from "@/context/global-context";
+import { useRef, useState } from "react";
 
-function SearchDatabaseInput() {
+function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
 
-  const {
-    file,
-    fileName,
-    isLoading,
-    warnings,
-    addWarnings,
-    deleteWarning,
-    isDataFetched,
-    setFile,
-    setFileName,
-    setLoading,
-  } = useContext(FileDataGlobalContext);
-
-  const [query, setQuery] = useState("");
-  const [localInputValue, setLocalInputValue] = useState("")
-  const [isPending, startTransition] = useTransition();
-  const [results, setResults] = useState([])
+// Now initialize localInputValue with the userQuery state
+  const [ localInputValue, setLocalInputValue ] = useState(userQuery);
 
   const searchRef = useRef();
 
+// Check if delete button should be visible
   const isDeleteVisible = localInputValue.length !== 0;
 
   const id = "searchDatabaseInput";
@@ -34,35 +19,20 @@ function SearchDatabaseInput() {
   }
 
   const handleAccept = async (e) => {
-    if (e.key === "Enter") startTransition(() => setQuery(localInputValue));
-  }
-
-  useEffect(() => {
-    if (query) {
-      setLoading(true);
-      fetch(`/api/mongoDB?query=${query}`)
-          .then((response) => response.json()) // Parse the JSON response
-          .then((data) => {
-            setResults(data); // Set the results to state
-            setLoading(false); // Hide loading spinner
-          })
-          .catch((error) => {
-            console.error("Error fetching search results:", error);
-            setLoading(false); // Hide loading spinner in case of an error
-          });
-    } else {
-      setResults([]); // Clear results if the query is empty
+    if (e.key === "Enter") {
+      const input = localInputValue.trim();
+      if (input !== "") {
+        fetchDirectlyDataFromDB(input);
+      }
     }
-  }, [query]);
-
-  console.log("results", results)
+  }
 
   return (
       <div className={classes.searchContainer}>
 
         <SearchbarIcon isDeleteVisible={isDeleteVisible}
                        id={id}
-                       isPending={isPending}
+                       isPending={null}
                        setLocalInputValue={setLocalInputValue}
                        searchRef={searchRef}
         />

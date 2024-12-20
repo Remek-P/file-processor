@@ -11,6 +11,7 @@
   "dependencies": {
     "@carbon/charts-react": "^1.19.2",
     "@carbon/react": "^1.67.1",
+    "csv-parser": "^3.0.0",
     "d3": "^7.9.0",
     "d3-cloud": "^1.2.7",
     "d3-sankey": "^0.12.3",

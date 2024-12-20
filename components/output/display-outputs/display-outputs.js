@@ -5,11 +5,17 @@ import {useContext} from "react";
 import {NumberOfOutputsContext} from "@/context/global-context";
 
 function DisplayOutputs({
-                         IDIndex,
-                         hideDB_ID_Tile,
+                          IDIndex,
+                          userQuery,
+                          setUserQuery,
+                          hideDB_ID_Tile,
+                          isDirectFetchResults,
+                          fetchDirectlyDataFromDB,
                        }) {
 
   const [ numberOfOutputs  ] = useContext(NumberOfOutputsContext);
+
+  // While multiple outputs are present, one search nullifies the second
 
   return (
       <>
@@ -18,7 +24,11 @@ function DisplayOutputs({
               <div key={output.id} className={classes.outputContainer}>
                 <Output outputId={output.id}
                         IDIndex={IDIndex}
+                        userQuery={userQuery}
+                        setUserQuery={setUserQuery}
                         hideDB_ID_Tile={hideDB_ID_Tile}
+                        isDirectFetchResults={isDirectFetchResults}
+                        fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}
                 />
               </div>
           )

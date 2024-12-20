@@ -1,6 +1,10 @@
 import {useContext, useEffect, useState} from "react";
 
-import {FileDataGlobalContext, IsContainingSubheadersContext, ToggleIDViewProvider} from "@/context/global-context";
+import {
+  FileDataGlobalContext,
+  IsContainingSubheadersContext,
+  ToggleIDViewProvider,
+} from "@/context/global-context";
 
 import ChooseFile from "@/components/choose-file-screen/choose-file";
 import FileChosen from "@/components/file-chosen/file-chosen";
@@ -16,7 +20,7 @@ import XLSX from "xlsx";
 import dayjs from "dayjs";
 
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
-import NoFileNeeded from "@/components/no-file-needed/no-file-needed";
+import { isContainingSubheaders } from "@/utils/parserUtils";
 
 
 export default function HomePage() {
@@ -36,13 +40,34 @@ export default function HomePage() {
   const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
   const [ finalDataAvailable, setFinalDataAvailable ] = useState(false);
-  
+  const [ isDirectFetchResults, setIsDirectFetchResults ] = useState(false);
+  const [ userQuery, setUserQuery ] = useState("");
+
   const showWarnings = warnings.length !== 0;
 
 //TODO: deal with finding dates
 
-  const isIndexedDBSupported = () => {
-    return 'indexedDB' in window;
+  // const isIndexedDBSupported = () => {
+  //   return 'indexedDB' in window;
+  // }
+
+  // Send task to chosen worker
+  const handleFileWorker = async (worker, workerData) => {
+
+    worker.postMessage({ file: workerData });
+
+    worker.onmessage = (event) => {
+      if (event.data.status === "success") {
+
+        setFile(event.data.data);
+      } else if (event.data.status === "error") {
+        addWarnings(event.data.message);
+      } else {
+        throw new Error("Something went wrong");
+      }
+      worker.terminate();
+      setLoading(false);
+    };
   }
 
   const handleFile = async (e) => {
@@ -55,25 +80,6 @@ export default function HomePage() {
     setFileName(targetFileName);
 
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
-
-    // Send task to chosen worker
-    const handleFileWorker = async (worker, workerData) => {
-
-      worker.postMessage({ file: workerData });
-
-      worker.onmessage = (event) => {
-        if (event.data.status === "success") {
-
-          setFile(event.data.data);
-        } else if (event.data.status === "error") {
-          addWarnings(event.data.message);
-        } else {
-          throw new Error("Something went wrong");
-        }
-        worker.terminate();
-        setLoading(false);
-      };
-    }
 
     if (["xls", "xlsx", "csv"].includes(fileExtension)) {
       const data = await targetFile.arrayBuffer();
@@ -150,6 +156,49 @@ export default function HomePage() {
     }
   }
 
+  const fetchDirectlyDataFromDB = async (query) => {
+    setLoading(true);
+
+    let result
+    setUserQuery(query)
+
+    try {
+      const res = await fetch(`/api/mongoDB?query=${query}`);
+      result = await res.json();
+    } catch (error) {
+      addWarnings([...warnings, "Fetching data failed"])
+      console.error("Error fetching search results:", error);
+      setLoading(false);
+    }
+
+    try {
+      const sheet = XLSX.utils.json_to_sheet(result);
+      const jsonData = sheetToJsonData(sheet);
+      // Swap the first two elements
+      [jsonData[0], jsonData[1]] = [jsonData[1], jsonData[0]];
+      console.log("jsonData", jsonData)
+      jsonData[0][0] = HEADER_LABEL;
+      jsonData[1][0] = ID_LABEL;
+      console.log("jsonData2", jsonData)
+
+      const isSubheaders = isContainingSubheaders(jsonData);
+
+      setFile(jsonData);
+      // for refetching
+      const checkFileName = fileName ? fileName : `DB_file_${timeStamp()}`
+      setFileName(checkFileName)
+      isDataFetched(true);
+      setIsDirectFetchResults(true)
+
+    } catch (error) {
+      addWarnings([...warnings, "Incorrect file structure"])
+      console.error("Error fetching search results:", error);
+      setIsDirectFetchResults(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const loadSavedFile = async (name) => {
     setLoading(true);
     const file = await getData(name);
@@ -165,8 +214,10 @@ export default function HomePage() {
     setLoading(true);
     setFile(null);
     setFileName(null);
+    setUserQuery('')
     isDataFetched(undefined)
     setFinalDataAvailable(false);
+    setIsDirectFetchResults(false);
     setLoading(false);
   }
 
@@ -177,11 +228,13 @@ export default function HomePage() {
     setFileName(null);
     isDataFetched(undefined)
     setFinalDataAvailable(false);
+    setIsDirectFetchResults(false);
     setLoading(false);
   }
 
-  const refreshData = async () => {
-    await fetchDataFromDB(true);
+  const refreshData = async (query) => {
+    if (finalDataAvailable) await fetchDataFromDB(true);
+    if (isDirectFetchResults) await fetchDirectlyDataFromDB(query);
   }
 
   const timeStamp = () => {
@@ -207,12 +260,13 @@ export default function HomePage() {
           />
 
           {
-              !finalDataAvailable &&
+              !finalDataAvailable && !isDirectFetchResults &&
               <ErrorBoundary fallback={ <h1>Access denied</h1> }>
                 <ChooseFile file={file}
                             fetchDataFromDB={fetchDataFromDB}
                             handleFile={handleFile}
                             loadSavedFile={loadSavedFile}
+                            fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}
                 />
               </ErrorBoundary>
           }
@@ -225,7 +279,7 @@ export default function HomePage() {
 
           {
               warnings.length === 0
-              && finalDataAvailable
+              && (finalDataAvailable || isDirectFetchResults)
               && isSubheaders !== undefined &&
               <ErrorBoundary fallback={ <FileChosenFallback syncAction={handleFileChange}
                                                             asyncAction={handleErrorDelete}
@@ -233,15 +287,15 @@ export default function HomePage() {
               }>
                 <FileChosen file={file}
                             fileName={fileName}
+                            userQuery={userQuery}
+                            isDirectFetchResults={isDirectFetchResults}
                             handleFileChange={handleFileChange}
                             refreshData={refreshData}
+                            fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}
+                            setUserQuery={setUserQuery}
                 />
               </ErrorBoundary>
 
-          }
-
-          {
-            <NoFileNeeded />
           }
 
         </ToggleIDViewProvider>
