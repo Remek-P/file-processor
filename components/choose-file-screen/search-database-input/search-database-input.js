@@ -4,12 +4,10 @@ import { useRef, useState } from "react";
 
 function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
 
-// Now initialize localInputValue with the userQuery state
   const [ localInputValue, setLocalInputValue ] = useState(userQuery);
 
   const searchRef = useRef();
 
-// Check if delete button should be visible
   const isDeleteVisible = localInputValue.length !== 0;
 
   const id = "searchDatabaseInput";

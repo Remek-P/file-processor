@@ -10,7 +10,7 @@ import IdNotAvailable from "@/components/output/id-not-available/id-not-availabl
 import AreYouSure from "@/components/notifications/are-you-sure/are-you-sure";
 import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
-import { ID_LABEL } from "@/constants/constants";
+import {HEADER_LABEL, ID_LABEL} from "@/constants/constants";
 
 import classes from "./file-chosen.module.scss";
 import ProviderWrapper from "@/components/provider-wrapper/provider-wrapper";
@@ -30,17 +30,17 @@ function FileChosen({
   const [ isNotificationVisible, setIsNotificationVisible ] = useState(false);
 
   const labelArray = isSubheaders === true ? file[1] : file[0];
-  console.log("isSubheaders", isSubheaders)
-  console.log("file[0]", file[0])
+  console.log("labelArray", labelArray)
 
   // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
-  const indexOfID = labelArray.findIndex(element =>
-      element?.toLowerCase() === "id" /*|| element.toLowerCase() === ID_LABEL*/);
+  const indexOfID = labelArray.findIndex(label =>
+      label?.toLowerCase() === "id" ?? label.toLowerCase() === ID_LABEL);
   
   const [IDIndex, setIDIndex] = useState(indexOfID);
 
+  const DB_Label = isSubheaders ? ID_LABEL : HEADER_LABEL;
   // hide db id tile constant, when no db id in the labels array
-  const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === ID_LABEL) === -1;
+  const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === DB_Label.toLowerCase()) === -1;
 
   const handleIDPick = (e) => {
     setIDIndex(e.target.dataset.value);

@@ -140,6 +140,7 @@ export const IsContainingSubheadersProvider = ({ children }) => {
   const contextValue = {
     isSubheaders,
     overrideSubheadersDetection: () => setIsSubheaders(prevState => !prevState),
+    setIsSubheaders,
     };
 
   return (

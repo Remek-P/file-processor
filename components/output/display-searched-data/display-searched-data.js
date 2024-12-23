@@ -47,6 +47,7 @@ function DisplaySearchedData({
       />
       : <ShowDataWithoutSubheaders colDataArray={colDataArray}
                                    labelDataArray={labelDataArray}
+                                   hideDB_ID_Tile={hideDB_ID_Tile}
       />
 }
 

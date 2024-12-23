@@ -8,25 +8,29 @@ import ShowDate from "@/components/output/show-metrics/show-date";
 import ShowValues from "@/components/output/show-metrics/show-values";
 
 import {
-  checkForNumber,
-  checkForString,
   regexOverall,
   separateNumbersAndStrings
 } from "@/utils/sortUtils";
 
 import { dateValidator } from "@/utils/dateUtils";
 
-import { ShowAllMetricsContext } from "@/context/global-context";
+import {ShowAllMetricsContext, ToggleIDViewGlobalContext} from "@/context/global-context";
+import {checkForNumber, checkForString} from "@/utils/general";
+import { HEADER_LABEL } from "@/constants/constants";
 
 function DisplayDataWithoutSubheaders({
                                         value,
                                         index,
                                         labelDataArray,
+                                        hideDB_ID_Tile,
                                    }) {
 
   const [ showAllMetrics ] = useContext(ShowAllMetricsContext);
+  const [ toggleIDView ] = useContext(ToggleIDViewGlobalContext);
 
   const [ showPercentages, setShowPercentages ] = useState(undefined);
+
+  if (!hideDB_ID_Tile && !toggleIDView && labelDataArray[index] === HEADER_LABEL) return null
 
   let isZero;
   let dataType;

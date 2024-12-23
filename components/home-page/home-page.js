@@ -20,7 +20,7 @@ import XLSX from "xlsx";
 import dayjs from "dayjs";
 
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
-import { isContainingSubheaders } from "@/utils/parserUtils";
+import {checkIsFirstObjectMadeOfStrings, isContainingSubheaders} from "@/utils/parserUtils";
 
 
 export default function HomePage() {
@@ -37,7 +37,7 @@ export default function HomePage() {
     setFileName,
     setLoading,
   } = useContext(FileDataGlobalContext);
-  const { isSubheaders } = useContext(IsContainingSubheadersContext);
+  const { isSubheaders, setIsSubheaders } = useContext(IsContainingSubheadersContext);
 
   const [ finalDataAvailable, setFinalDataAvailable ] = useState(false);
   const [ isDirectFetchResults, setIsDirectFetchResults ] = useState(false);
@@ -133,12 +133,21 @@ export default function HomePage() {
       const sheet = XLSX.utils.json_to_sheet(partialDataArray);
       const jsonData = sheetToJsonData(sheet);
 
-      // Need to delete the first column, because it served as the base for key creation for MongoDb
-      jsonData.shift();
+      const isSubheadersPresent = checkIsFirstObjectMadeOfStrings(partialDataArray);
+
+      if (isSubheadersPresent) {
+        setIsSubheaders(true);
+        [jsonData[0], jsonData[1]] = [jsonData[1], jsonData[0]];
+        jsonData[1][0] = ID_LABEL;
+      }
+
+      else {
+        setIsSubheaders(false);
+      }
       // // Two below indices are the ids from MongoDB
       jsonData[0][0] = HEADER_LABEL;
-      jsonData[1][0] = ID_LABEL;
 
+      console.log("jsonData", jsonData)
       setFile(jsonData);
       // for refetching
       const checkFileName = fileName ? fileName : `DB_file_${timeStamp()}`
@@ -156,48 +165,81 @@ export default function HomePage() {
     }
   }
 
-  const fetchDirectlyDataFromDB = async (query) => {
+  const fetchDirectlyDataFromS3 = async (query) => {
     setLoading(true);
 
-    let result
-    setUserQuery(query)
+    let result;
+    setUserQuery(query);
 
     try {
-      const res = await fetch(`/api/mongoDB?query=${query}`);
+      const res = await fetch(`/api/csvData?query=${query}`);
       result = await res.json();
+
+      console.log("result", result)
+      if (res.ok) {
+        // Process and display the result
+        const sheet = XLSX.utils.json_to_sheet(result);
+        const jsonData = sheetToJsonData(sheet);
+        // console.log("jsonData", jsonData);
+
+        const isSubheaders = isContainingSubheaders(jsonData);
+        setFile(jsonData);
+        setFileName(`DB_file_${timeStamp()}`);
+        isDataFetched(true);
+        setIsDirectFetchResults(true);
+      } else {
+        throw new Error('Failed to fetch data');
+      }
     } catch (error) {
-      addWarnings([...warnings, "Fetching data failed"])
-      console.error("Error fetching search results:", error);
-      setLoading(false);
-    }
-
-    try {
-      const sheet = XLSX.utils.json_to_sheet(result);
-      const jsonData = sheetToJsonData(sheet);
-      // Swap the first two elements
-      [jsonData[0], jsonData[1]] = [jsonData[1], jsonData[0]];
-      console.log("jsonData", jsonData)
-      jsonData[0][0] = HEADER_LABEL;
-      jsonData[1][0] = ID_LABEL;
-      console.log("jsonData2", jsonData)
-
-      const isSubheaders = isContainingSubheaders(jsonData);
-
-      setFile(jsonData);
-      // for refetching
-      const checkFileName = fileName ? fileName : `DB_file_${timeStamp()}`
-      setFileName(checkFileName)
-      isDataFetched(true);
-      setIsDirectFetchResults(true)
-
-    } catch (error) {
-      addWarnings([...warnings, "Incorrect file structure"])
+      addWarnings([...warnings, "Fetching data failed"]);
       console.error("Error fetching search results:", error);
       setIsDirectFetchResults(false);
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  const fetchDirectlyDataFromDB = async (query) => {
+    setLoading(true);
+    let result;
+    setUserQuery(query);
+
+    try {
+      const res = await fetch(`/api/mongoDB?query=${query}`);
+      result = await res.json();
+
+      const sheet = XLSX.utils.json_to_sheet(result);
+      const jsonData = sheetToJsonData(sheet);
+
+      // Check if the JSON contains subheaders
+      const isSubheadersPresent = isContainingSubheaders(jsonData);
+      setIsSubheaders(isSubheadersPresent);
+
+      if (isSubheadersPresent) {
+        [jsonData[0], jsonData[1]] = [jsonData[1], jsonData[0]];
+        jsonData[1][0] = ID_LABEL;
+        setIsSubheaders(true);
+      } else {
+        jsonData.splice(1, 1);  // Remove the second row (if not subheaders)
+        setIsSubheaders(false);
+      }
+
+      jsonData[0][0] = HEADER_LABEL;
+
+      setFile(jsonData);
+      const checkFileName = fileName || `DB_file_${timeStamp()}`;
+      setFileName(checkFileName);
+
+      isDataFetched(true);
+      setIsDirectFetchResults(true);
+    } catch (error) {
+      addWarnings([...warnings, "Fetching data failed"]);
+      console.error("Error fetching search results:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const loadSavedFile = async (name) => {
     setLoading(true);

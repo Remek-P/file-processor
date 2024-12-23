@@ -1,3 +1,5 @@
+import {checkForNumber, checkForString} from "@/utils/general";
+
 export const symbolsArray = [">", ">=", "<", "<=","%", "p%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł"];
 
 export const escapedRegexSymbolArray = symbolsArray.map(item => item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
@@ -19,9 +21,6 @@ export const separateNumbersAndStrings = (data) => {
 
   return { numberOnlyData, checkSymbolsInArray };
 }
-
-export const checkForNumber = (data) => !isNaN(+data);
-export const checkForString = (data) => typeof data === "string";
 
 export const compareValues = (aValue, bValue, sortOrder) => {
 

@@ -8,14 +8,13 @@ import ShowDate from "@/components/output/show-metrics/show-date";
 import ShowValues from "@/components/output/show-metrics/show-values";
 
 import {
-  checkForNumber,
-  checkForString,
   compareValues,
   regexOverall,
   separateNumbersAndStrings
 } from "@/utils/sortUtils";
 
 import { dateValidator } from "@/utils/dateUtils";
+import {checkForNumber, checkForString} from "@/utils/general";
 
 function DisplayDataWithSubheaders({
                                   value,

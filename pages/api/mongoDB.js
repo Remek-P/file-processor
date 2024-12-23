@@ -4,7 +4,7 @@ import { COLLECTION } from "@/constants/constants";
 let client; // Reuse the client connection
 let db;
 
-const uri = `${process.env.DB_HOST}://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.vdirdpb.mongodb.net/?retryWrites=true&w=majority&appName=data-to-JS`;
+const uri = `${process.env.DB_HOST}://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.vdirdpb.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.DB_APP_NAME}`;
 
 async function getDbClient() {
   if (!client) {
@@ -15,34 +15,42 @@ async function getDbClient() {
 }
 
 async function ensureTextIndexes(collection) {
-  const indexes = await collection.indexes();
-  const textIndexExists = indexes.some(index => index.key && index.key.hasOwnProperty('$**')); // Check for a wildcard text index
+  try {
+    // Use listIndexes() and convert it to an array
+    const indexes = await collection.listIndexes().toArray();
 
-  if (!textIndexExists) {
-    // No text index found, check the keys of the third document for index creation
-    const sampleDoc = await collection
-        .find()
-        .skip(2)
-        .limit(1)
-        .next();
+    // Check if there's a wildcard text index
+    const textIndexExists = indexes.some(index => index.key && index.key.hasOwnProperty('$**'));
 
-    if (sampleDoc) {
-      const keys = Object.keys(sampleDoc); // Extract keys from the third document
-      const textFields = keys.filter(key => typeof sampleDoc[key] === "string"); // Filter for string fields
+    if (!textIndexExists) {
+      // No text index found, check the keys of a sample document for index creation
+      const sampleDoc = await collection
+          .find()
+          .skip(1) // Skip the first document
+          .limit(1) // Limit to one document
+          .next();
 
-      if (textFields.length > 0) {
-        // Create a text index on all string fields
-        const indexDefinition = textFields.reduce((acc, field) => {
-          acc[field] = "text";
-          return acc;
-        }, {});
+      if (sampleDoc) {
+        const keys = Object.keys(sampleDoc); // Extract keys from the sample document
+        const textFields = keys.filter(key => typeof sampleDoc[key] === 'string'); // Only string fields
 
-        // Create the index
-        await collection.createIndex(indexDefinition);
+        if (textFields.length > 0) {
+          // Create a text index on all string fields
+          const indexDefinition = textFields.reduce((acc, field) => {
+            acc[field] = 'text';
+            return acc;
+          }, {});
+
+          // Create the index
+          await collection.createIndex(indexDefinition);
+        }
       }
     }
+  } catch (error) {
+    console.error('Error ensuring text indexes:', error);
   }
 }
+
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -59,7 +67,7 @@ export default async function handler(req, res) {
       const collection = db.collection(COLLECTION);
 
       // Ensure text indexes are created (only if they don't already exist)
-      await ensureTextIndexes(collection);
+      // await ensureTextIndexes(collection);
 
       const isNumber = !isNaN(query);
       const numberQuery = parseFloat(query);
@@ -73,6 +81,8 @@ export default async function handler(req, res) {
 
       // Step 2: Query for text fields using $text search
       if (!isNumber && typeof query === "string" && query.trim()) {
+        // await ensureTextIndexes(COLLECTION)
+
         const textResults = await collection.find({ $text: { $search: query } }).toArray();
         data = [...firstRow, ...data, ...textResults]; // Combine results from both queries
       }

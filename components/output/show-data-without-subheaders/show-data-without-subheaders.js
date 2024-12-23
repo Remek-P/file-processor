@@ -4,7 +4,7 @@ import {Tile} from "@carbon/react";
 import { useContext } from "react";
 import { HideTileContext } from "@/context/global-context";
 
-function ShowDataWithoutSubheaders({ colDataArray, labelDataArray }) {
+function ShowDataWithoutSubheaders({ colDataArray, labelDataArray, hideDB_ID_Tile }) {
 
   const [ hideTile ] = useContext(HideTileContext);
 
@@ -14,6 +14,7 @@ function ShowDataWithoutSubheaders({ colDataArray, labelDataArray }) {
                                                                           value={value}
                                                                           index={index}
                                                                           labelDataArray={labelDataArray}
+                                                                          hideDB_ID_Tile={hideDB_ID_Tile}
         />)}
       </Tile>
   );
