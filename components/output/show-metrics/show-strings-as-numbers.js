@@ -16,24 +16,26 @@ function ShowStringsAsNumbers({ data, showPercentages  }) {
           ? undefined
           : 2
 
-  const convertToPercentages = (+value * 100).toFixed(localDecimal);
-  const roundToGivenDecimal = (+value).toFixed(localDecimal);
+  // const convertToPercentages = (+value * 100).toFixed(localDecimal);
+  // const roundToGivenDecimal = (+value).toFixed(localDecimal);
 
   const displayValue = () => {
 
-    let processedValue = value.includes(',')
-        ? +value.replace(",", ".")
-        : +value
-    ;
+    let processedValue = value;
+    if (symbolsArray.length === 0 && showPercentages) processedValue = `${processedValue}%`;
 
-    for (const symbol of symbolsArray) {
+    symbolsArray.forEach(symbol => {
       if (symbol === "%" || symbol === "p%") {
-          if (showPercentages === undefined) processedValue = processedValue+symbol;
-          else if (showPercentages) processedValue = processedValue+symbol;
+        // Add percentage if showPercentages is defined
+        if (showPercentages !== undefined && showPercentages) {
+          processedValue += symbol;
+        }
+      } else if (symbol === "zł") {
+        processedValue += " " + symbol; // Add space before currency symbol
+      } else {
+        processedValue = symbol + " " + processedValue; // Prepend other symbols
       }
-      else if (symbol === "zł") processedValue = processedValue+" "+symbol
-      else processedValue = symbol+" "+processedValue
-    }
+    });
 
     return processedValue;
   }

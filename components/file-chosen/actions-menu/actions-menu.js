@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import {useCallback, useContext} from "react";
 
 import { useRouter } from "next/router";
 
@@ -14,6 +14,8 @@ import {
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
 import ResetFormating from "@/components/file-chosen/actions-menu/menu-items/reset-formating";
+
+import { convertUnderscoreToSpace } from "@/utils/general";
 
 import { OverflowMenu, OverflowMenuItem, MenuItemDivider } from "@carbon/react";
 
@@ -58,11 +60,15 @@ function ActionsMenu({
     setExcludedArray([]);
   }
 
-  const handleHideAllArrays = () => {
-    const uniqueHeaders = [...(new Set(headers))]
-    const headersToHide = toggleIDView ? uniqueHeaders : uniqueHeaders.filter(header => header !== HEADER_LABEL);
+  const handleHideAllArrays = useCallback(() => {
+    const uniqueHeaders = [...(new Set(headers))];
+    const refinedUniqueHeaders = convertUnderscoreToSpace(uniqueHeaders);
+    const headersToHide = toggleIDView
+        ? refinedUniqueHeaders
+        : refinedUniqueHeaders.filter(header => header !== HEADER_LABEL);
+
     setExcludedArray([...(new Set(headersToHide))]);
-  }
+  }, [headers, toggleIDView]);
 
   const handleIDView = () => {
     setToggleIDView(prevState => !prevState);

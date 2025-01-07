@@ -14,6 +14,7 @@ import { isContainingSubheaders } from "@/utils/parserUtils";
 import classes from "@/components/output/output.module.scss";
 import SearchSuggestions from "@/components/search/search-suggestions/search-suggestions";
 import SearchDatabaseInput from "@/components/choose-file-screen/search-database-input/search-database-input";
+import { convertUnderscoreToSpace } from "@/utils/general";
 
 
 function Output({
@@ -33,14 +34,16 @@ function Output({
 
   const [ inputValue, setInputValue ] = useState("");
 
-  const isSubheadersTrue = isContainingSubheaders(file);
+  const isSubheadersTrue = useMemo(() => isContainingSubheaders(file), [file]);
 
   const headersArray = useMemo(() => {
+    const firstRow = convertUnderscoreToSpace(file[0])
+
     if ((isSubheadersTrue && isSubheaders === false)
         || (!isSubheadersTrue && (isSubheaders === undefined || isSubheaders === false)))
-      return file[0];
+      return firstRow;
 
-    return [file[0], file[1]];
+    return [firstRow, convertUnderscoreToSpace(file[1])];
   }, [ file, isSubheaders ]);
 
   const userDataArray = useMemo(() => {

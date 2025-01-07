@@ -14,7 +14,11 @@ import {
 } from "@/utils/sortUtils";
 
 import { dateValidator } from "@/utils/dateUtils";
-import {checkForNumber, checkForString} from "@/utils/general";
+import {
+  checkForNumber,
+  checkForString,
+  decimalPlaceSeparatorToComma
+} from "@/utils/general";
 
 function DisplayDataWithSubheaders({
                                   value,
@@ -128,10 +132,10 @@ function DisplayDataWithSubheaders({
                 const numberAsString = regexOverall.test(data);
 
                 if (numberAsString) {
+                  const refinedValue = decimalPlaceSeparatorToComma(data);
+                  const { numberOnlyData, checkSymbolsInArray} = separateNumbersAndStrings(refinedValue);
 
-                  const { numberOnlyData, checkSymbolsInArray} = separateNumbersAndStrings(data);
-
-                  const isZero = +numberOnlyData === 0;
+                  const isZero = numberOnlyData === 0;
                   if (isZero && !showAllMetrics) return null;
 
                   if (isZero) numbersEqualToZero.current = true;
@@ -139,13 +143,13 @@ function DisplayDataWithSubheaders({
 
                   dataType.current = "number";
                   const numberData = {
-                    value: +numberOnlyData,
+                    value: numberOnlyData,
                     symbolsArray: checkSymbolsInArray,
                     label: sortedLabels[index],
                     unrefined: data,
                   }
 
-                  handleChartDataIfDataIs0AndNot0(dataType.current, index, +numberData.value)
+                  handleChartDataIfDataIs0AndNot0(dataType.current, index, numberData.value)
 
                   return <ShowStringsAsNumbers key={`${data}+${sortedLabels[index]}`}
                                                data={numberData}

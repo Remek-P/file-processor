@@ -15,7 +15,7 @@ function DisplayOutputs({
 
   const [ numberOfOutputs  ] = useContext(NumberOfOutputsContext);
 
-  // While multiple outputs are present, one search nullifies the second
+  //TODO: While multiple outputs are present, one search nullifies the second in direct DB search
 
   return (
       <>

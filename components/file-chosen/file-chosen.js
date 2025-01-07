@@ -30,7 +30,6 @@ function FileChosen({
   const [ isNotificationVisible, setIsNotificationVisible ] = useState(false);
 
   const labelArray = isSubheaders === true ? file[1] : file[0];
-  console.log("labelArray", labelArray)
 
   // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
   const indexOfID = labelArray.findIndex(label =>

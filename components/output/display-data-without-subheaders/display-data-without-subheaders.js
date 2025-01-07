@@ -15,7 +15,12 @@ import {
 import { dateValidator } from "@/utils/dateUtils";
 
 import {ShowAllMetricsContext, ToggleIDViewGlobalContext} from "@/context/global-context";
-import {checkForNumber, checkForString} from "@/utils/general";
+import {
+  checkForNumber,
+  checkForString,
+  decimalPlaceSeparatorToComma
+} from "@/utils/general";
+
 import { HEADER_LABEL } from "@/constants/constants";
 
 function DisplayDataWithoutSubheaders({
@@ -87,9 +92,10 @@ function DisplayDataWithoutSubheaders({
 
     case numberAsAString: {
       dataType = number;
-      const { numberOnlyData, checkSymbolsInArray } = separateNumbersAndStrings(value);
+      const refinedValue = decimalPlaceSeparatorToComma(value);
+      const { numberOnlyData, checkSymbolsInArray } = separateNumbersAndStrings(refinedValue);
 
-      if (+numberOnlyData === 0) isZero = true;
+      if (numberOnlyData === 0) isZero = true;
 
       const numberData = {
         value: numberOnlyData,
