@@ -191,8 +191,6 @@ export const dateValidator = (dateString) => {
 
   if (typeof dateString !== "string") return false
 
-  const validDate = dayjs(dateString, dateFormats, true).isValid();
+  return dayjs(dateString, dateFormats, true).isValid();
 
-  if (validDate) return true;
-  return false;
 };
