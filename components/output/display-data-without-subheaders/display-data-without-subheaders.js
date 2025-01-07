@@ -92,7 +92,7 @@ function DisplayDataWithoutSubheaders({
       if (+numberOnlyData === 0) isZero = true;
 
       const numberData = {
-        value: +numberOnlyData,
+        value: numberOnlyData,
         symbolsArray: checkSymbolsInArray,
         label: labelDataArray[index],
         unrefined: value,

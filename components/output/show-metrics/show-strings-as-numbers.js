@@ -21,7 +21,10 @@ function ShowStringsAsNumbers({ data, showPercentages  }) {
 
   const displayValue = () => {
 
-    let processedValue = value;
+    let processedValue = value.includes(',')
+        ? +value.replace(",", ".")
+        : +value
+    ;
 
     for (const symbol of symbolsArray) {
       if (symbol === "%" || symbol === "p%") {
