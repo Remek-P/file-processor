@@ -8,8 +8,8 @@ import SelectSavedFile from "@/components/choose-file-screen/select-saved-file/s
 import classes from "./choose-file.module.scss";
 import SearchDbDirectly from "@/components/choose-file-screen/search-DB-directly/search-db-directly";
 import SearchDatabaseInput from "@/components/choose-file-screen/search-database-input/search-database-input";
-import UploadFromMachine
-  from "@/components/choose-file-screen/upload-file-option/upload-from-machine/upload-from-machine";
+import UploadToIndexedDB
+  from "@/components/choose-file-screen/upload-file-option/upload-to-IndexedDB/upload-to-IndexedDB";
 import UploadToDB from "@/components/choose-file-screen/upload-file-option/upload-file-to-db/upload-file-to-db";
 
 function ChooseFile({
@@ -79,7 +79,7 @@ function ChooseFile({
             isToBeUploaded && !isFileDelivered &&
             <>
               <div className={`${classes.optionContainer} shadow`}>
-                <UploadFromMachine handleFile={handleFile} setIsFileDelivered={setIsFileDelivered} />
+                <UploadToIndexedDB handleFile={handleFile} setIsFileDelivered={setIsFileDelivered} />
               </div>
 
               <div className={`${classes.optionContainer} shadow`}>

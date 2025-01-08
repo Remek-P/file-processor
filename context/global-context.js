@@ -156,9 +156,17 @@ export const SearchReducePerformanceProvider = ({ children }) => (
       { children }
     </SearchReducePerformanceContext.Provider>
 );
+
 export const NumberOfOutputsContext = createContext([null] );
 export const NumberOfOutputsProvider = ({ children }) => (
     <NumberOfOutputsContext.Provider value={useState([{id: 1}] )}>
       { children }
     </NumberOfOutputsContext.Provider>
+);
+
+export const IndexedDB_SizeContext = createContext(null );
+export const IndexedDB_SizeProvider = ({ children }) => (
+    <IndexedDB_SizeContext.Provider value={useState(undefined)}>
+      { children }
+    </IndexedDB_SizeContext.Provider>
 );

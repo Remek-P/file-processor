@@ -147,7 +147,6 @@ export default function HomePage() {
       // // Two below indices are the ids from MongoDB
       jsonData[0][0] = HEADER_LABEL;
 
-      console.log("jsonData", jsonData)
       setFile(jsonData);
       // for refetching
       const checkFileName = fileName ? fileName : `DB_file_${timeStamp()}`
@@ -175,14 +174,11 @@ export default function HomePage() {
       const res = await fetch(`/api/csvData?query=${query}`);
       result = await res.json();
 
-      console.log("result", result)
       if (res.ok) {
         // Process and display the result
         const sheet = XLSX.utils.json_to_sheet(result);
         const jsonData = sheetToJsonData(sheet);
-        // console.log("jsonData", jsonData);
 
-        const isSubheaders = isContainingSubheaders(jsonData);
         setFile(jsonData);
         setFileName(`DB_file_${timeStamp()}`);
         isDataFetched(true);

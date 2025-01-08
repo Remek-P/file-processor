@@ -2,7 +2,8 @@ import Output from "@/components/output/output";
 
 import classes from "@/components/file-chosen/file-chosen.module.scss";
 import {useContext} from "react";
-import {NumberOfOutputsContext} from "@/context/global-context";
+import { NumberOfOutputsContext } from "@/context/global-context";
+
 
 function DisplayOutputs({
                           IDIndex,

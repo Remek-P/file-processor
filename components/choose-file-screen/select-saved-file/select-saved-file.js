@@ -1,19 +1,31 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 
 import {Button, IconButton, Select, SelectItem, Tile} from "@carbon/react";
 import {Run, TrashCan} from "@carbon/icons-react";
 
-import {FileDataGlobalContext} from "@/context/global-context";
-import {getFileNames} from "@/utils/indexedDB";
+import {FileDataGlobalContext, IndexedDB_SizeContext} from "@/context/global-context";
+import {checkIndexedDB_Size, getFileNames} from "@/utils/indexedDB";
+
+import { DB_NAME } from "@/constants/constants";
 
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import Link from "next/link";
+import IndexedDBSizeMonit from "@/components/notifications/IndexedDB-size-monit/IndexedDB-size-monit";
 
 function SelectSavedFile({ isUpdate, loadSavedFile }) {
 
-  const [selectedOption, setSelectedOption] = useState('');
-  const [savedFilesNames, setSavedFilesNames] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(true)
+  const [ , setTotalSize] = useContext(IndexedDB_SizeContext);
+  const { addWarnings } = useContext(FileDataGlobalContext);
+  const [ totalSize ] = useContext(IndexedDB_SizeContext);
+
+  const [ selectedOption, setSelectedOption ] = useState('');
+  const [ savedFilesNames, setSavedFilesNames ] = useState([]);
+  const [ isDisabled, setIsDisabled ] = useState(true);
+  const [ showNotifications, setShowNotifications ] = useState(false);
+
+  const hasBeenClicked = useRef(false);
+
+  const limitTest = totalSize > 48;
 
   const handleSelect = (event) => {
     const value = event.target.value;
@@ -22,7 +34,6 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
     setSelectedOption(value);
   };
 
-  const { addWarnings } = useContext(FileDataGlobalContext);
 
   useEffect(() => {
     const getSavedFilesNames = async () => {
@@ -35,13 +46,26 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
     };
 
     getSavedFilesNames();
+    checkIndexedDB_Size(DB_NAME, addWarnings, setTotalSize);
   }, [isUpdate]);
 
   const handleClick = () => {
-    loadSavedFile(selectedOption);
+    if (limitTest && !hasBeenClicked.current) {
+      setShowNotifications(true);
+      hasBeenClicked.current = true;
+    }
+    else {
+      loadSavedFile(selectedOption);
+    }
+  }
+
+  const handleRejectNotification = () => {
+    setShowNotifications(false);
+    hasBeenClicked.current = true;
   }
 
   return (
+      <>
       <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
 
         <h6>Select a saved file:</h6>
@@ -76,6 +100,10 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
           </Link>
         </div>
       </Tile>
+        {limitTest && showNotifications &&
+            <IndexedDBSizeMonit handleReject={handleRejectNotification} />
+        }
+      </>
   );
 }
 

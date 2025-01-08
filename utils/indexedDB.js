@@ -40,44 +40,30 @@ export const getFileNames = async () => {
   return await db.getAllKeys(STORE_NAME);
 };
 
-export const checkIndexedDB_Size = async () => {
-  try {
-    const db = await initDB();
-    let totalSize = 0;
+export const checkIndexedDB_Size = (dbName, addWarnings, setTotalSize) => {
+  const worker = new Worker(new URL("@/public/checkIndexedDB_SizeWorker.js", import.meta.url));
 
-    // Get all object store names from the database
-    const storeNames = db.objectStoreNames;
+  worker.postMessage({ dbName });
 
-    for (const storeName of storeNames) {
-      const tx = db.transaction(storeName, 'readonly');
-      const store = tx.objectStore(storeName);
+  worker.onmessage = (event) => {
+    const result = event.data;
 
-      const cursor = store.openCursor();
-      await cursor.iterate(async (cursor) => {
-        const value = cursor.value;
-
-        // Estimate the size of the object by converting it to a JSON string
-        const sizeInBytes = new Blob([JSON.stringify(value)]).size;
-        totalSize += sizeInBytes;
-      });
+    if (typeof result === 'string' && result.includes('Error')) {
+      addWarnings(result);
+      setTotalSize(null);
+    } else {
+      const mbSize = result / (1024 * 1024);
+      const mbSizeNumber = parseFloat(mbSize.toFixed(2));
+      setTotalSize(mbSizeNumber);
     }
 
-    return totalSize;
-  } catch (err) {
-    console.error('Error calculating IndexedDB size:', err);
-    return 0;
-  }
-};
+    worker.terminate();
+  };
 
-// TODO: Add a component to suggest cleaning the storage;
-
-export const isIndexedDB_LimitReached = async () => {
-  try {
-    const size = await checkIndexedDB_Size(); // Ensure checkIndexedDB_Size() returns the size in bytes
-    const limit = 5 * 1024 * 1024; // Set the limit to 5 MB
-    return size >= limit; // Return true if size exceeds the limit, false otherwise
-  } catch (err) {
-    console.error('Error checking IndexedDB size:', err);
-    return false; // Return false in case of an error
-  }
+  // Handle worker errors
+  worker.onerror = (error) => {
+    console.error('Worker error:', error);
+    addWarnings('An error occurred while calculating the size.');
+    worker.terminate();
+  };
 }

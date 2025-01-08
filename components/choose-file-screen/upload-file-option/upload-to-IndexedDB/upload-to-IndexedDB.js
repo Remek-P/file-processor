@@ -2,7 +2,7 @@ import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import { FileUploader, Tile } from "@carbon/react";
 import { Upload } from "@carbon/icons-react";
 
-function UploadFromMachine({ setIsFileDelivered, handleFile }) {
+function UploadToIndexedDB({ setIsFileDelivered, handleFile }) {
 
   const fileTypes = [
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -46,4 +46,4 @@ function UploadFromMachine({ setIsFileDelivered, handleFile }) {
   );
 }
 
-export default UploadFromMachine;
+export default UploadToIndexedDB;
