@@ -11,7 +11,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.717.0",
     "@carbon/charts-react": "^1.19.2",
-    "@carbon/react": "^1.67.1",
+    "@carbon/react": "^1.73.0",
     "aws-sdk": "^2.1692.0",
     "csv-parser": "^3.0.0",
     "d3": "^7.9.0",

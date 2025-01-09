@@ -24,12 +24,17 @@ function VirtualizedList({
 
   const [ sortedSuggestions, setSortedSuggestions]  = useState(suggestions)
   const [ columnWidths, setColumnWidths ] = useState([]);
+  const [ rowHeight, setRowHeight ] = useState(64);
+  const [ columnHeight, setColumnHeight ] = useState(undefined);
 
   const rowRef = useRef();
+  const stickyRowRef = useRef();
 
   const { width, height } = useWindowDimensions();
   const virtualizedWidth = width - (0.05 * width);
-  const virtualizedHeight = height - (0.2 * height);
+  const virtualizedHeight = height - (0.17 * height);
+
+  console.log("rowHeight", rowHeight)
 
   const StickyListContext = createContext();
   StickyListContext.displayName = "StickyListContext";
@@ -90,15 +95,35 @@ function VirtualizedList({
 
   useEffect(() => {
     // Collect column widths after the component is rendered
-    if (rowRef.current) {
-      const cells = rowRef.current.querySelectorAll('td');
-      const widths = Array.from(cells).map(cell => cell.offsetWidth);
+    if (rowRef.current && stickyRowRef.current) {
+
+      const cells = rowRef.current.querySelectorAll('div');
+      const array = Array.from(cells);
+      const widths = array.map(cell => cell.offsetWidth);
+      const height = array[0].offsetHeight;
+
+      // Collect column heights after the component is rendered
+      const stickyCells = stickyRowRef.current.querySelectorAll('div');
+      const stickyRowHeight = Array.from(stickyCells).map(cell => cell.offsetHeight);
+
+      //Get highest element, but not smaller then 64
+      let highestStickyCell = 64;
+      for (let i = 0; i < stickyRowHeight.length; i++) {
+        if (stickyRowHeight[i] > highestStickyCell) {
+          highestStickyCell = stickyRowHeight[i];
+        }
+      }
+      const heightLimit = 150;
+      if (highestStickyCell > heightLimit) highestStickyCell = heightLimit;
+
+      setColumnHeight(highestStickyCell);
       setColumnWidths(widths);
+      setRowHeight(height);
     }
   }, [sortedSuggestions]);
 
-  const stickyHeight = 30;
-  const padding = 86 - stickyHeight *2;
+  const virtualizedItemSize = rowHeight
+  const padding = columnHeight - virtualizedItemSize; //TODO: ustawić
 
   const Row = ({index, style}) => {
     const row = sortedSuggestions[index];
@@ -108,7 +133,11 @@ function VirtualizedList({
               <td key={colIndex}
                   data-value={row[IDIndex]}
                   onClick={pickSearchedOutput}
-                  style={{ width: columnWidths[colIndex], minWidth: columnWidths[colIndex] }}
+                  style={{
+                    width: columnWidths[colIndex],
+                    minWidth: columnWidths[colIndex],
+                    maxWidth: columnWidths[colIndex]
+                  }}
                   tabIndex="0"
               >
                 <Tile>
@@ -120,10 +149,9 @@ function VirtualizedList({
     );
   };
 
-  // TODO: set equal height of the sticky row
-
+//TODO: scrollbar styling
   const StickyRow = ({index, style}) => (
-      <tr style={style}>
+      <tr ref={stickyRowRef} style={style}>
         {sortedSuggestions[index].map((label, colIndex) => (
             <th
                 key={colIndex}
@@ -131,14 +159,14 @@ function VirtualizedList({
                 tabIndex="0"
                 style={{ width: columnWidths[colIndex] }} // Set the width
             >
-              <Tile>
+              <Tile style={{
+                height: `${columnHeight}px`, overflowY: 'auto' }}>
                 {label}
               </Tile>
             </th>
         ))}
       </tr>
   );
-
 
   const innerElementType = forwardRef(({children, ...rest}, ref) => (
       <StickyListContext.Consumer>
@@ -149,7 +177,7 @@ function VirtualizedList({
                   <StickyRow
                       index={index}
                       key={index}
-                      style={{top: 0, left: 0, height: `${stickyHeight}px`, position: "sticky", zIndex: "1"}}
+                      style={{top: 0, left: 0, height: `${columnHeight}px`, position: "sticky", zIndex: "1"}}
                   />
               ))}
               </thead>
@@ -180,9 +208,10 @@ function VirtualizedList({
           height={virtualizedHeight}
           innerElementType={innerElementType}
           itemCount={sortedSuggestions.length}
-          itemSize={50}
+          itemSize={virtualizedItemSize}
           stickyIndices={[0]}
           width={virtualizedWidth}
+          overscanCount={10}
       >
         {Row}
       </StickyList>
