@@ -289,8 +289,7 @@ export default function HomePage() {
       <main>
         <ToggleIDViewProvider>
 
-          <Loading id="indexLoading"
-                   small={false}
+          <Loading small={false}
                    withOverlay={true}
                    className={null}
                    description="Active loading indicator"
