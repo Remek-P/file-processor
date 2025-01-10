@@ -20,10 +20,10 @@ function ChooseFile({
                     }) {
 
   // TODO: a lot of fetches
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [isFileDelivered, setIsFileDelivered] = useState(false);
-  const [isSearchDatabase, setIsSearchDatabase] = useState(false);
-  const [isToBeUploaded, setIsToBeUploaded] = useState(false);
+  const [ isUpdate, setIsUpdate ] = useState(false);
+  const [ isFileDelivered, setIsFileDelivered ] = useState(false);
+  const [ isSearchDatabase, setIsSearchDatabase ] = useState(false);
+  const [ isToBeUploaded, setIsToBeUploaded ] = useState(false);
 
   return (
       <section className={classes.chooseFileContainer}>

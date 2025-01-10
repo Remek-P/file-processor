@@ -167,3 +167,10 @@ export const IndexedDB_SizeProvider = ({ children }) => (
       { children }
     </IndexedDB_SizeContext.Provider>
 );
+
+export const IndexedDB_ClickedContext = createContext(null );
+export const IndexedDB_ClickedProvider = ({ children }) => (
+    <IndexedDB_ClickedContext.Provider value={useState(0)}>
+      { children }
+    </IndexedDB_ClickedContext.Provider>
+);

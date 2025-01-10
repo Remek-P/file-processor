@@ -1,31 +1,30 @@
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 
 import {Button, IconButton, Select, SelectItem, Tile} from "@carbon/react";
 import {Run, TrashCan} from "@carbon/icons-react";
 
-import {FileDataGlobalContext, IndexedDB_SizeContext} from "@/context/global-context";
-import {checkIndexedDB_Size, getFileNames} from "@/utils/indexedDB";
-
-import { DB_NAME } from "@/constants/constants";
+import { FileDataGlobalContext } from "@/context/global-context";
+import { getFileNames } from "@/utils/indexedDB";
 
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import Link from "next/link";
 import IndexedDBSizeMonit from "@/components/notifications/IndexedDB-size-monit/IndexedDB-size-monit";
+import useSizeNotification from "@/hooks/useSizeNotification";
+import useRejectSizeNotification from "@/hooks/useRejectSizeNotification";
+import useIndexedDBSize from "@/hooks/useIndexedDBSize";
 
 function SelectSavedFile({ isUpdate, loadSavedFile }) {
 
-  const [ , setTotalSize] = useContext(IndexedDB_SizeContext);
   const { addWarnings } = useContext(FileDataGlobalContext);
-  const [ totalSize ] = useContext(IndexedDB_SizeContext);
 
   const [ selectedOption, setSelectedOption ] = useState('');
   const [ savedFilesNames, setSavedFilesNames ] = useState([]);
   const [ isDisabled, setIsDisabled ] = useState(true);
   const [ showNotifications, setShowNotifications ] = useState(false);
 
-  const hasBeenClicked = useRef(false);
+  const { handleSizeNotification } = useSizeNotification();
 
-  const limitTest = totalSize > 48;
+  useIndexedDBSize(); //Check if the IndexedDb size is significant
 
   const handleSelect = (event) => {
     const value = event.target.value;
@@ -33,7 +32,6 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
     else setIsDisabled(true);
     setSelectedOption(value);
   };
-
 
   useEffect(() => {
     const getSavedFilesNames = async () => {
@@ -46,67 +44,64 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
     };
 
     getSavedFilesNames();
-    checkIndexedDB_Size(DB_NAME, addWarnings, setTotalSize);
   }, [isUpdate]);
 
-  const handleClick = () => {
-    if (limitTest && !hasBeenClicked.current) {
-      setShowNotifications(true);
-      hasBeenClicked.current = true;
-    }
-    else {
-      loadSavedFile(selectedOption);
-    }
+  const showNotification = () => {
+    setShowNotifications(true)
   }
 
-  const handleRejectNotification = () => {
-    setShowNotifications(false);
-    hasBeenClicked.current = true;
+  const handleLoadSavedFile = () => {
+    loadSavedFile(selectedOption)
   }
+
+  const handleClick = () => {
+    handleSizeNotification(showNotification, handleLoadSavedFile);
+  }
+
+  const handleReject = useRejectSizeNotification(setShowNotifications, handleLoadSavedFile);
 
   return (
       <>
-      <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
+        <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
 
-        <h6>Select a saved file:</h6>
-        <Select id="selectSavedFile"
-                labelText="Select the saved file:"
-                hideLabel={true}
-                value={selectedOption}
-                onChange={handleSelect}
-                size="sm"
-                className={classes.optionContainerSelect}
-        >
-          <SelectItem value=""  text="Choose file to load" />
-          {savedFilesNames.map((fileName, index) => (
-              <SelectItem key={index}
-                          value={fileName}
-                          text={fileName}
-              />
-          ))}
-        </Select>
+          <h6>Select a saved file:</h6>
+          <Select id="selectSavedFile"
+                  labelText="Select the saved file:"
+                  hideLabel={true}
+                  value={selectedOption}
+                  onChange={handleSelect}
+                  size="sm"
+                  className={classes.optionContainerSelect}
+          >
+            <SelectItem value="" text="Choose file to load"/>
+            {savedFilesNames.map((fileName, index) => (
+                <SelectItem key={index}
+                            value={fileName}
+                            text={fileName}
+                />
+            ))}
+          </Select>
 
-        <div className={classes.optionButtonContainer}>
-          <Button onClick={handleClick} size="md" disabled={isDisabled}>
-            <Run/>
-            <span>Load</span>
-          </Button>
+          <div className={classes.optionButtonContainer}>
+            <Button onClick={handleClick} size="md" disabled={isDisabled}>
+              <Run />
+              <span>Load</span>
+            </Button>
 
-          <Link href="/delete-file">
-            <IconButton onClick={null}
-                        size="md"
-                        kind="danger"
-                        label="Delete files"
-                // className={classes.deleteButton}
-            >
-              <TrashCan/>
-            </IconButton>
-          </Link>
-        </div>
-      </Tile>
-        {limitTest && showNotifications &&
-            <IndexedDBSizeMonit handleReject={handleRejectNotification} />
-        }
+            <Link href="/delete-file">
+              <IconButton onClick={null}
+                          size="md"
+                          kind="danger"
+                          label="Delete files"
+                  // className={classes.deleteButton}
+              >
+                <TrashCan />
+              </IconButton>
+            </Link>
+          </div>
+        </Tile>
+
+        <IndexedDBSizeMonit handleReject={handleReject} showNotifications={showNotifications} rejectText="Load" />
       </>
   );
 }

@@ -32,15 +32,12 @@ function UploadToIndexedDB({ setIsFileDelivered, handleFile }) {
       <Tile className={`${classes.tile}`}>
         <FileUploader filenameStatus="complete"
                       labelTitle="Upload"
-                      labelDescription={<>
-                        Accepted file formats: <br/>
-                        {displayFormats}
-                      </>
-                      }
+                      labelDescription={`Accepted file formats:\n${displayFormats}`}
                       buttonLabel={buttonLabel}
                       onChange={(e) => handleClick(e)}
                       accept={fileTypes}
                       name="uploader"
+                      style={{whiteSpace: "pre-line"}}
         />
       </Tile>
   );

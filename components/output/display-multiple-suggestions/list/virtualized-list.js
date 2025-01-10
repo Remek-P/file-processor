@@ -1,6 +1,6 @@
 import {createContext, forwardRef, useEffect, useRef, useState} from "react";
 
-import useWindowDimensions from "@/utils/useWindowSize";
+import useWindowDimensions from "@/hooks/useWindowSize";
 
 import {compareValues} from "@/utils/sortUtils";
 
@@ -33,8 +33,6 @@ function VirtualizedList({
   const { width, height } = useWindowDimensions();
   const virtualizedWidth = width - (0.05 * width);
   const virtualizedHeight = height - (0.17 * height);
-
-  console.log("rowHeight", rowHeight)
 
   const StickyListContext = createContext();
   StickyListContext.displayName = "StickyListContext";

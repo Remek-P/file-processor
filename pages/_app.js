@@ -1,6 +1,7 @@
 import "@/styles/globals.scss";
 import {
   FileDataProvider,
+  IndexedDB_ClickedProvider,
   IndexedDB_SizeProvider,
   IsContainingSubheadersProvider,
   IsLoadingProvider
@@ -12,7 +13,9 @@ export default function App({Component, pageProps}) {
         <IsLoadingProvider>
           <IsContainingSubheadersProvider>
             <IndexedDB_SizeProvider>
-              <Component {...pageProps} />
+              <IndexedDB_ClickedProvider>
+                <Component {...pageProps} />
+              </IndexedDB_ClickedProvider>
             </IndexedDB_SizeProvider>
           </IsContainingSubheadersProvider>
         </IsLoadingProvider>

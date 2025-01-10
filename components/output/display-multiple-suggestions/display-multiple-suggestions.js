@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
 
-import useWindowDimensions from "@/utils/useWindowSize";
+import useWindowDimensions from "@/hooks/useWindowSize";
 
 import { Loading } from "@carbon/react";
 
