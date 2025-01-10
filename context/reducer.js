@@ -10,10 +10,6 @@ export const CASE_NAME = {
 
 export function Reducer(state, action) {
   switch (action.type) {
-    case CASE_NAME.SET_LOADING:
-      return {
-        ...state,
-        isLoading: action.payload };
     case CASE_NAME.SET_FILE:
       return {
         ...state,

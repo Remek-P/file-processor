@@ -3,6 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {
   FileDataGlobalContext,
   IsContainingSubheadersContext,
+  IsLoadingContext,
   ToggleIDViewProvider,
 } from "@/context/global-context";
 
@@ -28,15 +29,14 @@ export default function HomePage() {
   const {
     file,
     fileName,
-    isLoading,
     warnings,
     addWarnings,
     deleteWarning,
     isDataFetched,
     setFile,
-    setFileName,
-    setLoading,
+    setFileName
   } = useContext(FileDataGlobalContext);
+  const [ isLoading, setIsLoading ] = useContext(IsLoadingContext);
   const { isSubheaders, setIsSubheaders } = useContext(IsContainingSubheadersContext);
 
   const [ finalDataAvailable, setFinalDataAvailable ] = useState(false);
@@ -66,13 +66,13 @@ export default function HomePage() {
         throw new Error("Something went wrong");
       }
       worker.terminate();
-      setLoading(false);
+      setIsLoading(false);
     };
   }
 
   const handleFile = async (e) => {
 
-    setLoading(true);
+    setIsLoading(true);
     setFile(null);
 
     const targetFile = e.target.files[0];
@@ -97,14 +97,14 @@ export default function HomePage() {
 
     } else {
       addWarnings("Unsupported file format");
-      setLoading(false);
+      setIsLoading(false);
     }
 
     isDataFetched(false)
   };
 
   const fetchDataFromDB = async (addToIndexedDB = false) => {
-    setLoading(true);
+    setIsLoading(true);
 
     const partialDataArray = [];
 
@@ -126,7 +126,7 @@ export default function HomePage() {
       }
     } catch (error) {
       addWarnings([...warnings, "Fetching data failed"])
-      setLoading(false);
+      setIsLoading(false);
     }
 
     try {
@@ -160,12 +160,12 @@ export default function HomePage() {
     } catch (error) {
       addWarnings([...warnings, "Incorrect file structure"])
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 
   const fetchDirectlyDataFromS3 = async (query) => {
-    setLoading(true);
+    setIsLoading(true);
 
     let result;
     setUserQuery(query);
@@ -191,12 +191,12 @@ export default function HomePage() {
       console.error("Error fetching search results:", error);
       setIsDirectFetchResults(false);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const fetchDirectlyDataFromDB = async (query) => {
-    setLoading(true);
+    setIsLoading(true);
     let result;
     setUserQuery(query);
 
@@ -232,42 +232,42 @@ export default function HomePage() {
       addWarnings([...warnings, "Fetching data failed"]);
       console.error("Error fetching search results:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
 
   const loadSavedFile = async (name) => {
-    setLoading(true);
+    setIsLoading(true);
     const file = await getData(name);
     if (file) {
       setFile(file);
       setFileName(name);
       setFinalDataAvailable(true);
     }
-    setLoading(false);
+    setIsLoading(false);
   };
 
   const handleFileChange = () => {
-    setLoading(true);
+    setIsLoading(true);
     setFile(null);
     setFileName(null);
     setUserQuery('')
     isDataFetched(undefined)
     setFinalDataAvailable(false);
     setIsDirectFetchResults(false);
-    setLoading(false);
+    setIsLoading(false);
   }
 
   const handleErrorDelete = async () => {
-    setLoading(true);
+    setIsLoading(true);
     await deleteData(fileName);
     setFile(null);
     setFileName(null);
     isDataFetched(undefined)
     setFinalDataAvailable(false);
     setIsDirectFetchResults(false);
-    setLoading(false);
+    setIsLoading(false);
   }
 
   const refreshData = async (query) => {

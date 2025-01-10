@@ -2,10 +2,11 @@ import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import { FileUploader, Tile } from "@carbon/react";
 import { Upload } from "@carbon/icons-react";
 import { useContext } from "react";
-import { FileDataGlobalContext } from "@/context/global-context";
+import { FileDataGlobalContext, IsLoadingContext } from "@/context/global-context";
 
 function UploadToDB({ setIsFileDelivered }) {
-  const { setLoading, addWarnings, isDataFetched } = useContext(FileDataGlobalContext);
+  const { addWarnings, isDataFetched } = useContext(FileDataGlobalContext);
+  const [ , setIsLoading ] = useContext(IsLoadingContext);
 
   const fileTypes = [".csv"];
   const displayFormats = fileTypes.map((fileType) => " " + fileType);
@@ -36,7 +37,7 @@ function UploadToDB({ setIsFileDelivered }) {
     }
 
     // Set the loading state to true
-    setLoading(true);
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append("csv", selectedFile);  // Ensure the field name matches the backend
@@ -63,7 +64,7 @@ function UploadToDB({ setIsFileDelivered }) {
       console.error("Upload failed", error);
       addWarnings("Error uploading file.");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 

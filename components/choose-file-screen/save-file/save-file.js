@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 
 import { addData } from "@/utils/indexedDB";
-import { FileDataGlobalContext } from "@/context/global-context";
+import { FileDataGlobalContext, IsLoadingContext } from "@/context/global-context";
 
 import {Button, TextInput, Tile} from "@carbon/react";
 import { Save } from "@carbon/icons-react";
@@ -10,7 +10,8 @@ import classes from "@/components/choose-file-screen/choose-file.module.scss";
 
 function SaveFile({ setIsUpdate}) {
 
-  const { file, fileName, addWarnings, setLoading } = useContext(FileDataGlobalContext);
+  const { file, fileName, addWarnings } = useContext(FileDataGlobalContext);
+  const [ , setIsLoading ] = useContext(IsLoadingContext);
 
   const [assignedFileName, setAssignedFileName] = useState("");
   const [isDisabled, setIsDisabled] = useState(false)
@@ -31,13 +32,13 @@ function SaveFile({ setIsUpdate}) {
   }
 
   const handleSave = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       await addData(assignedFileName, file);
     } catch (error) {
       addWarnings("Error saving file");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
       setAssignedFileName("");
       setIsUpdate(prevState => !prevState);
       setIsDisabled(true);

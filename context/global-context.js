@@ -6,7 +6,6 @@ const excelFileInitialState = {
   file: null,
   fileName: null,
   isFetched: null,
-  isLoading: false,
   warnings: [],
 };
 
@@ -15,13 +14,6 @@ export const FileDataGlobalContext = createContext(excelFileInitialState);
 export const FileDataProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(Reducer, excelFileInitialState);
-
-  const setLoading = (loading) => {
-    dispatch({
-      type: CASE_NAME.SET_LOADING,
-      payload: loading,
-    })
-  }
 
   const setFile = (file) => {
     dispatch({
@@ -63,19 +55,24 @@ export const FileDataProvider = ({ children }) => {
             file: state.file,
             fileName: state.fileName,
             isFetched: state.isFetched,
-            isLoading: state.isLoading,
             warnings: state.warnings,
             addWarnings,
             deleteWarning,
             isDataFetched,
             setFile,
             setFileName,
-            setLoading,
           }}>
         { children }
       </FileDataGlobalContext.Provider>
   )
 }
+//TODO: Change the providers for separated isLoading;
+export const IsLoadingContext = createContext(null);
+export const IsLoadingProvider = ({ children }) => (
+    <IsLoadingContext.Provider value={useState(false)}>
+      { children }
+    </IsLoadingContext.Provider>
+);
 
 export const DecimalGlobalContext = createContext(null);
 export const DecimalDataProvider = ({ children }) => (
