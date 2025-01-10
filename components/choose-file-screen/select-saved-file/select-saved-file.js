@@ -79,7 +79,11 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
         >
           <SelectItem value=""  text="Choose file to load" />
           {savedFilesNames.map((fileName, index) => (
-              <SelectItem key={index} value={fileName} text={fileName} />))}
+              <SelectItem key={index}
+                          value={fileName}
+                          text={fileName}
+              />
+          ))}
         </Select>
 
         <div className={classes.optionButtonContainer}>

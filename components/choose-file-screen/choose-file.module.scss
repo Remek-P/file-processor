@@ -41,6 +41,7 @@
     &Select {
       flex: 0;
       width: 100%;
+      max-width: 250px;
       border-radius: $border-radius-main;
 
       @media (max-width: $breakpoint700) {

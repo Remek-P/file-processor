@@ -62,8 +62,6 @@ function Output({
     searchRef.current.focus();
   }
 
-  // TODO: If isSubheadersTrue === true and there is none
-
   useEffect(() => {
     if (userQuery) setInputValue(userQuery);
   }, [userQuery]);
