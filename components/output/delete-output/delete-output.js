@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 
 import {NumberOfOutputsContext} from "@/context/global-context";
 
-import { CloseFilled, CloseOutline } from "@carbon/icons-react";
+import { CloseFilled, CloseOutline } from "@carbon/react/icons";
 import { IconButton } from "@carbon/react";
 
 import classes from "../output.module.scss";

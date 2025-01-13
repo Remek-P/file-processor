@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 
 import {Button, IconButton, Select, SelectItem, Tile} from "@carbon/react";
-import {Run, TrashCan} from "@carbon/icons-react";
+import {Run, TrashCan} from "@carbon/react/icons";
 
 import { FileDataGlobalContext } from "@/context/global-context";
 import { getFileNames } from "@/utils/indexedDB";
@@ -84,7 +84,7 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
 
           <div className={classes.optionButtonContainer}>
             <Button onClick={handleClick} size="md" disabled={isDisabled}>
-              <Run />
+              <Run size={16}/>
               <span>Load</span>
             </Button>
 
@@ -96,7 +96,7 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
                           hasIconOnly={true}
                   // className={classes.deleteButton}
               >
-                <TrashCan />
+                <TrashCan size={16}/>
               </IconButton>
             </Link>
           </div>

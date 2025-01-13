@@ -4,7 +4,7 @@ import { addData } from "@/utils/indexedDB";
 import { FileDataGlobalContext, IsLoadingContext } from "@/context/global-context";
 
 import {Button, TextInput, Tile} from "@carbon/react";
-import { Save } from "@carbon/icons-react";
+import { Save } from "@carbon/react/icons";
 
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 
@@ -46,24 +46,25 @@ function SaveFile({ setIsUpdate}) {
   };
 
   return (
-      <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
+    <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
 
-        <h6>Save file</h6>
-        <TextInput id="saveFile"
-                   labelText={labelText}
-                   value={assignedFileName}
-                   onChange={handleChange}
-                   placeholder="Enter file name to save"
-                   hideLabel={true}
-                   size="sm"
-                   className={classes.optionContainerSelect}
-        />
+      <h6>Save file</h6>
+      <TextInput id="saveFile"
+                 labelText={labelText}
+                 value={assignedFileName}
+                 onChange={handleChange}
+                 placeholder="Enter file name to save"
+                 hideLabel={true}
+                 size="sm"
+                 className={classes.optionContainerSelect}
+      />
 
-        <Button size="md" onClick={handleSave} disabled={isDisabled}>
-          <Save />
-          <span>Save</span>
-        </Button>
-      </Tile>
+      <Button size="md" onClick={handleSave} disabled={isDisabled}>
+        <Save size={16} />
+        <span>Save</span>
+      </Button>
+
+    </Tile>
   );
 }
 

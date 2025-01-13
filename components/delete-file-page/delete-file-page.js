@@ -12,7 +12,7 @@ import DeleteFileListItem from "@/components/delete-file-page/delete-file-list/d
 import classes from "./delete-file.module.scss";
 import {Button, IconButton} from "@carbon/react";
 import Link from "next/link";
-import {TrashCan} from "@carbon/icons-react";
+import {TrashCan} from "@carbon/react/icons";
 import ConfirmDeleteButtons from "@/components/delete-file-page/confirm-delete-buttons/confirm-delete-buttons";
 
 function DeleteFilePage() {

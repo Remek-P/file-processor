@@ -37,12 +37,12 @@ function DisplayDataWithSubheaders({
   const chartData = [];
 
   // Sent as props to SectionLayout in case the data is of mixed type
-  const valueArray = [];
+  const valueTypeArray = [];
   const headerValueArray = [];
   const labelValueArray = [];
 
   const handleChartData = (dataType, index, value) => {
-    valueArray.push(dataType) //valueArray is sent as props and used to check the data type
+    valueTypeArray.push(dataType) //valueTypeArray is sent as props and used to check the data type
     chartData.push({
       group: sortedLabels[index],
       value
@@ -94,7 +94,7 @@ function DisplayDataWithSubheaders({
                                    sort={sort}
                                    setSort={setSort}
                                    chartData={chartData}
-                                   valueArray={valueArray}
+                                   valueTypeArray={valueTypeArray}
                                    showPercentages={showPercentages}
                                    setShowPercentages={setShowPercentages}
                                    numbersEqualToZero={numbersEqualToZero}
@@ -158,7 +158,7 @@ function DisplayDataWithSubheaders({
 
                 } else if (dateValidator(data)) {
                   dataType.current = "date";
-                  valueArray.push(dataType.current)
+                  valueTypeArray.push(dataType.current)
                   const dateData = {
                     value: data,
                     label: sortedLabels[index],
@@ -171,7 +171,7 @@ function DisplayDataWithSubheaders({
 
                 } else {
                   dataType.current = "string";
-                  valueArray.push(dataType.current)
+                  valueTypeArray.push(dataType.current)
                   const stringData = {
                     value: data,
                     label: sortedLabels[index],

@@ -1,6 +1,6 @@
 import { IconButton, Tile } from "@carbon/react";
 
-import { TrashCan } from "@carbon/icons-react";
+import { TrashCan } from "@carbon/react/icons";
 
 import ConfirmDeleteButtons from "@/components/delete-file-page/confirm-delete-buttons/confirm-delete-buttons";
 

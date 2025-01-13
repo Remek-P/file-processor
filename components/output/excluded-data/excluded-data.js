@@ -12,8 +12,8 @@ function ExcludedData({ labelArrayLength, isSubheaders }) {
 
   const [excludedArray, setExcludedArray] = useContext(ExcludedDataGlobalContext);
 
-  // TODO: check if the labelArrayLength === excludedArray.length+2 is universal
-  if (!isSubheaders && labelArrayLength === excludedArray.length+2) setHideTile(true)
+  // TODO: check if the labelArrayLength === excludedArray.length+1 is universal
+  if (!isSubheaders && labelArrayLength === excludedArray.length+1) setHideTile(true)
   else setHideTile(false)
 
   const excludedValueRef = useRef(null);

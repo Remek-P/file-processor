@@ -26,7 +26,6 @@ function Search({ setInputValue, searchRef, id="search" }) {
       <div className={classes.searchContainer}>
 
         <SearchbarIcon isDeleteVisible={isDeleteVisible}
-                       id={id}
                        isPending={isPending}
                        setLocalInputValue={setLocalInputValue}
                        searchRef={searchRef}

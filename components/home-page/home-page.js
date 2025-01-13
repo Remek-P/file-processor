@@ -103,7 +103,7 @@ export default function HomePage() {
     isDataFetched(false)
   };
 
-  const fetchDataFromDB = async (addToIndexedDB = false) => {
+  const fetchDataFromMongoDB = async (addToIndexedDB = false) => {
     setIsLoading(true);
 
     const partialDataArray = [];
@@ -115,7 +115,7 @@ export default function HomePage() {
       partialDataArray.push(...result.data);
 
       //TODO: make it based on the size
-      if (result.totalDocuments > 200000) addWarnings([...warnings, "The data exceeds size limit"])
+      if (result.totalDocuments > 200000) addWarnings("The data exceeds size limit")
 
       // If data in DB exceeds 10000 records, the while function will fetch the rest
       while (result.totalDocuments > partialDataArray.length) {
@@ -125,7 +125,7 @@ export default function HomePage() {
         partialDataArray.push(...result.data);
       }
     } catch (error) {
-      addWarnings([...warnings, "Fetching data failed"])
+      addWarnings("Fetching data failed")
       setIsLoading(false);
     }
 
@@ -158,44 +158,13 @@ export default function HomePage() {
       }
 
     } catch (error) {
-      addWarnings([...warnings, "Incorrect file structure"])
+      addWarnings("Incorrect file structure")
     } finally {
       setIsLoading(false);
     }
   }
 
-  const fetchDirectlyDataFromS3 = async (query) => {
-    setIsLoading(true);
-
-    let result;
-    setUserQuery(query);
-
-    try {
-      const res = await fetch(`/api/csvData?query=${query}`);
-      result = await res.json();
-
-      if (res.ok) {
-        // Process and display the result
-        const sheet = XLSX.utils.json_to_sheet(result);
-        const jsonData = sheetToJsonData(sheet);
-
-        setFile(jsonData);
-        setFileName(`DB_file_${timeStamp()}`);
-        isDataFetched(true);
-        setIsDirectFetchResults(true);
-      } else {
-        throw new Error('Failed to fetch data');
-      }
-    } catch (error) {
-      addWarnings([...warnings, "Fetching data failed"]);
-      console.error("Error fetching search results:", error);
-      setIsDirectFetchResults(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchDirectlyDataFromDB = async (query) => {
+  const fetchDirectlyDataFromMongoDB = async (query) => {
     setIsLoading(true);
     let result;
     setUserQuery(query);
@@ -229,7 +198,7 @@ export default function HomePage() {
       isDataFetched(true);
       setIsDirectFetchResults(true);
     } catch (error) {
-      addWarnings([...warnings, "Fetching data failed"]);
+      addWarnings("Fetching data failed");
       console.error("Error fetching search results:", error);
     } finally {
       setIsLoading(false);
@@ -271,8 +240,8 @@ export default function HomePage() {
   }
 
   const refreshData = async (query) => {
-    if (finalDataAvailable) await fetchDataFromDB(true);
-    if (isDirectFetchResults) await fetchDirectlyDataFromDB(query);
+    if (finalDataAvailable) await fetchDataFromMongoDB(true);
+    if (isDirectFetchResults) await fetchDirectlyDataFromMongoDB(query);
   }
 
   const timeStamp = () => {
@@ -300,10 +269,10 @@ export default function HomePage() {
               !finalDataAvailable && !isDirectFetchResults &&
               <ErrorBoundary fallback={ <h1>Access denied</h1> }>
                 <ChooseFile file={file}
-                            fetchDataFromDB={fetchDataFromDB}
+                            fetchDataFromDB={fetchDataFromMongoDB}
                             handleFile={handleFile}
                             loadSavedFile={loadSavedFile}
-                            fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}
+                            fetchDirectlyDataFromDB={fetchDirectlyDataFromMongoDB}
                 />
               </ErrorBoundary>
           }
@@ -328,7 +297,7 @@ export default function HomePage() {
                             isDirectFetchResults={isDirectFetchResults}
                             handleFileChange={handleFileChange}
                             refreshData={refreshData}
-                            fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}
+                            fetchDirectlyDataFromDB={fetchDirectlyDataFromMongoDB}
                             setUserQuery={setUserQuery}
                 />
               </ErrorBoundary>

@@ -1,6 +1,6 @@
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import { Button, Tile } from "@carbon/react";
-import { Upload } from "@carbon/icons-react";
+import { Upload } from "@carbon/react/icons";
 import IndexedDBSizeMonit from "@/components/notifications/IndexedDB-size-monit/IndexedDB-size-monit";
 import { useState } from "react";
 import useSizeNotification from "@/hooks/useSizeNotification";
@@ -37,13 +37,13 @@ function UploadFileOption({ setIsToBeUploaded }) {
             <p className={classes.optionContainerP}>to the computer or the database</p>
           </div>
           <Button size="md" onClick={handleClick}>
-            <Upload />
+            <Upload size={16}/>
             <span>Upload</span>
           </Button>
         </Tile>
         <IndexedDBSizeMonit handleReject={handleReject} showNotifications={showNotifications} rejectText="Upload" />
       </>
-  )
+  );
 }
 
 export default UploadFileOption;

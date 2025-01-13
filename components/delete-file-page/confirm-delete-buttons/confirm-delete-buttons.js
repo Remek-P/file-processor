@@ -1,6 +1,6 @@
 import classes from "@/components/delete-file-page/delete-file.module.scss";
 import {IconButton} from "@carbon/react";
-import {TrashCan, Undo} from "@carbon/icons-react";
+import {TrashCan, Undo} from "@carbon/react/icons";
 
 function ConfirmDeleteButtons({ file = null, size = "md", handleDelete, handleCancel }) {
   return (

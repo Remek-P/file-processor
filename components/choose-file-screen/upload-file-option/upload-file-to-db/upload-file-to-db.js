@@ -1,6 +1,5 @@
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import { FileUploader, Tile } from "@carbon/react";
-import { Upload } from "@carbon/icons-react";
 import { useContext } from "react";
 import { FileDataGlobalContext, IsLoadingContext } from "@/context/global-context";
 

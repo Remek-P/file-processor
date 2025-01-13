@@ -6,7 +6,7 @@ import ActionToggle from "@/components/output/action-toggle/action-toggle";
 
 import { DonutChart, SimpleBarChart } from "@carbon/charts-react";
 import { Tile, Toggle } from "@carbon/react";
-import { ChartBar, ChartRing, Percentage, SortAscending, SortDescending, DataFormat, ViewOff } from "@carbon/icons-react";
+import { ChartBar, ChartRing, Percentage, SortAscending, SortDescending, DataFormat, ViewOff } from "@carbon/react/icons";
 
 import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
@@ -16,7 +16,7 @@ function SectionLayoutWithSubheaders({
                                        sort,
                                        setSort,
                                        chartData,
-                                       valueArray,
+                                       valueTypeArray,
                                        showPercentages,
                                        setShowPercentages,
                                        numbersEqualToZero,
@@ -65,8 +65,8 @@ function SectionLayoutWithSubheaders({
     height: "auto"
   };
 
-  const isNumber = valueArray.some(item => item === "number");
-  const isDate = valueArray.some(item => item === "date");
+  const isNumber = valueTypeArray.some(item => item === "number");
+  const isDate = valueTypeArray.some(item => item === "date");
 
   const sortValues = () => {
     setSort(prevState => !prevState);

@@ -4,7 +4,7 @@ import ActionToggle from "@/components/output/action-toggle/action-toggle";
 
 import {ExcludedDataGlobalContext} from "@/context/global-context";
 
-import { Percentage, DataFormat, ViewOff } from "@carbon/icons-react";
+import { Percentage, DataFormat, ViewOff } from "@carbon/react/icons";
 
 import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
