@@ -15,12 +15,9 @@ function UploadToIndexedDB({ setIsFileDelivered, handleFile }) {
 
   const displayFormats = fileTypes.slice(1).map((fileType) => " "+fileType)
 
-  const buttonLabel = (
-      <>
-        <Upload/>
-        <span>Upload</span>
-      </>
-  )
+  const buttonLabel = "Upload locally"
+
+  const labelDescription = `Accepted file formats:\n${displayFormats}`;
 
   const handleClick = (e) => {
     handleFile(e)
@@ -32,7 +29,7 @@ function UploadToIndexedDB({ setIsFileDelivered, handleFile }) {
       <Tile className={`${classes.tile}`}>
         <FileUploader filenameStatus="complete"
                       labelTitle="Upload"
-                      labelDescription={`Accepted file formats:\n${displayFormats}`}
+                      labelDescription={labelDescription}
                       buttonLabel={buttonLabel}
                       onChange={(e) => handleClick(e)}
                       accept={fileTypes}

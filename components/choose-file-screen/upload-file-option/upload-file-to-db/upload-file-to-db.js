@@ -11,39 +11,26 @@ function UploadToDB({ setIsFileDelivered }) {
   const fileTypes = [".csv"];
   const displayFormats = fileTypes.map((fileType) => " " + fileType);
 
-  const buttonLabel = (
-      <>
-        <Upload />
-        <span>Upload to database</span>
-      </>
-  );
+  const buttonLabel = "Upload to a database";
 
-  const labelDescription = (
-      <>
-        Accepted file formats: <br />
-        {displayFormats}
-      </>
-  );
+  const labelDescription = `Accepted file formats: \n${displayFormats}`;
 
   const handleUpload = async (e) => {
     e.preventDefault();
 
     const selectedFile = e.target.files[0];
 
-    // Ensure a file is selected
     if (!selectedFile) {
       addWarnings("No file selected.");
       return;
     }
 
-    // Set the loading state to true
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("csv", selectedFile);  // Ensure the field name matches the backend
+    formData.append("csv", selectedFile);
 
     try {
-      // Send the file to the API endpoint for processing and uploading to S3
       const res = await fetch("/api/dbUpload", {
         method: "POST",
         body: formData,
@@ -52,12 +39,10 @@ function UploadToDB({ setIsFileDelivered }) {
       const data = await res.json();
 
       if (res.ok && data.url) {
-        // Success: File has been uploaded to S3
         setIsFileDelivered(true);
         isDataFetched(true);
         alert(`File uploaded successfully: ${data.url}`);
       } else {
-        // Error: Display warnings
         addWarnings("Error uploading file.");
       }
     } catch (error) {
@@ -81,10 +66,9 @@ function UploadToDB({ setIsFileDelivered }) {
               accept={fileTypes}
               name="uploader"
               disabled={true}
+              style={{whiteSpace: "pre-line"}}
           />
         </Tile>
-
-        <Tile className={`${classes.tile}`} />
       </>
   );
 }

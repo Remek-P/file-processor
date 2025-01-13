@@ -93,6 +93,7 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
                           size="md"
                           kind="danger"
                           label="Delete files"
+                          hasIconOnly={true}
                   // className={classes.deleteButton}
               >
                 <TrashCan />
