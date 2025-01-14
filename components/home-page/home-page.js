@@ -4,7 +4,7 @@ import {
   FileDataGlobalContext,
   IsContainingSubheadersContext,
   IsLoadingContext,
-  ToggleIDViewProvider,
+  ToggleIDViewProvider, WarningsContext,
 } from "@/context/global-context";
 
 import ChooseFile from "@/components/choose-file-screen/choose-file";
@@ -29,13 +29,17 @@ export default function HomePage() {
   const {
     file,
     fileName,
-    warnings,
-    addWarnings,
-    deleteWarning,
     isDataFetched,
     setFile,
     setFileName
   } = useContext(FileDataGlobalContext);
+
+  const {
+    warnings,
+    addWarnings,
+    deleteWarning,
+  } = useContext(WarningsContext);
+
   const [ isLoading, setIsLoading ] = useContext(IsLoadingContext);
   const { isSubheaders, setIsSubheaders } = useContext(IsContainingSubheadersContext);
 

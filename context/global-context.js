@@ -6,11 +6,9 @@ const excelFileInitialState = {
   file: null,
   fileName: null,
   isFetched: null,
-  warnings: [],
 };
 
 export const FileDataGlobalContext = createContext(excelFileInitialState);
-
 export const FileDataProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(Reducer, excelFileInitialState);
@@ -28,19 +26,6 @@ export const FileDataProvider = ({ children }) => {
       payload: fileName,
     })
   }
-  const addWarnings = (warnings) => {
-    dispatch({
-      type: CASE_NAME.ADD_WARNING,
-      payload: warnings,
-    })
-  }
-
-  const deleteWarning = (warning) => {
-    dispatch({
-      type: CASE_NAME.DELETE_WARNING,
-      payload: warning,
-    })
-  }
 
   const isDataFetched = (isFetched) => {
     dispatch({
@@ -55,9 +40,6 @@ export const FileDataProvider = ({ children }) => {
             file: state.file,
             fileName: state.fileName,
             isFetched: state.isFetched,
-            warnings: state.warnings,
-            addWarnings,
-            deleteWarning,
             isDataFetched,
             setFile,
             setFileName,
@@ -66,7 +48,36 @@ export const FileDataProvider = ({ children }) => {
       </FileDataGlobalContext.Provider>
   )
 }
-//TODO: Change the providers for separated isLoading;
+
+const warningsInitialState = {warnings: []}
+export const WarningsContext = createContext(warningsInitialState);
+export const WarningsProvider = ({ children }) => {
+
+  const [state, dispatch] = useReducer(Reducer, warningsInitialState);
+
+  const addWarnings = (warnings) => {
+    dispatch({
+      type: CASE_NAME.ADD_WARNING,
+      payload: warnings,
+    })
+  }
+
+  const deleteWarning = (warning) => {
+    dispatch({
+      type: CASE_NAME.DELETE_WARNING,
+      payload: warning,
+    })
+  }
+
+  return <WarningsContext.Provider value={{
+    warnings: state.warnings,
+    addWarnings,
+    deleteWarning
+  }}>
+    {children}
+  </WarningsContext.Provider>
+};
+
 export const IsLoadingContext = createContext(null);
 export const IsLoadingProvider = ({ children }) => (
     <IsLoadingContext.Provider value={useState(false)}>
