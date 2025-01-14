@@ -4,7 +4,7 @@ import {
   IndexedDB_ClickedProvider,
   IndexedDB_SizeProvider,
   IsContainingSubheadersProvider,
-  IsLoadingProvider,
+  IsLoadingProvider, ToggleIDViewProvider,
   WarningsProvider,
 } from "@/context/global-context";
 
@@ -16,7 +16,9 @@ export default function App({Component, pageProps}) {
             <IsContainingSubheadersProvider>
               <IndexedDB_SizeProvider>
                 <IndexedDB_ClickedProvider>
-                  <Component {...pageProps} />
+                  <ToggleIDViewProvider>
+                    <Component {...pageProps} />
+                  </ToggleIDViewProvider>
                 </IndexedDB_ClickedProvider>
               </IndexedDB_SizeProvider>
             </IsContainingSubheadersProvider>

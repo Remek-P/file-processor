@@ -1,4 +1,5 @@
-import {createContext, forwardRef, useEffect, useRef, useState} from "react";
+import React from 'react';
+import { createContext, forwardRef, useEffect, useRef, useState } from "react";
 
 import useWindowDimensions from "@/hooks/useWindowSize";
 
@@ -94,27 +95,14 @@ function VirtualizedList({
   useEffect(() => {
     // Collect column widths after the component is rendered
     if (rowRef.current && stickyRowRef.current) {
-
       const cells = rowRef.current.querySelectorAll('div');
-      const array = Array.from(cells);
-      const widths = array.map(cell => cell.offsetWidth);
-      const height = array[0].offsetHeight;
+      const widths = Array.from(cells).map(cell => cell.offsetWidth);
+      const height = cells[0]?.offsetHeight || 64; // Fallback to 64 if no height
 
-      // Collect column heights after the component is rendered
       const stickyCells = stickyRowRef.current.querySelectorAll('div');
-      const stickyRowHeight = Array.from(stickyCells).map(cell => cell.offsetHeight);
+      const stickyRowHeight = Math.max(...Array.from(stickyCells).map(cell => cell.offsetHeight));
 
-      //Get highest element, but not smaller then 64
-      let highestStickyCell = 64;
-      for (let i = 0; i < stickyRowHeight.length; i++) {
-        if (stickyRowHeight[i] > highestStickyCell) {
-          highestStickyCell = stickyRowHeight[i];
-        }
-      }
-      const heightLimit = 150;
-      if (highestStickyCell > heightLimit) highestStickyCell = heightLimit;
-
-      setColumnHeight(highestStickyCell);
+      setColumnHeight(Math.min(stickyRowHeight, 150)); // Limit to 150px
       setColumnWidths(widths);
       setRowHeight(height);
     }
@@ -148,7 +136,7 @@ function VirtualizedList({
   };
 
 //TODO: scrollbar styling
-  const StickyRow = ({index, style}) => (
+  const StickyRow = React.memo(({index, style}) => (
       <tr ref={stickyRowRef} style={style}>
         {sortedSuggestions[index].map((label, colIndex) => (
             <th
@@ -164,7 +152,7 @@ function VirtualizedList({
             </th>
         ))}
       </tr>
-  );
+  ));
 
   const innerElementType = forwardRef(({children, ...rest}, ref) => (
       <StickyListContext.Consumer>

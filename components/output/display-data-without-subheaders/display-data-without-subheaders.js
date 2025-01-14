@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import {useContext, useMemo, useState} from 'react';
 
 import SectionLayoutWithoutSubheaders
   from "@/components/output/section-layout/section-layout-without-subheaders/section-layout-without-subheaders";
@@ -54,11 +54,11 @@ function DisplayDataWithoutSubheaders({
     else return string
   }
 
-  const dataTypeTest = (data) => {
+  const dataTypeTest = useMemo(() => (data) => {
     if (checkForNumber(data)) return number
     else if (checkForString(data)) return stringTest(data)
     else return other
-  }
+  }, [value]);
 
   let displayData;
 

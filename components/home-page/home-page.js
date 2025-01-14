@@ -4,7 +4,7 @@ import {
   FileDataGlobalContext,
   IsContainingSubheadersContext,
   IsLoadingContext,
-  ToggleIDViewProvider, WarningsContext,
+  WarningsContext,
 } from "@/context/global-context";
 
 import ChooseFile from "@/components/choose-file-screen/choose-file";
@@ -260,7 +260,6 @@ export default function HomePage() {
 
   return (
       <main>
-        <ToggleIDViewProvider>
 
           <Loading small={false}
                    withOverlay={true}
@@ -308,7 +307,6 @@ export default function HomePage() {
 
           }
 
-        </ToggleIDViewProvider>
       </main>
   );
 }

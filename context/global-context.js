@@ -1,6 +1,7 @@
 import {createContext, useContext, useEffect, useReducer, useState} from "react";
-import { CASE_NAME, Reducer } from "./reducer";
+import { Reducer } from "./reducer";
 import { isContainingSubheaders } from "@/utils/parserUtils";
+import {CASE_NAME} from "@/constants/constants";
 
 const excelFileInitialState = {
   file: null,

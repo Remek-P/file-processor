@@ -20,7 +20,8 @@ import { convertUnderscoreToSpace } from "@/utils/general";
 import { OverflowMenu, OverflowMenuItem, MenuItemDivider } from "@carbon/react";
 
 import classes from "../file-chosen.module.scss";
-import {HEADER_LABEL} from "@/constants/constants";
+import { thresholdForExcludedData, generalWorker, HEADER_LABEL } from "@/constants/constants";
+import useWebWorker from "@/hooks/useGeneralWorker";
 
 function ActionsMenu({
                        headers,
@@ -50,7 +51,7 @@ function ActionsMenu({
   const containsSubheader = !isSubheaders ? "Contains subheader" : "No subheaders";
   const reducePerformanceStrain = isPerformanceStrainReduced ? "Search limit off" : "Search limit on";
 
-  const addPerson = () => {
+  const addOutput = () => {
     const outputID = Date.now();
     setNumberOfOutputs(prevState => [...prevState, {id: outputID}]);
   }
@@ -60,7 +61,7 @@ function ActionsMenu({
     setExcludedArray([]);
   }
 
-  const handleHideAllArrays = useCallback(() => {
+  const handleHideAllShortArrays = useCallback(() => {
     const uniqueHeaders = [...(new Set(headers))];
     const refinedUniqueHeaders = convertUnderscoreToSpace(uniqueHeaders);
     const headersToHide = toggleIDView
@@ -69,6 +70,20 @@ function ActionsMenu({
 
     setExcludedArray([...(new Set(headersToHide))]);
   }, [headers, toggleIDView]);
+
+  const { runTask } = useWebWorker({
+    customSetData: setExcludedArray,  // Use custom setData function to update localData
+  });
+
+  const handleHideAllLongArrays = () => {
+    const args = [headers, toggleIDView];
+    runTask(generalWorker.hideAllData, args);
+  }
+
+  const handleHideAllArrays =  () => {
+    if (headers.length > thresholdForExcludedData) handleHideAllLongArrays();
+    else handleHideAllShortArrays();
+  }
 
   const handleIDView = () => {
     setToggleIDView(prevState => !prevState);
@@ -111,7 +126,7 @@ function ActionsMenu({
           <DecimalPlace />
 
           <OverflowMenuItem itemText="Add output"
-                            onClick={addPerson}
+                            onClick={addOutput}
                             className={classes.menuItem}
                             hasDivider
           />
@@ -160,11 +175,11 @@ function ActionsMenu({
 
           {!hideDB_ID_Tile
               && <OverflowMenuItem itemText={`${showHideDB_ID} DB ID`}
-                                                onClick={handleIDView}
-                                                isDelete={true}
-                                                className={classes.menuItem}
-                                                aria-hidden={hideDB_ID_Tile}
-          />}
+                                   onClick={handleIDView}
+                                   isDelete={true}
+                                   className={classes.menuItem}
+                                   aria-hidden={hideDB_ID_Tile}
+              />}
 
           {!isSubheaders
               && <OverflowMenuItem itemText={showHide0Values}

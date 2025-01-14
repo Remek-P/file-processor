@@ -25,8 +25,8 @@ function DisplayData({
   const headerDataArray = isSubheaders ? headersArray[0] : headersArray;
   const labelDataArray = isSubheaders ? headersArray[1] : headersArray;
 
-  const searchRecords = useMemo(() => userDataArray.filter((user) =>
-          user.toString()
+  const searchRecords = useMemo(() => userDataArray.filter((record) =>
+          record.toString()
               .toLowerCase()
               .includes( inputValue.toLowerCase() )
       ),
@@ -35,8 +35,6 @@ function DisplayData({
   const searchResult = searchRecords.filter(record => record[IDIndex] === inputValue);
   const colDataArray = searchResult[0];
   const characters = 3;
-
-  const display = () => {
 
     if (!inputValue)
       return (
@@ -83,14 +81,6 @@ function DisplayData({
             <TextTile text="No such user data" handleClick={handleFocus} />
           </div>
       )
-  }
-
-  return (
-      <>
-        { display() }
-      </>
-
-  );
 }
 
 export default DisplayData;

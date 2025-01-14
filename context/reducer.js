@@ -1,11 +1,4 @@
-export const CASE_NAME = {
-  SET_LOADING: "SET_LOADING",
-  SET_FILE: "SET_FILE",
-  SET_FILE_NAME: "SET_FILE_NAME",
-  ADD_WARNING: "ADD_WARNING",
-  DELETE_WARNING: "DELETE_WARNING",
-  SET_FETCHED: "SET_FETCHED",
-}
+import {CASE_NAME} from "@/constants/constants";
 
 
 export function Reducer(state, action) {

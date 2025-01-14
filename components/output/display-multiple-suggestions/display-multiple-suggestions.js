@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import {useMemo, useRef, useState} from "react";
 
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
@@ -46,37 +46,44 @@ function DisplayMultipleSuggestions({
 
   const isLongList = searchRecords.length > 500;
 
+  const style = !isLongList ? {overflow: "auto", height: height} : null
+
+  const RenderedList = useMemo(() => {
+    return isLongList ? (
+        <VirtualizedList
+            IDIndex={IDIndex}
+            labelDataArray={labelDataArray}
+            pickSearchedOutput={pickSearchedOutput}
+            searchRecords={searchRecords}
+            searchSuggestionsOrder={searchSuggestionsOrder}
+            handleSort={handleSort}
+            setIsLoading={setIsLoading}
+            indexToSort={indexToSort}
+        />
+    ) : (
+        <ShortList
+            IDIndex={IDIndex}
+            searchRecords={searchRecords}
+            labelDataArray={labelDataArray}
+            searchSuggestionsOrder={searchSuggestionsOrder}
+            setIsLoading={setIsLoading}
+            indexToSort={indexToSort}
+            pickSearchedOutput={pickSearchedOutput}
+            handleSort={handleSort}
+        />
+    );
+  }, [IDIndex, labelDataArray, searchRecords, searchSuggestionsOrder]);
+
   return (
     // The section style is necessary for ShortList component, to display sticky menu
-    <section style={!isLongList ? {overflow: "auto", height: height} : null}>
+    <section style={style}>
       <Loading active={isLoading}
                description="Performing sorting"
-               id="sortLoading"
                small={false}
                withOverlay={true}
                className={null}
       />
-      {
-        !isLongList
-            ? <ShortList IDIndex={IDIndex}
-                         searchRecords={searchRecords}
-                         labelDataArray={labelDataArray}
-                         searchSuggestionsOrder={searchSuggestionsOrder}
-                         setIsLoading={setIsLoading}
-                         indexToSort={indexToSort}
-                         pickSearchedOutput={pickSearchedOutput}
-                         handleSort={handleSort}
-            />
-            : <VirtualizedList IDIndex={IDIndex}
-                               labelDataArray={labelDataArray}
-                               pickSearchedOutput={pickSearchedOutput}
-                               searchRecords={searchRecords}
-                               searchSuggestionsOrder={searchSuggestionsOrder}
-                               handleSort={handleSort}
-                               setIsLoading={setIsLoading}
-                               indexToSort={indexToSort}
-            />
-      }
+      { RenderedList }
     </section>
   );
 }
