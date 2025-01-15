@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import {useCallback, useRef, useState} from "react";
 
 import SectionLayoutWithSubheaders
   from "@/components/output/section-layout/section-layout-with-subheaders/section-layout-with-subheaders";
@@ -50,12 +50,11 @@ function DisplayDataWithSubheaders({
   }
 
   const handleChartDataIfDataIs0AndNot0 = (dataType, indexOfALabel, numberDataValue) => {
-    if (!showAllMetrics) {
-      if (numberDataValue !== 0) handleChartData(dataType, indexOfALabel, numberDataValue);
-    } else handleChartData(dataType, indexOfALabel, numberDataValue);
+    if (!showAllMetrics && numberDataValue !== 0) handleChartData(dataType, indexOfALabel, numberDataValue);
+    else handleChartData(dataType, indexOfALabel, numberDataValue);
   }
 
-  headerDataArray.map((header, index) => {
+  headerDataArray.forEach((header, index) => {
     if (header === value) {
       headerValueArray.push(colDataArray[index]);
       labelValueArray.push(labelDataArray[index]);
@@ -64,26 +63,19 @@ function DisplayDataWithSubheaders({
 
   const sortDataAndLabelsArrayTogether = () => {
 
-    if (sort === undefined) {
-      const sortedData = headerValueArray;
-      const sortedLabels = labelValueArray;
-
-      return { sortedData, sortedLabels };
-    }
+    if (sort === undefined) return { sortedData: headerValueArray, sortedLabels: labelValueArray };
 
     // Create an array of indices
     const indexedDataArray = headerValueArray.map((value, index) => ({ value, label: labelValueArray[index], index }));
 
-    if (sort || sort === false) {
-      // Sort the indexed data based on the value and sort direction (sortedUtils)
-      indexedDataArray.sort((a, b) => compareValues(a.value, b.value, sort));
+    // Sort the indexed data based on the value and sort direction (sortedUtils)
+    indexedDataArray.sort((a, b) => compareValues( a.value, b.value, sort ));
 
-      // Separate the sorted values and labels back into their respective arrays
-      const sortedData = indexedDataArray.map(item => item.value);
-      const sortedLabels = indexedDataArray.map(item => item.label);
+    // Separate the sorted values and labels back into their respective arrays
+    const sortedData = indexedDataArray.map(item => item.value);
+    const sortedLabels = indexedDataArray.map(item => item.label);
 
-      return { sortedData, sortedLabels };
-    }
+    return { sortedData, sortedLabels };
   }
 
   const { sortedData, sortedLabels } = sortDataAndLabelsArrayTogether();
@@ -109,8 +101,8 @@ function DisplayDataWithSubheaders({
               if (checkForNumber(data)) {
 
                 const isZero = data === 0;
-                if (isZero && !showAllMetrics) return null;
                 if (isZero) numbersEqualToZero.current = true;
+                if (isZero && !showAllMetrics) return null;
 
                 dataType.current = "number";
                 const numberData = {
