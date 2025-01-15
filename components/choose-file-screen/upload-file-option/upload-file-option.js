@@ -5,15 +5,12 @@ import IndexedDBSizeMonit from "@/components/notifications/IndexedDB-size-monit/
 import { useState } from "react";
 import useSizeNotification from "@/hooks/useSizeNotification";
 import useRejectSizeNotification from "@/hooks/useRejectSizeNotification";
-import useIndexedDBSize from "@/hooks/useIndexedDBSize";
 
 function UploadFileOption({ setIsToBeUploaded }) {
 
   const [ showNotifications, setShowNotifications ] = useState(false);
 
   const { handleSizeNotification } = useSizeNotification();
-
-  useIndexedDBSize() //Check if the IndexedDb size is significant
 
   const showNotification = () => {
     setShowNotifications(true)

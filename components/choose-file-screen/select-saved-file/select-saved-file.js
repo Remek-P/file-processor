@@ -11,7 +11,6 @@ import Link from "next/link";
 import IndexedDBSizeMonit from "@/components/notifications/IndexedDB-size-monit/IndexedDB-size-monit";
 import useSizeNotification from "@/hooks/useSizeNotification";
 import useRejectSizeNotification from "@/hooks/useRejectSizeNotification";
-import useIndexedDBSize from "@/hooks/useIndexedDBSize";
 
 function SelectSavedFile({ isUpdate, loadSavedFile }) {
 
@@ -23,8 +22,6 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
   const [ showNotifications, setShowNotifications ] = useState(false);
 
   const { handleSizeNotification } = useSizeNotification();
-
-  useIndexedDBSize(); //Check if the IndexedDb size is significant
 
   const handleSelect = (event) => {
     const value = event.target.value;

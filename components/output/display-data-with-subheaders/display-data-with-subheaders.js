@@ -1,4 +1,4 @@
-import {useCallback, useRef, useState} from "react";
+import { useRef, useState } from "react";
 
 import SectionLayoutWithSubheaders
   from "@/components/output/section-layout/section-layout-with-subheaders/section-layout-with-subheaders";

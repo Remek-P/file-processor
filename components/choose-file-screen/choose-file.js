@@ -11,6 +11,7 @@ import SearchDatabaseInput from "@/components/choose-file-screen/search-database
 import UploadToIndexedDB
   from "@/components/choose-file-screen/upload-file-option/upload-to-IndexedDB/upload-to-IndexedDB";
 import UploadToDB from "@/components/choose-file-screen/upload-file-option/upload-file-to-db/upload-file-to-db";
+import useIndexedDBSize from "@/hooks/useIndexedDBSize";
 
 function ChooseFile({
                       handleFile,
@@ -24,6 +25,8 @@ function ChooseFile({
   const [ isFileDelivered, setIsFileDelivered ] = useState(false);
   const [ isSearchDatabase, setIsSearchDatabase ] = useState(false);
   const [ isToBeUploaded, setIsToBeUploaded ] = useState(false);
+
+  useIndexedDBSize() //Check if the IndexedDb size is significant
 
   return (
       <section className={classes.chooseFileContainer}>
