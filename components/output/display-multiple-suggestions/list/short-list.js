@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import { compareValues } from "@/utils/sortUtils";
 
@@ -11,7 +11,6 @@ function ShortList({
                      searchRecords,
                      labelDataArray,
                      searchSuggestionsOrder,
-                     setIsLoading,
                      pickSearchedOutput,
                      handleSort,
                      indexToSort,
@@ -32,10 +31,6 @@ function ShortList({
       );
 
   }, [searchSuggestionsOrder, searchRecords, IDIndex]);
-
-  useEffect(() => {
-    setIsLoading(false)
-  },[searchSuggestionsOrder])
 
   return (
       <table className={classes.searchSuggestionShortListTable}>

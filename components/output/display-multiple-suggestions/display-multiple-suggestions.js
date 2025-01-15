@@ -1,11 +1,9 @@
-import {useMemo, useRef, useState} from "react";
+import {useCallback, useMemo, useRef } from "react";
 
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
 
 import useWindowDimensions from "@/hooks/useWindowSize";
-
-import { Loading } from "@carbon/react";
 
 function DisplayMultipleSuggestions({
                                       IDIndex,
@@ -17,16 +15,13 @@ function DisplayMultipleSuggestions({
                                     }) {
 
   // const [active, setActive] = useState(IDIndex);
-  
-  const [ isLoading, setIsLoading ] = useState(false);
 
   const { height } = useWindowDimensions();
 
   const indexToSort = useRef(IDIndex);
 
-  const handleSort = (event) => {
-    //TODO: each time the icon is pressed, the sorting should start from ascending and not oscillating
-    setIsLoading(true);
+  const handleSort = useCallback((event) => {
+    // TODO: each time the icon is pressed, the sorting should start from ascending and not oscillating
     indexToSort.current = event.currentTarget.cellIndex;
     setSearchSuggestionsOrder(prevState => !prevState);
 
@@ -34,9 +29,8 @@ function DisplayMultipleSuggestions({
     //   setShowIcon(index);
     //   setActive(index);
     // }
-  }
+  }, []);
 
-  // TODO: if e.currentTarget.dataset.index === undefined No such user exists message
   const pickSearchedOutput = (e) => {
     setInputValue(e.currentTarget.dataset.value);
   }
@@ -57,7 +51,6 @@ function DisplayMultipleSuggestions({
             searchRecords={searchRecords}
             searchSuggestionsOrder={searchSuggestionsOrder}
             handleSort={handleSort}
-            setIsLoading={setIsLoading}
             indexToSort={indexToSort}
         />
     ) : (
@@ -66,7 +59,6 @@ function DisplayMultipleSuggestions({
             searchRecords={searchRecords}
             labelDataArray={labelDataArray}
             searchSuggestionsOrder={searchSuggestionsOrder}
-            setIsLoading={setIsLoading}
             indexToSort={indexToSort}
             pickSearchedOutput={pickSearchedOutput}
             handleSort={handleSort}
@@ -77,12 +69,6 @@ function DisplayMultipleSuggestions({
   return (
     // The section style is necessary for ShortList component, to display sticky menu
     <section style={style}>
-      <Loading active={isLoading}
-               description="Performing sorting"
-               small={false}
-               withOverlay={true}
-               className={null}
-      />
       { RenderedList }
     </section>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { createContext, forwardRef, useEffect, useRef, useState } from "react";
 
 import useWindowDimensions from "@/hooks/useWindowSize";
@@ -6,7 +6,7 @@ import useWindowDimensions from "@/hooks/useWindowSize";
 import {compareValues} from "@/utils/sortUtils";
 
 import { FixedSizeList as List } from "react-window";
-import { Tile } from "@carbon/react";
+import { Loading, Tile } from "@carbon/react";
 
 import classes from "@/components/output/output.module.scss";
 
@@ -17,106 +17,112 @@ function VirtualizedList({
                            pickSearchedOutput,
                            searchRecords,
                            searchSuggestionsOrder,
-                           setIsLoading,
                            handleSort,
                          }) {
 
-  const suggestions = [labelDataArray, ...searchRecords];
+  const suggestions = useMemo(() => [labelDataArray, ...searchRecords], [labelDataArray, searchRecords]);
 
+  const [ isLoading, setIsLoading ] = useState(false);
   const [ sortedSuggestions, setSortedSuggestions]  = useState(suggestions)
   const [ columnWidths, setColumnWidths ] = useState([]);
   const [ rowHeight, setRowHeight ] = useState(64);
   const [ columnHeight, setColumnHeight ] = useState(undefined);
 
+  const count = useRef(0);
+
   const rowRef = useRef();
   const stickyRowRef = useRef();
 
   const { width, height } = useWindowDimensions();
-  const virtualizedWidth = width - (0.05 * width);
-  const virtualizedHeight = height - (0.17 * height);
+  const virtualizedWidth = useMemo(() => width - (0.05 * width), [width]);
+  const virtualizedHeight = useMemo(() => height - (0.17 * height), [height]);
 
   const StickyListContext = createContext();
   StickyListContext.displayName = "StickyListContext";
 
+  const handleClick = (event) => {
+    setIsLoading(true);
+    handleSort(event);
+  }
+
+  const handleSortWorker = useMemo(() => {
+    return (workerData) => {
+      const worker = new Worker(new URL("@/public/sortWorker", import.meta.url));
+
+      worker.onmessage = function (event) {
+        setSortedSuggestions([labelDataArray, ...event.data]);
+      };
+
+      worker.postMessage(workerData);
+
+      return () => worker.terminate();
+    };
+  }, [labelDataArray]);
+
   useEffect(() => {
-
-    // if browser support web workers
-    if (typeof Worker !== 'undefined') {
-
-      if (searchSuggestionsOrder === undefined) {
-        setSortedSuggestions(suggestions);
-        setIsLoading(false);
-
-        // Sort the indexed data based on the value and sort direction (sortedUtils) and sorting index
-      } else if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
-
-        const worker = new Worker(new URL("@/public/sortWorker", import.meta.url));
-
-        worker.onmessage = function (event) {
-          setSortedSuggestions([labelDataArray, ...event.data]);
-        };
-
+    if (typeof Worker !== "undefined") {
+      if (searchSuggestionsOrder !== undefined) {
         const payload = {
           searchSuggestionsOrder,
           searchRecords,
           indexToSort,
-        }
-
-        worker.postMessage(payload);
-        setIsLoading(false);
-
-        return () => {
-          worker.terminate();
         };
-      }
-
-    } else {
-      // if browser does not support web workers
-      if (searchSuggestionsOrder === undefined) {
+        handleSortWorker(payload);
+        setIsLoading(false);
+      } else {
         setSortedSuggestions(suggestions);
         setIsLoading(false);
       }
-
-      // Sort the indexed data based on the value and sort direction (sortedUtils)
-      else if (searchSuggestionsOrder || searchSuggestionsOrder === false) {
-        const sorted = [...searchRecords].sort((a, b) => compareValues(
-                a[indexToSort.current],
-                b[indexToSort.current],
-                searchSuggestionsOrder
-            )
+    } else {
+      if (searchSuggestionsOrder !== undefined) {
+        const sorted = [...searchRecords].sort((a, b) =>
+            compareValues(a[indexToSort.current], b[indexToSort.current], searchSuggestionsOrder)
         );
-        setSortedSuggestions([labelDataArray, ...sorted])
+        setSortedSuggestions([labelDataArray, ...sorted]);
+        setIsLoading(false);
+      } else {
+        setSortedSuggestions(suggestions);
         setIsLoading(false);
       }
     }
-
-  }, [searchSuggestionsOrder, searchRecords, IDIndex, indexToSort]);
+  }, [searchSuggestionsOrder, searchRecords, indexToSort, suggestions, handleSortWorker]);
 
   useEffect(() => {
-    // Collect column widths after the component is rendered
+    // Only run if rowRef or stickyRowRef are available
     if (rowRef.current && stickyRowRef.current) {
       const cells = rowRef.current.querySelectorAll('div');
-      const widths = Array.from(cells).map(cell => cell.offsetWidth);
-      const height = cells[0]?.offsetHeight || 64; // Fallback to 64 if no height
+      const newWidths = Array.from(cells).map(cell => cell.offsetWidth);
+      const newHeight = cells[0]?.offsetHeight || 64; // Default height to 64 if undefined
 
       const stickyCells = stickyRowRef.current.querySelectorAll('div');
       const stickyRowHeight = Math.max(...Array.from(stickyCells).map(cell => cell.offsetHeight));
 
-      setColumnHeight(Math.min(stickyRowHeight, 150)); // Limit to 150px
-      setColumnWidths(widths);
-      setRowHeight(height);
+      // Check if column widths or row height need to be updated
+      if (newWidths.some((width, i) => width !== columnWidths[i])) {
+        setColumnWidths(newWidths); // Update only if widths have changed
+      }
+
+      if (newHeight !== rowHeight) {
+        setRowHeight(newHeight); // Update only if row height has changed
+      }
+
+      // Update column height if sticky row height has changed and it's different from the current column height
+      if (stickyRowHeight !== columnHeight) {
+        setColumnHeight(Math.min(stickyRowHeight, 150)); // Limit column height to 150px
+      }
     }
-  }, [sortedSuggestions]);
+  }, [ sortedSuggestions, virtualizedWidth, virtualizedHeight ]); // Only rerun if sortedSuggestions change
 
-  const virtualizedItemSize = rowHeight
-  const padding = columnHeight - virtualizedItemSize; //TODO: ustawić
 
-  const Row = ({index, style}) => {
+  const padding = columnHeight - rowHeight;
+
+  const Row = React.memo(({ index, style }) => {
     const row = sortedSuggestions[index];
     return (
-        <tr ref={rowRef} style={{...style, top: `${parseFloat(style.top) + padding}px`}}>
+        <tr ref={rowRef} style={{ ...style, top: `${parseFloat(style.top) + padding}px` }}>
           {row.map((value, colIndex) => (
-              <td key={colIndex}
+              <td
+                  key={colIndex}
                   data-value={row[IDIndex]}
                   onClick={pickSearchedOutput}
                   style={{
@@ -126,14 +132,12 @@ function VirtualizedList({
                   }}
                   tabIndex="0"
               >
-                <Tile>
-                  {value}
-                </Tile>
+                <Tile>{ value }</Tile>
               </td>
           ))}
         </tr>
     );
-  };
+  }, (prevProps, nextProps) => prevProps.index === nextProps.index);
 
 //TODO: scrollbar styling
   const StickyRow = React.memo(({index, style}) => (
@@ -141,7 +145,7 @@ function VirtualizedList({
         {sortedSuggestions[index].map((label, colIndex) => (
             <th
                 key={colIndex}
-                onClick={handleSort}
+                onClick={handleClick}
                 tabIndex="0"
                 style={{ width: columnWidths[colIndex] }} // Set the width
             >
@@ -152,7 +156,7 @@ function VirtualizedList({
             </th>
         ))}
       </tr>
-  ));
+  ), (prevProps, nextProps) => prevProps.index === nextProps.index);
 
   const innerElementType = forwardRef(({children, ...rest}, ref) => (
       <StickyListContext.Consumer>
@@ -189,18 +193,28 @@ function VirtualizedList({
       </StickyListContext.Provider>
   );
 
+  console.log("count", count.current++)
+
   return (
-      <StickyList
-          height={virtualizedHeight}
-          innerElementType={innerElementType}
-          itemCount={sortedSuggestions.length}
-          itemSize={virtualizedItemSize}
-          stickyIndices={[0]}
-          width={virtualizedWidth}
-          overscanCount={10}
-      >
-        {Row}
-      </StickyList>
+      <>
+        <Loading active={isLoading}
+                 description="Performing sorting"
+                 small={false}
+                 withOverlay={true}
+                 className={null}
+        />
+        <StickyList
+            height={virtualizedHeight}
+            innerElementType={innerElementType}
+            itemCount={sortedSuggestions.length}
+            itemSize={rowHeight}
+            stickyIndices={[0]}
+            width={virtualizedWidth}
+            overscanCount={12}
+        >
+          { Row }
+        </StickyList>
+      </>
   );
 }
 

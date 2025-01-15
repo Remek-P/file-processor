@@ -20,7 +20,6 @@ function ChooseFile({
                       fetchDirectlyDataFromDB,
                     }) {
 
-  // TODO: a lot of fetches
   const [ isUpdate, setIsUpdate ] = useState(false);
   const [ isFileDelivered, setIsFileDelivered ] = useState(false);
   const [ isSearchDatabase, setIsSearchDatabase ] = useState(false);
