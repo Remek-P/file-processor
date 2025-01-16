@@ -6,7 +6,7 @@ import useWindowDimensions from "@/hooks/useWindowSize";
 import {compareValues} from "@/utils/sortUtils";
 
 import { FixedSizeList as List } from "react-window";
-import { Loading, Tile } from "@carbon/react";
+import { Tile } from "@carbon/react";
 
 import classes from "@/components/output/output.module.scss";
 
@@ -18,20 +18,19 @@ function VirtualizedList({
                            searchRecords,
                            searchSuggestionsOrder,
                            handleSort,
+                           setIsLoading,
                          }) {
 
   const suggestions = useMemo(() => [labelDataArray, ...searchRecords], [labelDataArray, searchRecords]);
 
-  const [ isLoading, setIsLoading ] = useState(false);
   const [ sortedSuggestions, setSortedSuggestions]  = useState(suggestions)
   const [ columnWidths, setColumnWidths ] = useState([]);
   const [ rowHeight, setRowHeight ] = useState(64);
   const [ columnHeight, setColumnHeight ] = useState(undefined);
 
-  const count = useRef(0);
-
   const rowRef = useRef();
   const stickyRowRef = useRef();
+  const workerRef = useRef();
 
   const { width, height } = useWindowDimensions();
   const virtualizedWidth = useMemo(() => width - (0.05 * width), [width]);
@@ -40,22 +39,54 @@ function VirtualizedList({
   const StickyListContext = createContext();
   StickyListContext.displayName = "StickyListContext";
 
-  const handleClick = (event) => {
+  const handleSortClick = (columnIndex) => (event) => {
+    // Prevent the original event from being lost
+    event.persist();
+
     setIsLoading(true);
-    handleSort(event);
-  }
+
+    // Create a synthetic event with the correct properties
+    const syntheticEvent = {
+      ...event,
+      currentTarget: {
+        ...event.currentTarget,
+        cellIndex: columnIndex
+      }
+    };
+
+    // Use requestAnimationFrame to ensure the loading state is rendered
+    requestAnimationFrame(() => {
+      handleSort(syntheticEvent);
+    });
+  };
 
   const handleSortWorker = useMemo(() => {
     return (workerData) => {
+      // Clean up previous worker if it exists
+      if (workerRef.current) {
+        workerRef.current.terminate();
+      }
+
       const worker = new Worker(new URL("@/public/sortWorker", import.meta.url));
+      workerRef.current = worker;
 
       worker.onmessage = function (event) {
         setSortedSuggestions([labelDataArray, ...event.data]);
+        setIsLoading(false);
+      };
+
+      worker.onerror = function(error) {
+        console.error('Sorting worker error:', error);
+        setIsLoading(false);
       };
 
       worker.postMessage(workerData);
 
-      return () => worker.terminate();
+      return () => {
+        if (worker) {
+          worker.terminate();
+        }
+      };
     };
   }, [labelDataArray]);
 
@@ -68,24 +99,36 @@ function VirtualizedList({
           indexToSort,
         };
         handleSortWorker(payload);
-        setIsLoading(false);
       } else {
         setSortedSuggestions(suggestions);
         setIsLoading(false);
       }
     } else {
+      // Fallback for environments without Web Worker support
       if (searchSuggestionsOrder !== undefined) {
-        const sorted = [...searchRecords].sort((a, b) =>
-            compareValues(a[indexToSort.current], b[indexToSort.current], searchSuggestionsOrder)
-        );
-        setSortedSuggestions([labelDataArray, ...sorted]);
-        setIsLoading(false);
+        setIsLoading(true);
+        requestAnimationFrame(() => {
+          const sorted = [...searchRecords].sort((a, b) =>
+              compareValues(a[indexToSort.current], b[indexToSort.current], searchSuggestionsOrder)
+          );
+          setSortedSuggestions([labelDataArray, ...sorted]);
+          setIsLoading(false);
+        });
       } else {
         setSortedSuggestions(suggestions);
         setIsLoading(false);
       }
     }
   }, [searchSuggestionsOrder, searchRecords, indexToSort, suggestions, handleSortWorker]);
+
+  // Cleanup worker on component unmount
+  useEffect(() => {
+    return () => {
+      if (workerRef.current) {
+        workerRef.current.terminate();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // Only run if rowRef or stickyRowRef are available
@@ -99,20 +142,18 @@ function VirtualizedList({
 
       // Check if column widths or row height need to be updated
       if (newWidths.some((width, i) => width !== columnWidths[i])) {
-        setColumnWidths(newWidths); // Update only if widths have changed
+        setColumnWidths(newWidths);
       }
 
       if (newHeight !== rowHeight) {
-        setRowHeight(newHeight); // Update only if row height has changed
+        setRowHeight(newHeight);
       }
 
-      // Update column height if sticky row height has changed and it's different from the current column height
       if (stickyRowHeight !== columnHeight) {
-        setColumnHeight(Math.min(stickyRowHeight, 150)); // Limit column height to 150px
+        setColumnHeight(Math.min(stickyRowHeight, 150));
       }
     }
   }, [ sortedSuggestions, virtualizedWidth, virtualizedHeight ]); // Only rerun if sortedSuggestions change
-
 
   const padding = columnHeight - rowHeight;
 
@@ -145,9 +186,10 @@ function VirtualizedList({
         {sortedSuggestions[index].map((label, colIndex) => (
             <th
                 key={colIndex}
-                onClick={handleClick}
+                onClick={handleSortClick(colIndex)}
                 tabIndex="0"
                 style={{ width: columnWidths[colIndex] }} // Set the width
+                data-column-index={colIndex} // Add data attribute as backup
             >
               <Tile style={{
                 height: `${columnHeight}px`, overflowY: 'auto' }}>
@@ -193,16 +235,9 @@ function VirtualizedList({
       </StickyListContext.Provider>
   );
 
-  console.log("count", count.current++)
-
   return (
       <>
-        <Loading active={isLoading}
-                 description="Performing sorting"
-                 small={false}
-                 withOverlay={true}
-                 className={null}
-        />
+
         <StickyList
             height={virtualizedHeight}
             innerElementType={innerElementType}
@@ -214,6 +249,8 @@ function VirtualizedList({
         >
           { Row }
         </StickyList>
+
+
       </>
   );
 }

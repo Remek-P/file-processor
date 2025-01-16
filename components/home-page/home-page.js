@@ -261,13 +261,6 @@ export default function HomePage() {
   return (
       <main>
 
-          <Loading small={false}
-                   withOverlay={true}
-                   className={null}
-                   description="Active loading indicator"
-                   active={isLoading}
-          />
-
           {
               !finalDataAvailable && !isDirectFetchResults &&
               <ErrorBoundary fallback={ <h1>Access denied</h1> }>
@@ -306,6 +299,13 @@ export default function HomePage() {
               </ErrorBoundary>
 
           }
+
+        <Loading small={false}
+                 withOverlay={true}
+                 className={null}
+                 description="Active loading indicator"
+                 active={isLoading}
+        />
 
       </main>
   );

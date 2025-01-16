@@ -1,9 +1,10 @@
-import {useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useContext, useMemo, useRef } from "react";
 
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
 
 import useWindowDimensions from "@/hooks/useWindowSize";
+import {IsLoadingContext} from "@/context/global-context";
 
 function DisplayMultipleSuggestions({
                                       IDIndex,
@@ -18,17 +19,22 @@ function DisplayMultipleSuggestions({
 
   const { height } = useWindowDimensions();
 
+  const [ , setIsLoading ] = useContext(IsLoadingContext);
+
   const indexToSort = useRef(IDIndex);
 
   const handleSort = useCallback((event) => {
-    // TODO: each time the icon is pressed, the sorting should start from ascending and not oscillating
-    indexToSort.current = event.currentTarget.cellIndex;
-    setSearchSuggestionsOrder(prevState => !prevState);
+    // Get the column index from the synthetic event
+    const columnIndex = event.currentTarget.cellIndex;
 
-    // if (+event.currentTarget.dataset.index === index) {
-    //   setShowIcon(index);
-    //   setActive(index);
-    // }
+    // Fallback to data attribute if cellIndex is undefined
+    if (columnIndex === undefined) {
+      indexToSort.current = parseInt(event.currentTarget.dataset.columnIndex, 10);
+    } else {
+      indexToSort.current = columnIndex;
+    }
+
+    setSearchSuggestionsOrder(prevState => !prevState);
   }, []);
 
   const pickSearchedOutput = (e) => {
@@ -50,8 +56,10 @@ function DisplayMultipleSuggestions({
             pickSearchedOutput={pickSearchedOutput}
             searchRecords={searchRecords}
             searchSuggestionsOrder={searchSuggestionsOrder}
+            setSearchSuggestionsOrder={setSearchSuggestionsOrder}
             handleSort={handleSort}
             indexToSort={indexToSort}
+            setIsLoading={setIsLoading}
         />
     ) : (
         <ShortList
@@ -62,6 +70,7 @@ function DisplayMultipleSuggestions({
             indexToSort={indexToSort}
             pickSearchedOutput={pickSearchedOutput}
             handleSort={handleSort}
+            setIsLoading={setIsLoading}
         />
     );
   }, [IDIndex, labelDataArray, searchRecords, searchSuggestionsOrder]);
