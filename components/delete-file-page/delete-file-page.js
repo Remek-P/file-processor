@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import NoFiles from "@/components/delete-file-page/no-files/no-files";
 
-import { FileDataGlobalContext } from "@/context/global-context";
+import { WarningsContext } from "@/context/global-context";
 
 import { deleteData, deleteDataAll, getFileNames } from "@/utils/indexedDB";
 
@@ -26,7 +26,7 @@ function DeleteFilePage() {
 
   const size = "md"
 
-  const { addWarnings } = useContext(FileDataGlobalContext)
+  const { addWarnings } = useContext(WarningsContext)
 
   useEffect(() => {
     const getIndexedDB_Data = async () => {

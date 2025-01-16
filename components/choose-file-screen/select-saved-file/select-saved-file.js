@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {Button, IconButton, Select, SelectItem, Tile} from "@carbon/react";
 import {Run, TrashCan} from "@carbon/react/icons";
 
-import { FileDataGlobalContext } from "@/context/global-context";
+import { WarningsContext } from "@/context/global-context";
 import { getFileNames } from "@/utils/indexedDB";
 
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
@@ -14,7 +14,7 @@ import useRejectSizeNotification from "@/hooks/useRejectSizeNotification";
 
 function SelectSavedFile({ isUpdate, loadSavedFile }) {
 
-  const { addWarnings } = useContext(FileDataGlobalContext);
+  const { addWarnings } = useContext(WarningsContext);
 
   const [ selectedOption, setSelectedOption ] = useState('');
   const [ savedFilesNames, setSavedFilesNames ] = useState([]);

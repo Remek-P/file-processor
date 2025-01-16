@@ -1,10 +1,11 @@
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import { FileUploader, Tile } from "@carbon/react";
 import { useContext } from "react";
-import { FileDataGlobalContext, IsLoadingContext } from "@/context/global-context";
+import { FileDataGlobalContext, IsLoadingContext, WarningsContext } from "@/context/global-context";
 
 function UploadToDB({ setIsFileDelivered }) {
-  const { addWarnings, isDataFetched } = useContext(FileDataGlobalContext);
+  const { isDataFetched } = useContext(FileDataGlobalContext);
+  const { addWarnings } = useContext(WarningsContext);
   const [ , setIsLoading ] = useContext(IsLoadingContext);
 
   const fileTypes = [".csv"];

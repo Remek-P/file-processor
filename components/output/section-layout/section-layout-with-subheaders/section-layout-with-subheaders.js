@@ -1,6 +1,6 @@
-import {useState, useRef, useContext} from "react";
+import { useState, useRef, useContext, useMemo } from "react";
 
-import {ExcludedDataGlobalContext} from "@/context/global-context";
+import { ExcludedDataGlobalContext } from "@/context/global-context";
 
 import ActionToggle from "@/components/output/action-toggle/action-toggle";
 
@@ -65,8 +65,8 @@ function SectionLayoutWithSubheaders({
     height: "auto"
   };
 
-  const isNumber = valueTypeArray.some(item => item === "number");
-  const isDate = valueTypeArray.some(item => item === "date");
+  const isNumber = useMemo(() => valueTypeArray.some(item => item === "number"), [valueTypeArray]);
+  const isDate = useMemo(() => valueTypeArray.some(item => item === "date"), [valueTypeArray]);
 
   const sortValues = () => {
     setSort(prevState => !prevState);

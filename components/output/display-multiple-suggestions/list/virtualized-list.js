@@ -23,7 +23,7 @@ function VirtualizedList({
 
   const suggestions = useMemo(() => [labelDataArray, ...searchRecords], [labelDataArray, searchRecords]);
 
-  const [ sortedSuggestions, setSortedSuggestions]  = useState(suggestions)
+  const [ sortedSuggestions, setSortedSuggestions ]  = useState(suggestions)
   const [ columnWidths, setColumnWidths ] = useState([]);
   const [ rowHeight, setRowHeight ] = useState(64);
   const [ columnHeight, setColumnHeight ] = useState(undefined);
