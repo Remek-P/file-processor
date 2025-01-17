@@ -11,7 +11,7 @@ function IdNotAvailable({ labels, handleIDPick }) {
         <ul className={classes.grid}>
           {
             labels.map((label, index) =>
-                  <li key={label} className={classes.pickIDLi}>
+                  <li key={index} className={classes.pickIDLi}>
                     <Tile data-value={index} onClick={handleIDPick} >{label}</Tile>
                   </li>
             )

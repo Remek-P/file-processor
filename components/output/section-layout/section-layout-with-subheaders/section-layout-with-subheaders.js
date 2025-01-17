@@ -67,6 +67,7 @@ function SectionLayoutWithSubheaders({
 
   const isNumber = useMemo(() => valueTypeArray.some(item => item === "number"), [valueTypeArray]);
   const isDate = useMemo(() => valueTypeArray.some(item => item === "date"), [valueTypeArray]);
+  // TODO: This can cause problems when data is both number and date in one group;
 
   const sortValues = () => {
     setSort(prevState => !prevState);

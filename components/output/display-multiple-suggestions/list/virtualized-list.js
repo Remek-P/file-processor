@@ -236,8 +236,6 @@ function VirtualizedList({
   );
 
   return (
-      <>
-
         <StickyList
             height={virtualizedHeight}
             innerElementType={innerElementType}
@@ -249,9 +247,6 @@ function VirtualizedList({
         >
           { Row }
         </StickyList>
-
-
-      </>
   );
 }
 
