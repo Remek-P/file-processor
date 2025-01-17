@@ -1,98 +1,139 @@
-import { MongoClient } from "mongodb";
 import { COLLECTION } from "@/constants/constants";
+import connectToDatabase from "@/utils/mongoDB_Utils";
 
-let client; // Reuse the client connection
-let db;
-
-const uri = `${process.env.DB_HOST}://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.vdirdpb.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.DB_APP_NAME}`;
-
-async function getDbClient() {
-  if (!client) {
-    client = await MongoClient.connect(uri);
-    db = client.db("data-to-JS");
-  }
-  return db;
-}
-
-async function ensureTextIndexes(collection) {
+async function createTextIndexes(collection) {
   try {
-    // Use listIndexes() and convert it to an array
     const indexes = await collection.listIndexes().toArray();
+    const hasTextIndex = indexes.some(index =>
+        index.key && (index.key['$**'] || Object.values(index.key).includes('text'))
+    );
 
-    // Check if there's a wildcard text index
-    const textIndexExists = indexes.some(index => index.key && index.key.hasOwnProperty('$**'));
+    if (!hasTextIndex) {
+      const sampleDoc = await collection.findOne({}, { skip: 1 });
+      if (!sampleDoc) return;
 
-    if (!textIndexExists) {
-      // No text index found, check the keys of a sample document for index creation
-      const sampleDoc = await collection
-          .find()
-          .skip(1) // Skip the first document
-          .limit(1) // Limit to one document
-          .next();
+      const textFields = Object.entries(sampleDoc)
+          .filter(([_, value]) => typeof value === 'string')
+          .reduce((acc, [key]) => ({ ...acc, [key]: 'text' }), {});
 
-      if (sampleDoc) {
-        const keys = Object.keys(sampleDoc); // Extract keys from the sample document
-        const textFields = keys.filter(key => typeof sampleDoc[key] === 'string'); // Only string fields
-
-        if (textFields.length > 0) {
-          // Create a text index on all string fields
-          const indexDefinition = textFields.reduce((acc, field) => {
-            acc[field] = 'text';
-            return acc;
-          }, {});
-
-          // Create the index
-          await collection.createIndex(indexDefinition);
-        }
+      if (Object.keys(textFields).length > 0) {
+        await collection.createIndex(textFields);
       }
     }
   } catch (error) {
-    console.error('Error ensuring text indexes:', error);
+    console.error('Error creating text indexes:', error);
+    throw error;
   }
 }
 
+async function performSearch(collection, query) {
+  try {
+    let results = [];
+
+    // Get first row safely
+    const firstRow = await collection.findOne();
+    if (firstRow) {
+      results.push(firstRow);
+    }
+
+    // Validate query
+    if (!query || typeof query !== 'string') {
+      console.warn('Invalid query:', query);
+      return results;
+    }
+
+    const isNumber = !isNaN(query) && query.trim() !== '';
+
+    if (isNumber) {
+      const numberQuery = parseFloat(query);
+      const numericResults = await collection.find({ ID: numberQuery }).toArray();
+      if (Array.isArray(numericResults)) {
+        results.push(...numericResults);
+      }
+    }
+
+    else if (query.trim()) {
+
+      const regexSearch = async () => {
+        const regexResults = await collection.find({
+          $or: Object.keys(firstRow || {})
+              .filter(key => typeof firstRow[key] === 'string') // Only string fields
+              .map(key => ({ [key]: { $regex: query, $options: 'i' } }))
+        }).toArray();
+
+        if (Array.isArray(regexResults)) {
+          results.push(...regexResults);
+        }
+      }
+
+        if (query.length <= 3) {
+          await regexSearch();
+        }
+        else {
+          try {
+            await createTextIndexes(collection);
+            const textResults = await collection.find({
+              $text: {
+                $search: query,
+                $caseSensitive: false,
+                $diacriticSensitive: false
+              }
+            }).toArray();
+
+            if (Array.isArray(textResults)) {
+              results.push(...textResults);
+            }
+          } catch (textSearchError) {
+            console.error('Text search failed, falling back to regex search:', textSearchError);
+            // Fallback to regex search if text search fails
+            await regexSearch();
+          }
+        }
+    }
+
+    // Ensure we're returning an array
+    return Array.isArray(results) ? results : [];
+
+  } catch (error) {
+    console.error('Search operation failed:', error);
+    // Return empty array instead of throwing
+    return [];
+  }
+}
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
-    const { query } = req.query;
-    console.log("query", query)
 
+    const {query} = req.query;
     if (!query) {
-      return res.status(400).json({ message: "Query parameter is required" });
+      return res.status(400).json({message: "Query parameter is required"});
     }
 
-    let data = [];
+    const { db } = await connectToDatabase(res);
+
     try {
-      const db = await getDbClient();
       const collection = db.collection(COLLECTION);
 
-      // Ensure text indexes are created (only if they don't already exist)
-      // await ensureTextIndexes(collection);
-
-      const isNumber = !isNaN(query);
-      const numberQuery = parseFloat(query);
-      const firstRow = await collection.find().limit(1).toArray();
-
-      // Step 1: Query for numeric fields (like ID)
-      if (isNumber) {
-        data = await collection.find({ ID: numberQuery }).toArray();
-        data = [...firstRow, ...data];
+      // Ensure collection exists
+      if (!collection) {
+        throw new Error(`Collection ${COLLECTION} not found`);
       }
 
-      // Step 2: Query for text fields using $text search
-      if (!isNumber && typeof query === "string" && query.trim()) {
-        // await ensureTextIndexes(COLLECTION)
+      const data = await performSearch(collection, query);
 
-        const textResults = await collection.find({ $text: { $search: query } }).toArray();
-        data = [...firstRow, ...data, ...textResults]; // Combine results from both queries
-      }
+      // Ensure we're sending an array
+      const responseData = Array.isArray(data) ? data : [];
 
+      return res.status(200).json(responseData);
 
     } catch (error) {
-      console.error("Error fetching data:", error);
-      return res.status(500).json({ message: "Fetching data failed", error: error.message });
+      console.error("Search operation failed:", error);
+      return res.status(500).json({
+        message: "Search operation failed",
+        error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
+        data: [] // Always return an array even on error
+      });
     }
-
-    res.status(200).json(data);
   }
+  else return res.status(405).json({ message: "Method not allowed" });
 }
