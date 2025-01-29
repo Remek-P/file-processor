@@ -22,7 +22,7 @@ import XLSX from "xlsx";
 import dayjs from "dayjs";
 
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
-import {containBannedOperators, escapeHTML} from "@/utils/mongoDB_Utils";
+import { containBannedOperators } from "@/utils/mongoDB_Utils";
 
 
 export default function HomePage() {
@@ -179,9 +179,7 @@ export default function HomePage() {
       return
     }
 
-    const escapedQuery = escapeHTML(query);
-
-    setUserQuery(escapedQuery);
+    setUserQuery(query);
 
     try {
       const res = await fetch(`/api/mongoDB?query=${query}&fieldSearch=${fieldSearch}`);
