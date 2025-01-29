@@ -27,7 +27,7 @@ async function createTextIndexes(collection) {
   }
 }
 
-async function performSearch(collection, query) {
+async function performSearch(collection, query, fieldSearch) {
   try {
     let results = [];
 
@@ -44,8 +44,6 @@ async function performSearch(collection, query) {
       return results;
     }
 
-    const isNumber = !isNaN(query) && query.trim() !== '';
-
     const regexSearch = async () => {
       const regexResults = await collection.find({
         $or: Object.keys(firstRow || {})
@@ -58,7 +56,7 @@ async function performSearch(collection, query) {
       }
     }
 
-    if (isNumber) {
+    if (fieldSearch === "ID") {
       const numberQuery = parseFloat(query);
       const numericResults = await collection.find({ ID: numberQuery }).toArray();
 
@@ -67,44 +65,55 @@ async function performSearch(collection, query) {
 
       // Fallback if the numeric search is partial
       if (notFound) {
-        const partialResults = await collection.find({
-          ID: { $toString: { $regex: query, $options: 'i' }} // Convert ID to string for regex match
-        }).toArray();
+        // Perform regex using the aggregation pipeline
+        const regexResults = await collection.aggregate([
+          {
+            $match: {
+              $expr: {
+                $regexMatch: {
+                  input: { $toString: "$ID" },  // Convert ID to string
+                  regex: query,
+                  options: "i"  // Case-insensitive
+                }
+              }
+            }
+          }
+        ]).toArray();
 
-        if (Array.isArray(partialResults)) {
-          results.push(...partialResults);
+        if (regexResults.length > 0) {
+          results.push(...regexResults);
         }
+      } else {
+        // If we found results with exact numeric match
+        results.push(...numericResults);
       }
-
-      else if (Array.isArray(numericResults)) {
-          results.push(...numericResults);
-        }
       }
 
     else if (query.trim()) {
-        if (query.length <= 3) {
-          await regexSearch();
-        }
-        else {
-          try {
-            await createTextIndexes(collection);
-            const textResults = await collection.find({
-              $text: {
-                $search: query,
-                $caseSensitive: false,
-                $diacriticSensitive: false
-              }
-            }).toArray();
-
-            if (Array.isArray(textResults)) {
-              results.push(...textResults);
-            }
-          } catch (textSearchError) {
-            console.error('Text search failed, falling back to regex search:', textSearchError);
-            // Fallback to regex search if text search fails
-            await regexSearch();
-          }
-        }
+      await regexSearch();
+        // if (query.length <= 3) {
+        //   await regexSearch();
+        // }
+        // else {
+        //   try {
+        //     await createTextIndexes(collection);
+        //     const textResults = await collection.find({
+        //       $text: {
+        //         $search: query,
+        //         $caseSensitive: false,
+        //         $diacriticSensitive: false
+        //       }
+        //     }).toArray();
+        //
+        //     if (Array.isArray(textResults)) {
+        //       results.push(...textResults);
+        //     }
+        //   } catch (textSearchError) {
+        //     console.error('Text search failed, falling back to regex search:', textSearchError);
+        //     // Fallback to regex search if text search fails
+        //     await regexSearch();
+        //   }
+        // }
     }
 
     // Ensure we're returning an array
@@ -120,7 +129,7 @@ async function performSearch(collection, query) {
 export default async function handler(req, res) {
   if (req.method === "GET") {
 
-    const {query} = req.query;
+    const { query, fieldSearch } = req.query;
     if (!query) {
       return res.status(400).json({message: "Query parameter is required"});
     }
@@ -135,7 +144,7 @@ export default async function handler(req, res) {
         throw new Error(`Collection ${COLLECTION} not found`);
       }
 
-      const data = await performSearch(collection, query);
+      const data = await performSearch(collection, query, fieldSearch);
 
       // Ensure we're sending an array
       const responseData = Array.isArray(data) ? data : [];

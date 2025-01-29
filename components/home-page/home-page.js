@@ -173,12 +173,11 @@ export default function HomePage() {
     setIsLoading(true);
     let result;
 
-    if (containBannedOperators(query)) {
-      setIsLoading(false);
-      addWarnings("Invalid query")
-      return
-    }
-
+    // if (containBannedOperators(query)) {
+    //   setIsLoading(false);
+    //   addWarnings("Invalid query")
+    //   return
+    // }
     setUserQuery(query);
 
     try {
