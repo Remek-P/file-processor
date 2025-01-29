@@ -16,12 +16,13 @@ import ErrorBoundary from "@/components/error-boundary/error-boundary";
 import { addData, deleteData, getData } from "@/utils/indexedDB";
 import { sheetToJsonData } from "@/utils/xlsxUtils";
 import { Loading } from '@carbon/react';
+import { checkIsFirstObjectMadeOfStrings, isContainingSubheaders } from "@/utils/parserUtils";
 
 import XLSX from "xlsx";
 import dayjs from "dayjs";
 
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
-import {checkIsFirstObjectMadeOfStrings, isContainingSubheaders} from "@/utils/parserUtils";
+import {containBannedOperators, escapeHTML} from "@/utils/mongoDB_Utils";
 
 
 export default function HomePage() {
@@ -168,14 +169,29 @@ export default function HomePage() {
     }
   }
 
-  const fetchDirectlyDataFromMongoDB = async (query) => {
+  const fetchDirectlyDataFromMongoDB = async (query, fieldSearch) => {
     setIsLoading(true);
     let result;
-    setUserQuery(query);
+
+    if (containBannedOperators(query)) {
+      setIsLoading(false);
+      addWarnings("Invalid query")
+      return
+    }
+
+    const escapedQuery = escapeHTML(query);
+
+    setUserQuery(escapedQuery);
 
     try {
-      const res = await fetch(`/api/mongoDB?query=${query}`);
+      const res = await fetch(`/api/mongoDB?query=${query}&fieldSearch=${fieldSearch}`);
       result = await res.json();
+
+      // The fetch always results in returning the first row for mapping the keys. If there is only one object in the array or the array is empty due to error, add warning.
+      if (result.length <= 1) {
+        addWarnings("No data found")
+        return
+      }
 
       const sheet = XLSX.utils.json_to_sheet(result);
       const jsonData = sheetToJsonData(sheet);
@@ -202,7 +218,7 @@ export default function HomePage() {
       isDataFetched(true);
       setIsDirectFetchResults(true);
     } catch (error) {
-      addWarnings("Fetching data failed");
+      addWarnings(error.message);
       console.error("Error fetching search results:", error);
     } finally {
       setIsLoading(false);

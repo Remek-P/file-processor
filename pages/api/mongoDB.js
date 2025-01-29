@@ -1,5 +1,6 @@
 import { COLLECTION } from "@/constants/constants";
-import connectToDatabase from "@/utils/mongoDB_Utils";
+
+import {connectToDatabase} from "@/utils/MongoDB_ConnectUtils";
 
 async function createTextIndexes(collection) {
   try {
@@ -32,6 +33,7 @@ async function performSearch(collection, query) {
 
     // Get first row safely
     const firstRow = await collection.findOne();
+
     if (firstRow) {
       results.push(firstRow);
     }
@@ -44,28 +46,42 @@ async function performSearch(collection, query) {
 
     const isNumber = !isNaN(query) && query.trim() !== '';
 
-    if (isNumber) {
-      const numberQuery = parseFloat(query);
-      const numericResults = await collection.find({ ID: numberQuery }).toArray();
-      if (Array.isArray(numericResults)) {
-        results.push(...numericResults);
+    const regexSearch = async () => {
+      const regexResults = await collection.find({
+        $or: Object.keys(firstRow || {})
+            .filter(key => typeof firstRow[key] === 'string') // Only string fields
+            .map(key => ({ [key]: { $regex: query, $options: 'i' } }))
+      }).toArray();
+
+      if (Array.isArray(regexResults)) {
+        results.push(...regexResults);
       }
     }
 
-    else if (query.trim()) {
+    if (isNumber) {
+      const numberQuery = parseFloat(query);
+      const numericResults = await collection.find({ ID: numberQuery }).toArray();
 
-      const regexSearch = async () => {
-        const regexResults = await collection.find({
-          $or: Object.keys(firstRow || {})
-              .filter(key => typeof firstRow[key] === 'string') // Only string fields
-              .map(key => ({ [key]: { $regex: query, $options: 'i' } }))
+
+      const notFound = numericResults.length === 0;
+
+      // Fallback if the numeric search is partial
+      if (notFound) {
+        const partialResults = await collection.find({
+          ID: { $toString: { $regex: query, $options: 'i' }} // Convert ID to string for regex match
         }).toArray();
 
-        if (Array.isArray(regexResults)) {
-          results.push(...regexResults);
+        if (Array.isArray(partialResults)) {
+          results.push(...partialResults);
         }
       }
 
+      else if (Array.isArray(numericResults)) {
+          results.push(...numericResults);
+        }
+      }
+
+    else if (query.trim()) {
         if (query.length <= 3) {
           await regexSearch();
         }

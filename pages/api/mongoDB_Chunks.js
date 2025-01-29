@@ -1,5 +1,6 @@
 import { COLLECTION } from "@/constants/constants";
-import connectToDatabase from "@/utils/mongoDB_Utils";
+
+import {connectToDatabase} from "@/utils/MongoDB_ConnectUtils";
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {

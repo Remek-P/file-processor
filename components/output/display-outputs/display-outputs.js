@@ -3,6 +3,7 @@ import Output from "@/components/output/output";
 import classes from "@/components/file-chosen/file-chosen.module.scss";
 import {useContext} from "react";
 import { NumberOfOutputsContext } from "@/context/global-context";
+import {ErrorBoundary} from "@carbon/react";
 
 
 function DisplayOutputs({
@@ -19,7 +20,7 @@ function DisplayOutputs({
   //TODO: While multiple outputs are present, one search nullifies the second in direct DB search
 
   return (
-      <>
+      <ErrorBoundary fallback={<div>Error parsing the file</div>}>
         {
           numberOfOutputs.map(output =>
               <div key={output.id} className={classes.outputContainer}>
@@ -34,7 +35,7 @@ function DisplayOutputs({
               </div>
           )
         }
-      </>
+        </ErrorBoundary>
   );
 }
 

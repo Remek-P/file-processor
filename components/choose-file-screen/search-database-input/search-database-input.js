@@ -1,10 +1,12 @@
 import classes from "@/components/search/search.module.scss";
 import SearchbarIcon from "@/components/search/icon/searchbar-icon";
 import { useRef, useState } from "react";
+import {Select, SelectItem} from "@carbon/react";
 
 function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
 
   const [ localInputValue, setLocalInputValue ] = useState(userQuery);
+  const [ selectFieldSearch, setSelectFieldSearch ] = useState("ID");
 
   const searchRef = useRef();
 
@@ -16,11 +18,15 @@ function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
     setLocalInputValue(e.target.value)
   }
 
+  const handleSelect = (e) => {
+    setSelectFieldSearch(e.target.value);
+  }
+
   const handleAccept = async (e) => {
     if (e.key === "Enter") {
       const input = localInputValue.trim();
       if (input !== "") {
-        fetchDirectlyDataFromDB(input);
+        fetchDirectlyDataFromDB(input, selectFieldSearch);
       }
     }
   }
@@ -48,7 +54,16 @@ function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
                autoComplete="on"
                autoFocus
         />
-
+        
+        <Select id="key-search"
+                labelText="Select search field"
+                hideLabel={true} size="sm"
+                value={selectFieldSearch}
+                onChange={handleSelect}
+        >
+          <SelectItem text="ID" value="ID" />
+          <SelectItem text="Full search" value="all" />
+        </Select>
 
       </div>
 
