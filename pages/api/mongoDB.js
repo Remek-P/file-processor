@@ -1,6 +1,7 @@
-import { COLLECTION } from "@/constants/constants";
+import {COLLECTION} from "@/constants/constants";
 
 import {connectToDatabase} from "@/utils/MongoDB_ConnectUtils";
+import {sanitizeMongoQuery} from "@/utils/mongoDB_Utils";
 
 async function createTextIndexes(collection) {
   try {
@@ -87,33 +88,31 @@ async function performSearch(collection, query, fieldSearch) {
         // If we found results with exact numeric match
         results.push(...numericResults);
       }
-      }
-
-    else if (query.trim()) {
+    } else if (query.trim()) {
       await regexSearch();
-        // if (query.length <= 3) {
-        //   await regexSearch();
-        // }
-        // else {
-        //   try {
-        //     await createTextIndexes(collection);
-        //     const textResults = await collection.find({
-        //       $text: {
-        //         $search: query,
-        //         $caseSensitive: false,
-        //         $diacriticSensitive: false
-        //       }
-        //     }).toArray();
-        //
-        //     if (Array.isArray(textResults)) {
-        //       results.push(...textResults);
-        //     }
-        //   } catch (textSearchError) {
-        //     console.error('Text search failed, falling back to regex search:', textSearchError);
-        //     // Fallback to regex search if text search fails
-        //     await regexSearch();
-        //   }
-        // }
+      // if (query.length <= 3) {
+      //   await regexSearch();
+      // }
+      // else {
+      //   try {
+      //     await createTextIndexes(collection);
+      //     const textResults = await collection.find({
+      //       $text: {
+      //         $search: query,
+      //         $caseSensitive: false,
+      //         $diacriticSensitive: false
+      //       }
+      //     }).toArray();
+      //
+      //     if (Array.isArray(textResults)) {
+      //       results.push(...textResults);
+      //     }
+      //   } catch (textSearchError) {
+      //     console.error('Text search failed, falling back to regex search:', textSearchError);
+      //     // Fallback to regex search if text search fails
+      //     await regexSearch();
+      //   }
+      // }
     }
 
     // Ensure we're returning an array
@@ -130,11 +129,14 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
 
     const { query, fieldSearch } = req.query;
-    if (!query) {
+    
+    const sanitizedQuery = sanitizeMongoQuery(query);
+    
+    if (!sanitizedQuery) {
       return res.status(400).json({message: "Query parameter is required"});
     }
 
-    const { db } = await connectToDatabase(res);
+    const {db} = await connectToDatabase(res);
 
     try {
       const collection = db.collection(COLLECTION);
@@ -144,7 +146,7 @@ export default async function handler(req, res) {
         throw new Error(`Collection ${COLLECTION} not found`);
       }
 
-      const data = await performSearch(collection, query, fieldSearch);
+      const data = await performSearch(collection, sanitizedQuery, fieldSearch);
 
       // Ensure we're sending an array
       const responseData = Array.isArray(data) ? data : [];
@@ -159,6 +161,5 @@ export default async function handler(req, res) {
         data: [] // Always return an array even on error
       });
     }
-  }
-  else return res.status(405).json({ message: "Method not allowed" });
+  } else return res.status(405).json({ message: "Method not allowed" });
 }

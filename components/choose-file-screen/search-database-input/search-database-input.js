@@ -1,7 +1,7 @@
 import classes from "@/components/search/search.module.scss";
 import SearchbarIcon from "@/components/search/icon/searchbar-icon";
 import { useRef, useState } from "react";
-import {Select, SelectItem} from "@carbon/react";
+import { Select, SelectItem } from "@carbon/react";
 
 function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
 
@@ -15,7 +15,7 @@ function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
   const id = "searchDatabaseInput";
 
   const handleTyping = (e) => {
-    setLocalInputValue(e.target.value)
+    setLocalInputValue(e.target.value);
   }
 
   const handleSelect = (e) => {
@@ -25,6 +25,7 @@ function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
   const handleAccept = async (e) => {
     if (e.key === "Enter") {
       const input = localInputValue.trim();
+
       if (input !== "") {
         fetchDirectlyDataFromDB(input, selectFieldSearch);
       }

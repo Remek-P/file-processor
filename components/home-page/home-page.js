@@ -138,6 +138,7 @@ export default function HomePage() {
       const sheet = XLSX.utils.json_to_sheet(partialDataArray);
       const jsonData = sheetToJsonData(sheet);
 
+      //Test for subheaders, if the row contains strings only (and no numbers) it is probably a subheader.
       const isSubheadersPresent = checkIsFirstObjectMadeOfStrings(partialDataArray);
 
       if (isSubheadersPresent) {
@@ -181,7 +182,11 @@ export default function HomePage() {
     setUserQuery(query);
 
     try {
-      const res = await fetch(`/api/mongoDB?query=${query}&fieldSearch=${fieldSearch}`);
+      const params = new URLSearchParams({
+        query: query,
+        fieldSearch: fieldSearch
+      });
+      const res = await fetch(`/api/mongoDB?${params.toString()}`);
       result = await res.json();
 
       // The fetch always results in returning the first row for mapping the keys. If there is only one object in the array or the array is empty due to error, add warning.
