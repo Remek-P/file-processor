@@ -12,14 +12,17 @@ function ActionToggle({
                         children
                       }) {
   return (
-      <Tooltip align={align} description={description} closeOnActivation={closeOnActivation}>
+      <Tooltip align={align}
+               description={description}
+               closeOnActivation={closeOnActivation}
+      >
         <Button size={size}
                 kind={kind}
                 onClick={onClick}
                 value={value}
                 ref={valueRef}
         >
-          {children}
+          { children }
         </Button>
       </Tooltip>
   );
