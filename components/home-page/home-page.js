@@ -279,7 +279,7 @@ export default function HomePage() {
 
           {
               !finalDataAvailable && !isDirectFetchResults &&
-              <ErrorBoundary fallback={ <h1>Access denied</h1> }>
+              <ErrorBoundary fallback={ <h1>Something went wrong, please try again</h1> }>
                 <ChooseFile file={file}
                             fetchDataFromDB={fetchDataFromMongoDB}
                             handleFile={handleFile}

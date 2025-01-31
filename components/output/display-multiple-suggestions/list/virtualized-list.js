@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import { createContext, forwardRef, useEffect, useRef, useState } from "react";
 
 import useWindowDimensions from "@/hooks/useWindowSize";
@@ -119,7 +119,7 @@ function VirtualizedList({
         setIsLoading(false);
       }
     }
-  }, [searchSuggestionsOrder, searchRecords, indexToSort, suggestions, handleSortWorker]);
+  }, [searchSuggestionsOrder, searchRecords, indexToSort, suggestions]);
 
   // Cleanup worker on component unmount
   useEffect(() => {
@@ -130,7 +130,7 @@ function VirtualizedList({
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Only run if rowRef or stickyRowRef are available
     if (rowRef.current && stickyRowRef.current) {
       const cells = rowRef.current.querySelectorAll('div');
@@ -153,7 +153,7 @@ function VirtualizedList({
         setColumnHeight(Math.min(stickyRowHeight, 150));
       }
     }
-  }, [ sortedSuggestions, virtualizedWidth, virtualizedHeight ]); // Only rerun if sortedSuggestions change
+  }, [ searchRecords, virtualizedWidth, virtualizedHeight ]);
 
   const padding = columnHeight - rowHeight;
 
