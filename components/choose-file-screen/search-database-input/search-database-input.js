@@ -1,14 +1,12 @@
 import classes from "@/components/search/search.module.scss";
 import SearchbarIcon from "@/components/search/icon/searchbar-icon";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Select, SelectItem } from "@carbon/react";
 
-function SearchDatabaseInput({ userQuery = "", fetchDirectlyDataFromDB }) {
+function SearchDatabaseInput({ userQuery = "", searchRef, fetchDirectlyDataFromDB }) {
 
   const [ localInputValue, setLocalInputValue ] = useState(userQuery);
   const [ selectFieldSearch, setSelectFieldSearch ] = useState("ID");
-
-  const searchRef = useRef();
 
   const isDeleteVisible = localInputValue.length !== 0;
 

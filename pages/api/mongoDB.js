@@ -1,7 +1,8 @@
 import {COLLECTION} from "@/constants/constants";
 
-import {connectToDatabase} from "@/utils/MongoDB_ConnectUtils";
-import {sanitizeMongoQuery} from "@/utils/mongoDB_Utils";
+import { connectToDatabase } from "@/utils/MongoDB_ConnectUtils";
+import { sanitizeMongoQuery } from "@/utils/mongoDB_Utils";
+import { checkForNumber } from "@/utils/general";
 
 async function createTextIndexes(collection) {
   try {
@@ -31,12 +32,15 @@ async function createTextIndexes(collection) {
 async function performSearch(collection, query, fieldSearch) {
   try {
     let results = [];
+    console.log("query performSearch", query)
+    const getFirstRow = async (getConstant = false) => {
+      const firstRow = await collection.findOne();
 
-    // Get first row safely
-    const firstRow = await collection.findOne();
+      if (firstRow) {
+        results.push(firstRow);
+      }
 
-    if (firstRow) {
-      results.push(firstRow);
+      if (getConstant) return firstRow;
     }
 
     // Validate query
@@ -46,10 +50,22 @@ async function performSearch(collection, query, fieldSearch) {
     }
 
     const regexSearch = async () => {
+      const firstRow = await getFirstRow(true);
+
+      // Escape special regex characters but handle apostrophes specially
+      const regexPattern = query
+          .replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\$&')  // Escape regex special chars
+          .replace(/'/g, "'?");  // Make apostrophes optional in the search
+
       const regexResults = await collection.find({
         $or: Object.keys(firstRow || {})
-            .filter(key => typeof firstRow[key] === 'string') // Only string fields
-            .map(key => ({ [key]: { $regex: query, $options: 'i' } }))
+            .filter(key => typeof firstRow[key] === 'string')
+            .map(key => ({
+              [key]: {
+                $regex: regexPattern,
+                $options: 'i'  // Case-insensitive
+              }
+            }))
       }).toArray();
 
       if (Array.isArray(regexResults)) {
@@ -59,6 +75,12 @@ async function performSearch(collection, query, fieldSearch) {
 
     if (fieldSearch === "ID") {
       const numberQuery = parseFloat(query);
+      const isNumber = checkForNumber(numberQuery)
+      if (!isNumber) {
+        console.warn("Query is not a number");
+
+      }
+      await getFirstRow();
       const numericResults = await collection.find({ ID: numberQuery }).toArray();
 
 
@@ -89,6 +111,7 @@ async function performSearch(collection, query, fieldSearch) {
         results.push(...numericResults);
       }
     } else if (query.trim()) {
+      // TODO: request does not work with '.
       await regexSearch();
       // if (query.length <= 3) {
       //   await regexSearch();
@@ -129,11 +152,15 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
 
     const { query, fieldSearch } = req.query;
-    
+
+    if (!query || query.trim() === "") {
+      return res.status(400).json({ message: "Query parameter is required" });
+    }
+
     const sanitizedQuery = sanitizeMongoQuery(query);
-    
+
     if (!sanitizedQuery) {
-      return res.status(400).json({message: "Query parameter is required"});
+      return res.status(400).json({ message: "Query parameter is required" });
     }
 
     const {db} = await connectToDatabase(res);

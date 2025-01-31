@@ -45,7 +45,6 @@ function Search({ setInputValue, searchRef, id="search" }) {
                autoFocus
         />
 
-
       </div>
 
   );
