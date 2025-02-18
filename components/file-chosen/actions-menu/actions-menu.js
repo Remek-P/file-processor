@@ -1,4 +1,4 @@
-import {useCallback, useContext} from "react";
+import {useCallback, useContext, useState} from "react";
 
 import { useRouter } from "next/router";
 
@@ -10,14 +10,14 @@ import {
   ShowAllMetricsContext,
   SearchReducePerformanceContext,
   NumberOfOutputsContext,
+  DecimalGlobalContext,
 } from "@/context/global-context";
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
-import ResetFormating from "@/components/file-chosen/actions-menu/menu-items/reset-formating";
 
 import { convertUnderscoreToSpace } from "@/utils/general";
 
-import { OverflowMenu, OverflowMenuItem, MenuItemDivider } from "@carbon/react";
+import { OverflowMenu, OverflowMenuItem } from "@carbon/react";
 
 import classes from "../file-chosen.module.scss";
 import { thresholdForExcludedData, generalWorker, HEADER_LABEL } from "@/constants/constants";
@@ -42,6 +42,7 @@ function ActionsMenu({
   const [ showAllMetrics, setShowAllMetrics ] = useContext(ShowAllMetricsContext);
   const [ isPerformanceStrainReduced, setIsPerformanceStrainReduced ] = useContext(SearchReducePerformanceContext);
   const [ , setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
+  const [, setDecimal] = useContext(DecimalGlobalContext);
 
   const router = useRouter();
 
@@ -113,7 +114,11 @@ function ActionsMenu({
     setIsPerformanceStrainReduced(prevState => !prevState);
   }
 
-  // TODO: Reset all data changes
+  const resetDataFormatting = () => {
+    setDecimal(undefined);
+    setExcludedArray([])
+    setSearchSuggestionsOrder(undefined);
+  }
 
   return (
       <div className={`${classes.menuContainer} shadow`}>
@@ -122,7 +127,12 @@ function ActionsMenu({
                       flipped={true}
         >
 
-          <MenuItemDivider/>
+          <OverflowMenuItem itemText="Set decimal place"
+                            onClick={null}
+                            disabled={true}
+                            className={classes.menuItem}
+                            hasDivider
+          />
           <DecimalPlace />
 
           <OverflowMenuItem itemText="Add output"
@@ -189,7 +199,12 @@ function ActionsMenu({
               />
           }
 
-          <ResetFormating />
+          <OverflowMenuItem itemText="Reset Data Format"
+                            onClick={resetDataFormatting}
+                            isDelete={true}
+                            className={classes.menuItem}
+                            hasDivider
+          />
 
           <OverflowMenuItem itemText="Delete All"
                             onClick={handleDeleteAll}
@@ -224,6 +239,7 @@ function ActionsMenu({
                             hasDivider
           />
         </OverflowMenu>
+
       </div>
   );
 }

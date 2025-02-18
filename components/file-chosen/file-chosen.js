@@ -32,17 +32,21 @@ function FileChosen({
   const labelArray = isSubheaders === true ? file[1] : file[0];
 
   // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
-  const indexOfID = labelArray.findIndex(label =>
-      label?.toLowerCase() === "id" ?? label.toLowerCase() === ID_LABEL);
+  const findIDIndex = () => {
+    return labelArray.findIndex(
+        (label) =>
+            (label?.toLowerCase() === "id" || label?.toLowerCase() === ID_LABEL)
+    );
+  };
   
-  const [IDIndex, setIDIndex] = useState(indexOfID);
+  const [IDIndex, setIDIndex] = useState(findIDIndex());
 
   const DB_Label = isSubheaders ? ID_LABEL : HEADER_LABEL;
   // hide db id tile constant, when no db id in the labels array
   const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === DB_Label.toLowerCase()) === -1;
 
   const handleIDPick = (e) => {
-    setIDIndex(e.target.dataset.value);
+    setIDIndex(Number(e.target.dataset.value));
   }
 
   const handleResetID = () => {
@@ -53,17 +57,17 @@ function FileChosen({
     setIsNotificationVisible(true);
   }
 
-  const handleRejectNotification = () => {
+  const handleNotification = (confirmed) => {
+    if (confirmed) {
+      overrideSubheadersDetection();
+    }
     setIsNotificationVisible(false);
-  }
-  const handleConfirmNotification = () => {
-    overrideSubheadersDetection();
-    setIsNotificationVisible(false);
-  }
+  };
 
 
   if (IDIndex === -1) return <IdNotAvailable labels={labelArray}
-                                             handleIDPick={handleIDPick}/>
+                                             handleIDPick={handleIDPick}
+                              />
 
 
   return (
@@ -98,8 +102,9 @@ function FileChosen({
                 />
 
               {isNotificationVisible &&
-                  <AreYouSure handleConfirm={handleConfirmNotification}
-                              handleReject={handleRejectNotification} />
+                  <AreYouSure handleConfirm={() => handleNotification(true)}
+                              handleReject={() => handleNotification(false)}
+                  />
               }
 
             </section>
