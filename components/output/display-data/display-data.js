@@ -5,7 +5,10 @@ import DisplayMultipleSuggestions from "@/components/output/display-multiple-sug
 import DisplaySearchedData from "@/components/output/display-searched-data/display-searched-data";
 
 import classes from "../output.module.scss";
-import {IsContainingSubheadersContext, SearchReducePerformanceContext} from "@/context/global-context";
+import {
+  IsContainingSubheadersContext,
+  SearchReducePerformanceContext
+} from "@/context/global-context";
 
 function DisplayData({
                        IDIndex,
@@ -53,12 +56,14 @@ function DisplayData({
     else if (searchResult.length === 1)
       return (
           <div className={classes.grid}>
-            <DisplaySearchedData colDataArray={colDataArray}
-                                 isSubheaders={isSubheaders}
-                                 labelDataArray={labelDataArray}
-                                 hideDB_ID_Tile={hideDB_ID_Tile}
-                                 headerDataArray={headerDataArray}
-            />
+
+              <DisplaySearchedData colDataArray={colDataArray}
+                                   isSubheaders={isSubheaders}
+                                   labelDataArray={labelDataArray}
+                                   hideDB_ID_Tile={hideDB_ID_Tile}
+                                   headerDataArray={headerDataArray}
+              />
+
           </div>
       )
 

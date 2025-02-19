@@ -1,7 +1,7 @@
-import {createContext, useContext, useEffect, useReducer, useState} from "react";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { Reducer } from "./reducer";
 import { isContainingSubheaders } from "@/utils/parserUtils";
-import {CASE_NAME} from "@/constants/constants";
+import { CASE_NAME } from "@/constants/constants";
 
 const excelFileInitialState = {
   file: null,
@@ -12,7 +12,7 @@ const excelFileInitialState = {
 export const FileDataGlobalContext = createContext(excelFileInitialState);
 export const FileDataProvider = ({ children }) => {
 
-  const [state, dispatch] = useReducer(Reducer, excelFileInitialState);
+  const [ state, dispatch ] = useReducer(Reducer, excelFileInitialState);
 
   const setFile = (file) => {
     dispatch({
@@ -50,11 +50,11 @@ export const FileDataProvider = ({ children }) => {
   )
 }
 
-const warningsInitialState = {warnings: []}
+const warningsInitialState = { warnings: [] }
 export const WarningsContext = createContext(warningsInitialState);
 export const WarningsProvider = ({ children }) => {
 
-  const [state, dispatch] = useReducer(Reducer, warningsInitialState);
+  const [ state, dispatch ] = useReducer(Reducer, warningsInitialState);
 
   const addWarnings = (warnings) => {
     dispatch({
@@ -75,85 +75,85 @@ export const WarningsProvider = ({ children }) => {
     addWarnings,
     deleteWarning
   }}>
-    {children}
+    { children }
   </WarningsContext.Provider>
 };
 
 export const IsLoadingContext = createContext(null);
 export const IsLoadingProvider = ({ children }) => (
-    <IsLoadingContext.Provider value={useState(false)}>
+    <IsLoadingContext.Provider value={ useState(false) }>
       { children }
     </IsLoadingContext.Provider>
 );
 
 export const DecimalGlobalContext = createContext(null);
 export const DecimalDataProvider = ({ children }) => (
-    <DecimalGlobalContext.Provider value={useState(undefined)}>
+    <DecimalGlobalContext.Provider value={ useState(undefined) }>
       { children }
     </DecimalGlobalContext.Provider>
 );
 
 export const PercentGlobalContext = createContext(null);
 export const PercentDataProvider = ({ children }) => (
-    <PercentGlobalContext.Provider value={useState(undefined)}>
+    <PercentGlobalContext.Provider value={ useState(undefined) }>
       { children }
     </PercentGlobalContext.Provider>
 );
 
 export const ExcludedDataGlobalContext = createContext([]);
 export const ExcludedDataProvider = ({ children }) => (
-    <ExcludedDataGlobalContext.Provider value={useState([])}>
+    <ExcludedDataGlobalContext.Provider value={ useState([]) }>
       { children }
     </ExcludedDataGlobalContext.Provider>
 );
 
 export const HideTileContext = createContext(null);
 export const HideTileProvider = ({ children }) => (
-    <HideTileContext.Provider value={useState(false)}>
+    <HideTileContext.Provider value={ useState(false) }>
       { children }
     </HideTileContext.Provider>
 );
 
 export const ToggleIDViewGlobalContext = createContext(null);
 export const ToggleIDViewProvider = ({ children }) => (
-    <ToggleIDViewGlobalContext.Provider value={useState(false)}>
+    <ToggleIDViewGlobalContext.Provider value={ useState(false) }>
       { children }
     </ToggleIDViewGlobalContext.Provider>
 );
 
 export const ShowAllMetricsContext = createContext(null);
 export const ShowAllMetricsProvider = ({ children }) => (
-    <ShowAllMetricsContext.Provider value={useState(true)}>
+    <ShowAllMetricsContext.Provider value={ useState(true) }>
       { children }
     </ShowAllMetricsContext.Provider>
 );
 
 export const SearchSuggestionsOrderGlobalContext = createContext(null);
 export const SearchSuggestionsOrderGlobalProvider = ({ children }) => (
-    <SearchSuggestionsOrderGlobalContext.Provider value={useState(undefined)}>
+    <SearchSuggestionsOrderGlobalContext.Provider value={ useState(undefined) }>
       { children }
     </SearchSuggestionsOrderGlobalContext.Provider>
 );
 
 export const IsContainingSubheadersContext = createContext(null);
 export const IsContainingSubheadersProvider = ({ children }) => {
-  const [isSubheaders, setIsSubheaders] = useState(undefined);
+  const [ isSubheaders, setIsSubheaders ] = useState(undefined);
 
   const { file } = useContext(FileDataGlobalContext);
 
   useEffect(() => {
     if (file === null && isSubheaders !== undefined) setIsSubheaders(undefined);
     if (file !== null && isSubheaders === undefined) setIsSubheaders(isContainingSubheaders(file));
-  }, [file]);
+  }, [ file ]);
 
   const contextValue = {
     isSubheaders,
     overrideSubheadersDetection: () => setIsSubheaders(prevState => !prevState),
     setIsSubheaders,
-    };
+  };
 
   return (
-      <IsContainingSubheadersContext.Provider value={contextValue}>
+      <IsContainingSubheadersContext.Provider value={ contextValue }>
         { children }
       </IsContainingSubheadersContext.Provider>
   );
@@ -161,28 +161,28 @@ export const IsContainingSubheadersProvider = ({ children }) => {
 
 export const SearchReducePerformanceContext = createContext(null);
 export const SearchReducePerformanceProvider = ({ children }) => (
-    <SearchReducePerformanceContext.Provider value={useState(true)}>
+    <SearchReducePerformanceContext.Provider value={ useState(true) }>
       { children }
     </SearchReducePerformanceContext.Provider>
 );
 
-export const NumberOfOutputsContext = createContext([null] );
+export const NumberOfOutputsContext = createContext([ null ]);
 export const NumberOfOutputsProvider = ({ children }) => (
-    <NumberOfOutputsContext.Provider value={useState([{id: 1}] )}>
+    <NumberOfOutputsContext.Provider value={ useState([ { id: 1 } ]) }>
       { children }
     </NumberOfOutputsContext.Provider>
 );
 
-export const IndexedDB_SizeContext = createContext(null );
+export const IndexedDB_SizeContext = createContext(null);
 export const IndexedDB_SizeProvider = ({ children }) => (
-    <IndexedDB_SizeContext.Provider value={useState(undefined)}>
+    <IndexedDB_SizeContext.Provider value={ useState(undefined) }>
       { children }
     </IndexedDB_SizeContext.Provider>
 );
 
-export const IndexedDB_ClickedContext = createContext(null );
+export const IndexedDB_ClickedContext = createContext(null);
 export const IndexedDB_ClickedProvider = ({ children }) => (
-    <IndexedDB_ClickedContext.Provider value={useState(0)}>
+    <IndexedDB_ClickedContext.Provider value={ useState(0) }>
       { children }
     </IndexedDB_ClickedContext.Provider>
 );

@@ -21,14 +21,15 @@ import {
 } from "@/utils/general";
 
 function DisplayDataWithSubheaders({
-                                  value,
-                                  colDataArray,
-                                  labelDataArray,
-                                  headerDataArray,
-                                }) {
+                                     value,
+                                     colDataArray,
+                                     labelDataArray,
+                                     headerDataArray,
+                                   }) {
 
   const [ showAllMetrics, setShowAllMetrics ] = useState(true);
   const [ showPercentages, setShowPercentages ] = useState(undefined);
+  const [ showDateFormat, setShowDateFormat ] = useState(false);
   const [ sort, setSort ] = useState(undefined);
 
   const dataType = useRef(undefined);
@@ -69,7 +70,7 @@ function DisplayDataWithSubheaders({
     const indexedDataArray = headerValueArray.map((value, index) => ({ value, label: labelValueArray[index], index }));
 
     // Sort the indexed data based on the value and sort direction (sortedUtils)
-    indexedDataArray.sort((a, b) => compareValues( a.value, b.value, sort ));
+    indexedDataArray.sort((a, b) => compareValues(a.value, b.value, sort));
 
     // Separate the sorted values and labels back into their respective arrays
     const sortedData = indexedDataArray.map(item => item.value);
@@ -79,19 +80,21 @@ function DisplayDataWithSubheaders({
   }
 
   const { sortedData, sortedLabels } = sortDataAndLabelsArrayTogether();
-  
+
   return (
 
-      <SectionLayoutWithSubheaders value={value}
-                                   sort={sort}
-                                   setSort={setSort}
-                                   chartData={chartData}
-                                   valueTypeArray={valueTypeArray}
-                                   showPercentages={showPercentages}
-                                   setShowPercentages={setShowPercentages}
-                                   numbersEqualToZero={numbersEqualToZero}
-                                   showAllMetrics={showAllMetrics}
-                                   setShowAllMetrics={setShowAllMetrics}
+      <SectionLayoutWithSubheaders value={ value }
+                                   sort={ sort }
+                                   setSort={ setSort }
+                                   chartData={ chartData }
+                                   valueTypeArray={ valueTypeArray }
+                                   showPercentages={ showPercentages }
+                                   setShowPercentages={ setShowPercentages }
+                                   numbersEqualToZero={ numbersEqualToZero }
+                                   showAllMetrics={ showAllMetrics }
+                                   setShowAllMetrics={ setShowAllMetrics }
+                                   showDateFormat={ showDateFormat }
+                                   setShowDateFormat={ setShowDateFormat }
       >
 
         <div>
@@ -113,9 +116,9 @@ function DisplayDataWithSubheaders({
                 handleChartDataIfDataIs0AndNot0(dataType.current, index, numberData.value)
 
                 return (
-                    <ShowNumbers key={`${data}+${sortedLabels[index]}`}
-                                 data={numberData}
-                                 showPercentages={showPercentages}
+                    <ShowNumbers key={ `${ data }+${ sortedLabels[index] }` }
+                                 data={ numberData }
+                                 showPercentages={ showPercentages }
                     />
                 )
 
@@ -125,7 +128,7 @@ function DisplayDataWithSubheaders({
 
                 if (numberAsString) {
                   const refinedValue = decimalPlaceSeparatorToComma(data);
-                  const { numberOnlyData, checkSymbolsInArray} = separateNumbersAndStrings(refinedValue);
+                  const { numberOnlyData, checkSymbolsInArray } = separateNumbersAndStrings(refinedValue);
 
                   const isZero = numberOnlyData === 0;
                   if (isZero && !showAllMetrics) return null;
@@ -143,48 +146,39 @@ function DisplayDataWithSubheaders({
 
                   handleChartDataIfDataIs0AndNot0(dataType.current, index, numberData.value)
 
-                  return <ShowStringsAsNumbers key={`${data}+${sortedLabels[index]}`}
-                                               data={numberData}
-                                               showPercentages={showPercentages}
+                  return <ShowStringsAsNumbers key={ `${ data }+${ sortedLabels[index] }` }
+                                               data={ numberData }
+                                               showPercentages={ showPercentages }
                   />
 
                 } else if (dateValidator(data)) {
+
                   dataType.current = "date";
                   valueTypeArray.push(dataType.current)
-                  const dateData = {
-                    value: data,
-                    label: sortedLabels[index],
-                  }
 
-                  return <ShowDate key={`${data}+${sortedLabels[index]}`}
-                                   value={dateData.value}
-                                   label={dateData.label}
+                  return <ShowDate key={ `${ data }+${ sortedLabels[index] }` }
+                                   value={ data }
+                                   label={ sortedLabels[index] }
+                                   showDateFormat={ showDateFormat }
+                                   setShowDateFormat={ setShowDateFormat }
                   />
 
                 } else {
                   dataType.current = "string";
                   valueTypeArray.push(dataType.current)
-                  const stringData = {
-                    value: data,
-                    label: sortedLabels[index],
-                  };
 
-                  return <ShowValues key={`${data}+${sortedLabels[index]}`}
-                                     label={stringData.label}
-                                     displayValue={stringData.value}
+                  return <ShowValues key={ `${ data }+${ sortedLabels[index] }` }
+                                     label={ sortedLabels[index] }
+                                     displayValue={ data }
                   />
                 }
 
               } else {
                 dataType.current = "other";
-                const otherData = {
-                  value: data,
-                  label: sortedLabels[index],
-                };
 
-                return <ShowValues key={`${data}+${sortedLabels[index]}`}
-                                   label={otherData.label}
-                                   displayValue={otherData.value}
+                return <ShowValues key={ `${ data }+${ sortedLabels[index] }` }
+                                   label={ sortedLabels[index] }
+                                   displayValue={ data }
                 />
               }
             })

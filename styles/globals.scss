@@ -2,6 +2,11 @@
 
 @import "variables/variables";
 
+html {
+  // to avoid layout shift when opening modal when height is greater than display
+  scrollbar-gutter: stable both-edges;
+}
+
 body {
   min-height: 100dvh;
   background-color: $colour-body-image;

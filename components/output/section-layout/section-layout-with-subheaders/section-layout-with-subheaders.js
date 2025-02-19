@@ -22,6 +22,7 @@ function SectionLayoutWithSubheaders({
                                        numbersEqualToZero,
                                        showAllMetrics,
                                        setShowAllMetrics,
+                                       setShowDateFormat,
                                        children,
                                      }) {
 
@@ -80,7 +81,7 @@ function SectionLayoutWithSubheaders({
   };
   
   const handleFormatDate = () => {
-    //TODO: handle the data formatting
+    setShowDateFormat(prevState => !prevState);
   }
 
   const displayBarChart = () => {
@@ -134,17 +135,21 @@ function SectionLayoutWithSubheaders({
               <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
                 <ChartRing className={classes.iconFill} aria-label={donutChartDescription}/>
               </ActionToggle>
-            </>}
+            </>
+            }
 
             {isDate &&
-              <ActionToggle onClick={handleFormatDate} description={dataDescription}>
-                <DataFormat className={classes.iconFill} aria-label={dataDescription}/>
-              </ActionToggle>}
+                <>
+                  <ActionToggle onClick={handleFormatDate} description={dataDescription}>
+                    <DataFormat className={classes.iconFill} aria-label={dataDescription}/>
+                  </ActionToggle>
+                </>
+            }
 
           </div>
         </div>
 
-        {children}
+        { children }
 
         <div className={classes.toggleContainer}>
 
@@ -172,12 +177,14 @@ function SectionLayoutWithSubheaders({
           }
         </div>
 
-        {
-            showBarChart && <SimpleBarChart data={chartData} options={barChartOptions} />
+        { showBarChart &&
+            <SimpleBarChart data={chartData} options={barChartOptions} />
         }
-        {
-            showDonutChart && <DonutChart data={chartData} options={donutChartOptions} />
+
+        { showDonutChart &&
+            <DonutChart data={chartData} options={donutChartOptions} />
         }
+
       </Tile>
   );
 }

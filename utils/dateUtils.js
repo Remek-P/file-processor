@@ -4,7 +4,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
-const dateFormats = [
+export const dateFormats = [
   "YYYY-MMMM-DD",       // 2023-10-15
   "YYYY/MMMM/DD",       // 2023/10/15
   "YYYY MMMM DD",       // 2023 10 15
@@ -194,3 +194,8 @@ export const dateValidator = (dateString) => {
   return dayjs(dateString, dateFormats, true).isValid();
 
 };
+
+export function getSeparator(format) {
+  const separators = format.split(/\w+/).filter(Boolean);
+  return separators.length > 0 ? separators[0] : '';
+}
