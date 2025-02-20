@@ -1,45 +1,33 @@
 import ShowValues from "@/components/output/show-metrics/show-values";
 import dayjs from "dayjs";
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import DateFormatPicker from "@/components/output/show-metrics/date-format-picker";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Modal } from "@carbon/react";
-import { getSeparator } from "@/utils/dateUtils";
+import { SortAscending, SortDescending } from "@carbon/react/icons";
+import classes from "@/components/output/output.module.scss";
+import ActionToggle from "@/components/output/action-toggle/action-toggle";
+import { detectDateFormat } from "@/utils/dateUtils";
 
 function ShowDate({ value, label, showDateFormat, setShowDateFormat }) {
 
-  const [ dateFormat, setDateFormat ] = useState({ separator: undefined, format: undefined });
-  const { separator, format } = dateFormat;
+  const [ dateFormat, setDateFormat ] = useState("default");
+  const [ sortDate, setSortDate ] = useState(undefined);
 
-  const defaultSeparator = separator === undefined;
-  const defaultFormat = format === undefined;
-  const defaultDateFormat = defaultFormat && defaultSeparator;
+  const detectedDateFormat = useMemo(() => detectDateFormat(value), [value]);
 
-  dayjs.extend(customParseFormat);
-
-  const formated = defaultDateFormat ? value : dayjs(value).format(`DD${ separator }MM${ separator }YYYY`);
-  const t = dayjs(value).format();
-  const t2 = dayjs("23.11.1995");
-  const t3 = dayjs("23 11 1995");
-  console.log("t", t)
-  console.log("t", t2)
-  console.log("t", t3)
-  console.log("value", value)
-
-  console.log(getSeparator(value));
-
-  const processedValue = () => {
-    if (defaultDateFormat) return value;
-    if (defaultFormat && !defaultSeparator) {
-
-    }
-  }
+  const formatted = ( dateFormat === "default" || detectedDateFormat === null )
+      ? value
+      : dayjs(value, detectedDateFormat).format(dateFormat.toString());
 
   const closeModal = () => setShowDateFormat(false);
 
+  const sortValues = () => {
+    setSortDate(prevState => !prevState);
+  }
+//TODO: Modal on mobile is a disgrace
   return (
       <>
-        <ShowValues label={ label } displayValue={ formated }/>
+        <ShowValues label={ label } displayValue={ formatted }/>
         <Modal open={ showDateFormat }
                onRequestClose={ closeModal }
                onRequestSubmit={ closeModal }
@@ -49,10 +37,19 @@ function ShowDate({ value, label, showDateFormat, setShowDateFormat }) {
                primaryButtonText="Close"
                size="sm"
         >
-          <DateFormatPicker format={ format }
-                            separator={ separator }
-                            setDateFormat={ setDateFormat }
-          />
+          <div className={classes.showDateModalContainer}>
+
+            <ActionToggle onClick={sortValues} description={!sortDate ? "Sort Ascending" : "Sort Descending"}>
+              {!sortDate
+                  ? <SortAscending className={classes.iconFill} aria-label="Sort Ascending" />
+                  : <SortDescending className={classes.iconFill} aria-label="Sort Descending" />}
+            </ActionToggle>
+
+            <DateFormatPicker sortDate={ sortDate }
+                              setDateFormat={ setDateFormat }
+            />
+
+          </div>
         </Modal>
       </>
   )

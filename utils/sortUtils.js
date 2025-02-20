@@ -1,4 +1,4 @@
-import {checkForNumber, checkForString, decimalPlaceSeparatorToComma} from "@/utils/general";
+import { checkForNumber, checkForString, decimalPlaceSeparatorToComma } from "@/utils/general";
 
 export const symbolsArray = [">", ">=", "<", "<=","%", "p%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł"];
 

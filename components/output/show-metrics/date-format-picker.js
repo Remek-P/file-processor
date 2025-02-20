@@ -1,48 +1,40 @@
 
 import { Select, SelectItem } from "@carbon/react";
+import { dateFormats } from "@/utils/dateUtils";
+import { compareValues } from "@/utils/sortUtils";
+import { useMemo } from "react";
+import dayjs from "dayjs";
 
-function DateFormatPicker({ separator, format, setDateFormat }) {
+function DateFormatPicker({ sortDate, setDateFormat }) {
 
-  const separatorValuesNoSpaceArray = [ ":", "/", ".", "-" ];
-  const dateFormatArray = [ "DD-MM-YYYY", "YYYY-MM-DD" ];
+  const sortedDateFormat = useMemo(() => {
+    return sortDate === undefined
+        ? dateFormats
+        : [ ...dateFormats ].sort((a, b) => compareValues(a, b, sortDate));
+  }, [ sortDate ]);
+
+  const today = new Date();
 
   const selectDateFormat = (e) => {
-    setDateFormat(prevState => ({ ...prevState, format: e.target.value }));
+    setDateFormat(e.target.value);
   }
 
-  const selectDateSeparator = (e) => {
-    setDateFormat(prevState => ({ ...prevState, separator: e.target.value }));
+  const pickerText = (format) => {
+    return dayjs(today).format(format);
   }
 
   return (
-      <>
-
-        <Select
-            id="separator selector"
-            labelText="Select the separator"
-            onChange={ selectDateSeparator }
-            size="sm"
-        >
-          <SelectItem value={ separator } text={ separator } hidden />
-          <SelectItem value=" " text="space"/>
-          { separatorValuesNoSpaceArray.map(item =>
-              <SelectItem key={ item } value={ item } text={ item } />
-          ) }
-        </Select>
-
-        <Select
-            id="date format selector"
-            labelText="Select the format"
-            onChange={ selectDateFormat }
-            size="sm"
-        >
-          <SelectItem value={ format } text={ format } hidden />
-          { dateFormatArray.map(item =>
-              <SelectItem key={ item } value={ item } text={ item } />
-          ) }
-        </Select>
-
-      </>
+      <Select
+          id="date format selector"
+          labelText="Select the format"
+          onChange={ selectDateFormat }
+          size="sm"
+      >
+        <SelectItem value={ "default" } text={ "default" } />
+        { sortedDateFormat.map(format =>
+            <SelectItem key={ format } value={ format } text={ pickerText(format) }/>
+        ) }
+      </Select>
   );
 }
 

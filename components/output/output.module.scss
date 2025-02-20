@@ -201,3 +201,17 @@
 .zeroToggle * span {
   order: -1;
 }
+
+//Show-metric section
+
+//Show-date
+.showDate {
+  &Modal {
+    &Container {
+      display: flex;
+      align-items: end;
+      gap: 15px;
+      z-index: 10;
+    }
+  }
+}
