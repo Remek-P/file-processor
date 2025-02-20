@@ -14,6 +14,7 @@ function SectionLayoutWithoutSubheaders({
                                           dataType,
                                           showPercentages,
                                           setShowPercentages,
+                                          setShowDateFormat,
                                           children,
                                         }) {
 
@@ -36,7 +37,7 @@ function SectionLayoutWithoutSubheaders({
   };
 
   const handleFormatDate = () => {
-    //TODO: handle the data formatting
+    setShowDateFormat(prevState => !prevState);
   }
 
   const excludeFromDisplaying = () => {

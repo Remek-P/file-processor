@@ -93,7 +93,6 @@ function DisplayDataWithSubheaders({
                                    numbersEqualToZero={ numbersEqualToZero }
                                    showAllMetrics={ showAllMetrics }
                                    setShowAllMetrics={ setShowAllMetrics }
-                                   showDateFormat={ showDateFormat }
                                    setShowDateFormat={ setShowDateFormat }
       >
 

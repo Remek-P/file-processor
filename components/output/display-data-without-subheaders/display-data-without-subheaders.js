@@ -32,6 +32,7 @@ function DisplayDataWithoutSubheaders({
 
   const [ showAllMetrics ] = useContext(ShowAllMetricsContext);
   const [ toggleIDView ] = useContext(ToggleIDViewGlobalContext);
+  const [ showDateFormat, setShowDateFormat ] = useState(false);
 
   const [ showPercentages, setShowPercentages ] = useState(undefined);
 
@@ -79,19 +80,17 @@ function DisplayDataWithoutSubheaders({
 
     case string: {
       dataType = string;
-      const stringData = {
-        value: value,
-        label: labelDataArray[index],
-      };
+
       displayData = <ShowValues key={`${value}+${labelDataArray[index]}`}
-                                label={stringData.label}
-                                displayValue={stringData.value}
+                                label={labelDataArray[index]}
+                                displayValue={value}
       />
       break;
     }
 
     case numberAsAString: {
       dataType = number;
+
       const refinedValue = decimalPlaceSeparatorToComma(value);
       const { numberOnlyData, checkSymbolsInArray } = separateNumbersAndStrings(refinedValue);
 
@@ -113,42 +112,37 @@ function DisplayDataWithoutSubheaders({
 
     case dateAsAString: {
       dataType = date;
-      const dateData = {
-        value: value,
-        label: labelDataArray[index],
-      }
 
       displayData = <ShowDate key={`${value}+${labelDataArray[index]}`}
-                              value={dateData.value}
-                              label={dateData.label}
+                              value={value}
+                              label={labelDataArray[index]}
+                              showDateFormat={showDateFormat}
+                              setShowDateFormat={ setShowDateFormat }
       />
     break;
     }
 
     case other: {
       dataType = other;
-      const otherData = {
-        value: value,
-        label: labelDataArray[index],
-      };
 
       displayData = <ShowValues key={`${value}+${labelDataArray[index]}`}
-                                label={otherData.label}
-                                displayValue={otherData.value}
+                                label={labelDataArray[index]}
+                                displayValue={value}
       />
       break;
     }
   }
 
   if (isZero && !showAllMetrics) return null;
-
+  console.log("showDateFormat", showDateFormat)
   return (
       <SectionLayoutWithoutSubheaders dataType={dataType}
                                       showPercentages={showPercentages}
                                       setShowPercentages={setShowPercentages}
                                       label={labelDataArray[index]}
+                                      setShowDateFormat={ setShowDateFormat }
       >
-        {displayData}
+        { displayData }
       </SectionLayoutWithoutSubheaders>
   )
 }

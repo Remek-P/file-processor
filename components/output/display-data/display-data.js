@@ -30,10 +30,10 @@ function DisplayData({
 
   const searchRecords = useMemo(() => userDataArray.filter((record) =>
           record.toString()
-              .toLowerCase()
-              .includes( inputValue.toLowerCase() )
+                .toLowerCase()
+                .includes(inputValue.toLowerCase())
       ),
-      [inputValue, userDataArray, IDIndex, searchSuggestionsOrder, isSubheaders]
+      [ inputValue, userDataArray, IDIndex, searchSuggestionsOrder, isSubheaders ]
   );
   const searchResult = searchRecords.filter(record => record[IDIndex] === inputValue);
   const colDataArray = searchResult[0];
