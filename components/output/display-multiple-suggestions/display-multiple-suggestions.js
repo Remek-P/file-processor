@@ -1,10 +1,9 @@
-import React, { useCallback, useContext, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 
 import VirtualizedList from "@/components/output/display-multiple-suggestions/list/virtualized-list";
 import ShortList from "@/components/output/display-multiple-suggestions/list/short-list";
 
 import useWindowDimensions from "@/hooks/useWindowSize";
-import {IsLoadingContext} from "@/context/global-context";
 
 function DisplayMultipleSuggestions({
                                       IDIndex,
@@ -18,8 +17,6 @@ function DisplayMultipleSuggestions({
   // const [active, setActive] = useState(IDIndex);
 
   const { height } = useWindowDimensions();
-
-  const [ , setIsLoading ] = useContext(IsLoadingContext);
 
   const indexToSort = useRef(IDIndex);
 
@@ -41,7 +38,6 @@ function DisplayMultipleSuggestions({
     setInputValue(e.currentTarget.dataset.value);
   }
 
-  // TODO: Loader indicating change od suggestion order is in progress
   // TODO: Is reducePerformanceStrain needed?
 
   const isLongList = searchRecords.length > 500;
@@ -59,7 +55,6 @@ function DisplayMultipleSuggestions({
             setSearchSuggestionsOrder={setSearchSuggestionsOrder}
             handleSort={handleSort}
             indexToSort={indexToSort}
-            setIsLoading={setIsLoading}
         />
     ) : (
         <ShortList
@@ -70,7 +65,6 @@ function DisplayMultipleSuggestions({
             indexToSort={indexToSort}
             pickSearchedOutput={pickSearchedOutput}
             handleSort={handleSort}
-            setIsLoading={setIsLoading}
         />
     );
   }, [IDIndex, labelDataArray, searchRecords, searchSuggestionsOrder]);

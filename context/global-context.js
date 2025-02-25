@@ -35,16 +35,18 @@ export const FileDataProvider = ({ children }) => {
     })
   }
 
+  const toBeExported = {
+    file: state.file,
+    fileName: state.fileName,
+    isFetched: state.isFetched,
+    isDataFetched,
+    setFile,
+    setFileName,
+  };
+
   return (
       <FileDataGlobalContext.Provider
-          value={{
-            file: state.file,
-            fileName: state.fileName,
-            isFetched: state.isFetched,
-            isDataFetched,
-            setFile,
-            setFileName,
-          }}>
+          value={ toBeExported }>
         { children }
       </FileDataGlobalContext.Provider>
   )
@@ -185,4 +187,11 @@ export const IndexedDB_ClickedProvider = ({ children }) => (
     <IndexedDB_ClickedContext.Provider value={ useState(0) }>
       { children }
     </IndexedDB_ClickedContext.Provider>
+);
+
+export const DataToHideContext = createContext([]);
+export const DataToHideProvider = ({ children }) => (
+    <DataToHideContext.Provider value={ useState([]) }>
+      { children }
+    </DataToHideContext.Provider>
 );

@@ -1,4 +1,4 @@
-import {useContext, useMemo, useState} from 'react';
+import { useContext, useMemo, useState } from 'react';
 
 import SectionLayoutWithoutSubheaders
   from "@/components/output/section-layout/section-layout-without-subheaders/section-layout-without-subheaders";
@@ -14,7 +14,7 @@ import {
 
 import { dateValidator } from "@/utils/dateUtils";
 
-import {ShowAllMetricsContext, ToggleIDViewGlobalContext} from "@/context/global-context";
+import { ShowAllMetricsContext, ToggleIDViewGlobalContext } from "@/context/global-context";
 import {
   checkForNumber,
   checkForString,
@@ -24,19 +24,22 @@ import {
 import { HEADER_LABEL } from "@/constants/constants";
 
 function DisplayDataWithoutSubheaders({
-                                        value,
+                                        id,
+                                        label,
                                         index,
-                                        labelDataArray,
+                                        colDataArray,
                                         hideDB_ID_Tile,
-                                   }) {
+                                      }) {
 
   const [ showAllMetrics ] = useContext(ShowAllMetricsContext);
   const [ toggleIDView ] = useContext(ToggleIDViewGlobalContext);
-  const [ showDateFormat, setShowDateFormat ] = useState(false);
 
+  const [ showDateFormat, setShowDateFormat ] = useState(false);
   const [ showPercentages, setShowPercentages ] = useState(undefined);
 
-  if (!hideDB_ID_Tile && !toggleIDView && labelDataArray[index] === HEADER_LABEL) return null
+  const value = colDataArray[index];
+
+  if (!hideDB_ID_Tile && !toggleIDView && label === HEADER_LABEL) return null
 
   let isZero;
   let dataType;
@@ -59,7 +62,7 @@ function DisplayDataWithoutSubheaders({
     if (checkForNumber(data)) return number
     else if (checkForString(data)) return stringTest(data)
     else return other
-  }, [value]);
+  }, [ value ]);
 
   let displayData;
 
@@ -69,11 +72,11 @@ function DisplayDataWithoutSubheaders({
       dataType = number;
       const numberData = {
         value: +value,
-        label: labelDataArray[index],
+        label,
       }
-      displayData = <ShowNumbers key={`${value}+${labelDataArray[index]}`}
-                                 data={numberData}
-                                 showPercentages={showPercentages}
+      displayData = <ShowNumbers key={ id }
+                                 data={ numberData }
+                                 showPercentages={ showPercentages }
       />
       break;
     }
@@ -81,9 +84,9 @@ function DisplayDataWithoutSubheaders({
     case string: {
       dataType = string;
 
-      displayData = <ShowValues key={`${value}+${labelDataArray[index]}`}
-                                label={labelDataArray[index]}
-                                displayValue={value}
+      displayData = <ShowValues key={ id }
+                                label={ label }
+                                displayValue={ value }
       />
       break;
     }
@@ -99,13 +102,13 @@ function DisplayDataWithoutSubheaders({
       const numberData = {
         value: numberOnlyData,
         symbolsArray: checkSymbolsInArray,
-        label: labelDataArray[index],
+        label: label,
         unrefined: value,
       }
 
-      displayData = <ShowStringsAsNumbers key={`${value}+${labelDataArray[index]}`}
-                                          data={numberData}
-                                          showPercentages={showPercentages}
+      displayData = <ShowStringsAsNumbers key={ id }
+                                          data={ numberData }
+                                          showPercentages={ showPercentages }
       />
       break
     }
@@ -113,33 +116,36 @@ function DisplayDataWithoutSubheaders({
     case dateAsAString: {
       dataType = date;
 
-      displayData = <ShowDate key={`${value}+${labelDataArray[index]}`}
-                              value={value}
-                              label={labelDataArray[index]}
-                              showDateFormat={showDateFormat}
+      displayData = <ShowDate key={ id }
+                              id={ id }
+                              value={ value }
+                              label={ label }
+                              showDateFormat={ showDateFormat }
                               setShowDateFormat={ setShowDateFormat }
       />
-    break;
+      break;
     }
 
     case other: {
       dataType = other;
 
-      displayData = <ShowValues key={`${value}+${labelDataArray[index]}`}
-                                label={labelDataArray[index]}
-                                displayValue={value}
+      displayData = <ShowValues key={ id }
+                                id={ id }
+                                label={ label }
+                                displayValue={ value }
       />
       break;
     }
   }
 
   if (isZero && !showAllMetrics) return null;
-  console.log("showDateFormat", showDateFormat)
+
   return (
-      <SectionLayoutWithoutSubheaders dataType={dataType}
-                                      showPercentages={showPercentages}
-                                      setShowPercentages={setShowPercentages}
-                                      label={labelDataArray[index]}
+      <SectionLayoutWithoutSubheaders id={ id }
+                                      dataType={ dataType }
+                                      showPercentages={ showPercentages }
+                                      setShowPercentages={ setShowPercentages }
+                                      label={ label }
                                       setShowDateFormat={ setShowDateFormat }
       >
         { displayData }

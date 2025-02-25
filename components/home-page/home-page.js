@@ -48,8 +48,6 @@ export default function HomePage() {
 
   const showWarnings = warnings.length !== 0;
 
-//TODO: deal with finding dates
-
   // const isIndexedDBSupported = () => {
   //   return 'indexedDB' in window;
   // }

@@ -6,12 +6,22 @@ import ActionToggle from "@/components/output/action-toggle/action-toggle";
 
 import { DonutChart, SimpleBarChart } from "@carbon/charts-react";
 import { Tile, Toggle } from "@carbon/react";
-import { ChartBar, ChartRing, Percentage, SortAscending, SortDescending, DataFormat, ViewOff } from "@carbon/react/icons";
+import {
+  ChartBar,
+  ChartRing,
+  Percentage,
+  SortAscending,
+  SortDescending,
+  DataFormat,
+  ViewOff
+} from "@carbon/react/icons";
 
 import classes from "@/components/output/output.module.scss";
 import '@carbon/charts-react/styles.css'
+import { isContainingItemFromArray } from "@/utils/general";
 
 function SectionLayoutWithSubheaders({
+                                       id,
                                        value,
                                        sort,
                                        setSort,
@@ -28,10 +38,10 @@ function SectionLayoutWithSubheaders({
 
   // TODO: Delete decimal and setDecimal if needed
 // TODO: Tooltip is hidden due to overflow auto, set height to fix?
-  const [excludedArray, setExcludedArray] = useContext(ExcludedDataGlobalContext);
+  const [ excludedArray, setExcludedArray ] = useContext(ExcludedDataGlobalContext);
 
-  const [showBarChart, setShowBarChart] = useState(false);
-  const [showDonutChart, setShowDonutChart] = useState(false);
+  const [ showBarChart, setShowBarChart ] = useState(false);
+  const [ showDonutChart, setShowDonutChart ] = useState(false);
 
   const valueRef = useRef(null);
 
@@ -57,7 +67,7 @@ function SectionLayoutWithSubheaders({
   const donutChartOptions = {
     title: null,
     resizable: true,
-    legend: {"alignment": "left"},
+    legend: { "alignment": "left" },
     donut: {
       center: {
         label: null,
@@ -66,9 +76,11 @@ function SectionLayoutWithSubheaders({
     height: "auto"
   };
 
-  const isNumber = useMemo(() => valueTypeArray.some(item => item === "number"), [valueTypeArray]);
-  const isDate = useMemo(() => valueTypeArray.some(item => item === "date"), [valueTypeArray]);
+  const isNumber = useMemo(() => valueTypeArray.some(item => item === "number"), [ valueTypeArray ]);
+  const isDate = useMemo(() => valueTypeArray.some(item => item === "date"), [ valueTypeArray ]);
   // TODO: This can cause problems when data is both number and date in one group;
+
+  const excludedObject = { id, value }
 
   const sortValues = () => {
     setSort(prevState => !prevState);
@@ -79,7 +91,7 @@ function SectionLayoutWithSubheaders({
     if (showPercentages === undefined) setShowPercentages(true);
     else setShowPercentages(prevState => !prevState)
   };
-  
+
   const handleFormatDate = () => {
     setShowDateFormat(prevState => !prevState);
   }
@@ -90,58 +102,55 @@ function SectionLayoutWithSubheaders({
   };
 
   const displayDonutChart = () => {
-   setShowDonutChart(prevState => !prevState);
+    setShowDonutChart(prevState => !prevState);
     setShowBarChart(false);
   }
 
   const handleShowAllMetrics = () => {
-      setShowAllMetrics(prevState => !prevState)
-    };
+    setShowAllMetrics(prevState => !prevState)
+  };
 
   const excludeFromDisplaying = () => {
-    setExcludedArray([...excludedArray, valueRef.current.value])
+    setExcludedArray([ ...excludedArray, excludedObject ])
   }
 
-  const isContainingItemFromArray = (item, arr) => {
-    return arr.includes(item)
-  }
-
-  const hidden = isContainingItemFromArray(value, excludedArray) ? {display: "none"} : null;
+  const hidden = isContainingItemFromArray(id, excludedArray);
+  const showClass = hidden ? "completely-hidden" : null;
 
   return (
-      <Tile className={`${classes.optionContainer} shadow`} style={hidden} aria-hidden={!!hidden}>
+      <Tile className={ `${ classes.optionContainer } shadow` } id={ showClass } aria-hidden={ hidden }>
 
-        <div className={classes.topSection}>
-          <h4>{value}</h4>
-          <div className={classes.numberButtons}>
+        <div className={ classes.topSection }>
+          <h4>{ value }</h4>
+          <div className={ classes.numberButtons }>
 
-            <ActionToggle onClick={sortValues} description={!sort ? "Sort Ascending" : "Sort Descending"}>
-              {!sort
-                  ? <SortAscending className={classes.iconFill} aria-label="Sort Ascending" />
-                  : <SortDescending className={classes.iconFill} aria-label="Sort Descending" />}
+            <ActionToggle onClick={ sortValues } description={ !sort ? "Sort Ascending" : "Sort Descending" }>
+              { !sort
+                  ? <SortAscending className={ classes.iconFill } aria-label="Sort Ascending"/>
+                  : <SortDescending className={ classes.iconFill } aria-label="Sort Descending"/> }
             </ActionToggle>
 
-            {isNumber && <>
-              <ActionToggle onClick={handleTogglePercentages} description={percentagesDescription}>
-                <Percentage className={classes.iconFill} aria-label={percentagesDescription}/>
+            { isNumber && <>
+              <ActionToggle onClick={ handleTogglePercentages } description={ percentagesDescription }>
+                <Percentage className={ classes.iconFill } aria-label={ percentagesDescription }/>
               </ActionToggle>
 
 
-              <ActionToggle onClick={displayBarChart} description={barChartDescription}>
-                <ChartBar className={classes.iconFill} aria-label={barChartDescription}/>
+              <ActionToggle onClick={ displayBarChart } description={ barChartDescription }>
+                <ChartBar className={ classes.iconFill } aria-label={ barChartDescription }/>
               </ActionToggle>
 
 
-              <ActionToggle onClick={displayDonutChart} description={donutChartDescription}>
-                <ChartRing className={classes.iconFill} aria-label={donutChartDescription}/>
+              <ActionToggle onClick={ displayDonutChart } description={ donutChartDescription }>
+                <ChartRing className={ classes.iconFill } aria-label={ donutChartDescription }/>
               </ActionToggle>
             </>
             }
 
-            {isDate &&
+            { isDate &&
                 <>
-                  <ActionToggle onClick={handleFormatDate} description={dataDescription}>
-                    <DataFormat className={classes.iconFill} aria-label={dataDescription}/>
+                  <ActionToggle onClick={ handleFormatDate } description={ dataDescription }>
+                    <DataFormat className={ classes.iconFill } aria-label={ dataDescription }/>
                   </ActionToggle>
                 </>
             }
@@ -151,38 +160,38 @@ function SectionLayoutWithSubheaders({
 
         { children }
 
-        <div className={classes.toggleContainer}>
+        <div className={ classes.toggleContainer }>
 
-          <ActionToggle onClick={excludeFromDisplaying}
+          <ActionToggle onClick={ excludeFromDisplaying }
                         description="Hide"
-                        value={value}
-                        valueRef={valueRef}>
-            <ViewOff className={classes.iconFill}/>
+                        value={ value }
+                        valueRef={ valueRef }>
+            <ViewOff className={ classes.iconFill }/>
           </ActionToggle>
 
-          {isNumber && numbersEqualToZero.current
-              && <Toggle id={value}
+          { isNumber && numbersEqualToZero.current
+              && <Toggle id={ value }
                          size="sm"
                          labelA="Show all"
                          labelB="Hide 0s"
-                         defaultToggled={showAllMetrics}
-                         onToggle={handleShowAllMetrics}
+                         defaultToggled={ showAllMetrics }
+                         onToggle={ handleShowAllMetrics }
                          labelText=""
-                         readOnly={false}
+                         readOnly={ false }
                          aria-labelledby="show/hide all metrics"
-                         disabled={false}
-                         hideLabel={false}
-                         className={classes.zeroToggle}
+                         disabled={ false }
+                         hideLabel={ false }
+                         className={ classes.zeroToggle }
               />
           }
         </div>
 
         { showBarChart &&
-            <SimpleBarChart data={chartData} options={barChartOptions} />
+            <SimpleBarChart data={ chartData } options={ barChartOptions }/>
         }
 
         { showDonutChart &&
-            <DonutChart data={chartData} options={donutChartOptions} />
+            <DonutChart data={ chartData } options={ donutChartOptions }/>
         }
 
       </Tile>

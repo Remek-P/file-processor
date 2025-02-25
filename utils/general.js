@@ -11,3 +11,7 @@ export const convertUnderscoreToSpace = (array) => {
     else return item;
   });
 }
+
+export const isContainingItemFromArray = (item, arr) => {
+  return arr.some(obj => obj.id === item);
+}

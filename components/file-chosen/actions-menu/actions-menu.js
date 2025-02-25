@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 
 import { useRouter } from "next/router";
 
@@ -11,20 +11,16 @@ import {
   SearchReducePerformanceContext,
   NumberOfOutputsContext,
   DecimalGlobalContext,
+  DataToHideContext,
 } from "@/context/global-context";
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
 
-import { convertUnderscoreToSpace } from "@/utils/general";
-
 import { OverflowMenu, OverflowMenuItem } from "@carbon/react";
 
 import classes from "../file-chosen.module.scss";
-import { thresholdForExcludedData, generalWorker, HEADER_LABEL } from "@/constants/constants";
-import useWebWorker from "@/hooks/useGeneralWorker";
 
 function ActionsMenu({
-                       headers,
                        userQuery,
                        refreshData,
                        isSubheaders,
@@ -37,12 +33,13 @@ function ActionsMenu({
   const { isFetched } = useContext(FileDataGlobalContext);
 
   const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
-  const [ , setExcludedArray ] = useContext(ExcludedDataGlobalContext);
+  const [ excludedArray, setExcludedArray ] = useContext(ExcludedDataGlobalContext);
   const [ toggleIDView, setToggleIDView ] = useContext(ToggleIDViewGlobalContext);
   const [ showAllMetrics, setShowAllMetrics ] = useContext(ShowAllMetricsContext);
   const [ isPerformanceStrainReduced, setIsPerformanceStrainReduced ] = useContext(SearchReducePerformanceContext);
   const [ , setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
-  const [, setDecimal] = useContext(DecimalGlobalContext);
+  const [ , setDecimal] = useContext(DecimalGlobalContext);
+  const [ dataToHide ] = useContext(DataToHideContext);
 
   const router = useRouter();
 
@@ -54,7 +51,7 @@ function ActionsMenu({
 
   const addOutput = () => {
     const outputID = Date.now();
-    setNumberOfOutputs(prevState => [...prevState, {id: outputID}]);
+    setNumberOfOutputs(prevState => [ ...prevState, { id: outputID } ]);
   }
 
   const handleDeleteAll = () => {
@@ -62,28 +59,16 @@ function ActionsMenu({
     setExcludedArray([]);
   }
 
-  const handleHideAllShortArrays = useCallback(() => {
-    const uniqueHeaders = [...(new Set(headers))];
-    const refinedUniqueHeaders = convertUnderscoreToSpace(uniqueHeaders);
-    const headersToHide = toggleIDView
-        ? refinedUniqueHeaders
-        : refinedUniqueHeaders.filter(header => header !== HEADER_LABEL);
-
-    setExcludedArray([...(new Set(headersToHide))]);
-  }, [headers, toggleIDView]);
-
-  const { runTask } = useWebWorker({
-    customSetData: setExcludedArray,  // Use custom setData function to update localData
-  });
-
-  const handleHideAllLongArrays = () => {
-    const args = [headers, toggleIDView];
-    runTask(generalWorker.hideAllData, args);
+  const handleHideAllArrays =  () => {
+    if (excludedArray.length === dataToHide.length) return null
+    setExcludedArray(dataToHide);
+    // if (!isSubheaders) setHideTile(true);
   }
 
-  const handleHideAllArrays =  () => {
-    if (headers.length > thresholdForExcludedData) handleHideAllLongArrays();
-    else handleHideAllShortArrays();
+  const handleShowAllHiddenArrays = () => {
+    if (excludedArray.length === 0) return null
+    setExcludedArray([]);
+    // if (!isSubheaders) setHideTile(false);
   }
 
   const handleIDView = () => {
@@ -96,10 +81,6 @@ function ActionsMenu({
 
   const handleLink = () => {
     router.push('/delete-file', undefined, { shallow: true });
-  }
-
-  const handleShowAllHiddenArrays = () => {
-    setExcludedArray([]);
   }
 
   const handleSuggestionsDefaultOrder = () => {

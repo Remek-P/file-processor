@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo } from 'react';
+import React, { useContext, useLayoutEffect, useMemo } from 'react';
 import { createContext, forwardRef, useEffect, useRef, useState } from "react";
 
 import useWindowDimensions from "@/hooks/useWindowSize";
@@ -9,6 +9,7 @@ import { FixedSizeList as List } from "react-window";
 import { Tile } from "@carbon/react";
 
 import classes from "@/components/output/output.module.scss";
+import { IsLoadingContext } from "@/context/global-context";
 
 function VirtualizedList({
                            IDIndex,
@@ -18,10 +19,11 @@ function VirtualizedList({
                            searchRecords,
                            searchSuggestionsOrder,
                            handleSort,
-                           setIsLoading,
                          }) {
 
   const suggestions = useMemo(() => [labelDataArray, ...searchRecords], [labelDataArray, searchRecords]);
+
+  const [ , setIsLoading ] = useContext(IsLoadingContext);
 
   const [ sortedSuggestions, setSortedSuggestions ]  = useState(suggestions)
   const [ columnWidths, setColumnWidths ] = useState([]);

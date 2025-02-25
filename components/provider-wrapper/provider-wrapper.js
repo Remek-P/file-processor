@@ -1,4 +1,5 @@
 import {
+  DataToHideProvider,
   DecimalDataProvider,
   ExcludedDataProvider, HideTileProvider,
   NumberOfOutputsProvider,
@@ -16,7 +17,9 @@ function ProviderWrapper({ children }) {
               <SearchSuggestionsOrderGlobalProvider>
                 <NumberOfOutputsProvider>
                   <HideTileProvider>
-                    { children }
+                    <DataToHideProvider>
+                      { children }
+                    </DataToHideProvider>
                   </HideTileProvider>
                 </NumberOfOutputsProvider>
               </SearchSuggestionsOrderGlobalProvider>

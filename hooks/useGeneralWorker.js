@@ -6,7 +6,7 @@ const useWebWorker = ({ customSetData }) => {
   const [ , setIsLoading] = useContext(IsLoadingContext);
   const { addWarnings } = useContext(WarningsContext);
 
-  const [data, setData] = useState(null); // Default `setData` function if no custom function is provided
+  const [ data, setData ] = useState(null); // Default `setData` function if no custom function is provided
 
   // The runTask function now accepts a custom data setter
   const runTask = useCallback(

@@ -1,28 +1,36 @@
 import DisplayDataWithoutSubheaders
   from "@/components/output/display-data-without-subheaders/display-data-without-subheaders";
-import {Tile} from "@carbon/react";
-import {useCallback, useContext} from "react";
-import { HideTileContext } from "@/context/global-context";
+import { Tile } from "@carbon/react";
+import { useContext, useEffect, useMemo } from "react";
+import { DataToHideContext } from "@/context/global-context";
 
-function ShowDataWithoutSubheaders({ colDataArray, labelDataArray, hideDB_ID_Tile }) {
+function DataWithoutSubheaders({ colDataArray, labelDataArray, hideDB_ID_Tile }) {
 
-  const [ hideTile ] = useContext(HideTileContext);
+  const [ , setDataToHide ] = useContext(DataToHideContext);
 
-  const render = useCallback((value, index) => (
-      <DisplayDataWithoutSubheaders
-          key={index}
-          value={value}
-          index={index}
-          labelDataArray={labelDataArray}
-          hideDB_ID_Tile={hideDB_ID_Tile}
-      />
-  ), [labelDataArray, hideDB_ID_Tile]);
+  const dataWithID = useMemo(() => {
+    return labelDataArray.map((value, index) => ({
+      value,
+      id: index,
+    }));
+  }, [ colDataArray ]);
 
+  useEffect(() => {
+    setDataToHide(dataWithID);
+  }, [dataWithID]);
+  // TODO: Check if using useMemo on "return" will improve performance when hiding Tile
   return (
-      <Tile style={hideTile ? {display: "none"} : null}>
-        {colDataArray.map(render)}
+      <Tile>
+        { dataWithID.map((data, index) =>
+            <DisplayDataWithoutSubheaders key={ data.id }
+                                          id={ data.id }
+                                          index={ index }
+                                          label={ data.value }
+                                          colDataArray={ colDataArray }
+                                          hideDB_ID_Tile={ hideDB_ID_Tile }
+            />) }
       </Tile>
   );
 }
 
-export default ShowDataWithoutSubheaders;
+export default DataWithoutSubheaders;

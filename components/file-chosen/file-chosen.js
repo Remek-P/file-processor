@@ -10,7 +10,7 @@ import IdNotAvailable from "@/components/output/id-not-available/id-not-availabl
 import AreYouSure from "@/components/notifications/are-you-sure/are-you-sure";
 import ExcludedData from "@/components/output/excluded-data/excluded-data";
 
-import {HEADER_LABEL, ID_LABEL} from "@/constants/constants";
+import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
 
 import classes from "./file-chosen.module.scss";
 import ProviderWrapper from "@/components/provider-wrapper/provider-wrapper";
@@ -58,9 +58,7 @@ function FileChosen({
   }
 
   const handleNotification = (confirmed) => {
-    if (confirmed) {
-      overrideSubheadersDetection();
-    }
+    if (confirmed) overrideSubheadersDetection();
     setIsNotificationVisible(false);
   };
 
@@ -73,41 +71,38 @@ function FileChosen({
   return (
       <ProviderWrapper>
 
-            <section className={classes.sectionContainer}>
+        <section className={ classes.sectionContainer }>
 
-              <ActionsMenu headers={file[0]}
-                           userQuery={userQuery}
-                           refreshData={refreshData}
-                           isSubheaders={isSubheaders}
-                           hideDB_ID_Tile={hideDB_ID_Tile}
-                           handleResetID={handleResetID}
-                           handleSubheadersChange={handleSubheadersChange}
-                           handleFileChange={handleFileChange}
+          <ActionsMenu userQuery={ userQuery }
+                       refreshData={ refreshData }
+                       isSubheaders={ isSubheaders }
+                       hideDB_ID_Tile={ hideDB_ID_Tile }
+                       handleResetID={ handleResetID }
+                       handleSubheadersChange={ handleSubheadersChange }
+                       handleFileChange={ handleFileChange }
+          />
+
+
+          <div className={ classes.outputsContainer }>
+            <DisplayOutput IDIndex={ IDIndex }
+                           userQuery={ userQuery }
+                           setUserQuery={ setUserQuery }
+                           isSubheaders={ isSubheaders }
+                           hideDB_ID_Tile={ hideDB_ID_Tile }
+                           isDirectFetchResults={ isDirectFetchResults }
+                           fetchDirectlyDataFromDB={ fetchDirectlyDataFromDB }
+            />
+          </div>
+
+          <ExcludedData />
+
+          { isNotificationVisible &&
+              <AreYouSure handleConfirm={ () => handleNotification(true) }
+                          handleReject={ () => handleNotification(false) }
               />
+          }
 
-
-              <div className={classes.outputsContainer}>
-                <DisplayOutput IDIndex={IDIndex}
-                               userQuery={userQuery}
-                               setUserQuery={setUserQuery}
-                               isSubheaders={isSubheaders}
-                               hideDB_ID_Tile={hideDB_ID_Tile}
-                               isDirectFetchResults={isDirectFetchResults}
-                               fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}
-                />
-              </div>
-
-                <ExcludedData labelArrayLength={labelArray.length}
-                              isSubheaders={isSubheaders}
-                />
-
-              {isNotificationVisible &&
-                  <AreYouSure handleConfirm={() => handleNotification(true)}
-                              handleReject={() => handleNotification(false)}
-                  />
-              }
-
-            </section>
+        </section>
 
       </ProviderWrapper>
   );

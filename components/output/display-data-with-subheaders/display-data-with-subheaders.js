@@ -21,6 +21,7 @@ import {
 } from "@/utils/general";
 
 function DisplayDataWithSubheaders({
+                                     id,
                                      value,
                                      colDataArray,
                                      labelDataArray,
@@ -80,10 +81,11 @@ function DisplayDataWithSubheaders({
   }
 
   const { sortedData, sortedLabels } = sortDataAndLabelsArrayTogether();
-
+//TODO: sorting for string components should be done by labels?
   return (
 
-      <SectionLayoutWithSubheaders value={ value }
+      <SectionLayoutWithSubheaders id={ id }
+                                   value={ value }
                                    sort={ sort }
                                    setSort={ setSort }
                                    chartData={ chartData }
@@ -100,6 +102,8 @@ function DisplayDataWithSubheaders({
           {
             sortedData.map((data, index) => {
 
+              const label = sortedLabels[index];
+
               if (checkForNumber(data)) {
 
                 const isZero = data === 0;
@@ -109,13 +113,13 @@ function DisplayDataWithSubheaders({
                 dataType.current = "number";
                 const numberData = {
                   value: +data,
-                  label: sortedLabels[index],
+                  label,
                 }
 
                 handleChartDataIfDataIs0AndNot0(dataType.current, index, numberData.value)
 
                 return (
-                    <ShowNumbers key={ `${ data }+${ sortedLabels[index] }` }
+                    <ShowNumbers key={ `${ data }+${ label }+${ id }` }
                                  data={ numberData }
                                  showPercentages={ showPercentages }
                     />
@@ -139,13 +143,13 @@ function DisplayDataWithSubheaders({
                   const numberData = {
                     value: numberOnlyData,
                     symbolsArray: checkSymbolsInArray,
-                    label: sortedLabels[index],
+                    label,
                     unrefined: data,
                   }
 
                   handleChartDataIfDataIs0AndNot0(dataType.current, index, numberData.value)
 
-                  return <ShowStringsAsNumbers key={ `${ data }+${ sortedLabels[index] }` }
+                  return <ShowStringsAsNumbers key={ `${ data }+${ label }+${ id }` }
                                                data={ numberData }
                                                showPercentages={ showPercentages }
                   />
@@ -155,9 +159,9 @@ function DisplayDataWithSubheaders({
                   dataType.current = "date";
                   valueTypeArray.push(dataType.current)
 
-                  return <ShowDate key={ `${ data }+${ sortedLabels[index] }` }
+                  return <ShowDate key={ `${ data }+${ label }+${ id }` }
                                    value={ data }
-                                   label={ sortedLabels[index] }
+                                   label={ label }
                                    showDateFormat={ showDateFormat }
                                    setShowDateFormat={ setShowDateFormat }
                   />
@@ -166,8 +170,8 @@ function DisplayDataWithSubheaders({
                   dataType.current = "string";
                   valueTypeArray.push(dataType.current)
 
-                  return <ShowValues key={ `${ data }+${ sortedLabels[index] }` }
-                                     label={ sortedLabels[index] }
+                  return <ShowValues key={ `${ data }+${ label }+${ id }` }
+                                     label={ label }
                                      displayValue={ data }
                   />
                 }
@@ -175,8 +179,8 @@ function DisplayDataWithSubheaders({
               } else {
                 dataType.current = "other";
 
-                return <ShowValues key={ `${ data }+${ sortedLabels[index] }` }
-                                   label={ sortedLabels[index] }
+                return <ShowValues key={ `${ data }+${ label }+${ id }` }
+                                   label={ label }
                                    displayValue={ data }
                 />
               }
