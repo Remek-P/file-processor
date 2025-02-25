@@ -36,8 +36,8 @@ function DeleteOutput({ outputId, setUserQuery }) {
            onMouseEnter={ handleMouseEnter }
            onMouseLeave={ handleMouseLeave }
            onFocus={ handleOnFocus }
-           onBlur={ handleOnBlur }>
-
+           onBlur={ handleOnBlur }
+      >
         <IconButton kind="ghost"
                     label="Delete"
                     align="bottom"
