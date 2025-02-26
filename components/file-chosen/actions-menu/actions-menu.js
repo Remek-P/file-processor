@@ -38,7 +38,7 @@ function ActionsMenu({
   const [ showAllMetrics, setShowAllMetrics ] = useContext(ShowAllMetricsContext);
   const [ isPerformanceStrainReduced, setIsPerformanceStrainReduced ] = useContext(SearchReducePerformanceContext);
   const [ , setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
-  const [ , setDecimal] = useContext(DecimalGlobalContext);
+  const [ , setDecimal ] = useContext(DecimalGlobalContext);
   const [ dataToHide ] = useContext(DataToHideContext);
 
   const router = useRouter();
@@ -59,7 +59,7 @@ function ActionsMenu({
     setExcludedArray([]);
   }
 
-  const handleHideAllArrays =  () => {
+  const handleHideAllArrays = () => {
     if (excludedArray.length === dataToHide.length) return null
     setExcludedArray(dataToHide);
     // if (!isSubheaders) setHideTile(true);
@@ -71,29 +71,19 @@ function ActionsMenu({
     // if (!isSubheaders) setHideTile(false);
   }
 
-  const handleIDView = () => {
-    setToggleIDView(prevState => !prevState);
-  }
+  const handleIDView = () => setToggleIDView(prevState => !prevState);
 
-  const handleShowAllMetrics = () => {
-    setShowAllMetrics(prevState => !prevState);
-  }
+  const handleShowAllMetrics = () => setShowAllMetrics(prevState => !prevState);
 
   const handleLink = () => {
     router.push('/delete-file', undefined, { shallow: true });
   }
 
-  const handleSuggestionsDefaultOrder = () => {
-    setSearchSuggestionsOrder(undefined);
-  }
+  const handleSuggestionsDefaultOrder = () => setSearchSuggestionsOrder(undefined);
 
-  const handleSuggestionsOrder = () => {
-    setSearchSuggestionsOrder(prevState => !prevState);
-  }
+  const handleSuggestionsOrder = () => setSearchSuggestionsOrder(prevState => !prevState);
 
-  const handleSearchReducePerformance = () => {
-    setIsPerformanceStrainReduced(prevState => !prevState);
-  }
+  const handleSearchReducePerformance = () => setIsPerformanceStrainReduced(prevState => !prevState);
 
   const resetDataFormatting = () => {
     setDecimal(undefined);
@@ -102,121 +92,121 @@ function ActionsMenu({
   }
 
   return (
-      <div className={`${classes.menuContainer} shadow`}>
-        <OverflowMenu className={classes.menu}
+      <div className={ `${ classes.menuContainer } shadow` }>
+        <OverflowMenu className={ classes.menu }
                       aria-label="actions menu"
-                      flipped={true}
+                      flipped={ true }
         >
 
           <OverflowMenuItem itemText="Set decimal place"
-                            onClick={null}
-                            disabled={true}
-                            className={classes.menuItem}
+                            onClick={ null }
+                            disabled={ true }
+                            className={ classes.menuItem }
                             hasDivider
           />
-          <DecimalPlace />
+          <DecimalPlace/>
 
           <OverflowMenuItem itemText="Add output"
-                            onClick={addOutput}
-                            className={classes.menuItem}
+                            onClick={ addOutput }
+                            className={ classes.menuItem }
                             hasDivider
           />
 
           <OverflowMenuItem itemText="Hide All Data"
-                            onClick={handleHideAllArrays}
-                            className={classes.menuItem}
+                            onClick={ handleHideAllArrays }
+                            className={ classes.menuItem }
                             hasDivider
           />
 
           <OverflowMenuItem itemText="Show All Data"
-                            onClick={handleShowAllHiddenArrays}
-                            className={classes.menuItem}
+                            onClick={ handleShowAllHiddenArrays }
+                            className={ classes.menuItem }
           />
 
-          {isFetched && <OverflowMenuItem itemText="Refresh Data"
-                                          onClick={refreshData.bind(userQuery)}
-                                          className={classes.menuItem}
-                                          aria-hidden={!isFetched}
+          { isFetched && <OverflowMenuItem itemText="Refresh Data"
+                                           onClick={ refreshData.bind(userQuery) }
+                                           className={ classes.menuItem }
+                                           aria-hidden={ !isFetched }
           />
           }
 
           <OverflowMenuItem itemText="Suggestions Order"
-                            disabled={true}
-                            className={classes.menuItem}
+                            disabled={ true }
+                            className={ classes.menuItem }
                             hasDivider
           />
 
           <OverflowMenuItem itemText="Reset"
-                            onClick={handleSuggestionsDefaultOrder}
-                            className={classes.menuItem}
+                            onClick={ handleSuggestionsDefaultOrder }
+                            className={ classes.menuItem }
           />
 
-          <OverflowMenuItem itemText={searchOrder}
-                            onClick={handleSuggestionsOrder}
-                            className={classes.menuItem}
+          <OverflowMenuItem itemText={ searchOrder }
+                            onClick={ handleSuggestionsOrder }
+                            className={ classes.menuItem }
 
           />
 
           <OverflowMenuItem itemText="Reset ID"
-                            onClick={handleResetID}
-                            isDelete={true}
-                            className={classes.menuItem}
+                            onClick={ handleResetID }
+                            isDelete={ true }
+                            className={ classes.menuItem }
                             hasDivider
           />
 
-          {!hideDB_ID_Tile
-              && <OverflowMenuItem itemText={`${showHideDB_ID} DB ID`}
-                                   onClick={handleIDView}
-                                   isDelete={true}
-                                   className={classes.menuItem}
-                                   aria-hidden={hideDB_ID_Tile}
-              />}
+          { !hideDB_ID_Tile &&
+              <OverflowMenuItem itemText={ `${ showHideDB_ID } DB ID` }
+                                onClick={ handleIDView }
+                                isDelete={ true }
+                                className={ classes.menuItem }
+                                aria-hidden={ hideDB_ID_Tile }
+              /> }
 
-          {!isSubheaders
-              && <OverflowMenuItem itemText={showHide0Values}
-                                   onClick={handleShowAllMetrics}
-                                   className={classes.menuItem}
-                                   aria-hidden={!isSubheaders}
+          { !isSubheaders &&
+              <OverflowMenuItem itemText={ showHide0Values }
+                                onClick={ handleShowAllMetrics }
+                                className={ classes.menuItem }
+                                aria-hidden={ !isSubheaders }
               />
           }
 
           <OverflowMenuItem itemText="Reset Data Format"
-                            onClick={resetDataFormatting}
-                            isDelete={true}
-                            className={classes.menuItem}
+                            onClick={ resetDataFormatting }
+                            isDelete={ true }
+                            className={ classes.menuItem }
                             hasDivider
           />
 
           <OverflowMenuItem itemText="Delete All"
-                            onClick={handleDeleteAll}
-                            isDelete={true}
-                            className={classes.menuItem}
+                            onClick={ handleDeleteAll }
+                            isDelete={ true }
+                            className={ classes.menuItem }
           />
 
           <OverflowMenuItem itemText="Change File"
-                            onClick={handleFileChange}
-                            isDelete={true}
-                            className={classes.menuItem}
+                            onClick={ handleFileChange }
+                            isDelete={ true }
+                            className={ classes.menuItem }
           />
 
           <OverflowMenuItem itemText="Delete stored files"
-                            onClick={handleLink}
-                            isDelete={true}
-                            className={classes.menuItem}
+                            onClick={ handleLink }
+                            isDelete={ true }
+                            className={ classes.menuItem }
                             hasDivider
           />
 
-          <OverflowMenuItem itemText={containsSubheader}
-                            onClick={handleSubheadersChange}
-                            isDelete={true}
-                            className={classes.menuItem}
+          <OverflowMenuItem itemText={ containsSubheader }
+                            onClick={ handleSubheadersChange }
+                            isDelete={ true }
+                            className={ classes.menuItem }
                             hasDivider
           />
 
-          <OverflowMenuItem itemText={reducePerformanceStrain}
-                            onClick={handleSearchReducePerformance}
-                            isDelete={true}
-                            className={classes.menuItem}
+          <OverflowMenuItem itemText={ reducePerformanceStrain }
+                            onClick={ handleSearchReducePerformance }
+                            isDelete={ true }
+                            className={ classes.menuItem }
                             hasDivider
           />
         </OverflowMenu>
