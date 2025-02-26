@@ -8,7 +8,7 @@ import {
   ShowAllMetricsProvider
 } from "@/context/global-context";
 
-function ProviderWrapper({ children }) {
+function FileProviderWrapper({ children }) {
   return (
       <DecimalDataProvider>
         <ExcludedDataProvider>
@@ -30,4 +30,4 @@ function ProviderWrapper({ children }) {
   );
 }
 
-export default ProviderWrapper;
+export default FileProviderWrapper;

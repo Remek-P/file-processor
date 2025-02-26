@@ -13,7 +13,7 @@ import ExcludedData from "@/components/output/excluded-data/excluded-data";
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
 
 import classes from "./file-chosen.module.scss";
-import ProviderWrapper from "@/components/provider-wrapper/provider-wrapper";
+import FileProviderWrapper from "@/components/provider-wrapper/file-provider-wrapper";
 
 function FileChosen({
                       file,
@@ -69,7 +69,7 @@ function FileChosen({
 
 
   return (
-      <ProviderWrapper>
+      <FileProviderWrapper>
 
         <section className={ classes.sectionContainer }>
 
@@ -104,7 +104,7 @@ function FileChosen({
 
         </section>
 
-      </ProviderWrapper>
+      </FileProviderWrapper>
   );
 }
 
