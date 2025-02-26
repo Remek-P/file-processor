@@ -32,25 +32,21 @@ function SectionLayoutWithoutSubheaders({
 
   const excludedObject = { id, value: label }
 
+  const hidden = isContainingItemFromArray(id, excludedArray);
+  const showClass = hidden ? "completely-hidden" : null;
+
   const handleTogglePercentages = () => {
     // if (decimal === undefined) setDecimal(2);
     if (showPercentages === undefined) setShowPercentages(true);
     else setShowPercentages(prevState => !prevState)
   };
 
-  const handleFormatDate = () => {
-    setShowDateFormat(prevState => !prevState);
-  }
+  const handleFormatDate = () => setShowDateFormat(prevState => !prevState);
 
-  const excludeFromDisplaying = () => {
-    setExcludedArray([ ...excludedArray, excludedObject ])
-  }
-
-  const hidden = isContainingItemFromArray(id, excludedArray);
-  const showClass = hidden ? "completely-hidden" : null;
+  const excludeFromDisplaying = () => setExcludedArray([ ...excludedArray, excludedObject ]);
 
   return (
-      <div className={ classes.optionContainer } id={showClass} aria-hidden={ hidden }>
+      <div className={ classes.optionContainer } id={ showClass } aria-hidden={ hidden }>
 
         { children }
 
