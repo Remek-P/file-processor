@@ -25,7 +25,7 @@ function DataWithSubheaders({
 
   useEffect(() => {
     setDataToHide(dataWithID);
-  }, [dataWithID]);
+  }, [ dataWithID ]);
 
   const idForID_Tile = dataWithID.length;
 
