@@ -1,6 +1,6 @@
 import { checkForNumber, checkForString, decimalPlaceSeparatorToComma } from "@/utils/general";
 
-export const symbolsArray = [">", ">=", "<", "<=","%", "p%", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł"];
+export const symbolsArray = [">", ">=", "<", "<=","%", "p%", "‰", "$", "US$", "USD", "AUD", "A$", "CAD", "C$", "€", "EUR", "¥", "JPY", "£", "GBP", "CNY", "PLN", "zł"];
 
 export const escapedRegexSymbolArray = symbolsArray.map(item => item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 // const regexCheckForNumberWithSymbolBefore = new RegExp(`^(${escapedRegexSymbolArray.join("|")})\\s*\\d+(\\.\\d+)?$`);
@@ -16,11 +16,11 @@ export const separateNumbersAndStrings = (data) => {
   // if number is a string with a symbol, filter out the symbol sign to create a clean string
   if (checkSymbolsInArray.length > 0) {
     for (const symbol in checkSymbolsInArray) {
-      numberOnlyData = +(numberOnlyData.replace(checkSymbolsInArray[symbol], "").trim())
+      numberOnlyData = (numberOnlyData.replace(checkSymbolsInArray[symbol], "").trim())
     }
   }
 
-  return { numberOnlyData, checkSymbolsInArray };
+  return { numberOnlyData: +numberOnlyData, checkSymbolsInArray };
 }
 
 export const compareValues = (aValue, bValue, sortOrder) => {
