@@ -5,7 +5,9 @@ export const symbolsArray = [">", ">=", "<", "<=","%", "p%", "‰", "$", "US$", 
 export const escapedRegexSymbolArray = symbolsArray.map(item => item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 // const regexCheckForNumberWithSymbolBefore = new RegExp(`^(${escapedRegexSymbolArray.join("|")})\\s*\\d+(\\.\\d+)?$`);
 // const regexCheckForNumberWithSymbolAfter = new RegExp(`^\\d+(\\.\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})$`);
-export const regexOverall = new RegExp(`^((${escapedRegexSymbolArray.join("|")})\\s*|\\s*(${escapedRegexSymbolArray.join("|")})\\s*)?\\d+(\\.\\d+|,\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})?$`);
+// export const regexOverallOLD = new RegExp(`^((${escapedRegexSymbolArray.join("|")})\\s*|\\s*(${escapedRegexSymbolArray.join("|")})\\s*)?\\d+(\\.\\d+|,\\d+)?\\s*(${escapedRegexSymbolArray.join("|")})?$`);
+
+export const regexOverall = new RegExp(`^((${escapedRegexSymbolArray.join("|")})\\s*)*\\d+(\\.\\d+|,\\d+)?(\\s*(${escapedRegexSymbolArray.join("|")})\\s*)*$`);
 
 
 export const separateNumbersAndStrings = (data) => {
