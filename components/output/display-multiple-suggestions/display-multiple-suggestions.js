@@ -14,8 +14,6 @@ function DisplayMultipleSuggestions({
                                       setSearchSuggestionsOrder
                                     }) {
 
-  // const [active, setActive] = useState(IDIndex);
-
   const { height } = useWindowDimensions();
 
   const indexToSort = useRef(IDIndex);

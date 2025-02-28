@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 
 import ShowValues from "@/components/output/show-metrics/show-values";
 
@@ -25,7 +25,9 @@ function ShowNumbers({ data, showPercentages }) {
     return showPercentages ? `${ toPercentages() }%` : roundToGivenDecimal()
   }
 
-  return <ShowValues label={ label } displayValue={ displayValue() }/>
+  const processedValue = displayValue();
+
+  return <ShowValues label={ label } displayValue={ processedValue }/>
 }
 
 export default ShowNumbers;
