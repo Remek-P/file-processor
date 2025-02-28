@@ -1,3 +1,5 @@
+import { excludedLabelsFromComputingArray } from "@/constants/constants";
+
 export const checkForNumber = (data) => !isNaN(+data);
 export const checkForString = (data) => typeof data === "string";
 export const decimalPlaceSeparatorToComma = (data) => data.includes(",") ? data.replace(",",".") : data;
@@ -14,4 +16,8 @@ export const convertUnderscoreToSpace = (array) => {
 
 export const isContainingItemFromArray = (item, arr) => {
   return arr.some(obj => obj.id === item);
+}
+
+export const labelForEarlyReturn = label => {
+  return excludedLabelsFromComputingArray.some(item => item.toLowerCase() === label.toLowerCase());
 }

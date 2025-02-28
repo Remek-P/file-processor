@@ -20,4 +20,6 @@ export const generalWorker = {
   hideAllData: "hideAllData",
 };
 
-export const thresholdForExcludedData = 10000
+export const thresholdForExcludedData = 10000;
+
+export const excludedLabelsFromComputingArray = [ "day", "month", "year", "day month", "id" ];

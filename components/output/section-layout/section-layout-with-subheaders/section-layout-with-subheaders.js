@@ -50,6 +50,8 @@ function SectionLayoutWithSubheaders({
   const donutChartDescription = showDonutChart ? "hide donut chart" : "show donut chart";
   const dataDescription = "Format date";
 
+  const isSingleEntry = valueTypeArray.length === 1;
+
   const barChartOptions = {
     title: null,
     axes: {
@@ -76,15 +78,15 @@ function SectionLayoutWithSubheaders({
     height: "auto"
   };
 
-  const isNumber = useMemo(() => valueTypeArray.some(item => item === "number"), [ valueTypeArray ]);
-  const isDate = useMemo(() => valueTypeArray.some(item => item === "date"), [ valueTypeArray ]);
+  const isNumber = useMemo(() => valueTypeArray.some(item => item === "number" || item === "string-number"),
+      [ valueTypeArray ]);
+  const isDate = useMemo(() => valueTypeArray.some(item => item === "date"),
+      [ valueTypeArray ]);
   // TODO: This can cause problems when data is both number and date in one group;
 
   const excludedObject = { id, value }
 
-  const sortValues = () => {
-    setSort(prevState => !prevState);
-  }
+  const sortValues = () => setSort(prevState => !prevState);
 
   const handleTogglePercentages = () => {
     // if (decimal === undefined) setDecimal(2);
@@ -92,9 +94,7 @@ function SectionLayoutWithSubheaders({
     else setShowPercentages(prevState => !prevState)
   };
 
-  const handleFormatDate = () => {
-    setShowDateFormat(prevState => !prevState);
-  }
+  const handleFormatDate = () => setShowDateFormat(prevState => !prevState);
 
   const displayBarChart = () => {
     setShowBarChart(prevState => !prevState);
@@ -106,13 +106,9 @@ function SectionLayoutWithSubheaders({
     setShowBarChart(false);
   }
 
-  const handleShowAllMetrics = () => {
-    setShowAllMetrics(prevState => !prevState)
-  };
+  const handleShowAllMetrics = () => setShowAllMetrics(prevState => !prevState)
 
-  const excludeFromDisplaying = () => {
-    setExcludedArray([ ...excludedArray, excludedObject ])
-  }
+  const excludeFromDisplaying = () => setExcludedArray([ ...excludedArray, excludedObject ])
 
   const hidden = isContainingItemFromArray(id, excludedArray);
   const showClass = hidden ? "completely-hidden" : null;
@@ -124,33 +120,38 @@ function SectionLayoutWithSubheaders({
           <h4>{ value }</h4>
           <div className={ classes.numberButtons }>
 
-            <ActionToggle onClick={ sortValues } description={ !sort ? "Sort Ascending" : "Sort Descending" }>
-              { !sort
-                  ? <SortAscending className={ classes.iconFill } aria-label="Sort Ascending"/>
-                  : <SortDescending className={ classes.iconFill } aria-label="Sort Descending"/> }
-            </ActionToggle>
+            { !isSingleEntry &&
+                <ActionToggle onClick={ sortValues } description={ !sort ? "Sort Ascending" : "Sort Descending" }>
+                  { !sort
+                      ? <SortAscending className={ classes.iconFill } aria-label="Sort Ascending" />
+                      : <SortDescending className={ classes.iconFill } aria-label="Sort Descending" />
+                  }
+                </ActionToggle>
+            }
 
             { isNumber && <>
               <ActionToggle onClick={ handleTogglePercentages } description={ percentagesDescription }>
-                <Percentage className={ classes.iconFill } aria-label={ percentagesDescription }/>
+                <Percentage className={ classes.iconFill } aria-label={ percentagesDescription } />
               </ActionToggle>
 
+              { !isSingleEntry && <>
+                <ActionToggle onClick={ displayBarChart } description={ barChartDescription }>
+                  <ChartBar className={ classes.iconFill } aria-label={ barChartDescription } />
+                </ActionToggle>
 
-              <ActionToggle onClick={ displayBarChart } description={ barChartDescription }>
-                <ChartBar className={ classes.iconFill } aria-label={ barChartDescription }/>
-              </ActionToggle>
 
+                <ActionToggle onClick={ displayDonutChart } description={ donutChartDescription }>
+                  <ChartRing className={ classes.iconFill } aria-label={ donutChartDescription } />
+                </ActionToggle>
+              </> }
 
-              <ActionToggle onClick={ displayDonutChart } description={ donutChartDescription }>
-                <ChartRing className={ classes.iconFill } aria-label={ donutChartDescription }/>
-              </ActionToggle>
             </>
             }
 
             { isDate &&
                 <>
                   <ActionToggle onClick={ handleFormatDate } description={ dataDescription }>
-                    <DataFormat className={ classes.iconFill } aria-label={ dataDescription }/>
+                    <DataFormat className={ classes.iconFill } aria-label={ dataDescription } />
                   </ActionToggle>
                 </>
             }
@@ -169,7 +170,7 @@ function SectionLayoutWithSubheaders({
             <ViewOff className={ classes.iconFill }/>
           </ActionToggle>
 
-          { isNumber && numbersEqualToZero.current
+          { isNumber && numbersEqualToZero
               && <Toggle id={ value }
                          size="sm"
                          labelA="Show all"

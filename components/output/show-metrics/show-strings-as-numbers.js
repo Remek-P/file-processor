@@ -1,35 +1,36 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 
 import ShowValues from "@/components/output/show-metrics/show-values";
 
-import {DecimalGlobalContext} from "@/context/global-context";
+import { DecimalGlobalContext } from "@/context/global-context";
 
-function ShowStringsAsNumbers({ data, showPercentages  }) {
+function ShowStringsAsNumbers({ data, showPercentages }) {
 
-  const [decimal] = useContext(DecimalGlobalContext);
+  const [ decimal ] = useContext(DecimalGlobalContext);
 
   const { value, symbolsArray, label } = data;
 
-  const localDecimal = decimal !== undefined
-      ? decimal
-      : showPercentages === undefined
-          ? undefined
-          : 2
+  const checkForSymbols = () => {
 
-  // const convertToPercentages = (+value * 100).toFixed(localDecimal);
-  // const roundToGivenDecimal = (+value).toFixed(localDecimal);
+    const localDecimal = decimal !== undefined
+        ? decimal
+        : 2
 
-  const displayValue = () => {
+    const roundToGivenDecimal = () => (value).toFixed(localDecimal);
 
-    let processedValue = value;
-    if (symbolsArray.length === 0 && showPercentages) processedValue = `${processedValue}%`;
+    let processedValue = decimal === undefined ? value : roundToGivenDecimal();
+    if (symbolsArray.length === 0 && showPercentages) return processedValue = `${ processedValue }%`;
 
     symbolsArray.forEach(symbol => {
       if (symbol === "%" || symbol === "p%") {
         // Add percentage if showPercentages is defined
-        if (showPercentages !== undefined && showPercentages) {
-          processedValue += symbol;
+        if (showPercentages !== false) {
+          processedValue = processedValue + symbol;
+        } else if (showPercentages === false) {
+          processedValue = processedValue / 100;
         }
+      } else if (symbol === "‰") {
+        processedValue = processedValue + " " + symbol;
       } else if (symbol === "zł") {
         processedValue += " " + symbol; // Add space before currency symbol
       } else {
@@ -40,7 +41,9 @@ function ShowStringsAsNumbers({ data, showPercentages  }) {
     return processedValue;
   }
 
-  return <ShowValues label={label} displayValue={displayValue()} />
+  const finalValue = useMemo(() => checkForSymbols(), [ value, showPercentages ]);
+
+  return <ShowValues label={ label } displayValue={ finalValue } />
 }
 
 export default ShowStringsAsNumbers;

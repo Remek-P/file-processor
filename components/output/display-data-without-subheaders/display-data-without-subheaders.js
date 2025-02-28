@@ -18,7 +18,7 @@ import { ShowAllMetricsContext, ToggleIDViewGlobalContext } from "@/context/glob
 import {
   checkForNumber,
   checkForString,
-  decimalPlaceSeparatorToComma
+  decimalPlaceSeparatorToComma, labelForEarlyReturn
 } from "@/utils/general";
 
 import { HEADER_LABEL } from "@/constants/constants";
@@ -30,7 +30,6 @@ function DisplayDataWithoutSubheaders({
                                         colDataArray,
                                         hideDB_ID_Tile,
                                       }) {
-
   const [ showAllMetrics ] = useContext(ShowAllMetricsContext);
   const [ toggleIDView ] = useContext(ToggleIDViewGlobalContext);
 
@@ -38,119 +37,150 @@ function DisplayDataWithoutSubheaders({
   const [ showPercentages, setShowPercentages ] = useState(undefined);
 
   const value = colDataArray[index];
+  // Early return for ID columns when toggleIDView is false
+  if (!hideDB_ID_Tile && !toggleIDView && label === HEADER_LABEL) return null;
+  // Early return when there is a label, but no value
+  // if (value === undefined) return null;
 
-  if (!hideDB_ID_Tile && !toggleIDView && label === HEADER_LABEL) return null
+  // Extract the value once and memoize derived data
+  const processedData = useMemo(() => {
+    // Determine data type with a proper classification function
+    const determineDataType = (data) => {
 
-  let isZero;
-  let dataType;
-  const number = "number";
-  const string = "string";
-  const date = "date";
-  const numberAsAString = "number as string";
-  const dateAsAString = "date as string";
-  const other = "other";
+      const labelTestEarlyReturn = labelForEarlyReturn(label);
 
-  const stringTest = (data) => {
-    const isStringANumber = regexOverall.test(data);
-    const isStringADate = dateValidator(value);
-    if (isStringANumber) return numberAsAString
-    else if (isStringADate) return dateAsAString
-    else return string
-  }
+      if (labelTestEarlyReturn) return "excluded"
 
-  const dataTypeTest = useMemo(() => (data) => {
-    if (checkForNumber(data)) return number
-    else if (checkForString(data)) return stringTest(data)
-    else return other
-  }, [ value ]);
+      if (checkForNumber(data)) return "number";
 
-  let displayData;
+      if (checkForString(data)) {
+        if (regexOverall.test(data)) return "string-number";
 
-  switch (dataTypeTest(value)) {
-    case number: {
-      if (value === 0) isZero = true;
-      dataType = number;
-      const numberData = {
-        value: +value,
-        label,
+        if (dateValidator(data)) return "date";
+
+        return "string";
       }
-      displayData = <ShowNumbers key={ id }
-                                 data={ numberData }
-                                 showPercentages={ showPercentages }
-      />
-      break;
+
+      return "other";
+    };
+
+    const dataType = determineDataType(value);
+
+    // Process data based on its type
+    let processedItem = {
+      originalValue: value,
+      dataType,
+      isZero: false,
+      numericValue: null,
+      symbolsArray: null
+    };
+
+    // Type-specific processing
+    if (dataType === "number") {
+      processedItem.numericValue = +value;
+      processedItem.isZero = processedItem.numericValue === 0;
     }
-
-    case string: {
-      dataType = string;
-
-      displayData = <ShowValues key={ id }
-                                label={ label }
-                                displayValue={ value }
-      />
-      break;
-    }
-
-    case numberAsAString: {
-      dataType = number;
-
+    else if (dataType === "string-number") {
       const refinedValue = decimalPlaceSeparatorToComma(value);
       const { numberOnlyData, checkSymbolsInArray } = separateNumbersAndStrings(refinedValue);
 
-      if (numberOnlyData === 0) isZero = true;
+      processedItem.numericValue = numberOnlyData;
+      processedItem.symbolsArray = checkSymbolsInArray;
+      processedItem.isZero = numberOnlyData === 0;
+    }
 
-      const numberData = {
-        value: numberOnlyData,
-        symbolsArray: checkSymbolsInArray,
-        label: label,
-        unrefined: value,
+    return processedItem;
+  }, [ colDataArray, index ]);
+
+  // Memoize the component generation to prevent unnecessary re-renders
+  const displayComponent = useMemo(() => {
+    const { originalValue, dataType, isZero, numericValue, symbolsArray } = processedData;
+
+    // Skip rendering zero values when showAllMetrics is false
+    if (!showAllMetrics && isZero) return null
+
+    // Return appropriate component based on data type
+    switch (dataType) {
+      case "number": {
+        return (
+            <ShowNumbers
+                key={ id }
+                data={{
+                  value: numericValue,
+                  label
+                }}
+                showPercentages={ showPercentages }
+            />
+        );
       }
 
-      displayData = <ShowStringsAsNumbers key={ id }
-                                          data={ numberData }
-                                          showPercentages={ showPercentages }
-      />
-      break
+      case "string-number": {
+        return (
+            <ShowStringsAsNumbers
+                key={ id }
+                data={{
+                  value: numericValue,
+                  symbolsArray,
+                  label,
+                  unrefined: originalValue
+                }}
+                showPercentages={ showPercentages }
+            />
+        );
+      }
+
+      case "date": {
+        return (
+            <ShowDate
+                key={ id }
+                id={ id }
+                value={ originalValue }
+                label={ label }
+                showDateFormat={ showDateFormat }
+                setShowDateFormat={ setShowDateFormat }
+            />
+        );
+      }
+
+      case "excluded":
+      case "string":
+      case "other":
+      default: {
+        return (
+            <ShowValues
+                key={ id }
+                id={ id }
+                label={ label }
+                displayValue={ originalValue }
+            />
+        );
+      }
     }
+  }, [
+    processedData,
+    showAllMetrics,
+    showPercentages,
+    showDateFormat,
+    id,
+    label,
+    setShowDateFormat
+  ]);
 
-    case dateAsAString: {
-      dataType = date;
-
-      displayData = <ShowDate key={ id }
-                              id={ id }
-                              value={ value }
-                              label={ label }
-                              showDateFormat={ showDateFormat }
-                              setShowDateFormat={ setShowDateFormat }
-      />
-      break;
-    }
-
-    case other: {
-      dataType = other;
-
-      displayData = <ShowValues key={ id }
-                                id={ id }
-                                label={ label }
-                                displayValue={ value }
-      />
-      break;
-    }
-  }
-
-  if (isZero && !showAllMetrics) return null;
+  // Only return the section layout if there's a component to display
+  if (!displayComponent) return null;
 
   return (
-      <SectionLayoutWithoutSubheaders id={ id }
-                                      dataType={ dataType }
-                                      showPercentages={ showPercentages }
-                                      setShowPercentages={ setShowPercentages }
-                                      label={ label }
-                                      setShowDateFormat={ setShowDateFormat }
+      <SectionLayoutWithoutSubheaders
+          id={ id }
+          dataType={ processedData.dataType === "string-number" ? "number" : processedData.dataType }
+          showPercentages={ showPercentages }
+          setShowPercentages={ setShowPercentages }
+          label={ label }
+          setShowDateFormat={ setShowDateFormat }
       >
-        { displayData }
+        { displayComponent }
       </SectionLayoutWithoutSubheaders>
-  )
+  );
 }
 
 export default DisplayDataWithoutSubheaders;

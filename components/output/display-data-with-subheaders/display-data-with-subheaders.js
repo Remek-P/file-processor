@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 import SectionLayoutWithSubheaders
   from "@/components/output/section-layout/section-layout-with-subheaders/section-layout-with-subheaders";
@@ -17,9 +17,10 @@ import { dateValidator } from "@/utils/dateUtils";
 import {
   checkForNumber,
   checkForString,
-  decimalPlaceSeparatorToComma
+  decimalPlaceSeparatorToComma,
+  labelForEarlyReturn,
 } from "@/utils/general";
-
+// TODO: what if one record contains a header, and other does not, same with label.
 function DisplayDataWithSubheaders({
                                      id,
                                      value,
@@ -27,167 +28,174 @@ function DisplayDataWithSubheaders({
                                      labelDataArray,
                                      headerDataArray,
                                    }) {
-
   const [ showAllMetrics, setShowAllMetrics ] = useState(true);
   const [ showPercentages, setShowPercentages ] = useState(undefined);
   const [ showDateFormat, setShowDateFormat ] = useState(false);
   const [ sort, setSort ] = useState(undefined);
 
-  const dataType = useRef(undefined);
-  const numbersEqualToZero = useRef(false);
+  const { headerValueArray, labelValueArray } = useMemo(() => {
+    const headerValues = [];
+    const labelValues = [];
 
-  const chartData = [];
-
-  // Sent as props to SectionLayout in case the data is of mixed type
-  const valueTypeArray = [];
-  const headerValueArray = [];
-  const labelValueArray = [];
-
-  const handleChartData = (dataType, index, value) => {
-    valueTypeArray.push(dataType) //valueTypeArray is sent as props and used to check the data type
-    chartData.push({
-      group: sortedLabels[index],
-      value
+    headerDataArray.forEach((header, index) => {
+      if (header === value) {
+        headerValues.push(colDataArray[index]);
+        labelValues.push(labelDataArray[index]);
+      }
     });
-  }
 
-  const handleChartDataIfDataIs0AndNot0 = (dataType, indexOfALabel, numberDataValue) => {
-    if (!showAllMetrics && numberDataValue !== 0) handleChartData(dataType, indexOfALabel, numberDataValue);
-    else handleChartData(dataType, indexOfALabel, numberDataValue);
-  }
+    return { headerValueArray: headerValues, labelValueArray: labelValues };
+  }, [ headerDataArray, colDataArray, labelDataArray, value ]);
 
-  headerDataArray.forEach((header, index) => {
-    if (header === value) {
-      headerValueArray.push(colDataArray[index]);
-      labelValueArray.push(labelDataArray[index]);
+  const determineDataType = (data, label) => {
+    // Early return for excluded labels
+    const labelTestEarlyReturn = labelForEarlyReturn(label);
+
+    if (labelTestEarlyReturn) return "excluded"
+
+    if (checkForNumber(data)) return "number";
+
+    if (checkForString(data)) {
+      if (regexOverall.test(data)) return "string-number";
+
+      if (dateValidator(data)) return "date";
+
+      return "string";
     }
-  })
 
-  const sortDataAndLabelsArrayTogether = () => {
+    return "other";
+  };
 
-    if (sort === undefined) return { sortedData: headerValueArray, sortedLabels: labelValueArray };
+  const processedData = useMemo(() => {
+    return headerValueArray.map((data, index) => {
+      const label = labelValueArray[index];
 
-    // Create an array of indices
-    const indexedDataArray = headerValueArray.map((value, index) => ({ value, label: labelValueArray[index], index }));
+      let type = determineDataType(data, label);
+      let numericValue = null;
+      let isZero = false;
+      let symbolsArray = null;
 
-    // Sort the indexed data based on the value and sort direction (sortedUtils)
-    indexedDataArray.sort((a, b) => compareValues(a.value, b.value, sort));
+      // Process based on type
+      if (type === "number") {
+        numericValue = +data;
+        isZero = numericValue === 0;
+      } else if (type === "string-number") {
+        const refined = decimalPlaceSeparatorToComma(data);
+        const { numberOnlyData, checkSymbolsInArray } = separateNumbersAndStrings(refined);
 
-    // Separate the sorted values and labels back into their respective arrays
-    const sortedData = indexedDataArray.map(item => item.value);
-    const sortedLabels = indexedDataArray.map(item => item.label);
+        numericValue = numberOnlyData;
+        symbolsArray = checkSymbolsInArray;
+        isZero = numericValue === 0;
+      }
 
-    return { sortedData, sortedLabels };
-  }
+      return {
+        originalData: data,
+        label,
+        type,
+        numericValue,
+        isZero,
+        symbolsArray
+      };
+    });
+  }, [ headerValueArray, labelValueArray ]);
 
-  const { sortedData, sortedLabels } = sortDataAndLabelsArrayTogether();
-//TODO: sorting for string components should be done by labels?
+  const sortedProcessedData = useMemo(() => {
+    if (sort === undefined) return processedData;
+
+    return [ ...processedData ].sort((a, b) => {
+      if (a.type.includes("number") && b.type.includes("number")) {
+        return compareValues(a.numericValue, b.numericValue, sort);
+      }
+      return compareValues(a.originalData, b.originalData, sort);
+    });
+  }, [ processedData, sort ]);
+
+  const chartData = useMemo(() => {
+    return sortedProcessedData
+        .filter(item => showAllMetrics || !item.isZero)
+        .map(item => ({
+          group: item.label,
+          value: item.numericValue !== null ? item.numericValue : 0
+        }));
+  }, [ sortedProcessedData, showAllMetrics ]);
+
+  const numbersEqualToZero = useMemo(() => {
+    return processedData.some(item =>
+        (item.type === "number" || item.type === "string-number") && item.isZero
+    );
+  }, [ processedData ]);
+
+  const valueTypeArray = useMemo(() => {
+    return sortedProcessedData.map(item => item.type);
+  }, [ sortedProcessedData ]);
+
+  const renderedComponents = useMemo(() => {
+    return sortedProcessedData.map((item) => {
+      if (!showAllMetrics && item.isZero) return null;
+
+      switch (item.type) {
+        case "number":
+          return (
+              <ShowNumbers
+                  key={ `${ item.originalData }+${ item.label }+${ id }` }
+                  data={ { value: item.numericValue, label: item.label } }
+                  showPercentages={ showPercentages }
+              />
+          );
+
+        case "string-number":
+          return (
+              <ShowStringsAsNumbers
+                  key={ `${ item.originalData }+${ item.label }+${ id }` }
+                  data={{
+                    value: item.numericValue,
+                    symbolsArray: item.symbolsArray,
+                    label: item.label,
+                    unrefined: item.originalData
+                  }}
+                  showPercentages={ showPercentages }
+              />
+          );
+
+        case "date":
+          return (
+              <ShowDate
+                  key={ `${ item.originalData }+${ item.label }+${ id }` }
+                  value={ item.originalData }
+                  label={ item.label }
+                  showDateFormat={ showDateFormat }
+                  setShowDateFormat={ setShowDateFormat }
+              />
+          );
+        case "excluded":
+        default:
+          return (
+              <ShowValues
+                  key={ `${ item.originalData }+${ item.label }+${ id }` }
+                  label={ item.label }
+                  displayValue={ item.originalData }
+              />
+          );
+      }
+    }).filter(Boolean);
+  }, [ sortedProcessedData, showAllMetrics, showPercentages, showDateFormat, id ]);
+
   return (
-
-      <SectionLayoutWithSubheaders id={ id }
-                                   value={ value }
-                                   sort={ sort }
-                                   setSort={ setSort }
-                                   chartData={ chartData }
-                                   valueTypeArray={ valueTypeArray }
-                                   showPercentages={ showPercentages }
-                                   setShowPercentages={ setShowPercentages }
-                                   numbersEqualToZero={ numbersEqualToZero }
-                                   showAllMetrics={ showAllMetrics }
-                                   setShowAllMetrics={ setShowAllMetrics }
-                                   setShowDateFormat={ setShowDateFormat }
+      <SectionLayoutWithSubheaders
+          id={ id }
+          value={ value }
+          sort={ sort }
+          setSort={ setSort }
+          chartData={ chartData }
+          valueTypeArray={ valueTypeArray }
+          showPercentages={ showPercentages }
+          setShowPercentages={ setShowPercentages }
+          numbersEqualToZero={ numbersEqualToZero }
+          showAllMetrics={ showAllMetrics }
+          setShowAllMetrics={ setShowAllMetrics }
+          setShowDateFormat={ setShowDateFormat }
       >
-
-        <div>
-          {
-            sortedData.map((data, index) => {
-
-              const label = sortedLabels[index];
-
-              if (checkForNumber(data)) {
-
-                const isZero = data === 0;
-                if (isZero) numbersEqualToZero.current = true;
-                if (isZero && !showAllMetrics) return null;
-
-                dataType.current = "number";
-                const numberData = {
-                  value: +data,
-                  label,
-                }
-
-                handleChartDataIfDataIs0AndNot0(dataType.current, index, numberData.value)
-
-                return (
-                    <ShowNumbers key={ `${ data }+${ label }+${ id }` }
-                                 data={ numberData }
-                                 showPercentages={ showPercentages }
-                    />
-                )
-
-              } else if (checkForString(data)) {
-
-                const numberAsString = regexOverall.test(data);
-
-                if (numberAsString) {
-                  const refinedValue = decimalPlaceSeparatorToComma(data);
-                  const { numberOnlyData, checkSymbolsInArray } = separateNumbersAndStrings(refinedValue);
-
-                  const isZero = numberOnlyData === 0;
-                  if (isZero && !showAllMetrics) return null;
-
-                  if (isZero) numbersEqualToZero.current = true;
-
-
-                  dataType.current = "number";
-                  const numberData = {
-                    value: numberOnlyData,
-                    symbolsArray: checkSymbolsInArray,
-                    label,
-                    unrefined: data,
-                  }
-
-                  handleChartDataIfDataIs0AndNot0(dataType.current, index, numberData.value)
-
-                  return <ShowStringsAsNumbers key={ `${ data }+${ label }+${ id }` }
-                                               data={ numberData }
-                                               showPercentages={ showPercentages }
-                  />
-
-                } else if (dateValidator(data)) {
-
-                  dataType.current = "date";
-                  valueTypeArray.push(dataType.current)
-
-                  return <ShowDate key={ `${ data }+${ label }+${ id }` }
-                                   value={ data }
-                                   label={ label }
-                                   showDateFormat={ showDateFormat }
-                                   setShowDateFormat={ setShowDateFormat }
-                  />
-
-                } else {
-                  dataType.current = "string";
-                  valueTypeArray.push(dataType.current)
-
-                  return <ShowValues key={ `${ data }+${ label }+${ id }` }
-                                     label={ label }
-                                     displayValue={ data }
-                  />
-                }
-
-              } else {
-                dataType.current = "other";
-
-                return <ShowValues key={ `${ data }+${ label }+${ id }` }
-                                   label={ label }
-                                   displayValue={ data }
-                />
-              }
-            })
-          }
-
-        </div>
+        <div>{ renderedComponents }</div>
 
       </SectionLayoutWithSubheaders>
   );

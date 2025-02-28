@@ -4,8 +4,8 @@ import { HEADER_LABEL } from "@/constants/constants";
 import { IsContainingSubheadersContext } from "@/context/global-context";
 
 
-import DataWithoutSubheaders from "@/components/output/show-data-without-subheaders/show-data-without-subheaders";
-import DataWithSubheaders from "@/components/output/show-data-with-subheaders/show-data-with-subheaders";
+import DataWithoutSubheaders from "@/components/output/data-without-subheaders/data-without-subheaders";
+import DataWithSubheaders from "@/components/output/data-with-subheaders/data-with-subheaders";
 
 function DisplaySearchedData({
                                colDataArray,
