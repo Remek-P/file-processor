@@ -89,6 +89,7 @@ function ActionsMenu({
     setDecimal(undefined);
     setExcludedArray([])
     setSearchSuggestionsOrder(undefined);
+    setShowAllMetrics(true)
   }
 
   return (
