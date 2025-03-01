@@ -1,7 +1,7 @@
-import {useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 
-import {Button, IconButton, Select, SelectItem, Tile} from "@carbon/react";
-import {Run, TrashCan} from "@carbon/react/icons";
+import { Button, IconButton, Select, SelectItem, Tile } from "@carbon/react";
+import { Run, TrashCan } from "@carbon/react/icons";
 
 import { WarningsContext } from "@/context/global-context";
 import { getFileNames } from "@/utils/indexedDB";
@@ -25,7 +25,7 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
 
   const handleSelect = (event) => {
     const value = event.target.value;
-    if (value !== "")setIsDisabled(false);
+    if (value !== "") setIsDisabled(false);
     else setIsDisabled(true);
     setSelectedOption(value);
   };
@@ -41,7 +41,7 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
     };
 
     getSavedFilesNames();
-  }, [isUpdate]);
+  }, [ isUpdate ]);
 
   const showNotification = () => {
     setShowNotifications(true)
@@ -59,47 +59,57 @@ function SelectSavedFile({ isUpdate, loadSavedFile }) {
 
   return (
       <>
-        <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
+        <Tile className={ `${ classes.optionContainerSpacingSelectSave } shadow` }>
 
           <h6>Select a saved file:</h6>
           <Select id="selectSavedFile"
                   labelText="Select the saved file:"
-                  hideLabel={true}
-                  value={selectedOption}
-                  onChange={handleSelect}
+                  hideLabel={ true }
+                  value={ selectedOption }
+                  onChange={ handleSelect }
                   size="sm"
-                  className={classes.optionContainerSelect}
+                  className={ classes.optionContainerSelectSave }
           >
             <SelectItem value="" text="Choose file to load"/>
-            {savedFilesNames.map((fileName, index) => (
-                <SelectItem key={index}
-                            value={fileName}
-                            text={fileName}
+            { savedFilesNames.map((fileName, index) => (
+                <SelectItem key={ index }
+                            value={ fileName }
+                            text={ fileName }
                 />
-            ))}
+            )) }
           </Select>
 
-          <div className={classes.optionButtonContainer}>
-            <Button onClick={handleClick} size="md" disabled={isDisabled}>
-              <Run size={16}/>
+          <div className={ classes.optionButtonContainerSelectSave }>
+            <Button onClick={ handleClick }
+                    size="md"
+                    disabled={ isDisabled }
+                    className={ classes.button }
+            >
+              <Run size={ 16 } />
               <span>Load</span>
             </Button>
 
             <Link href="/delete-file">
-              <IconButton onClick={null}
+
+              <IconButton onClick={ null }
                           size="md"
                           kind="danger"
                           label="Delete files"
-                          hasIconOnly={true}
-                  // className={classes.deleteButton}
+                          hasIconOnly={ true }
+                          className={ classes.button }
               >
-                <TrashCan size={16}/>
+                <TrashCan size={ 16 } />
               </IconButton>
+
             </Link>
           </div>
         </Tile>
 
-        <IndexedDBSizeMonit handleReject={handleReject} showNotifications={showNotifications} rejectText="Load" />
+        <IndexedDBSizeMonit
+            handleReject={ handleReject }
+            showNotifications={ showNotifications }
+            rejectText="Load"
+        />
       </>
   );
 }

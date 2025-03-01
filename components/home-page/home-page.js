@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 
 import {
   FileDataGlobalContext,
@@ -82,14 +82,14 @@ export default function HomePage() {
 
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
 
-    if (["xls", "xlsx", "csv"].includes(fileExtension)) {
+    if ([ "xls", "xlsx", "csv" ].includes(fileExtension)) {
       const data = await targetFile.arrayBuffer();
 
       const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
 
       await handleFileWorker(worker, data);
 
-    } else if (["zip"].includes(fileExtension)) {
+    } else if ([ "zip" ].includes(fileExtension)) {
 // TODO: need a lib to handle .rar files
 
       const worker = new Worker(new URL("@/public/compressedFileWorker", import.meta.url));
@@ -121,7 +121,7 @@ export default function HomePage() {
       // If data in DB exceeds 10000 records, the while function will fetch the rest
       while (result.totalDocuments > partialDataArray.length) {
         chunk += 1
-        const res = await fetch(`/api/mongoDB_Chunks?page=${chunk}`); // fetching with limit
+        const res = await fetch(`/api/mongoDB_Chunks?page=${ chunk }`); // fetching with limit
         const result = await res.json();
         partialDataArray.push(...result.data);
       }
@@ -139,11 +139,9 @@ export default function HomePage() {
 
       if (isSubheadersPresent) {
         setIsSubheaders(true);
-        [jsonData[0], jsonData[1]] = [jsonData[1], jsonData[0]];
+        [ jsonData[0], jsonData[1] ] = [ jsonData[1], jsonData[0] ];
         jsonData[1][0] = ID_LABEL;
-      }
-
-      else {
+      } else {
         setIsSubheaders(false);
       }
       // // Two below indices are the ids from MongoDB
@@ -151,13 +149,12 @@ export default function HomePage() {
 
       setFile(jsonData);
       // for refetching
-      const checkFileName = fileName ? fileName : `DB_file_${timeStamp()}`
+      const checkFileName = fileName ? fileName : `DB_file_${ timeStamp() }`
       setFileName(checkFileName)
       isDataFetched(true);
 
       if (addToIndexedDB) {
         await addData(checkFileName, jsonData);
-        console.log("add")
       }
 
     } catch (error) {
@@ -184,7 +181,7 @@ export default function HomePage() {
         query: query,
         fieldSearch: fieldSearch
       });
-      const res = await fetch(`/api/mongoDB?${params.toString()}`);
+      const res = await fetch(`/api/mongoDB?${ params.toString() }`);
       result = await res.json();
 
       // The fetch always results in returning the first row for mapping the keys. If there is only one object in the array or the array is empty due to error, add warning.
@@ -201,7 +198,7 @@ export default function HomePage() {
       setIsSubheaders(isSubheadersPresent);
 
       if (isSubheadersPresent) {
-        [jsonData[0], jsonData[1]] = [jsonData[1], jsonData[0]];
+        [ jsonData[0], jsonData[1] ] = [ jsonData[1], jsonData[0] ];
         jsonData[1][0] = ID_LABEL;
         setIsSubheaders(true);
       } else {
@@ -212,7 +209,7 @@ export default function HomePage() {
       jsonData[0][0] = HEADER_LABEL;
 
       setFile(jsonData);
-      const checkFileName = fileName || `DB_file_${timeStamp()}`;
+      const checkFileName = fileName || `DB_file_${ timeStamp() }`;
       setFileName(checkFileName);
 
       isDataFetched(true);
@@ -246,6 +243,7 @@ export default function HomePage() {
     setFinalDataAvailable(false);
     setIsDirectFetchResults(false);
     setIsLoading(false);
+    setIsSubheaders(undefined)
   }
 
   const handleErrorDelete = async () => {
@@ -265,7 +263,7 @@ export default function HomePage() {
   }
 
   const timeStamp = () => {
-    return `${dayjs().format('YYYY-MM-DD HH:mm')}`;
+    return `${ dayjs().format('YYYY-MM-DD HH:mm') }`;
   }
 
   useEffect(() => {
@@ -277,50 +275,51 @@ export default function HomePage() {
   return (
       <main>
 
-          {
-              !finalDataAvailable && !isDirectFetchResults &&
-              <ErrorBoundary fallback={ <h1>Something went wrong, please try again</h1> }>
-                <ChooseFile file={file}
-                            fetchDataFromDB={fetchDataFromMongoDB}
-                            handleFile={handleFile}
-                            loadSavedFile={loadSavedFile}
-                            fetchDirectlyDataFromDB={fetchDirectlyDataFromMongoDB}
-                />
-              </ErrorBoundary>
-          }
+        {
+            !finalDataAvailable && !isDirectFetchResults &&
+            <ErrorBoundary fallback={ <h1>Something went wrong, please try again</h1> }>
+              <ChooseFile file={ file }
+                          fetchDataFromDB={ fetchDataFromMongoDB }
+                          handleFile={ handleFile }
+                          loadSavedFile={ loadSavedFile }
+                          fetchDirectlyDataFromDB={ fetchDirectlyDataFromMongoDB }
+                          goBackButton={ handleFileChange }
+              />
+            </ErrorBoundary>
+        }
 
-          {
-              showWarnings && warnings.map((warning, index) => {
-                return <TextTile key={index} text={warning} handleClick={() => deleteWarning(index)} />;
-              })
-          }
+        {
+            showWarnings && warnings.map((warning, index) => {
+              return <TextTile key={ index } text={ warning } handleClick={ () => deleteWarning(index) }/>;
+            })
+        }
 
-          {
-              warnings.length === 0
-              && (finalDataAvailable || isDirectFetchResults)
-              && isSubheaders !== undefined &&
-              <ErrorBoundary fallback={ <FileChosenFallback syncAction={handleFileChange}
-                                                            asyncAction={handleErrorDelete}
-                                                            fileName={fileName} />
-              }>
-                <FileChosen file={file}
-                            fileName={fileName}
-                            userQuery={userQuery}
-                            isDirectFetchResults={isDirectFetchResults}
-                            handleFileChange={handleFileChange}
-                            refreshData={refreshData}
-                            fetchDirectlyDataFromDB={fetchDirectlyDataFromMongoDB}
-                            setUserQuery={setUserQuery}
-                />
-              </ErrorBoundary>
+        {
+            warnings.length === 0
+            && (finalDataAvailable || isDirectFetchResults)
+            && isSubheaders !== undefined &&
+            <ErrorBoundary fallback={ <FileChosenFallback syncAction={ handleFileChange }
+                                                          asyncAction={ handleErrorDelete }
+                                                          fileName={ fileName }/>
+            }>
+              <FileChosen file={ file }
+                          fileName={ fileName }
+                          userQuery={ userQuery }
+                          isDirectFetchResults={ isDirectFetchResults }
+                          handleFileChange={ handleFileChange }
+                          refreshData={ refreshData }
+                          fetchDirectlyDataFromDB={ fetchDirectlyDataFromMongoDB }
+                          setUserQuery={ setUserQuery }
+              />
+            </ErrorBoundary>
 
-          }
+        }
 
-        <Loading small={false}
-                 withOverlay={true}
-                 className={null}
+        <Loading small={ false }
+                 withOverlay={ true }
+                 className={ null }
                  description="Active loading indicator"
-                 active={isLoading}
+                 active={ isLoading }
         />
 
       </main>

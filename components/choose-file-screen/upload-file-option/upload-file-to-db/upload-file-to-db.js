@@ -8,12 +8,12 @@ function UploadToDB({ setIsFileDelivered }) {
   const { addWarnings } = useContext(WarningsContext);
   const [ , setIsLoading ] = useContext(IsLoadingContext);
 
-  const fileTypes = [".csv"];
+  const fileTypes = [ ".csv" ];
   const displayFormats = fileTypes.map((fileType) => " " + fileType);
 
-  const buttonLabel = "Upload to a database";
+  const buttonLabel = "To a database";
 
-  const labelDescription = `Accepted file formats: \n${displayFormats}`;
+  const labelDescription = `Accepted file formats: \n${ displayFormats }`;
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ function UploadToDB({ setIsFileDelivered }) {
       if (res.ok && data.url) {
         setIsFileDelivered(true);
         isDataFetched(true);
-        alert(`File uploaded successfully: ${data.url}`);
+        alert(`File uploaded successfully: ${ data.url }`);
       } else {
         addWarnings("Error uploading file.");
       }
@@ -55,21 +55,20 @@ function UploadToDB({ setIsFileDelivered }) {
 
 
   return (
-      <>
-        <Tile className={`${classes.tile}`}>
+        <Tile className="shadow">
           <FileUploader
               filenameStatus="complete"
               labelTitle="Upload"
-              labelDescription={labelDescription}
-              buttonLabel={buttonLabel}
-              onChange={(e) => handleUpload(e)}
-              accept={fileTypes}
+              labelDescription={ labelDescription }
+              buttonLabel={ buttonLabel }
+              onChange={ (e) => handleUpload(e) }
+              accept={ fileTypes }
               name="uploader"
-              disabled={true}
-              style={{whiteSpace: "pre-line"}}
+              disabled={ true }
+              style={{ whiteSpace: "pre-line" }}
+              className={ `${classes.fileUploader} ${classes.toDB}` }
           />
         </Tile>
-      </>
   );
 }
 

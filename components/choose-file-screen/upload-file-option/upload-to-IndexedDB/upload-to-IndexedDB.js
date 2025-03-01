@@ -12,11 +12,11 @@ function UploadToIndexedDB({ setIsFileDelivered, handleFile }) {
     ".zip"
   ];
 
-  const displayFormats = fileTypes.slice(1).map((fileType) => " "+fileType)
+  const displayFormats = fileTypes.slice(1).map((fileType) => " " + fileType)
 
-  const buttonLabel = "Upload locally"
+  const buttonLabel = "To computer"
 
-  const labelDescription = `Accepted file formats:\n${displayFormats}`;
+  const labelDescription = `Accepted file formats:\n${ displayFormats }`;
 
   const handleClick = (e) => {
     handleFile(e)
@@ -25,15 +25,16 @@ function UploadToIndexedDB({ setIsFileDelivered, handleFile }) {
 
   return (
 
-      <Tile className={`${classes.tile}`}>
+      <Tile className="shadow">
         <FileUploader filenameStatus="complete"
                       labelTitle="Upload"
-                      labelDescription={labelDescription}
-                      buttonLabel={buttonLabel}
-                      onChange={(e) => handleClick(e)}
-                      accept={fileTypes}
+                      labelDescription={ labelDescription }
+                      buttonLabel={ buttonLabel }
+                      onChange={ handleClick }
+                      accept={ fileTypes }
                       name="uploader"
-                      style={{whiteSpace: "pre-line"}}
+                      style={{ whiteSpace: "pre-line" }}
+                      className={ classes.fileUploader }
         />
       </Tile>
   );

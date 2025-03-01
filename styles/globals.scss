@@ -4,7 +4,7 @@
 
 html {
   // to avoid layout shift when opening modal when height is greater than display
-  scrollbar-gutter: stable both-edges;
+  scrollbar-gutter: stable;
 }
 
 body {

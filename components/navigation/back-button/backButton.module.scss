@@ -1,0 +1,17 @@
+@import "@/styles/variables/variables";
+
+.back {
+  &Button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: $color-button-body;
+
+    cursor: pointer;
+  }
+
+  &Arrow {
+    color: $colour-tile;
+  }
+}

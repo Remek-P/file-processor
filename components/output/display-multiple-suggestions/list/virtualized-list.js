@@ -25,7 +25,6 @@ function VirtualizedGridWithStickyHeader({
   // Window measurements
   const { width, height } = useWindowDimensions();
   const availableHeight = height * 0.83;
-  // const availableHeight = height * 0.83;
 
   // Row heights
   const HEADER_HEIGHT = 64;
