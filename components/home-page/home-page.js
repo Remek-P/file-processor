@@ -132,7 +132,9 @@ export default function HomePage() {
 
     try {
       const sheet = XLSX.utils.json_to_sheet(partialDataArray);
+      console.log("sheet", sheet)
       const jsonData = sheetToJsonData(sheet);
+      console.log("jsonData", jsonData)
 
       //Test for subheaders, if the row contains strings only (and no numbers) it is probably a subheader.
       const isSubheadersPresent = checkIsFirstObjectMadeOfStrings(partialDataArray);
@@ -157,6 +159,7 @@ export default function HomePage() {
 
       if (addToIndexedDB) {
         await addData(checkFileName, jsonData);
+        console.log("add")
       }
 
     } catch (error) {
