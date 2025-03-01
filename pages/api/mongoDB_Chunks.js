@@ -1,6 +1,6 @@
 import { COLLECTION } from "@/constants/constants";
 
-import {connectToDatabase} from "@/utils/MongoDB_ConnectUtils";
+import { connectToDatabase } from "@/utils/MongoDB_ConnectUtils";
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       const collection = db.collection(COLLECTION);
 
       if (!collection) {
-        throw new Error(`Collection ${COLLECTION} not found`);
+        throw new Error(`Collection ${ COLLECTION } not found`);
       }
 
       // Optional: Use an indexed field for pagination instead of skip

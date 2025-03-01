@@ -1,4 +1,4 @@
-import {COLLECTION} from "@/constants/constants";
+import { COLLECTION } from "@/constants/constants";
 
 import { connectToDatabase } from "@/utils/MongoDB_ConnectUtils";
 import { sanitizeMongoQuery } from "@/utils/mongoDB_Utils";
@@ -16,8 +16,8 @@ async function createTextIndexes(collection) {
       if (!sampleDoc) return;
 
       const textFields = Object.entries(sampleDoc)
-          .filter(([_, value]) => typeof value === 'string')
-          .reduce((acc, [key]) => ({ ...acc, [key]: 'text' }), {});
+          .filter(([ _, value ]) => typeof value === 'string')
+          .reduce((acc, [ key ]) => ({ ...acc, [key]: 'text' }), {});
 
       if (Object.keys(textFields).length > 0) {
         await collection.createIndex(textFields);
@@ -163,14 +163,14 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Query parameter is required" });
     }
 
-    const {db} = await connectToDatabase(res);
+    const { db } = await connectToDatabase(res);
 
     try {
       const collection = db.collection(COLLECTION);
 
       // Ensure collection exists
       if (!collection) {
-        throw new Error(`Collection ${COLLECTION} not found`);
+        throw new Error(`Collection ${ COLLECTION } not found`);
       }
 
       const data = await performSearch(collection, sanitizedQuery, fieldSearch);

@@ -1,7 +1,7 @@
 import { Button, Tile } from "@carbon/react";
 
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
-import {CloudDownload} from "@carbon/react/icons";
+import { CloudDownload } from "@carbon/react/icons";
 import { useState } from "react";
 import IndexedDBSizeMonit from "@/components/notifications/IndexedDB-size-monit/IndexedDB-size-monit";
 import useRejectSizeNotification from "@/hooks/useRejectSizeNotification";
@@ -13,9 +13,7 @@ function FetchOption({ setIsFileDelivered, fetchDataFromDB }) {
 
   const { handleSizeNotification } = useSizeNotification();
 
-  const showNotification = () => {
-    setShowNotifications(true)
-  }
+  const showNotification = () => setShowNotifications(true)
 
   const handleFetching = () => {
     fetchDataFromDB();
@@ -31,17 +29,17 @@ function FetchOption({ setIsFileDelivered, fetchDataFromDB }) {
 
 
   return (<>
-    <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
-      <div className={classes.optionContainerDescription}>
+    <Tile className={ `${ classes.tile } ${ classes.optionContainerSpacing }` }>
+      <div className={ classes.optionContainerDescription }>
         <h6>Download from database</h6>
-        <p className={classes.optionContainerP}>Downloaded preconfigured file</p>
+        <p className={ classes.optionContainerP }>Downloaded preconfigured file</p>
       </div>
-      <Button size="md" onClick={handleClick}>
-        <CloudDownload size={16} />
+      <Button size="md" onClick={ handleClick }>
+        <CloudDownload size={ 16 } />
         <span>Download</span>
       </Button>
     </Tile>
-    <IndexedDBSizeMonit handleReject={handleReject} showNotifications={showNotifications} rejectText="Download" />
+    <IndexedDBSizeMonit handleReject={ handleReject } showNotifications={ showNotifications } rejectText="Download" />
   </>);
 }
 
