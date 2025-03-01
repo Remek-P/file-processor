@@ -40,38 +40,38 @@ function DisplayMultipleSuggestions({
 
   const isLongList = searchRecords.length > 500;
 
-  const style = !isLongList ? {overflow: "auto", height: height} : null
+  const style = !isLongList ? { overflow: "auto", height: height } : null
 
   const RenderedList = useMemo(() => {
     return isLongList ? (
         <VirtualizedList
-            IDIndex={IDIndex}
-            labelDataArray={labelDataArray}
-            pickSearchedOutput={pickSearchedOutput}
-            searchRecords={searchRecords}
-            searchSuggestionsOrder={searchSuggestionsOrder}
-            setSearchSuggestionsOrder={setSearchSuggestionsOrder}
-            handleSort={handleSort}
-            indexToSort={indexToSort}
+            IDIndex={ IDIndex }
+            labelDataArray={ labelDataArray }
+            pickSearchedOutput={ pickSearchedOutput }
+            searchRecords={ searchRecords }
+            searchSuggestionsOrder={ searchSuggestionsOrder }
+            setSearchSuggestionsOrder={ setSearchSuggestionsOrder }
+            handleSort={ handleSort }
+            indexToSort={ indexToSort }
         />
     ) : (
         <ShortList
-            IDIndex={IDIndex}
-            searchRecords={searchRecords}
-            labelDataArray={labelDataArray}
-            searchSuggestionsOrder={searchSuggestionsOrder}
-            indexToSort={indexToSort}
-            pickSearchedOutput={pickSearchedOutput}
-            handleSort={handleSort}
+            IDIndex={ IDIndex }
+            searchRecords={ searchRecords }
+            labelDataArray={ labelDataArray }
+            searchSuggestionsOrder={ searchSuggestionsOrder }
+            indexToSort={ indexToSort }
+            pickSearchedOutput={ pickSearchedOutput }
+            handleSort={ handleSort }
         />
     );
-  }, [IDIndex, labelDataArray, searchRecords, searchSuggestionsOrder]);
+  }, [ IDIndex, labelDataArray, searchRecords, searchSuggestionsOrder ]);
 
   return (
-    // The section style is necessary for ShortList component, to display sticky menu
-    <section style={style}>
-      { RenderedList }
-    </section>
+      // The section style is necessary for ShortList component, to display sticky menu
+      <section style={ style }>
+        { RenderedList }
+      </section>
   );
 }
 
