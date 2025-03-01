@@ -126,6 +126,7 @@ export default function HomePage() {
         partialDataArray.push(...result.data);
       }
     } catch (error) {
+      console.log("error", error)
       addWarnings("Fetching data failed")
       setIsLoading(false);
     }
