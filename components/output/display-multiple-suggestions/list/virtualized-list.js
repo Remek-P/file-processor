@@ -1,255 +1,250 @@
-import React, { useContext, useLayoutEffect, useMemo } from 'react';
-import { createContext, forwardRef, useEffect, useRef, useState } from "react";
-
-import useWindowDimensions from "@/hooks/useWindowSize";
-
-import {compareValues} from "@/utils/sortUtils";
-
-import { FixedSizeList as List } from "react-window";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { VariableSizeGrid as Grid } from 'react-window';
 import { Tile } from "@carbon/react";
-
-import classes from "@/components/output/output.module.scss";
+import useWindowDimensions from "@/hooks/useWindowSize";
 import { IsLoadingContext } from "@/context/global-context";
+import { compareValues } from "@/utils/sortUtils";
+import classes from "@/components/output/output.module.scss";
 
-function VirtualizedList({
-                           IDIndex,
-                           indexToSort,
-                           labelDataArray,
-                           pickSearchedOutput,
-                           searchRecords,
-                           searchSuggestionsOrder,
-                           handleSort,
-                         }) {
+function VirtualizedGridWithStickyHeader({
+                                           IDIndex,
+                                           indexToSort,
+                                           labelDataArray,
+                                           pickSearchedOutput,
+                                           searchRecords,
+                                           searchSuggestionsOrder,
+                                           handleSort,
+                                         }) {
+  const suggestions = useMemo(() => [ labelDataArray, ...searchRecords ],
+      [ labelDataArray, searchRecords ]
+  );
 
-  const suggestions = useMemo(() => [labelDataArray, ...searchRecords], [labelDataArray, searchRecords]);
-
+  const [ sortedSuggestions, setSortedSuggestions ] = useState(suggestions);
   const [ , setIsLoading ] = useContext(IsLoadingContext);
 
-  const [ sortedSuggestions, setSortedSuggestions ]  = useState(suggestions)
-  const [ columnWidths, setColumnWidths ] = useState([]);
-  const [ rowHeight, setRowHeight ] = useState(64);
-  const [ columnHeight, setColumnHeight ] = useState(undefined);
-
-  const rowRef = useRef();
-  const stickyRowRef = useRef();
-  const workerRef = useRef();
-
+  // Window measurements
   const { width, height } = useWindowDimensions();
-  const virtualizedWidth = useMemo(() => width - (0.05 * width), [width]);
-  const virtualizedHeight = useMemo(() => height - (0.17 * height), [height]);
+  const availableHeight = height * 0.83;
+  // const availableHeight = height * 0.83;
 
-  const StickyListContext = createContext();
-  StickyListContext.displayName = "StickyListContext";
+  // Row heights
+  const HEADER_HEIGHT = 64;
+  const ROW_HEIGHT = 64;
 
-  const handleSortClick = (columnIndex) => (event) => {
-    // Prevent the original event from being lost
-    event.persist();
+  // Refs
+  const gridRef = useRef(null);
+  const headerContainerRef = useRef(null);
+  const headerRowRef = useRef(null);
+  const workerRef = useRef(null);
 
-    setIsLoading(true);
-
-    // Create a synthetic event with the correct properties
-    const syntheticEvent = {
-      ...event,
-      currentTarget: {
-        ...event.currentTarget,
-        cellIndex: columnIndex
-      }
-    };
-
-    // Use requestAnimationFrame to ensure the loading state is rendered
-    requestAnimationFrame(() => {
-      handleSort(syntheticEvent);
+  // Column width calculation - only run when data structure changes
+  const columnWidths = useMemo(() => {
+    // Base column widths on first row data
+    const headerRow = sortedSuggestions[0] || [];
+    return headerRow.map(content => {
+      // Simple heuristic for column width based on content length
+      const contentLength = String(content || '').length;
+      return Math.max(120, Math.min(300, contentLength * 10));
     });
-  };
+  }, [ sortedSuggestions[0] ]);
 
-  const handleSortWorker = useMemo(() => {
-    return (workerData) => {
-      // Clean up previous worker if it exists
-      if (workerRef.current) {
-        workerRef.current.terminate();
-      }
+  // Initialize worker once
+  useEffect(() => {
+    if (typeof Worker !== "undefined") {
+      workerRef.current = new Worker(new URL("@/public/sortWorker", import.meta.url));
 
-      const worker = new Worker(new URL("@/public/sortWorker", import.meta.url));
-      workerRef.current = worker;
-
-      worker.onmessage = function (event) {
-        setSortedSuggestions([labelDataArray, ...event.data]);
+      workerRef.current.onmessage = function (event) {
+        setSortedSuggestions([ labelDataArray, ...event.data ]);
         setIsLoading(false);
       };
 
-      worker.onerror = function(error) {
+      workerRef.current.onerror = function (error) {
         console.error('Sorting worker error:', error);
         setIsLoading(false);
       };
 
-      worker.postMessage(workerData);
-
       return () => {
-        if (worker) {
-          worker.terminate();
+        if (workerRef.current) {
+          workerRef.current.terminate();
         }
       };
-    };
-  }, [labelDataArray]);
+    }
+  }, []);
 
+  // Handle sorting
   useEffect(() => {
-    if (typeof Worker !== "undefined") {
-      if (searchSuggestionsOrder !== undefined) {
-        const payload = {
+    if (searchSuggestionsOrder !== undefined) {
+      setIsLoading(true);
+
+      if (workerRef.current) {
+        workerRef.current.postMessage({
           searchSuggestionsOrder,
           searchRecords,
           indexToSort,
-        };
-        handleSortWorker(payload);
-      } else {
-        setSortedSuggestions(suggestions);
-        setIsLoading(false);
-      }
-    } else {
-      // Fallback for environments without Web Worker support
-      if (searchSuggestionsOrder !== undefined) {
-        setIsLoading(true);
-        requestAnimationFrame(() => {
-          const sorted = [...searchRecords].sort((a, b) =>
-              compareValues(a[indexToSort.current], b[indexToSort.current], searchSuggestionsOrder)
-          );
-          setSortedSuggestions([labelDataArray, ...sorted]);
-          setIsLoading(false);
         });
       } else {
-        setSortedSuggestions(suggestions);
-        setIsLoading(false);
+        // Fallback for environments without Web Worker support
+        requestAnimationFrame(() => {
+          const sorted = [ ...searchRecords ].sort((a, b) =>
+              compareValues(a[indexToSort.current], b[indexToSort.current], searchSuggestionsOrder)
+          );
+          setSortedSuggestions([ labelDataArray, ...sorted ]);
+          setIsLoading(false);
+        });
       }
+    } else {
+      setSortedSuggestions(suggestions);
     }
-  }, [searchSuggestionsOrder, searchRecords, indexToSort, suggestions]);
+  }, [ searchSuggestionsOrder, searchRecords, indexToSort, suggestions ]);
 
-  // Cleanup worker on component unmount
-  useEffect(() => {
-    return () => {
-      if (workerRef.current) {
-        workerRef.current.terminate();
-      }
-    };
-  }, []);
-
-  useLayoutEffect(() => {
-    // Only run if rowRef or stickyRowRef are available
-    if (rowRef.current && stickyRowRef.current) {
-      const cells = rowRef.current.querySelectorAll('div');
-      const newWidths = Array.from(cells).map(cell => cell.offsetWidth);
-      const newHeight = cells[0]?.offsetHeight || 64; // Default height to 64 if undefined
-
-      const stickyCells = stickyRowRef.current.querySelectorAll('div');
-      const stickyRowHeight = Math.max(...Array.from(stickyCells).map(cell => cell.offsetHeight));
-
-      // Check if column widths or row height need to be updated
-      if (newWidths.some((width, i) => width !== columnWidths[i])) {
-        setColumnWidths(newWidths);
-      }
-
-      if (newHeight !== rowHeight) {
-        setRowHeight(newHeight);
-      }
-
-      if (stickyRowHeight !== columnHeight) {
-        setColumnHeight(Math.min(stickyRowHeight, 150));
-      }
-    }
-  }, [ searchRecords, virtualizedWidth, virtualizedHeight ]);
-
-  const padding = columnHeight - rowHeight;
-
-  const Row = React.memo(({ index, style }) => {
-    const row = sortedSuggestions[index];
-    return (
-        <tr ref={rowRef} style={{ ...style, top: `${parseFloat(style.top) + padding}px` }}>
-          {row.map((value, colIndex) => (
-              <td
-                  key={colIndex}
-                  data-value={row[IDIndex]}
-                  onClick={pickSearchedOutput}
-                  style={{
-                    width: columnWidths[colIndex],
-                    minWidth: columnWidths[colIndex],
-                    maxWidth: columnWidths[colIndex]
-                  }}
-                  tabIndex="0"
-              >
-                <Tile>{ value }</Tile>
-              </td>
-          ))}
-        </tr>
-    );
-  }, (prevProps, nextProps) => prevProps.index === nextProps.index);
-
-//TODO: scrollbar styling
-  const StickyRow = React.memo(({index, style}) => (
-      <tr ref={stickyRowRef} style={style}>
-        {sortedSuggestions[index].map((label, colIndex) => (
-            <th
-                key={colIndex}
-                onClick={handleSortClick(colIndex)}
-                tabIndex="0"
-                style={{ width: columnWidths[colIndex] }} // Set the width
-                data-column-index={colIndex} // Add data attribute as backup
-            >
-              <Tile style={{
-                height: `${columnHeight}px`, overflowY: 'auto' }}>
-                {label}
-              </Tile>
-            </th>
-        ))}
-      </tr>
-  ), (prevProps, nextProps) => prevProps.index === nextProps.index);
-
-  const innerElementType = forwardRef(({children, ...rest}, ref) => (
-      <StickyListContext.Consumer>
-        {({stickyIndices}) => (
-            <table ref={ref} {...rest} className={classes.searchSuggestionLargeListTable}>
-              <thead>
-              {stickyIndices.map((index) => (
-                  <StickyRow
-                      index={index}
-                      key={index}
-                      style={{top: 0, left: 0, height: `${columnHeight}px`, position: "sticky", zIndex: "1"}}
-                  />
-              ))}
-              </thead>
-              <tbody>{children}</tbody>
-            </table>
-        )}
-      </StickyListContext.Consumer>
-  ));
-
-  const ItemWrapper = ({data, index, style}) => {
-    const { ItemRenderer, stickyIndices } = data;
-    if (stickyIndices && stickyIndices.includes(index)) {
-      return null;
-    }
-    return <ItemRenderer index={index} style={style} />;
-  };
-
-  const StickyList = ({children, stickyIndices, ...rest}) => (
-      <StickyListContext.Provider value={{ ItemRenderer: children, stickyIndices }}>
-        <List itemData={{ ItemRenderer: children, stickyIndices }} {...rest}>
-          { ItemWrapper }
-        </List>
-      </StickyListContext.Provider>
+  // Column width getter for Grid
+  const getColumnWidth = useCallback(
+      (index) => columnWidths[index] || 150,
+      [ columnWidths ]
   );
 
-  return (
-        <StickyList
-            height={virtualizedHeight}
-            innerElementType={innerElementType}
-            itemCount={sortedSuggestions.length}
-            itemSize={rowHeight}
-            stickyIndices={[0]}
-            width={virtualizedWidth}
-            overscanCount={12}
+  // Row height getter
+  const getRowHeight = useCallback(() => ROW_HEIGHT, []);
+
+  // Handle sort click
+  const handleSortClick = useCallback((columnIndex) => () => {
+    setIsLoading(true);
+
+    const syntheticEvent = {
+      currentTarget: {
+        cellIndex: columnIndex
+      }
+    };
+
+    requestAnimationFrame(() => {
+      handleSort(syntheticEvent);
+    });
+  }, [ handleSort ]);
+
+  // Output selection handler
+  const handleCellClick = useCallback(rowIndex => {
+    if (rowIndex === 0) return; // Ignore header row clicks (except for sorting)
+
+    const selectedId = sortedSuggestions[rowIndex][IDIndex];
+    pickSearchedOutput({ currentTarget: { dataset: { value: selectedId } } });
+  }, [ sortedSuggestions, IDIndex, pickSearchedOutput ]);
+
+  // Cell renderer - only for the grid body (not the header)
+  const Cell = useCallback(({ columnIndex, rowIndex, style }) => {
+    // Skip the header row since we're rendering it separately
+    const actualRowIndex = rowIndex + 1;
+    const value = sortedSuggestions[actualRowIndex]?.[columnIndex];
+
+    return (
+        <div
+            style={ {
+              ...style,
+              backgroundColor: actualRowIndex % 2 === 0 ? '#ffffff' : '#f9f9f9',
+            } }
+            onClick={ () => handleCellClick(actualRowIndex, columnIndex) }
+            tabIndex="0"
+            data-cell={ `${ actualRowIndex }-${ columnIndex }` }
+            className={ classes.gridCell }
         >
-          { Row }
-        </StickyList>
+          <Tile className="shadow">
+            { value }
+          </Tile>
+        </div>
+    );
+  }, [ sortedSuggestions, handleCellClick ]);
+
+  // Direct DOM manipulation for lag-free scroll synchronization
+  const handleGridScroll = useCallback(({ scrollLeft }) => {
+    if (headerRowRef.current) {
+      // Use requestAnimationFrame for smooth animation
+      requestAnimationFrame(() => {
+        headerRowRef.current.style.transform = `translateX(-${ scrollLeft }px)`;
+      });
+    }
+  }, []);
+
+  // Render header row separately from the grid
+  const renderHeader = useCallback(() => {
+    const headerData = sortedSuggestions[0] || [];
+
+    return (
+        <div
+            ref={ headerRowRef }
+            style={{ height: HEADER_HEIGHT }}
+            className={ classes.gridHeader }
+        >
+          { headerData.map((value, columnIndex) => (
+              <div
+                  key={ columnIndex }
+                  style={ {
+                    width: getColumnWidth(columnIndex),
+                    minWidth: getColumnWidth(columnIndex),
+                    height: HEADER_HEIGHT,
+                  } }
+                  onClick={ handleSortClick(columnIndex) }
+                  tabIndex="0"
+                  data-header-cell={ columnIndex }
+              >
+                <Tile style={ { fontWeight: 'bold' } }>
+                  { value }
+                </Tile>
+              </div>
+          )) }
+        </div>
+    );
+  }, [ sortedSuggestions, getColumnWidth, handleSortClick ]);
+
+  // Set up the header tracking
+  useEffect(() => {
+    // Reset scroll position when data changes
+    if (gridRef.current) {
+      gridRef.current.scrollTo({ scrollTop: 0, scrollLeft: 0 });
+
+      if (headerRowRef.current) {
+        headerRowRef.current.style.transform = 'translateX(0px)';
+      }
+    }
+  }, [ sortedSuggestions ]);
+
+  return (
+      <div className={ classes.gridContainer }
+           style={ {
+             height: availableHeight,
+             width: width,
+           } }>
+
+        {/* Fixed header container */ }
+        <div
+            ref={ headerContainerRef }
+            style={{
+              width: width,
+              height: HEADER_HEIGHT,
+            }}
+            className={ classes.gridHeaderContainer }
+        >
+          { renderHeader() }
+        </div>
+
+        {/* Grid body */ }
+        <div style={ { height: availableHeight - HEADER_HEIGHT } }>
+          <Grid
+              ref={ gridRef }
+              columnCount={ columnWidths.length }
+              columnWidth={ getColumnWidth }
+              height={ availableHeight - HEADER_HEIGHT }
+              rowCount={ sortedSuggestions.length - 1 } // Subtract 1 for header
+              rowHeight={ getRowHeight }
+              width={ width }
+              overscanRowCount={ 5 }
+              overscanColumnCount={ 2 }
+              onScroll={ handleGridScroll }
+              style={ { outline: 'none' } } // Remove focus outline
+          >
+            { Cell }
+          </Grid>
+        </div>
+      </div>
   );
 }
 
-      export default VirtualizedList;
+export default React.memo(VirtualizedGridWithStickyHeader);
