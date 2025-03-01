@@ -126,16 +126,13 @@ export default function HomePage() {
         partialDataArray.push(...result.data);
       }
     } catch (error) {
-      console.log("error", error)
       addWarnings("Fetching data failed")
       setIsLoading(false);
     }
 
     try {
       const sheet = XLSX.utils.json_to_sheet(partialDataArray);
-      console.log("sheet", sheet)
       const jsonData = sheetToJsonData(sheet);
-      console.log("jsonData", jsonData)
 
       //Test for subheaders, if the row contains strings only (and no numbers) it is probably a subheader.
       const isSubheadersPresent = checkIsFirstObjectMadeOfStrings(partialDataArray);
@@ -164,7 +161,8 @@ export default function HomePage() {
       }
 
     } catch (error) {
-      addWarnings("Incorrect file structure")
+      addWarnings("Incorrect file structure");
+      console.warn(error.message);
     } finally {
       setIsLoading(false);
     }
