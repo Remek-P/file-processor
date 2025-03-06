@@ -23,3 +23,5 @@ $gridBreakpoint170: repeat(auto-fit, minmax($grid170, 1fr));
 $gridBreakpoint515: repeat(auto-fit, minmax($grid200, 1fr));
 $gridBreakpoint600: repeat(auto-fit, minmax($grid255, 1fr));
 $gridBreakpoint900: repeat(auto-fit, minmax($grid280, 1fr));
+
+$button-gap-labels: 10px;

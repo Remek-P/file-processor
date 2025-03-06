@@ -112,7 +112,7 @@
     &Description {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: $button-gap-labels;
     }
 
     &Select {
@@ -135,7 +135,7 @@
 
     & button {
       display: flex;
-      gap: 10px;
+      gap: $button-gap-labels;
       border-radius: $border-radius-main;
 
       @media (max-width: $breakpoint900) {
@@ -162,6 +162,8 @@
 }
 
 .button {
+  display: flex;
+  gap: $button-gap-labels;
   border-radius: $border-radius-main;
 }
 
