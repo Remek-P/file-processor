@@ -28,7 +28,7 @@ function FetchOption({ setIsFileDelivered, fetchDataFromDB }) {
   const handleReject = useRejectSizeNotification(setShowNotifications, handleFetching);
 
 
-  return (<>
+  return <>
     <Tile className={ `${ classes.tile } ${ classes.optionContainerSpacing }` }>
       <div className={ classes.optionContainerDescription }>
         <h6>Download from database</h6>
@@ -40,7 +40,7 @@ function FetchOption({ setIsFileDelivered, fetchDataFromDB }) {
       </Button>
     </Tile>
     <IndexedDBSizeMonit handleReject={ handleReject } showNotifications={ showNotifications } rejectText="Download" />
-  </>);
+  </>;
 }
 
 export default FetchOption;

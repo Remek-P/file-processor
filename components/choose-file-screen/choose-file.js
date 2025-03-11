@@ -67,19 +67,6 @@ function ChooseFile({
         }
 
         {
-            isFileDelivered &&
-            <div className={ classes.chooseFileContainerSub }>
-              <BackButton click={ handleBackButtonDownload }/>
-
-              <SaveFile setIsUpdate={ setIsUpdate }/>
-
-              <SelectSavedFile isUpdate={ isUpdate } loadSavedFile={ loadSavedFile }
-              />
-
-            </div>
-        }
-
-        {
             isSearchDatabase &&
             <div className={ `${ classes.optionContainer } shadow` }>
               <SearchDatabaseInput fetchDirectlyDataFromDB={ fetchDirectlyDataFromDB } />
@@ -92,9 +79,25 @@ function ChooseFile({
 
               <BackButton click={ handleBackButtonUpload }/>
 
-              <UploadToIndexedDB handleFile={ handleFile } setIsFileDelivered={ setIsFileDelivered }/>
+              <UploadToIndexedDB handleFile={ handleFile }
+                                 setIsFileDelivered={ setIsFileDelivered }
+              />
 
-              <UploadToDB setIsFileDelivered={ setIsFileDelivered }/>
+              <UploadToDB setIsFileDelivered={ setIsFileDelivered } />
+
+            </div>
+        }
+
+        {
+            isFileDelivered &&
+            <div className={ classes.chooseFileContainerSub }>
+              <BackButton click={ handleBackButtonDownload }/>
+
+              <SaveFile setIsUpdate={ setIsUpdate }/>
+
+              <SelectSavedFile isUpdate={ isUpdate }
+                               loadSavedFile={ loadSavedFile }
+              />
 
             </div>
         }

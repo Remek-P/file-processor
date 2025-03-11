@@ -50,6 +50,7 @@ export const checkIndexedDB_Size = (dbName, addWarnings, setTotalSize) => {
 
     if (typeof result === 'string' && result.includes('Error')) {
       addWarnings(result);
+      console.error(result);
       setTotalSize(null);
     } else {
       const mbSize = result / (1024 * 1024);

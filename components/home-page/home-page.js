@@ -83,12 +83,20 @@ export default function HomePage() {
     const fileExtension = targetFileName.split('.').pop().toLowerCase();
 
     if ([ "xls", "xlsx", "csv" ].includes(fileExtension)) {
-      const data = await targetFile.arrayBuffer();
 
-      const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
+      const threshold = 90 * 1024 * 1024 * 1024;
+      const isTaskForSQL = targetFile.size > threshold;
 
-      await handleFileWorker(worker, data);
+      if (!isTaskForSQL) {
+        const data = await targetFile.arrayBuffer();
 
+        const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
+
+        await handleFileWorker(worker, data);
+      }
+      else {
+
+      }
     } else if ([ "zip" ].includes(fileExtension)) {
 // TODO: need a lib to handle .rar files
 
@@ -298,9 +306,11 @@ export default function HomePage() {
             warnings.length === 0
             && (finalDataAvailable || isDirectFetchResults)
             && isSubheaders !== undefined &&
-            <ErrorBoundary fallback={ <FileChosenFallback syncAction={ handleFileChange }
-                                                          asyncAction={ handleErrorDelete }
-                                                          fileName={ fileName }/>
+            <ErrorBoundary fallback={
+              <FileChosenFallback syncAction={ handleFileChange }
+                                  asyncAction={ handleErrorDelete }
+                                  fileName={ fileName }
+              />
             }>
               <FileChosen file={ file }
                           fileName={ fileName }
