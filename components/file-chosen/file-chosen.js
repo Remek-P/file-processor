@@ -17,6 +17,7 @@ import FileProviderWrapper from "@/components/provider-wrapper/file-provider-wra
 
 function FileChosen({
                       file,
+                      // fileName,
                       userQuery,
                       refreshData,
                       isDirectFetchResults,
@@ -33,29 +34,24 @@ function FileChosen({
 
   // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
   const findIDIndex = () => {
-    return labelArray.findIndex(
-        (label) =>
-            (label?.toLowerCase() === "id" || label?.toLowerCase() === ID_LABEL)
+    return labelArray.findIndex(label =>
+        label?.toLowerCase() === "id" ??
+        label?.toLowerCase() === ID_LABEL
     );
   };
-  
-  const [IDIndex, setIDIndex] = useState(findIDIndex());
+
+  const [ IDIndex, setIDIndex ] = useState(() => findIDIndex());
 
   const DB_Label = isSubheaders ? ID_LABEL : HEADER_LABEL;
   // hide db id tile constant, when no db id in the labels array
-  const hideDB_ID_Tile = labelArray.findIndex(element => element.toLowerCase() === DB_Label.toLowerCase()) === -1;
+  const hideDB_ID_Tile = labelArray.findIndex(
+      element => element.toLowerCase() === DB_Label.toLowerCase()) === -1;
 
-  const handleIDPick = (e) => {
-    setIDIndex(Number(e.target.dataset.value));
-  }
+  const handleIDPick = (e) => setIDIndex(Number(e.target.dataset.value));
 
-  const handleResetID = () => {
-    setIDIndex(-1);
-  }
+  const handleResetID = () => setIDIndex(-1);
 
-  const handleSubheadersChange = () => {
-    setIsNotificationVisible(true);
-  }
+  const handleSubheadersChange = () => setIsNotificationVisible(true);
 
   const handleNotification = (confirmed) => {
     if (confirmed) overrideSubheadersDetection();
@@ -63,9 +59,7 @@ function FileChosen({
   };
 
 
-  if (IDIndex === -1) return <IdNotAvailable labels={labelArray}
-                                             handleIDPick={handleIDPick}
-                              />
+  if (IDIndex === -1) return <IdNotAvailable labels={ labelArray } handleIDPick={ handleIDPick } />
 
 
   return (
@@ -94,7 +88,7 @@ function FileChosen({
             />
           </div>
 
-          <ExcludedData />
+          <ExcludedData/>
 
           { isNotificationVisible &&
               <AreYouSure handleConfirm={ () => handleNotification(true) }
