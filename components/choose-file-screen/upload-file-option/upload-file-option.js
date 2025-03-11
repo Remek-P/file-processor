@@ -26,21 +26,23 @@ function UploadFileOption({ setIsToBeUploaded }) {
 
   const handleReject = useRejectSizeNotification(setShowNotifications, handleUpload);
 
-  return (
-      <>
-        <Tile className={`${classes.tile} ${classes.optionContainerSpacing}`}>
-          <div className={classes.optionContainerDescription}>
-            <h6>Upload a file</h6>
-            <p className={classes.optionContainerP}>to the computer or the database</p>
-          </div>
-          <Button size="md" onClick={handleClick}>
-            <Upload size={16}/>
-            <span>Upload</span>
-          </Button>
-        </Tile>
-        <IndexedDBSizeMonit handleReject={handleReject} showNotifications={showNotifications} rejectText="Upload" />
-      </>
-  );
+  return <>
+    <Tile className={ `${ classes.tile } ${ classes.optionContainerSpacing }` }>
+
+      <div className={ classes.optionContainerDescription }>
+        <h6>Upload a file</h6>
+        <p className={ classes.optionContainerP }>to the computer or the database</p>
+      </div>
+
+      <Button size="md" onClick={ handleClick }>
+        <Upload size={ 16 }/>
+        <span>Upload</span>
+      </Button>
+
+    </Tile>
+
+    <IndexedDBSizeMonit handleReject={ handleReject } showNotifications={ showNotifications } rejectText="Upload"/>
+  </>
 }
 
 export default UploadFileOption;

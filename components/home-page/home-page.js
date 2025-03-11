@@ -186,8 +186,8 @@ export default function HomePage() {
 
     try {
       const params = new URLSearchParams({
-        query: query,
-        fieldSearch: fieldSearch
+        query,
+        fieldSearch
       });
       const res = await fetch(`/api/mongoDB?${ params.toString() }`);
       result = await res.json();
@@ -215,7 +215,7 @@ export default function HomePage() {
       }
 
       jsonData[0][0] = HEADER_LABEL;
-
+      
       setFile(jsonData);
       const checkFileName = fileName || `DB_file_${ timeStamp() }`;
       setFileName(checkFileName);
@@ -229,7 +229,6 @@ export default function HomePage() {
       setIsLoading(false);
     }
   };
-
 
   const loadSavedFile = async (name) => {
     setIsLoading(true);

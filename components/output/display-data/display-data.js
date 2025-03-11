@@ -39,53 +39,55 @@ function DisplayData({
   const colDataArray = searchResult[0];
   const characters = 3;
 
-    if (!inputValue)
-      return (
-          <div className={classes.select}>
-            <TextTile text="Type to search" handleClick={handleFocus} />
-          </div>
-      )
+  if (!inputValue)
+    return (
+        <div className={ classes.select }>
+          <TextTile text="Type to search" handleClick={ handleFocus }/>
+        </div>
+    )
 
-    else if (isPerformanceStrainReduced && inputValue.length < characters)
-      return (
-          <div className={classes.select}>
-            <TextTile text={`Please type at least ${characters} characters to display search results. To deactivate this feature, please use the menu.`} />
-          </div>
-      )
+  else if (isPerformanceStrainReduced && inputValue.length < characters) {
+    const text = `Please type at least ${ characters } characters to display search results. To deactivate this feature, please use the menu.`
+    return (
+        <div className={ classes.select }>
+          <TextTile text={ text }/>
+        </div>
+    )
+  }
 
-    else if (searchResult.length === 1)
-      return (
-          <div className={classes.grid}>
+  else if (searchResult.length === 1)
+    return (
+        <div className={ classes.grid }>
 
-              <DisplaySearchedData colDataArray={colDataArray}
-                                   isSubheaders={isSubheaders}
-                                   labelDataArray={labelDataArray}
-                                   hideDB_ID_Tile={hideDB_ID_Tile}
-                                   headerDataArray={headerDataArray}
-              />
+          <DisplaySearchedData colDataArray={ colDataArray }
+                               isSubheaders={ isSubheaders }
+                               labelDataArray={ labelDataArray }
+                               hideDB_ID_Tile={ hideDB_ID_Tile }
+                               headerDataArray={ headerDataArray }
+          />
 
-          </div>
-      )
+        </div>
+    )
 
-    else if (searchRecords.length > 1)
-      return (
-          <div className={classes.grid}>
-            <DisplayMultipleSuggestions IDIndex={IDIndex}
-                                        labelDataArray={labelDataArray}
-                                        setInputValue={setInputValue}
-                                        searchRecords={searchRecords}
-                                        searchSuggestionsOrder={searchSuggestionsOrder}
-                                        setSearchSuggestionsOrder={setSearchSuggestionsOrder}
-            />
-          </div>
-      )
+  else if (searchRecords.length > 1)
+    return (
+        <div className={ classes.grid }>
+          <DisplayMultipleSuggestions IDIndex={ IDIndex }
+                                      labelDataArray={ labelDataArray }
+                                      setInputValue={ setInputValue }
+                                      searchRecords={ searchRecords }
+                                      searchSuggestionsOrder={ searchSuggestionsOrder }
+                                      setSearchSuggestionsOrder={ setSearchSuggestionsOrder }
+          />
+        </div>
+    )
 
-    else
-      return (
-          <div className={classes.select}>
-            <TextTile text="No such user data" handleClick={handleFocus} />
-          </div>
-      )
+  else
+    return (
+        <div className={ classes.select }>
+          <TextTile text="No such user data" handleClick={ handleFocus }/>
+        </div>
+    )
 }
 
 export default DisplayData;

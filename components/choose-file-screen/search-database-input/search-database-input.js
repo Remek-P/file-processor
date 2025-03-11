@@ -31,36 +31,36 @@ function SearchDatabaseInput({ userQuery = "", searchRef, fetchDirectlyDataFromD
   }
 
   return (
-      <div className={classes.searchContainer}>
+      <div className={ classes.searchContainer }>
 
-        <SearchbarIcon isDeleteVisible={isDeleteVisible}
-                       id={id}
-                       isPending={null}
-                       setLocalInputValue={setLocalInputValue}
-                       searchRef={searchRef}
+        <SearchbarIcon isDeleteVisible={ isDeleteVisible }
+                       id={ id }
+                       isPending={ null }
+                       setLocalInputValue={ setLocalInputValue }
+                       searchRef={ searchRef }
         />
 
-        <input id={id}
-               name={id}
-               list={id}
+        <input id={ id }
+               name={ id }
+               list={ id }
                type="search"
-               value={localInputValue}
+               value={ localInputValue }
                placeholder="Type at least 2 characters"
-               className={classes.search}
-               onChange={handleTyping}
-               onKeyDown={handleAccept}
-               ref={searchRef}
+               className={ classes.search }
+               onChange={ handleTyping }
+               onKeyDown={ handleAccept }
+               ref={ searchRef }
                autoComplete="on"
                autoFocus
         />
-        
+
         <Select id="key-search"
                 labelText="Select search field"
-                hideLabel={true} size="sm"
-                value={selectFieldSearch}
-                onChange={handleSelect}
+                hideLabel={ true } size="sm"
+                value={ selectFieldSearch }
+                onChange={ handleSelect }
         >
-          <SelectItem text="ID" value="ID" />
+          <SelectItem text="ID" value="ID"/>
           <SelectItem text="Full search" value="all" />
         </Select>
 

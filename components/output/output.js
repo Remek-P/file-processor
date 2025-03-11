@@ -1,4 +1,4 @@
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import Search from "@/components/search/search";
 import DeleteOutput from "@/components/output/delete-output/delete-output";
@@ -27,28 +27,28 @@ function Output({
                   fetchDirectlyDataFromDB,
                 }) {
 
-  const { file} = useContext(FileDataGlobalContext);
+  const { file } = useContext(FileDataGlobalContext);
   const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
   const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
 
   const [ inputValue, setInputValue ] = useState("");
 
-  const isSubheadersTrue = useMemo(() => isContainingSubheaders(file), [file]);
+  const isSubheadersTrue = useMemo(() => isContainingSubheaders(file), [ file ]);
 
   const headersArray = useMemo(() => {
     const firstRow = convertUnderscoreToSpace(file[0])
 
-    if ((isSubheadersTrue && isSubheaders === false)
-        || (!isSubheadersTrue && (isSubheaders === undefined || isSubheaders === false)))
+    if ((isSubheadersTrue && isSubheaders === false) ||
+        (!isSubheadersTrue && (isSubheaders === undefined || isSubheaders === false)))
       return firstRow;
 
-    return [firstRow, convertUnderscoreToSpace(file[1])];
+    return [ firstRow, convertUnderscoreToSpace(file[1]) ];
   }, [ file, isSubheaders ]);
 
   const userDataArray = useMemo(() => {
-    if ((isSubheadersTrue && isSubheaders === false)
-        || (!isSubheadersTrue && (isSubheaders === undefined || isSubheaders === false)))
+    if ((isSubheadersTrue && isSubheaders === false) ||
+        (!isSubheadersTrue && (isSubheaders === undefined || isSubheaders === false)))
       return file.slice(1);
 
     return file.slice(2);
@@ -64,46 +64,46 @@ function Output({
 
   useEffect(() => {
     if (userQuery) setInputValue(userQuery);
-  }, [userQuery]);
+  }, [ userQuery ]);
 
   return (
       <>
 
-        <SearchSuggestions IDIndex={IDIndex}
-                           searchID={searchID}
-                           userDataArray={userDataArray}
-                           searchSuggestionsOrder={searchSuggestionsOrder} />
+        <SearchSuggestions IDIndex={ IDIndex }
+                           searchID={ searchID }
+                           userDataArray={ userDataArray }
+                           searchSuggestionsOrder={ searchSuggestionsOrder } />
 
-        <div className={classes.outputSearchContainer}>
+        <div className={ classes.outputSearchContainer }>
 
-          <div className={`${classes.outputSearch} shadow`}>
+          <div className={ `${ classes.outputSearch } shadow` }>
             {
               !isDirectFetchResults
-                  ? <Search id={searchID}
-                            searchRef={searchRef}
-                            setInputValue={setInputValue}
+                  ? <Search id={ searchID }
+                            searchRef={ searchRef }
+                            setInputValue={ setInputValue }
                   />
-                  : <SearchDatabaseInput userQuery={userQuery}
-                                         setUserQuery={setUserQuery}
-                                         fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}
+                  : <SearchDatabaseInput userQuery={ userQuery }
+                                         setUserQuery={ setUserQuery }
+                                         fetchDirectlyDataFromDB={ fetchDirectlyDataFromDB }
                   />
             }
           </div>
 
-          <DeleteOutput outputId={outputId} setUserQuery={setUserQuery} />
+          <DeleteOutput outputId={ outputId } setUserQuery={ setUserQuery } />
 
         </div>
 
-        <DisplayData IDIndex={IDIndex}
-                     file={file}
-                     headersArray={headersArray}
-                     userDataArray={userDataArray}
-                     inputValue={inputValue}
-                     setInputValue={setInputValue}
-                     hideDB_ID_Tile={hideDB_ID_Tile}
-                     searchSuggestionsOrder={searchSuggestionsOrder}
-                     setSearchSuggestionsOrder={setSearchSuggestionsOrder}
-                     handleFocus={handleFocus}
+        <DisplayData IDIndex={ IDIndex }
+                     file={ file }
+                     headersArray={ headersArray }
+                     userDataArray={ userDataArray }
+                     inputValue={ inputValue }
+                     setInputValue={ setInputValue }
+                     hideDB_ID_Tile={ hideDB_ID_Tile }
+                     searchSuggestionsOrder={ searchSuggestionsOrder }
+                     setSearchSuggestionsOrder={ setSearchSuggestionsOrder }
+                     handleFocus={ handleFocus }
         />
       </>
   );

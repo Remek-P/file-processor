@@ -46,13 +46,11 @@ export function sanitizeMongoQuery(input) {
   );
 
   // Additional MongoDB-specific sanitization
-  const mongoSafe = restored
+  return restored
       // Remove MongoDB operators if they somehow got through
       .replace(/\$(?![0-9])/g, '\\$')
       // Escape dots in field names (but not in currency values as they're already preserved)
       .replace(/\./g, '\\.')
       // Remove null bytes
       .replace(/\x00/g, '');
-
-  return mongoSafe;
 }
