@@ -32,7 +32,7 @@ async function createTextIndexes(collection) {
 async function performSearch(collection, query, fieldSearch) {
   try {
     let results = [];
-    console.log("query performSearch", query)
+
     const getFirstRow = async (getConstant = false) => {
       const firstRow = await collection.findOne();
 
@@ -78,12 +78,10 @@ async function performSearch(collection, query, fieldSearch) {
       const isNumber = checkForNumber(numberQuery)
       if (!isNumber) {
         console.warn("Query is not a number");
-
       }
       await getFirstRow();
       const numericResults = await collection.find({ ID: numberQuery }).toArray();
-
-
+      
       const notFound = numericResults.length === 0;
 
       // Fallback if the numeric search is partial
@@ -175,10 +173,7 @@ export default async function handler(req, res) {
 
       const data = await performSearch(collection, sanitizedQuery, fieldSearch);
 
-      // Ensure we're sending an array
-      const responseData = Array.isArray(data) ? data : [];
-
-      return res.status(200).json(responseData);
+      return res.status(200).json(data);
 
     } catch (error) {
       console.error("Search operation failed:", error);
