@@ -308,7 +308,6 @@ export default function HomePage() {
         }
 
         {
-            // warnings.length === 0 &&
             (finalDataAvailable || isDirectFetchResults) &&
             isSubheaders !== undefined &&
             <ErrorBoundary fallback={
