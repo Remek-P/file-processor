@@ -7,9 +7,8 @@ export const decimalPlaceSeparatorToComma = (data) => data.includes(",") ? data.
 export const convertUnderscoreToSpace = (array) => {
   return array.map(item => {
     if(item === "_id") return item;
-    if (typeof item === "string") {
-      return item.replace(/_/g, ' '); // Remove the extra closing parenthesis
-    }
+    
+    if (typeof item === "string") return item.replace(/_/g, ' ');
     else return item;
   });
 }
@@ -19,7 +18,8 @@ export const isContainingItemFromArray = (item, arr) => {
 }
 
 export const labelForEarlyReturn = label => {
-  return excludedLabelsFromComputingArray.some(item => item.toLowerCase() === label.toLowerCase());
+  return excludedLabelsFromComputingArray.some(item =>
+      item.toLowerCase() === label.toLowerCase());
 }
 
 export const findDuplicatesIn1DArray = (arr) => {
