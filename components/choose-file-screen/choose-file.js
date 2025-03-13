@@ -67,13 +67,6 @@ function ChooseFile({
         }
 
         {
-            isSearchDatabase &&
-            <div className={ `${ classes.optionContainer } shadow` }>
-              <SearchDatabaseInput fetchDirectlyDataFromDB={ fetchDirectlyDataFromDB } />
-            </div>
-        }
-
-        {
             isToBeUploaded && !isFileDelivered &&
             <div className={ classes.chooseFileContainerSub }>
 
@@ -99,6 +92,13 @@ function ChooseFile({
                                loadSavedFile={ loadSavedFile }
               />
 
+            </div>
+        }
+
+        {
+            isSearchDatabase &&
+            <div className={ `${ classes.optionContainer } shadow` }>
+              <SearchDatabaseInput fetchDirectlyDataFromDB={ fetchDirectlyDataFromDB } />
             </div>
         }
 

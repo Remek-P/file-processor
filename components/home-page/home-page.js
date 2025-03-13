@@ -281,8 +281,6 @@ export default function HomePage() {
     file ? handleFileChange() : null;
   }, []);
 
-  //TODO: error boundary to ChooseFile;
-
   return (
       <main>
 
