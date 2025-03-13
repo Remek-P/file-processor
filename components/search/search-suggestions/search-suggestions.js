@@ -24,8 +24,10 @@ function SearchSuggestions({
 
   const duplicates = useMemo(() => findDuplicatesIn1DArray(searchArray),
       [ userDataArray, IDIndex ] );
+
 useEffect(() => {
-  if (duplicates.length !== 0) addWarnings("Some of the IDs, are not unique values")
+  const duplicatesLength = duplicates.length;
+  if (duplicatesLength !== 0) addWarnings(`Some of the IDs are not a unique value (ID: ${ duplicates.join(', ') })`)
 }, [ duplicates ]);
 
   return (
