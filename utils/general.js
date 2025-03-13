@@ -7,7 +7,7 @@ export const decimalPlaceSeparatorToComma = (data) => data.includes(",") ? data.
 export const convertUnderscoreToSpace = (array) => {
   return array.map(item => {
     if(item === "_id") return item;
-    
+
     if (typeof item === "string") return item.replace(/_/g, ' ');
     else return item;
   });
