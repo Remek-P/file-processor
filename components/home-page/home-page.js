@@ -23,6 +23,8 @@ import dayjs from "dayjs";
 
 import { HEADER_LABEL, ID_LABEL } from "@/constants/constants";
 
+import classes from "./homePage.module.scss";
+
 export default function HomePage() {
 
   const {
@@ -84,18 +86,20 @@ export default function HomePage() {
 
     if ([ "xls", "xlsx", "csv" ].includes(fileExtension)) {
 
-      const threshold = 90 * 1024 * 1024 * 1024;
-      const isTaskForSQL = targetFile.size > threshold;
+      const largeFileThreshold = 90 * 1024 * 1024; // 90MB
+      const isLargeFile = targetFile.size > largeFileThreshold;
 
-      if (!isTaskForSQL) {
+      if (!isLargeFile) {
         const data = await targetFile.arrayBuffer();
 
         const worker = new Worker(new URL("@/public/fileWorker", import.meta.url));
 
         await handleFileWorker(worker, data);
       }
-      else {
 
+      else {
+        addWarnings("The file is too large");
+        handleFileChange()
       }
     } else if ([ "zip" ].includes(fileExtension)) {
 // TODO: need a lib to handle .rar files
@@ -297,14 +301,16 @@ export default function HomePage() {
 
         {
             showWarnings && warnings.map((warning, index) => {
-              return <TextTile key={ index } text={ warning } handleClick={ () => deleteWarning(index) }/>;
+              return <div className={ classes.warnings }>
+                <TextTile key={ index } text={ warning } handleClick={ () => deleteWarning(index) }/>
+              </div>;
             })
         }
 
         {
-            warnings.length === 0
-            && (finalDataAvailable || isDirectFetchResults)
-            && isSubheaders !== undefined &&
+            // warnings.length === 0 &&
+            (finalDataAvailable || isDirectFetchResults) &&
+            isSubheaders !== undefined &&
             <ErrorBoundary fallback={
               <FileChosenFallback syncAction={ handleFileChange }
                                   asyncAction={ handleErrorDelete }

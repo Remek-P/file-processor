@@ -22,9 +22,10 @@ export function Reducer(state, action) {
 
       // For Warnings
     case CASE_NAME.ADD_WARNING:
+      const uniqueWarnings = Array.from(new Set([...state.warnings, action.payload]));
       return {
         ...state,
-        warnings: [...state.warnings, action.payload],
+        warnings: uniqueWarnings,
       };
     case CASE_NAME.DELETE_WARNING:
       return {

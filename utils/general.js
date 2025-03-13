@@ -21,3 +21,20 @@ export const isContainingItemFromArray = (item, arr) => {
 export const labelForEarlyReturn = label => {
   return excludedLabelsFromComputingArray.some(item => item.toLowerCase() === label.toLowerCase());
 }
+
+export const findDuplicatesIn1DArray = (arr) => {
+  const frequency = {};
+  const duplicates = [];
+
+  for (const item of arr) {
+    if (frequency[item] === undefined) frequency[item] = 1;
+    else frequency[item]++;
+  }
+
+  // Find items that occur more than once
+  for (const [item, count] of Object.entries(frequency)) {
+    if (count > 1) duplicates.push(item);
+  }
+
+  return duplicates;
+}

@@ -11,7 +11,6 @@ export const connectToDatabase = async (res) => {
   const { DB_HOST, DB_USER, DB_PASS, DB_CLUSTER, DB_APP_NAME } = process.env;
   const uri = `${ DB_HOST }://${ DB_USER }:${ DB_PASS }@${ DB_CLUSTER }.vdirdpb.mongodb.net/?retryWrites=true&w=majority&appName=${ DB_APP_NAME }`;
 
-
   let client = null;
   let db = null;
 
