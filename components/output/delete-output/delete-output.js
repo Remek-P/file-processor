@@ -1,42 +1,44 @@
 import { useContext, useState } from "react";
 
-import { ExcludedDataGlobalContext, NumberOfOutputsContext } from "@/context/global-context";
+import { ExcludedDataGlobalContext, NumberOfOutputsContext, QueryContext } from "@/context/global-context";
 
 import { CloseFilled, CloseOutline } from "@carbon/react/icons";
 import { IconButton } from "@carbon/react";
 
 import classes from "../output.module.scss";
 
-function DeleteOutput({ outputId, setUserQuery }) {
+function DeleteOutput({ outputId }) {
 
+  const [ , setQuery ] = useContext(QueryContext);
   const [ numberOfOutputs, setNumberOfOutputs ] = useContext(NumberOfOutputsContext);
   const [ , setExcludedArray ] = useContext(ExcludedDataGlobalContext);
 
   const [ hover, setHover ] = useState(false);
 
-  const handleMouseEnter = () => setHover(true);
-  const handleMouseLeave = () => setHover(false);
-  const handleOnFocus = () => setHover(true);
-  const handleOnBlur = () => setHover(false);
+  const handleHoverAndFocus = (bool) => setHover(bool);
 
   const handleDelete = () => {
     if (numberOfOutputs.length <= 1) {
-      setNumberOfOutputs([ { id: Date.now() } ])
-      setExcludedArray([])
+      const id = Date.now();
+      setNumberOfOutputs([ { id } ]);
+      setQuery(undefined)
+      setExcludedArray([]);
     }
-    else setNumberOfOutputs(
-        [ ...numberOfOutputs ].filter(output => output.id !== outputId)
-    );
-    setUserQuery("")
+    else {
+      setNumberOfOutputs(
+          [ ...numberOfOutputs ].filter(output => output.id !== outputId)
+      );
+      // deleteQuery(outputId);
+    }
   }
 
   return (
       <div key={ outputId }
            className={ classes.outputDeleteOutput }
-           onMouseEnter={ handleMouseEnter }
-           onMouseLeave={ handleMouseLeave }
-           onFocus={ handleOnFocus }
-           onBlur={ handleOnBlur }
+           onMouseEnter={ () => handleHoverAndFocus(true) }
+           onMouseLeave={ () => handleHoverAndFocus(false) }
+           onFocus={ () => handleHoverAndFocus(true) }
+           onBlur={ () => handleHoverAndFocus(false) }
       >
         <IconButton kind="ghost"
                     label="Delete"

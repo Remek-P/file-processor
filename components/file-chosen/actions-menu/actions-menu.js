@@ -12,6 +12,7 @@ import {
   NumberOfOutputsContext,
   DecimalGlobalContext,
   DataToHideContext,
+  QueryContext,
 } from "@/context/global-context";
 
 import DecimalPlace from "@/components/file-chosen/actions-menu/menu-items/decimal-place";
@@ -21,16 +22,17 @@ import { OverflowMenu, OverflowMenuItem } from "@carbon/react";
 import classes from "../file-chosen.module.scss";
 
 function ActionsMenu({
-                       userQuery,
                        refreshData,
                        isSubheaders,
                        hideDB_ID_Tile,
                        handleResetID,
                        handleSubheadersChange,
                        handleFileChange,
+                       isDirectFetchResults,
                      }) {
 
   const { isFetched } = useContext(FileDataGlobalContext);
+  const [ , setQuery ] = useContext(QueryContext);
 
   const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
   const [ excludedArray, setExcludedArray ] = useContext(ExcludedDataGlobalContext);
@@ -49,13 +51,15 @@ function ActionsMenu({
   const containsSubheader = !isSubheaders ? "Contains subheader" : "No subheaders";
   const reducePerformanceStrain = isPerformanceStrainReduced ? "Search limit off" : "Search limit on";
 
+  const outputID = Date.now();
+
   const addOutput = () => {
-    const outputID = Date.now();
     setNumberOfOutputs(prevState => [ ...prevState, { id: outputID } ]);
+    setQuery(undefined);
   }
 
   const handleDeleteAll = () => {
-    setNumberOfOutputs([]);
+    setNumberOfOutputs([{ id: outputID }]);
     setExcludedArray([]);
   }
 
@@ -92,6 +96,9 @@ function ActionsMenu({
     setShowAllMetrics(true)
   }
 
+  //TODO: Handle data refresh - queries
+  const handleRefresh = () => refreshData()
+
   return (
       <div className={ `${ classes.menuContainer } shadow` }>
         <OverflowMenu className={ classes.menu }
@@ -124,11 +131,13 @@ function ActionsMenu({
                             className={ classes.menuItem }
           />
 
-          { isFetched && <OverflowMenuItem itemText="Refresh Data"
-                                           onClick={ refreshData.bind(userQuery) }
-                                           className={ classes.menuItem }
-                                           aria-hidden={ !isFetched }
-          />
+          { //TODO: figure out how to refresh two+ inputs at the same time
+            isFetched && isDirectFetchResults &&
+              <OverflowMenuItem itemText="Refresh Data"
+                                onClick={ handleRefresh }
+                                className={ classes.menuItem }
+                                aria-hidden={ !isFetched }
+              />
           }
 
           <OverflowMenuItem itemText="Suggestions Order"

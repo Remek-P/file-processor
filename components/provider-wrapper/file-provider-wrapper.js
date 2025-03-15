@@ -1,8 +1,8 @@
 import {
   DataToHideProvider,
   DecimalDataProvider,
-  ExcludedDataProvider, HideTileProvider,
-  NumberOfOutputsProvider,
+  ExcludedDataProvider,
+  HideTileProvider,
   SearchReducePerformanceProvider,
   SearchSuggestionsOrderGlobalProvider,
   ShowAllMetricsProvider
@@ -15,13 +15,11 @@ function FileProviderWrapper({ children }) {
           <ShowAllMetricsProvider>
             <SearchReducePerformanceProvider>
               <SearchSuggestionsOrderGlobalProvider>
-                <NumberOfOutputsProvider>
-                  <HideTileProvider>
-                    <DataToHideProvider>
-                      { children }
-                    </DataToHideProvider>
-                  </HideTileProvider>
-                </NumberOfOutputsProvider>
+                <HideTileProvider>
+                  <DataToHideProvider>
+                    { children }
+                  </DataToHideProvider>
+                </HideTileProvider>
               </SearchSuggestionsOrderGlobalProvider>
             </SearchReducePerformanceProvider>
           </ShowAllMetricsProvider>

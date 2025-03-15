@@ -29,17 +29,17 @@ async function createTextIndexes(collection) {
   }
 }
 
-async function performSearch(collection, query, fieldSearch) {
+async function performSearch(collection, 
+                             query, 
+                             fieldSearch, 
+                             isSingleOutput
+) {
   try {
     let results = [];
 
     const getFirstRow = async (getConstant = false) => {
       const firstRow = await collection.findOne();
-
-      if (firstRow) {
-        results.push(firstRow);
-      }
-
+      if (firstRow) results.push(firstRow);
       if (getConstant) return firstRow;
     }
 
@@ -79,7 +79,9 @@ async function performSearch(collection, query, fieldSearch) {
       if (!isNumber) {
         console.warn("Query is not a number");
       }
-      await getFirstRow();
+      // if there are multiple outputs, we do not need the first row to search
+      if (isSingleOutput) await getFirstRow();
+
       const numericResults = await collection.find({ ID: numberQuery }).toArray();
       
       const notFound = numericResults.length === 0;
@@ -135,7 +137,6 @@ async function performSearch(collection, query, fieldSearch) {
       //   }
       // }
     }
-
     // Ensure we're returning an array
     return Array.isArray(results) ? results : [];
 
@@ -149,7 +150,7 @@ async function performSearch(collection, query, fieldSearch) {
 export default async function handler(req, res) {
   if (req.method === "GET") {
 
-    const { query, fieldSearch } = req.query;
+    const { query, fieldSearch, isSingleOutput } = req.query;
 
     if (!query || query.trim() === "") {
       return res.status(400).json({ message: "Query parameter is required" });
@@ -171,7 +172,7 @@ export default async function handler(req, res) {
         throw new Error(`Collection ${ COLLECTION } not found`);
       }
 
-      const data = await performSearch(collection, sanitizedQuery, fieldSearch);
+      const data = await performSearch(collection, sanitizedQuery, fieldSearch, JSON.parse(isSingleOutput));
 
       return res.status(200).json(data);
 

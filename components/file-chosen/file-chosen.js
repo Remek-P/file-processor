@@ -17,11 +17,9 @@ import FileProviderWrapper from "@/components/provider-wrapper/file-provider-wra
 
 function FileChosen({
                       file,
-                      // fileName,
-                      userQuery,
+                      indexRef,
                       refreshData,
                       isDirectFetchResults,
-                      setUserQuery,
                       handleFileChange,
                       fetchDirectlyDataFromDB,
                     }) {
@@ -34,10 +32,14 @@ function FileChosen({
 
   // if the provided data (file) does not contain id or assigned id by DB, which is specified in constants.js, then return -1, and user can select id
   const findIDIndex = () => {
-    return labelArray.findIndex(label =>
+    const index = labelArray.findIndex(label =>
         label?.toLowerCase() === "id" ??
         label?.toLowerCase() === ID_LABEL
     );
+
+    indexRef.current = index;
+
+    return index;
   };
 
   const [ IDIndex, setIDIndex ] = useState(() => findIDIndex());
@@ -67,10 +69,10 @@ function FileChosen({
 
         <section className={ classes.sectionContainer }>
 
-          <ActionsMenu userQuery={ userQuery }
-                       refreshData={ refreshData }
+          <ActionsMenu refreshData={ refreshData }
                        isSubheaders={ isSubheaders }
                        hideDB_ID_Tile={ hideDB_ID_Tile }
+                       isDirectFetchResults={ isDirectFetchResults }
                        handleResetID={ handleResetID }
                        handleSubheadersChange={ handleSubheadersChange }
                        handleFileChange={ handleFileChange }
@@ -79,8 +81,6 @@ function FileChosen({
 
           <div className={ classes.outputsContainer }>
             <DisplayOutput IDIndex={ IDIndex }
-                           userQuery={ userQuery }
-                           setUserQuery={ setUserQuery }
                            isSubheaders={ isSubheaders }
                            hideDB_ID_Tile={ hideDB_ID_Tile }
                            isDirectFetchResults={ isDirectFetchResults }

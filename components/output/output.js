@@ -1,27 +1,23 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 
-import Search from "@/components/search/search";
-import DeleteOutput from "@/components/output/delete-output/delete-output";
 import DisplayData from "@/components/output/display-data/display-data";
 
 import {
   FileDataGlobalContext,
-  IsContainingSubheadersContext,
+  IsContainingSubheadersContext, QueryContext,
+  // QueryContext,
   SearchSuggestionsOrderGlobalContext
 } from "@/context/global-context";
 import { isContainingSubheaders } from "@/utils/parserUtils";
 
-import classes from "@/components/output/output.module.scss";
-import SearchSuggestions from "@/components/search/search-suggestions/search-suggestions";
-import SearchDatabaseInput from "@/components/choose-file-screen/search-database-input/search-database-input";
+import SearchSuggestions from "@/components/search/search-file/search-suggestions/search-suggestions";
 import { convertUnderscoreToSpace } from "@/utils/general";
+import SearchOutput from "@/components/search/search-output/search-output";
 
 
 function Output({
                   IDIndex,
                   outputId,
-                  userQuery,
-                  setUserQuery,
                   hideDB_ID_Tile,
                   isDirectFetchResults,
                   fetchDirectlyDataFromDB,
@@ -30,9 +26,14 @@ function Output({
   const { file } = useContext(FileDataGlobalContext);
   const { isSubheaders } = useContext(IsContainingSubheadersContext);
 
+  const [ query ] = useContext(QueryContext);
   const [ searchSuggestionsOrder, setSearchSuggestionsOrder ] = useContext(SearchSuggestionsOrderGlobalContext);
 
-  const [ inputValue, setInputValue ] = useState("");
+  const searchRef = useRef(outputId);
+  const condition = searchRef && query;
+  const initialValue = condition ? query : "";
+
+  const [ inputValue, setInputValue ] = useState(initialValue);
 
   const isSubheadersTrue = useMemo(() => isContainingSubheaders(file), [ file ]);
 
@@ -54,17 +55,9 @@ function Output({
     return file.slice(2);
   }, [ file, isSubheaders ]);
 
-  const searchRef = useRef(null);
-
   const searchID = "search";
 
-  const handleFocus = () => {
-    searchRef.current.focus();
-  }
-
-  useEffect(() => {
-    if (userQuery) setInputValue(userQuery);
-  }, [ userQuery ]);
+  const handleFocus = () => searchRef.current.focus();
 
   return (
       <>
@@ -72,27 +65,15 @@ function Output({
         <SearchSuggestions IDIndex={ IDIndex }
                            searchID={ searchID }
                            userDataArray={ userDataArray }
-                           searchSuggestionsOrder={ searchSuggestionsOrder } />
+                           searchSuggestionsOrder={ searchSuggestionsOrder }/>
 
-        <div className={ classes.outputSearchContainer }>
-
-          <div className={ `${ classes.outputSearch } shadow` }>
-            {
-              !isDirectFetchResults
-                  ? <Search id={ searchID }
-                            searchRef={ searchRef }
-                            setInputValue={ setInputValue }
-                  />
-                  : <SearchDatabaseInput userQuery={ userQuery }
-                                         setUserQuery={ setUserQuery }
-                                         fetchDirectlyDataFromDB={ fetchDirectlyDataFromDB }
-                  />
-            }
-          </div>
-
-          <DeleteOutput outputId={ outputId } setUserQuery={ setUserQuery } />
-
-        </div>
+        <SearchOutput isDirectFetchResults={ isDirectFetchResults }
+                      searchID={ searchID }
+                      searchRef={ searchRef }
+                      setInputValue={ setInputValue }
+                      fetchDirectlyDataFromDB={ fetchDirectlyDataFromDB }
+                      outputId={ outputId }
+        />
 
         <DisplayData IDIndex={ IDIndex }
                      file={ file }

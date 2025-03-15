@@ -1,14 +1,19 @@
-import classes from "@/components/search/search.module.scss";
-import SearchbarIcon from "@/components/search/icon/searchbar-icon";
-import { useState } from "react";
+import classes from "@/components/search/search-file/search.module.scss";
+import SearchbarIcon from "@/components/search/search-file/icon/searchbar-icon";
+import { useContext, useRef, useState } from "react";
 import { Select, SelectItem } from "@carbon/react";
+import { QueryContext } from "@/context/global-context";
 
-function SearchDatabaseInput({ userQuery = "", searchRef, fetchDirectlyDataFromDB }) {
+function SearchDatabaseInput({ searchRef, setInputValue, fetchDirectlyDataFromDB }) {
 
-  const [ localInputValue, setLocalInputValue ] = useState(userQuery);
+  const [ , setQuery ] = useContext(QueryContext);
+
+  const [ localInputValue, setLocalInputValue ] = useState("");
   const [ selectFieldSearch, setSelectFieldSearch ] = useState("ID");
 
   const isDeleteVisible = localInputValue.length !== 0;
+
+  const lastProcessedValueRef = useRef({});
 
   const id = "searchDatabaseInput";
 
@@ -16,19 +21,33 @@ function SearchDatabaseInput({ userQuery = "", searchRef, fetchDirectlyDataFromD
     setLocalInputValue(e.target.value);
   }
 
-  const handleSelect = (e) => {
-    setSelectFieldSearch(e.target.value);
+  const handleSelect = (e) => setSelectFieldSearch(e.target.value);
+
+  const chooseInput = () => {
+    searchRef
+        ? setInputValue(localInputValue)
+        : setQuery(localInputValue);
   }
 
   const handleAccept = async (e) => {
     if (e.key === "Enter") {
       const input = localInputValue.trim();
 
+      const doubleEnter = (
+          input === lastProcessedValueRef.current.input &&
+          selectFieldSearch === lastProcessedValueRef.current.selectFieldSearch
+      );
+      //If the search from the main screen is performed, the function will not stop re-triggering the search, because no ref is passed as a prop.
+      if (searchRef && doubleEnter) return;
+
       if (input !== "") {
+        chooseInput();
         fetchDirectlyDataFromDB(input, selectFieldSearch);
       }
+
+      lastProcessedValueRef.current = { input, selectFieldSearch }
     }
-  }
+  };
 
   return (
       <div className={ classes.searchContainer }>

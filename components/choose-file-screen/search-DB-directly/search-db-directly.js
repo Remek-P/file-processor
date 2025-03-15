@@ -1,6 +1,6 @@
 import classes from "@/components/choose-file-screen/choose-file.module.scss";
 import {Button, Tile} from "@carbon/react";
-import SearchbarIcon from "@/components/search/icon/searchbar-icon";
+import SearchbarIcon from "@/components/search/search-file/icon/searchbar-icon";
 
 function SearchDbDirectly({ setIsSearchDatabase }) {
 

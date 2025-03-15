@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useReducer, useState } from "react";
-import { Reducer } from "./reducer";
+import { FileReducer } from "./reducers/file-reducer";
 import { isContainingSubheaders } from "@/utils/parserUtils";
-import { CASE_NAME } from "@/constants/constants";
+import { CASE_NAME  } from "@/constants/constants";
+import { WarningsReducer } from "@/context/reducers/warnings-reducer";
 
 const excelFileInitialState = {
   file: null,
@@ -12,12 +13,19 @@ const excelFileInitialState = {
 export const FileDataGlobalContext = createContext(excelFileInitialState);
 export const FileDataProvider = ({ children }) => {
 
-  const [ state, dispatch ] = useReducer(Reducer, excelFileInitialState);
+  const [ state, dispatch ] = useReducer(FileReducer, excelFileInitialState);
 
   const setFile = (file) => {
     dispatch({
       type: CASE_NAME.SET_FILE,
       payload: file,
+    })
+  }
+
+  const upendFile = (array) => {
+    dispatch({
+      type: CASE_NAME.UPEND_FILE,
+      payload: array,
     })
   }
 
@@ -39,14 +47,14 @@ export const FileDataProvider = ({ children }) => {
     file: state.file,
     fileName: state.fileName,
     isFetched: state.isFetched,
-    isDataFetched,
     setFile,
+    upendFile,
     setFileName,
+    isDataFetched,
   };
 
   return (
-      <FileDataGlobalContext.Provider
-          value={ toBeExported }>
+      <FileDataGlobalContext.Provider value={ toBeExported }>
         { children }
       </FileDataGlobalContext.Provider>
   )
@@ -56,7 +64,7 @@ const warningsInitialState = { warnings: [] }
 export const WarningsContext = createContext(warningsInitialState);
 export const WarningsProvider = ({ children }) => {
 
-  const [ state, dispatch ] = useReducer(Reducer, warningsInitialState);
+  const [ state, dispatch ] = useReducer(WarningsReducer, warningsInitialState);
 
   const addWarnings = (warnings) => {
     dispatch({
@@ -72,11 +80,13 @@ export const WarningsProvider = ({ children }) => {
     })
   }
 
-  return <WarningsContext.Provider value={{
+  const toBeExported = {
     warnings: state.warnings,
     addWarnings,
     deleteWarning
-  }}>
+  }
+
+  return <WarningsContext.Provider value={ toBeExported }>
     { children }
   </WarningsContext.Provider>
 };
@@ -168,7 +178,7 @@ export const SearchReducePerformanceProvider = ({ children }) => (
     </SearchReducePerformanceContext.Provider>
 );
 
-export const NumberOfOutputsContext = createContext([ null ]);
+export const NumberOfOutputsContext = createContext([]);
 export const NumberOfOutputsProvider = ({ children }) => (
     <NumberOfOutputsContext.Provider value={ useState([ { id: 1 } ]) }>
       { children }
@@ -194,4 +204,11 @@ export const DataToHideProvider = ({ children }) => (
     <DataToHideContext.Provider value={ useState([]) }>
       { children }
     </DataToHideContext.Provider>
+);
+
+export const QueryContext = createContext(undefined);
+export const QueryProvider = ({ children }) => (
+    <QueryContext.Provider value={ useState(undefined) }>
+      { children }
+    </QueryContext.Provider>
 );

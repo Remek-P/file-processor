@@ -7,7 +7,7 @@ import SelectSavedFile from "@/components/choose-file-screen/select-saved-file/s
 
 import classes from "./choose-file.module.scss";
 import SearchDbDirectly from "@/components/choose-file-screen/search-DB-directly/search-db-directly";
-import SearchDatabaseInput from "@/components/choose-file-screen/search-database-input/search-database-input";
+import SearchDatabaseInput from "@/components/search/search-database-input/search-database-input";
 import UploadToIndexedDB
   from "@/components/choose-file-screen/upload-file-option/upload-to-IndexedDB/upload-to-IndexedDB";
 import UploadToDB from "@/components/choose-file-screen/upload-file-option/upload-file-to-db/upload-file-to-db";

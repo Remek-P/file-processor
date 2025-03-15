@@ -1,9 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import {
   FileDataGlobalContext,
   IsContainingSubheadersContext,
   IsLoadingContext,
+  NumberOfOutputsContext,
+  QueryContext,
   WarningsContext,
 } from "@/context/global-context";
 
@@ -16,7 +18,11 @@ import ErrorBoundary from "@/components/error-boundary/error-boundary";
 import { addData, deleteData, getData } from "@/utils/indexedDB";
 import { sheetToJsonData } from "@/utils/xlsxUtils";
 import { Loading } from '@carbon/react';
-import { checkIsFirstObjectMadeOfStrings, isContainingSubheaders } from "@/utils/parserUtils";
+import {
+  checkIsFirstObjectMadeOfStrings,
+  isContainingSubheaders,
+  filterOutTheDuplicates
+} from "@/utils/parserUtils";
 
 import XLSX from "xlsx";
 import dayjs from "dayjs";
@@ -30,9 +36,10 @@ export default function HomePage() {
   const {
     file,
     fileName,
-    isDataFetched,
     setFile,
-    setFileName
+    upendFile,
+    setFileName,
+    isDataFetched,
   } = useContext(FileDataGlobalContext);
 
   const {
@@ -41,12 +48,16 @@ export default function HomePage() {
     deleteWarning,
   } = useContext(WarningsContext);
 
-  const [ isLoading, setIsLoading ] = useContext(IsLoadingContext);
   const { isSubheaders, setIsSubheaders } = useContext(IsContainingSubheadersContext);
+
+  const [ isLoading, setIsLoading ] = useContext(IsLoadingContext);
+  const [ numberOfOutputs ] = useContext(NumberOfOutputsContext);
+  const [ , setQuery ] = useContext(QueryContext);
 
   const [ finalDataAvailable, setFinalDataAvailable ] = useState(false);
   const [ isDirectFetchResults, setIsDirectFetchResults ] = useState(false);
-  const [ userQuery, setUserQuery ] = useState("");
+
+  const indexRef = useRef();
 
   const showWarnings = warnings.length !== 0;
 
@@ -186,18 +197,20 @@ export default function HomePage() {
     //   addWarnings("Invalid query")
     //   return
     // }
-    setUserQuery(query);
 
     try {
+      const isSingleOutput = numberOfOutputs.length === 1;
       const params = new URLSearchParams({
         query,
-        fieldSearch
+        fieldSearch,
+        isSingleOutput
       });
+
       const res = await fetch(`/api/mongoDB?${ params.toString() }`);
       result = await res.json();
-
-      // The fetch always results in returning the first row for mapping the keys. If there is only one object in the array or the array is empty due to error, add warning.
-      if (result.length <= 1) {
+      // If there is one output, the fetch always results in returning the first row for mapping the keys. If there is only one object in the array or the array is empty due to error, add warning. If there are multiple outputs, the result will return only the additional data.
+      const lengthCondition = isSingleOutput ? result.length <= 1 : result.length < 1;
+      if (lengthCondition) {
         addWarnings("No data found")
         return
       }
@@ -205,24 +218,34 @@ export default function HomePage() {
       const sheet = XLSX.utils.json_to_sheet(result);
       const jsonData = sheetToJsonData(sheet);
 
-      // Check if the JSON contains subheaders
-      const isSubheadersPresent = isContainingSubheaders(jsonData);
-      setIsSubheaders(isSubheadersPresent);
+      if (isSingleOutput) {
+        // Check if the JSON contains subheaders
+        const isSubheadersPresent = isContainingSubheaders(jsonData);
+        setIsSubheaders(isSubheadersPresent);
 
-      if (isSubheadersPresent) {
-        [ jsonData[0], jsonData[1] ] = [ jsonData[1], jsonData[0] ];
-        jsonData[1][0] = ID_LABEL;
-        setIsSubheaders(true);
-      } else {
-        jsonData.splice(1, 1);  // Remove the second row (if not subheaders)
-        setIsSubheaders(false);
+        if (isSubheadersPresent) {
+          [ jsonData[0], jsonData[1] ] = [ jsonData[1], jsonData[0] ];
+          jsonData[1][0] = ID_LABEL;
+          setIsSubheaders(true);
+        }
+        else {
+          jsonData.splice(1, 1);  // Remove the second row (if no subheaders)
+          setIsSubheaders(false);
+        }
+
+        //Swap the label to sth easier to read
+        jsonData[0][0] = HEADER_LABEL;
+
+        const checkFileName = fileName || `DB_file_${ timeStamp() }`;
+        setFileName(checkFileName);
+        setFile(jsonData);
       }
-
-      jsonData[0][0] = HEADER_LABEL;
-      
-      setFile(jsonData);
-      const checkFileName = fileName || `DB_file_${ timeStamp() }`;
-      setFileName(checkFileName);
+      else if (numberOfOutputs.length > 1) {
+        //TODO: przetestować czy indexRef odświeża się gdy zmieniasz ręcznie IDIndex
+        const dataToAdd = filterOutTheDuplicates(file, jsonData.slice(1), indexRef.current);
+        upendFile(dataToAdd);
+      }
+      else addWarnings("Something went wrong");
 
       isDataFetched(true);
       setIsDirectFetchResults(true);
@@ -249,7 +272,7 @@ export default function HomePage() {
     setIsLoading(true);
     setFile(null);
     setFileName(null);
-    setUserQuery('')
+    setQuery(undefined);
     isDataFetched(undefined)
     setFinalDataAvailable(false);
     setIsDirectFetchResults(false);
@@ -265,12 +288,14 @@ export default function HomePage() {
     isDataFetched(undefined)
     setFinalDataAvailable(false);
     setIsDirectFetchResults(false);
+    setQuery(undefined);
     setIsLoading(false);
   }
 
   const refreshData = async (query) => {
     if (finalDataAvailable) await fetchDataFromMongoDB(true);
     if (isDirectFetchResults) await fetchDirectlyDataFromMongoDB(query);
+    //TODO: refresh jak będzie działał teraz po zmianach z query?
   }
 
   const timeStamp = () => {
@@ -316,12 +341,11 @@ export default function HomePage() {
             }>
               <FileChosen file={ file }
                           fileName={ fileName }
-                          userQuery={ userQuery }
                           isDirectFetchResults={ isDirectFetchResults }
                           handleFileChange={ handleFileChange }
                           refreshData={ refreshData }
+                          indexRef={ indexRef }
                           fetchDirectlyDataFromDB={ fetchDirectlyDataFromMongoDB }
-                          setUserQuery={ setUserQuery }
               />
             </ErrorBoundary>
 

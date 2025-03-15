@@ -2,7 +2,7 @@ import {Button, Loading, Tooltip} from "@carbon/react";
 
 import {Delete, Search} from "@carbon/react/icons";
 
-import classes from "@/components/search/search.module.scss";
+import classes from "@/components/search/search-file/search.module.scss";
 
 function SearchbarIcon({ id, isPending, isDeleteVisible, setLocalInputValue, searchRef }) {
 

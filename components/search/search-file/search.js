@@ -1,12 +1,14 @@
-import {useEffect, useState, useTransition} from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 import classes from "./search.module.scss";
-import SearchbarIcon from "@/components/search/icon/searchbar-icon";
+import SearchbarIcon from "@/components/search/search-file/icon/searchbar-icon";
 
 function Search({ setInputValue, searchRef, id="search" }) {
 
   const [localInputValue, setLocalInputValue] = useState("")
   const [isPending, startTransition] = useTransition();
+
+  const lastProcessedValueRef = useRef("");
 
   const isDeleteVisible = localInputValue.length !== 0
 
@@ -15,7 +17,15 @@ function Search({ setInputValue, searchRef, id="search" }) {
   }
 
   const handleAccept = (e) => {
-    if (e.key === "Enter") startTransition(() => setInputValue(localInputValue));
+    if (e.key === "Enter") {
+
+      const input = e.target.value.trim();
+      if (lastProcessedValueRef.current.trim() === input) return
+
+      startTransition(() => setInputValue(localInputValue));
+
+      lastProcessedValueRef.current = input;
+    }
   }
 
   useEffect(() => {

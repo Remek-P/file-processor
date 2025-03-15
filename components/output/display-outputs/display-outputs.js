@@ -8,8 +8,6 @@ import {ErrorBoundary} from "@carbon/react";
 
 function DisplayOutputs({
                           IDIndex,
-                          userQuery,
-                          setUserQuery,
                           hideDB_ID_Tile,
                           isDirectFetchResults,
                           fetchDirectlyDataFromDB,
@@ -26,8 +24,6 @@ function DisplayOutputs({
               <div key={output.id} className={classes.outputContainer}>
                 <Output outputId={output.id}
                         IDIndex={IDIndex}
-                        userQuery={userQuery}
-                        setUserQuery={setUserQuery}
                         hideDB_ID_Tile={hideDB_ID_Tile}
                         isDirectFetchResults={isDirectFetchResults}
                         fetchDirectlyDataFromDB={fetchDirectlyDataFromDB}

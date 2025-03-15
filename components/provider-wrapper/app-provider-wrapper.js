@@ -4,6 +4,8 @@ import {
   IndexedDB_SizeProvider,
   IsContainingSubheadersProvider,
   IsLoadingProvider,
+  NumberOfOutputsProvider,
+  QueryProvider,
   ToggleIDViewProvider,
   WarningsProvider
 } from "@/context/global-context";
@@ -17,7 +19,11 @@ function AppProviderWrapper({ children }) {
               <IndexedDB_SizeProvider>
                 <IndexedDB_ClickedProvider>
                   <ToggleIDViewProvider>
-                    { children }
+                    <NumberOfOutputsProvider>
+                      <QueryProvider>
+                        { children }
+                      </QueryProvider>
+                    </NumberOfOutputsProvider>
                   </ToggleIDViewProvider>
                 </IndexedDB_ClickedProvider>
               </IndexedDB_SizeProvider>
