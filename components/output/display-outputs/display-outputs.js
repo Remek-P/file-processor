@@ -15,8 +15,6 @@ function DisplayOutputs({
 
   const [ numberOfOutputs  ] = useContext(NumberOfOutputsContext);
 
-  //TODO: While multiple outputs are present, one search nullifies the second in direct DB search
-
   return (
       <ErrorBoundary fallback={<div>Error parsing the file</div>}>
         {

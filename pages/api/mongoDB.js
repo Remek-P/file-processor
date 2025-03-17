@@ -52,10 +52,14 @@ async function performSearch(collection,
     const regexSearch = async () => {
       const firstRow = await getFirstRow(true);
 
-      // Escape special regex characters but handle apostrophes specially
-      const regexPattern = query
-          .replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\$&')  // Escape regex special chars
-          .replace(/'/g, "'?");  // Make apostrophes optional in the search
+      // Simple approach: create a version of the query where apostrophes are removed entirely
+      const cleanedQuery = query.replace(/'/g, "");
+
+      // Escape other regex special characters
+      const escapedQuery = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+
+      // Create a regex that will match either the original escaped query or the version without apostrophes
+      const regexPattern = `(${escapedQuery}|${cleanedQuery})`;
 
       const regexResults = await collection.find({
         $or: Object.keys(firstRow || {})
@@ -111,7 +115,7 @@ async function performSearch(collection,
         results.push(...numericResults);
       }
     } else if (query.trim()) {
-      // TODO: request does not work with '.
+
       await regexSearch();
       // if (query.length <= 3) {
       //   await regexSearch();

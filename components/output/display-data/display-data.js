@@ -35,7 +35,10 @@ function DisplayData({
       ),
       [ inputValue, userDataArray, IDIndex, searchSuggestionsOrder, isSubheaders ]
   );
-  const searchResult = searchRecords.filter(record => record[IDIndex] === inputValue);
+
+  const isSingleResult = searchRecords.length === 1;
+  const searchResult = isSingleResult ? searchRecords : searchRecords.filter(record => record[IDIndex] === inputValue);
+
   const colDataArray = searchResult[0];
   const characters = 3;
 
